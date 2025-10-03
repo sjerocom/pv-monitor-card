@@ -1,0 +1,30 @@
+{
+  "name": "pv-monitor-card",
+  "version": "0.0.1",
+  "description": "PV Monitor Card für Home Assistant",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sjerocom/pv-monitor-card.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/sjerocom/pv-monitor-card/issues"
+  },
+  "homepage": "https://github.com/sjerocom/pv-monitor-card#readme",
+  "dependencies": {
+    "lit": "^3.3.1"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3",
+    "vite": "^7.1.9"
+  }
+}
