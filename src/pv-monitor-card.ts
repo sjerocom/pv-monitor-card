@@ -304,7 +304,7 @@ export class PVMonitorCard extends LitElement {
             pv: {
                 animation: migratedConfig.pv?.animation !== false,
                 show_name: migratedConfig.pv?.show_name !== false,
-                icon_rotation: migratedConfig.pv?.icon_rotation !== false,
+                icon_rotation: migratedConfig.pv?.icon_rotation === true,
                 max_power: migratedConfig.pv?.max_power ?? 10000,
                 ...migratedConfig.pv
             },
@@ -549,7 +549,7 @@ export class PVMonitorCard extends LitElement {
         const secondaryColor = cardStyle?.secondary_color || s.secondary_color;
 
         const rotationStyle = shouldRotate ? `transform: rotate(${rotation}deg); transition: transform 0.5s ease;` : '';
-        const iconStyle = `font-size: ${s.icon_size}; opacity: ${s.icon_opacity}; font-weight: ${s.icon_font_weight}; ${rotationStyle} ${iconColor ? `color: ${iconColor};` : ''}`;
+        const iconStyle = `font-size: ${s.icon_size}; opacity: ${s.icon_opacity}; font-weight: ${s.icon_font_weight}; ${rotationStyle} ${iconColor ? ` color: ${iconColor};` : ''}`;
         const primaryStyle = `font-size: ${s.primary_size}; color: ${primaryColor}; opacity: ${s.primary_font_opacity}; font-weight: ${s.primary_font_weight}; line-height: calc(${s.primary_size} + 2px);`;
         const secondaryStyle = `font-size: ${s.secondary_size}; color: ${secondaryColor}; opacity: ${s.secondary_font_opacity}; font-weight: ${s.secondary_font_weight}; line-height: calc(${s.secondary_size} + 2px);`;
 
