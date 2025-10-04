@@ -88,11 +88,8 @@ export function getNetzColor(power: number, threshold: number): { color: string;
 export function getPVRotation(power: number): number {
     const abs_w = Math.abs(power);
 
-    // 0W = 0°, Max Power (z.B. 15000W) = 360° (volle Umdrehung)
     const maxPower = 15000; // Passe diesen Wert an deine maximale PV-Leistung an
-    const rotation = Math.min((abs_w / maxPower) * 360, 360);
-
-    return rotation;
+    return Math.min((abs_w / maxPower) * 360, 360);
 }
 
 export function getPVColor(power: number): { color: string; duration: number; show: boolean } {
