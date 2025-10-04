@@ -60,7 +60,6 @@ export function getDefaultConfig(config: PVMonitorCardConfig): PVMonitorCardConf
             subtitle_font_weight: config.style?.subtitle_font_weight ?? 'normal',
             subtitle_color: config.style?.subtitle_color ?? 'rgba(255, 255, 255, 0.7)',
             icon_size: config.style?.icon_size ?? '2em',
-            icon_font_weight: config.style?.icon_font_weight ?? 'normal',
             icon_opacity: config.style?.icon_opacity ?? '1',
             icon_margin: config.style?.icon_margin ?? '6px',
             primary_size: config.style?.primary_size ?? '1.2em',
@@ -96,6 +95,8 @@ export function getDefaultConfig(config: PVMonitorCardConfig): PVMonitorCardConf
 
         batterie: {
             animation: config.batterie?.animation !== false,
+            battery_capacity: config.batterie?.battery_capacity ?? 10000,
+            calculate_runtime: config.batterie?.calculate_runtime === true,
             ...config.batterie
         },
 

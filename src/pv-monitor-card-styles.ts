@@ -100,7 +100,10 @@ export const pvMonitorCardStyles = css`
         margin-top: 2px;
     }
     .icon {
-        margin-bottom: 6px;
+        margin-bottom: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
     @keyframes spin {
         0%   { transform: rotate(0deg); }

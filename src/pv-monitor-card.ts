@@ -12,7 +12,9 @@ import {
     getPVColor,
     getBatterieColor,
     getHausColor,
-    getAnimationStyle
+    getAnimationStyle,
+    calculateBatteryRuntime,
+    calculateBatteryChargeTime
 } from "./pv-monitor-utils";
 
 const CARD_TAG = "pv-monitor-card";
@@ -22,6 +24,37 @@ export class PVMonitorCard extends LitElement {
     @property() private config!: PVMonitorCardConfig;
 
     static styles = pvMonitorCardStyles;
+
+    public static async getConfigElement() {
+        await import("./pv-monitor-card-editor");
+        return document.createElement("pv-monitor-card-editor");
+    }
+
+    public static getStubConfig() {
+        return {
+            type: 'custom:pv-monitor-card',
+            title: 'PV Monitor',
+            show_title: true,
+            pv: {
+                entity: '',
+                animation: true,
+                max_power: 10000
+            },
+            batterie: {
+                entity: '',
+                animation: true
+            },
+            haus: {
+                entity: '',
+                animation: true
+            },
+            netz: {
+                entity: '',
+                animation: true,
+                threshold: 10
+            }
+        };
+    }
 
     public setConfig(config: PVMonitorCardConfig): void {
         if (!config) throw new Error("Fehlende Konfiguration");
@@ -114,7 +147,7 @@ export class PVMonitorCard extends LitElement {
         const primaryColor = cardStyle?.primary_color || s.primary_color;
         const secondaryColor = cardStyle?.secondary_color || s.secondary_color;
 
-        const iconStyle = `font-size: ${s.icon_size}; opacity: ${s.icon_opacity}; font-weight: ${s.icon_font_weight}; ${config.customIconStyle || ''} ${iconColor ? `color: ${iconColor};` : ''}`;
+        const iconStyle = `font-size: ${s.icon_size}; opacity: ${s.icon_opacity}; ${config.customIconStyle || ''} ${iconColor ? `color: ${iconColor};` : ''}`;
         const primaryStyle = `font-size: ${s.primary_size}; color: ${primaryColor}; opacity: ${s.primary_font_opacity}; font-weight: ${s.primary_font_weight}; line-height: calc(${s.primary_size} + 2px);`;
         const secondaryStyle = `font-size: ${s.secondary_size}; color: ${secondaryColor}; opacity: ${s.secondary_font_opacity}; font-weight: ${s.secondary_font_weight}; line-height: calc(${s.secondary_size} + 2px);`;
         const tertiaryStyle = `font-size: ${s.tertiary_size}; color: ${s.tertiary_color}; opacity: ${s.tertiary_font_opacity}; font-weight: ${s.tertiary_font_weight}; line-height: calc(${s.tertiary_size} + 2px);`;
@@ -128,7 +161,7 @@ export class PVMonitorCard extends LitElement {
                 ${config.animStyle.show && config.animStyle.color ? html`
                     <div style="${getAnimationStyle(config.animStyle.color, config.animStyle.duration)}"></div>
                 ` : ''}
-                <div class="icon" style="${iconStyle}; margin-bottom: ${s.icon_margin};"><ha-icon .icon=${config.icon}></ha-icon></div>
+                <div class="icon" style="${iconStyle}; margin-bottom: ${s.icon_margin};"><ha-icon .icon=${config.icon} style="--mdc-icon-size: ${s.icon_size}; width: ${s.icon_size}; height: ${s.icon_size};"></ha-icon></div>
                 <div class="primary" style="${primaryStyle}">${config.primaryValue}</div>
                 ${config.secondaryText ? html`<div class="secondary" style="${secondaryStyle}">${config.secondaryText}</div>` : ''}
                 ${config.tertiaryText ? html`<div class="tertiary" style="${tertiaryStyle}">${config.tertiaryText}</div>` : ''}
@@ -136,14 +169,45 @@ export class PVMonitorCard extends LitElement {
         `;
     }
 
-    private _renderInfoBarItem(item?: InfoBarItem, s?: any): any {
-        if (!item?.entity || !this.hass) return html``;
+    private _renderInfoBarItem(item?: InfoBarItem, s?: any, itemType?: string): any {
+        if (!item || !this.hass) return html``;
 
-        const entity = this.hass.states[item.entity];
-        if (!entity) return html``;
+        let value = '';
+        let unit = '';
 
-        const value = entity.state;
-        const unit = item.unit ?? entity.attributes.unit_of_measurement ?? '';
+        // Spezielle Behandlung für berechnete Werte
+        if (itemType === 'runtime' && this.config.batterie?.calculate_runtime && this.config.batterie?.entity) {
+            const batteryCapacity = this.config.batterie.battery_capacity || 10000;
+            const socPercent = parseFloat(this.hass.states[this.config.batterie.entity]?.state) || 0;
+            const charge = this.config.batterie.ladung_entity
+                ? parseFloat(this.hass.states[this.config.batterie.ladung_entity]?.state) || 0
+                : 0;
+            const discharge = this.config.batterie.entladung_entity
+                ? parseFloat(this.hass.states[this.config.batterie.entladung_entity]?.state) || 0
+                : 0;
+
+            value = calculateBatteryRuntime(batteryCapacity, socPercent, charge, discharge);
+            unit = '';
+        } else if (itemType === 'chargetime' && this.config.batterie?.calculate_runtime && this.config.batterie?.entity) {
+            const batteryCapacity = this.config.batterie.battery_capacity || 10000;
+            const socPercent = parseFloat(this.hass.states[this.config.batterie.entity]?.state) || 0;
+            const charge = this.config.batterie.ladung_entity
+                ? parseFloat(this.hass.states[this.config.batterie.ladung_entity]?.state) || 0
+                : 0;
+            const discharge = this.config.batterie.entladung_entity
+                ? parseFloat(this.hass.states[this.config.batterie.entladung_entity]?.state) || 0
+                : 0;
+
+            value = calculateBatteryChargeTime(batteryCapacity, socPercent, charge, discharge);
+            unit = '';
+        } else if (item.entity) {
+            const entity = this.hass.states[item.entity];
+            if (!entity) return html``;
+            value = entity.state;
+            unit = item.unit ?? entity.attributes.unit_of_measurement ?? '';
+        } else {
+            return html``;
+        }
 
         return html`
             <div class="info-bar-item">
@@ -166,7 +230,8 @@ export class PVMonitorCard extends LitElement {
         const ib = this.config.info_bar;
         const s = ib.style!;
 
-        const hasAnyEntity = ib.item1?.entity || ib.item2?.entity || ib.item3?.entity;
+        const hasAnyEntity = ib.item1?.entity || ib.item2?.entity || ib.item3?.entity ||
+            (this.config.batterie?.calculate_runtime && (ib.item2 || ib.item3));
         if (!hasAnyEntity) return html``;
 
         const infoBarStyle = `
@@ -180,9 +245,9 @@ export class PVMonitorCard extends LitElement {
 
         return html`
             <div class="info-bar" style="${infoBarStyle}">
-                ${this._renderInfoBarItem(ib.item1, s)}
-                ${this._renderInfoBarItem(ib.item2, s)}
-                ${this._renderInfoBarItem(ib.item3, s)}
+                ${this._renderInfoBarItem(ib.item1, s, 'item1')}
+                ${this._renderInfoBarItem(ib.item2, s, 'runtime')}
+                ${this._renderInfoBarItem(ib.item3, s, 'chargetime')}
             </div>
         `;
     }
@@ -262,6 +327,8 @@ export class PVMonitorCard extends LitElement {
             ? parseFloat(this.hass.states[this.config.batterie.entladung_entity]?.state) || 0
             : 0;
 
+        const batteryCapacity = this.config.batterie.battery_capacity || 10000;
+
         let statusText = '';
         if (charge > 1) {
             statusText = formatPower(charge);
@@ -280,7 +347,7 @@ export class PVMonitorCard extends LitElement {
             primaryValue: `${Math.round(percentage)}%`,
             secondaryText,
             tertiaryText,
-            animStyle: this.config.batterie.animation ? getBatterieColor(charge, discharge) : { color: '', duration: 0, show: false },
+            animStyle: this.config.batterie.animation ? getBatterieColor(charge, discharge, batteryCapacity) : { color: '', duration: 0, show: false },
             iconColor: this.config.batterie.style?.icon_color || iconColor
         });
     }

@@ -79,7 +79,6 @@ export interface PVMonitorCardConfig {
         subtitle_font_weight?: string;
         subtitle_color?: string;
         icon_size?: string;
-        icon_font_weight?: string;
         icon_opacity?: string;
         icon_margin?: string;
         primary_size?: string;
@@ -137,6 +136,8 @@ export interface PVMonitorCardConfig {
         ladung_entity?: string;
         entladung_entity?: string;
         status_entity?: string;
+        battery_capacity?: number;
+        calculate_runtime?: boolean;
         secondary_entity?: string;
         secondary_text?: string;
         tertiary_entity?: string;

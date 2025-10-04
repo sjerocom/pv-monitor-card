@@ -1,18 +1,21 @@
-import { defineConfig } from "vite";
+import { defineConfig } from 'vite';
 
 export default defineConfig({
     build: {
         lib: {
-            entry: "src/pv-monitor-card.ts",
-            name: "PVMonitorCard",
-            formats: ["es"],
-            fileName: () => "pv-monitor-card.js"
+            entry: 'src/pv-monitor-card.ts',
+            formats: ['es'],
+            fileName: () => 'pv-monitor-card.js'
         },
+        outDir: 'dist',
         rollupOptions: {
-            // Alle externen Abhängigkeiten hier ggf. ausschließen
+            external: [],
+            output: {
+                globals: {}
+            }
         },
-        sourcemap: true,
-        outDir: "dist",
-        emptyOutDir: true
+        target: 'es2020',
+        minify: 'terser',
+        sourcemap: false
     }
 });

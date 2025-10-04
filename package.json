@@ -1,8 +1,8 @@
 {
   "name": "pv-monitor-card",
-  "version": "0.0.36",
+  "version": "0.1.10",
   "description": "PV Monitor Card für Home Assistant",
-  "main": "index.js",
+  "main": "dist/pv-monitor-card.js",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -12,10 +12,17 @@
     "type": "git",
     "url": "git+https://github.com/sjerocom/pv-monitor-card.git"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
+  "keywords": [
+    "home-assistant",
+    "lovelace",
+    "custom-card",
+    "pv",
+    "solar",
+    "battery",
+    "energy"
+  ],
+  "author": "sjerocom",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/sjerocom/pv-monitor-card/issues"
   },
