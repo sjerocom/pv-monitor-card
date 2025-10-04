@@ -31,6 +31,14 @@ interface TapAction {
     data?: any;
 }
 
+interface CardStyle {
+    background_color?: string;
+    border_color?: string;
+    primary_color?: string;
+    secondary_color?: string;
+    icon_color?: string;
+}
+
 export interface PVMonitorCardConfig {
     type: string;
     title?: string;
@@ -83,6 +91,7 @@ export interface PVMonitorCardConfig {
         text_neutral?: string;
         text_bezug?: string;
         threshold?: number;
+        style?: CardStyle;
     };
 
     pv?: {
@@ -90,12 +99,14 @@ export interface PVMonitorCardConfig {
         animation?: boolean;
         show_name?: boolean;
         icon?: string;
-        icon_animation?: boolean;
+        icon_rotation?: boolean;
+        max_power?: number;
         tap_action?: TapAction;
         double_tap_action?: TapAction;
         hold_action?: TapAction;
         secondary_entity?: string;
         secondary_text?: string;
+        style?: CardStyle;
     };
 
     batterie?: {
@@ -109,6 +120,7 @@ export interface PVMonitorCardConfig {
         ladung_entity?: string;
         entladung_entity?: string;
         status_entity?: string;
+        style?: CardStyle;
     };
 
     haus?: {
@@ -121,6 +133,7 @@ export interface PVMonitorCardConfig {
         hold_action?: TapAction;
         secondary_entity?: string;
         secondary_text?: string;
+        style?: CardStyle;
     };
 
     // Legacy-Support (alte Struktur)
@@ -208,7 +221,7 @@ export class PVMonitorCard extends LitElement {
             position: absolute;
             inset: 2px;
             border-radius: inherit;
-            background: rgba(21,20,27,1);
+            background: inherit;
             z-index: 1;
         }
         .card > * {
@@ -237,7 +250,7 @@ export class PVMonitorCard extends LitElement {
     public setConfig(config: PVMonitorCardConfig): void {
         if (!config) throw new Error("Fehlende Konfiguration");
 
-        // Migration: Alte Config-Struktur in neue überführen
+        // Migration: Alte Config-Struktur in neue überfÃ¼hren
         const migratedConfig = this._migrateConfig(config);
 
         this.config = {
@@ -248,7 +261,7 @@ export class PVMonitorCard extends LitElement {
             grid_gap: migratedConfig.grid_gap ?? '6px',
 
             style: {
-                card_background_color: migratedConfig.style?.card_background_color ?? 'rgba(21, 20, 27, 0.6)',
+                card_background_color: migratedConfig.style?.card_background_color ?? 'rgba(21, 20, 27, 1)',
                 card_border_color: migratedConfig.style?.card_border_color ?? 'rgba(255, 255, 255, 0.1)',
                 card_boxshadow: migratedConfig.style?.card_boxshadow ?? '0 8px 32px 0 rgba(0, 0, 0, 0.37), inset 0 1px 0 0 rgba(255, 255, 255, 0.1)',
                 card_border_radius: migratedConfig.style?.card_border_radius ?? '16px',
@@ -291,7 +304,8 @@ export class PVMonitorCard extends LitElement {
             pv: {
                 animation: migratedConfig.pv?.animation !== false,
                 show_name: migratedConfig.pv?.show_name !== false,
-                icon_animation: migratedConfig.pv?.icon_animation !== false,
+                icon_rotation: migratedConfig.pv?.icon_rotation !== false,
+                max_power: migratedConfig.pv?.max_power ?? 10000,
                 ...migratedConfig.pv
             },
 
@@ -313,7 +327,7 @@ export class PVMonitorCard extends LitElement {
     private _migrateConfig(config: PVMonitorCardConfig): PVMonitorCardConfig {
         const migrated: PVMonitorCardConfig = { ...config };
 
-        // Wenn alte Struktur verwendet wird, in neue überführen
+        // Wenn alte Struktur verwendet wird, in neue überfÃ¼hren
         if (config.netz_entity && !config.netz) {
             migrated.netz = {
                 entity: config.netz_entity,
@@ -377,10 +391,6 @@ export class PVMonitorCard extends LitElement {
         return migrated;
     }
 
-    getCardSize() {
-        return 3;
-    }
-
     private _handleAction(event: Event, actions: { tap?: TapAction; double_tap?: TapAction; hold?: TapAction }) {
         const actionType = event.type === 'dblclick' ? 'double_tap' : event.type === 'contextmenu' ? 'hold' : 'tap';
         const action = actions[actionType];
@@ -426,22 +436,19 @@ export class PVMonitorCard extends LitElement {
         }
     }
 
-    private _getCardStyle(): string {
+    private _getCardStyle(cardStyle?: CardStyle): string {
         const s = this.config.style!;
-        return `
-            background: ${s.card_background_color};
-            border: 1px solid ${s.card_border_color};
-            box-shadow: ${s.card_boxshadow};
-            border-radius: ${s.card_border_radius};
-            color: ${s.card_text_color};
-            cursor: ${s.card_cursor};
-            padding: ${s.card_padding};
-        `;
+        const bgColor = cardStyle?.background_color || s.card_background_color || 'rgba(21, 20, 27, 1)';
+        const borderColor = cardStyle?.border_color || s.card_border_color || 'rgba(255, 255, 255, 0.1)';
+
+        return `background: ${bgColor}; border: 1px solid ${borderColor}; box-shadow: ${s.card_boxshadow}; border-radius: ${s.card_border_radius}; color: ${s.card_text_color}; cursor: ${s.card_cursor}; padding: ${s.card_padding};`;
     }
 
-    private _getCardAfterStyle(): string {
-        const s = this.config.style!;
-        return `background: ${s.card_background_color};`;
+    // Inline Rotation Calculation (Fallback, falls getPVRotation nicht funktioniert)
+    private _calculatePVRotation(value: number, maxPower: number): number {
+        if (value <= 0) return 0;
+        if (value >= maxPower) return 360;
+        return (value / maxPower) * 360;
     }
 
     private _renderNetz() {
@@ -469,13 +476,19 @@ export class PVMonitorCard extends LitElement {
 
         const icon = this.config.netz.icon || 'mdi:transmission-tower';
         const s = this.config.style!;
-        const iconStyle = `font-size: ${s.icon_size}; opacity: ${s.icon_opacity}; font-weight: ${s.icon_font_weight}; ${animStyle.show && animStyle.color ? `color: ${animStyle.color};` : ''}`;
-        const primaryStyle = `font-size: ${s.primary_size}; color: ${s.primary_color}; opacity: ${s.primary_font_opacity}; font-weight: ${s.primary_font_weight}; line-height: calc(${s.primary_size} + 2px);`;
-        const secondaryStyle = `font-size: ${s.secondary_size}; color: ${s.secondary_color}; opacity: ${s.secondary_font_opacity}; font-weight: ${s.secondary_font_weight}; line-height: calc(${s.secondary_size} + 2px);`;
+        const cardStyle = this.config.netz.style;
+
+        const iconColor = cardStyle?.icon_color || (animStyle.show && animStyle.color ? animStyle.color : '');
+        const primaryColor = cardStyle?.primary_color || s.primary_color;
+        const secondaryColor = cardStyle?.secondary_color || s.secondary_color;
+
+        const iconStyle = `font-size: ${s.icon_size}; opacity: ${s.icon_opacity}; font-weight: ${s.icon_font_weight}; ${iconColor ? `color: ${iconColor};` : ''}`;
+        const primaryStyle = `font-size: ${s.primary_size}; color: ${primaryColor}; opacity: ${s.primary_font_opacity}; font-weight: ${s.primary_font_weight}; line-height: calc(${s.primary_size} + 2px);`;
+        const secondaryStyle = `font-size: ${s.secondary_size}; color: ${secondaryColor}; opacity: ${s.secondary_font_opacity}; font-weight: ${s.secondary_font_weight}; line-height: calc(${s.secondary_size} + 2px);`;
 
         return html`
-            <div class="card" 
-                 style="${this._getCardStyle()}"
+            <div class="card"
+                 style="${this._getCardStyle(cardStyle)}"
                  @click=${(e: Event) => this._handleAction(e, { tap: this.config.netz!.tap_action })}
                  @dblclick=${(e: Event) => this._handleAction(e, { double_tap: this.config.netz!.double_tap_action })}
                  @contextmenu=${(e: Event) => this._handleAction(e, { hold: this.config.netz!.hold_action })}>
@@ -508,21 +521,41 @@ export class PVMonitorCard extends LitElement {
             secondaryText = this.config.pv.secondary_text;
         }
 
+        const maxPower = this.config.pv.max_power || 10000;
+
         let animStyle = { color: '', duration: 0, show: false };
         if (this.config.pv.animation) {
-            animStyle = getPVColor(value);
+            animStyle = getPVColor(value, maxPower);
         }
 
-        const rotation = this.config.pv.icon_animation ? getPVRotation(value) : 0;
+        // Rotation berechnen - mit Fallback
+        const shouldRotate = this.config.pv.icon_rotation === true;
+        let rotation = 0;
+        if (shouldRotate) {
+            try {
+                rotation = getPVRotation(value, maxPower);
+            } catch (e) {
+                // Fallback auf inline Berechnung
+                rotation = this._calculatePVRotation(value, maxPower);
+            }
+        }
+
         const icon = this.config.pv.icon || 'mdi:white-balance-sunny';
         const s = this.config.style!;
-        const iconStyle = `font-size: ${s.icon_size}; opacity: ${s.icon_opacity}; font-weight: ${s.icon_font_weight}; transform: rotate(${rotation}deg); transition: transform 0.5s ease; ${animStyle.show && animStyle.color ? `color: ${animStyle.color};` : ''}`;
-        const primaryStyle = `font-size: ${s.primary_size}; color: ${s.primary_color}; opacity: ${s.primary_font_opacity}; font-weight: ${s.primary_font_weight}; line-height: calc(${s.primary_size} + 2px);`;
-        const secondaryStyle = `font-size: ${s.secondary_size}; color: ${s.secondary_color}; opacity: ${s.secondary_font_opacity}; font-weight: ${s.secondary_font_weight}; line-height: calc(${s.secondary_size} + 2px);`;
+        const cardStyle = this.config.pv.style;
+
+        const iconColor = cardStyle?.icon_color || (animStyle.show && animStyle.color ? animStyle.color : '');
+        const primaryColor = cardStyle?.primary_color || s.primary_color;
+        const secondaryColor = cardStyle?.secondary_color || s.secondary_color;
+
+        const rotationStyle = shouldRotate ? `transform: rotate(${rotation}deg); transition: transform 0.5s ease;` : '';
+        const iconStyle = `font-size: ${s.icon_size}; opacity: ${s.icon_opacity}; font-weight: ${s.icon_font_weight}; ${rotationStyle} ${iconColor ? `color: ${iconColor};` : ''}`;
+        const primaryStyle = `font-size: ${s.primary_size}; color: ${primaryColor}; opacity: ${s.primary_font_opacity}; font-weight: ${s.primary_font_weight}; line-height: calc(${s.primary_size} + 2px);`;
+        const secondaryStyle = `font-size: ${s.secondary_size}; color: ${secondaryColor}; opacity: ${s.secondary_font_opacity}; font-weight: ${s.secondary_font_weight}; line-height: calc(${s.secondary_size} + 2px);`;
 
         return html`
-            <div class="card" 
-                 style="${this._getCardStyle()}"
+            <div class="card"
+                 style="${this._getCardStyle(cardStyle)}"
                  @click=${(e: Event) => this._handleAction(e, { tap: this.config.pv!.tap_action })}
                  @dblclick=${(e: Event) => this._handleAction(e, { double_tap: this.config.pv!.double_tap_action })}
                  @contextmenu=${(e: Event) => this._handleAction(e, { hold: this.config.pv!.hold_action })}>
@@ -568,13 +601,19 @@ export class PVMonitorCard extends LitElement {
         }
 
         const s = this.config.style!;
-        const iconStyle = `font-size: ${s.icon_size}; opacity: ${s.icon_opacity}; font-weight: ${s.icon_font_weight}; color: ${iconColor};`;
-        const primaryStyle = `font-size: ${s.primary_size}; color: ${s.primary_color}; opacity: ${s.primary_font_opacity}; font-weight: ${s.primary_font_weight}; line-height: calc(${s.primary_size} + 2px);`;
-        const secondaryStyle = `font-size: ${s.secondary_size}; color: ${s.secondary_color}; opacity: ${s.secondary_font_opacity}; font-weight: ${s.secondary_font_weight}; line-height: calc(${s.secondary_size} + 2px);`;
+        const cardStyle = this.config.batterie.style;
+
+        const finalIconColor = cardStyle?.icon_color || iconColor;
+        const primaryColor = cardStyle?.primary_color || s.primary_color;
+        const secondaryColor = cardStyle?.secondary_color || s.secondary_color;
+
+        const iconStyle = `font-size: ${s.icon_size}; opacity: ${s.icon_opacity}; font-weight: ${s.icon_font_weight}; color: ${finalIconColor};`;
+        const primaryStyle = `font-size: ${s.primary_size}; color: ${primaryColor}; opacity: ${s.primary_font_opacity}; font-weight: ${s.primary_font_weight}; line-height: calc(${s.primary_size} + 2px);`;
+        const secondaryStyle = `font-size: ${s.secondary_size}; color: ${secondaryColor}; opacity: ${s.secondary_font_opacity}; font-weight: ${s.secondary_font_weight}; line-height: calc(${s.secondary_size} + 2px);`;
 
         return html`
-            <div class="card" 
-                 style="${this._getCardStyle()}"
+            <div class="card"
+                 style="${this._getCardStyle(cardStyle)}"
                  @click=${(e: Event) => this._handleAction(e, { tap: this.config.batterie!.tap_action })}
                  @dblclick=${(e: Event) => this._handleAction(e, { double_tap: this.config.batterie!.double_tap_action })}
                  @contextmenu=${(e: Event) => this._handleAction(e, { hold: this.config.batterie!.hold_action })}>
@@ -614,13 +653,19 @@ export class PVMonitorCard extends LitElement {
 
         const icon = this.config.haus.icon || 'mdi:home';
         const s = this.config.style!;
-        const iconStyle = `font-size: ${s.icon_size}; opacity: ${s.icon_opacity}; font-weight: ${s.icon_font_weight}; ${animStyle.show && animStyle.color ? `color: ${animStyle.color};` : ''}`;
-        const primaryStyle = `font-size: ${s.primary_size}; color: ${s.primary_color}; opacity: ${s.primary_font_opacity}; font-weight: ${s.primary_font_weight}; line-height: calc(${s.primary_size} + 2px);`;
-        const secondaryStyle = `font-size: ${s.secondary_size}; color: ${s.secondary_color}; opacity: ${s.secondary_font_opacity}; font-weight: ${s.secondary_font_weight}; line-height: calc(${s.secondary_size} + 2px);`;
+        const cardStyle = this.config.haus.style;
+
+        const iconColor = cardStyle?.icon_color || (animStyle.show && animStyle.color ? animStyle.color : '');
+        const primaryColor = cardStyle?.primary_color || s.primary_color;
+        const secondaryColor = cardStyle?.secondary_color || s.secondary_color;
+
+        const iconStyle = `font-size: ${s.icon_size}; opacity: ${s.icon_opacity}; font-weight: ${s.icon_font_weight}; ${iconColor ? `color: ${iconColor};` : ''}`;
+        const primaryStyle = `font-size: ${s.primary_size}; color: ${primaryColor}; opacity: ${s.primary_font_opacity}; font-weight: ${s.primary_font_weight}; line-height: calc(${s.primary_size} + 2px);`;
+        const secondaryStyle = `font-size: ${s.secondary_size}; color: ${secondaryColor}; opacity: ${s.secondary_font_opacity}; font-weight: ${s.secondary_font_weight}; line-height: calc(${s.secondary_size} + 2px);`;
 
         return html`
-            <div class="card" 
-                 style="${this._getCardStyle()}"
+            <div class="card"
+                 style="${this._getCardStyle(cardStyle)}"
                  @click=${(e: Event) => this._handleAction(e, { tap: this.config.haus!.tap_action })}
                  @dblclick=${(e: Event) => this._handleAction(e, { double_tap: this.config.haus!.double_tap_action })}
                  @contextmenu=${(e: Event) => this._handleAction(e, { hold: this.config.haus!.hold_action })}>
@@ -679,10 +724,10 @@ export class PVMonitorCard extends LitElement {
                 </div>
             ` : ''}
             <div class="grid" style="gap: ${this.config.grid_gap};">
-                ${this._renderNetz()}
                 ${this._renderPV()}
                 ${this._renderBatterie()}
                 ${this._renderHaus()}
+                ${this._renderNetz()}
             </div>
         `;
     }

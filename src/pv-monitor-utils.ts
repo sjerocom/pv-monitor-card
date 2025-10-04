@@ -85,33 +85,45 @@ export function getNetzColor(power: number, threshold: number): { color: string;
     return { color, duration: dur, show: true };
 }
 
-export function getPVRotation(power: number): number {
+export function getPVRotation(power: number, maxPower: number = 10000): number {
     const abs_w = Math.abs(power);
-
-    const maxPower = 15000; // Passe diesen Wert an deine maximale PV-Leistung an
+    // Berechne Rotation von 0° bis 360° basierend auf maxPower
     return Math.min((abs_w / maxPower) * 360, 360);
 }
 
-export function getPVColor(power: number): { color: string; duration: number; show: boolean } {
+export function getPVColor(power: number, maxPower: number = 10000): { color: string; duration: number; show: boolean } {
     const abs_w = Math.abs(power);
-    const dur_glow = Math.max(1, 15 - (abs_w / 6000 * 6));
+    const dur_glow = Math.max(1, 15 - (abs_w / (maxPower * 0.6) * 6));
 
     if (abs_w < 10) return { color: '', duration: dur_glow, show: false };
 
-    let baseColor = '';
-    if (abs_w < 100) baseColor = 'rgba(156,39,176,';
-    else if (abs_w < 500) baseColor = 'rgba(244,67,54,';
-    else if (abs_w < 1000) baseColor = 'rgba(255,111,0,';
-    else if (abs_w < 2000) baseColor = 'rgba(255,152,0,';
-    else if (abs_w < 4000) baseColor = 'rgba(255,193,7,';
-    else if (abs_w < 6000) baseColor = 'rgba(255,214,0,';
-    else if (abs_w < 8000) baseColor = 'rgba(255,235,59,';
-    else if (abs_w < 10000) baseColor = 'rgba(255,249,196,';
-    else if (abs_w < 12000) baseColor = 'rgba(255,255,224,';
-    else if (abs_w < 14000) baseColor = 'rgba(255,255,240,';
-    else baseColor = 'rgba(255,255,255,';
+    // Berechne Farbstufen basierend auf maxPower
+    const step1 = maxPower * 0.01;   // 1%
+    const step2 = maxPower * 0.05;   // 5%
+    const step3 = maxPower * 0.1;    // 10%
+    const step4 = maxPower * 0.2;    // 20%
+    const step5 = maxPower * 0.4;    // 40%
+    const step6 = maxPower * 0.6;    // 60%
+    const step7 = maxPower * 0.8;    // 80%
+    const step8 = maxPower * 1.0;    // 100%
+    const step9 = maxPower * 1.2;    // 120%
+    const step10 = maxPower * 1.4;   // 140%
 
-    const alpha = Math.min(1, 0.5 + (abs_w / 13000) * 0.8);
+    let baseColor = '';
+    if (abs_w < step1) baseColor = 'rgba(156,39,176,';        // Lila (sehr niedrig)
+    else if (abs_w < step2) baseColor = 'rgba(244,67,54,';    // Rot (niedrig)
+    else if (abs_w < step3) baseColor = 'rgba(255,111,0,';    // Orange-Rot
+    else if (abs_w < step4) baseColor = 'rgba(255,152,0,';    // Orange
+    else if (abs_w < step5) baseColor = 'rgba(255,193,7,';    // Gelb-Orange
+    else if (abs_w < step6) baseColor = 'rgba(255,214,0,';    // Gelb
+    else if (abs_w < step7) baseColor = 'rgba(255,235,59,';   // Hellgelb
+    else if (abs_w < step8) baseColor = 'rgba(255,249,196,';  // Fast Weiß
+    else if (abs_w < step9) baseColor = 'rgba(255,255,224,';  // Sehr hell
+    else if (abs_w < step10) baseColor = 'rgba(255,255,240,'; // Extrem hell
+    else baseColor = 'rgba(255,255,255,';                      // Weiß (Maximum)
+
+    // Alpha-Wert basierend auf Leistung (0.5 bis 1.0)
+    const alpha = Math.min(1, 0.5 + (abs_w / (maxPower * 1.3)) * 0.8);
     const color = baseColor + alpha.toFixed(2) + ')';
 
     return { color, duration: dur_glow, show: true };
