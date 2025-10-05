@@ -149,6 +149,11 @@ export interface Translations {
         // Picker Labels
         select_entity: string;
         select_icon: string;
+
+        // Theme
+        theme: string;
+        theme_helper: string;
+        select_theme: string;
     };
 
     // Runtime Status Texts
@@ -293,6 +298,10 @@ export const translations: Record<SupportedLanguage, Translations> = {
 
             select_entity: 'Entity auswählen',
             select_icon: 'Icon auswählen',
+
+            theme: 'Theme',
+            theme_helper: 'Wählen Sie ein vordefiniertes Farbthema',
+            select_theme: 'Theme auswählen',
         },
         status: {
             feed_in: 'Einspeisung',
@@ -434,6 +443,10 @@ export const translations: Record<SupportedLanguage, Translations> = {
 
             select_entity: 'Select Entity',
             select_icon: 'Select Icon',
+
+            theme: 'Theme',
+            theme_helper: 'Select a predefined color theme',
+            select_theme: 'Select Theme',
         },
         status: {
             feed_in: 'Feed-in',
@@ -575,6 +588,10 @@ export const translations: Record<SupportedLanguage, Translations> = {
 
             select_entity: 'Sélectionner Entité',
             select_icon: 'Sélectionner Icône',
+
+            theme: 'Thème',
+            theme_helper: 'Sélectionner un thème de couleur prédéfini',
+            select_theme: 'Sélectionner Thème',
         },
         status: {
             feed_in: 'Injection',
@@ -716,6 +733,10 @@ export const translations: Record<SupportedLanguage, Translations> = {
 
             select_entity: 'Seleziona Entità',
             select_icon: 'Seleziona Icona',
+
+            theme: 'Tema',
+            theme_helper: 'Seleziona un tema di colori predefinito',
+            select_theme: 'Seleziona Tema',
         },
         status: {
             feed_in: 'Immissione',
@@ -857,6 +878,10 @@ export const translations: Record<SupportedLanguage, Translations> = {
 
             select_entity: 'Seleccionar Entidad',
             select_icon: 'Seleccionar Icono',
+
+            theme: 'Tema',
+            theme_helper: 'Seleccionar un tema de colores predefinido',
+            select_theme: 'Seleccionar Tema',
         },
         status: {
             feed_in: 'Inyección',

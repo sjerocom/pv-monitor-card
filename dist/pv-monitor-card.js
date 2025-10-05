@@ -794,7 +794,10 @@ const translations = {
       tertiary_opacity: "Tertiär Opacity",
       tertiary_font_weight: "Tertiär Font-Weight",
       select_entity: "Entity auswählen",
-      select_icon: "Icon auswählen"
+      select_icon: "Icon auswählen",
+      theme: "Theme",
+      theme_helper: "Wählen Sie ein vordefiniertes Farbthema",
+      select_theme: "Theme auswählen"
     },
     status: {
       feed_in: "Einspeisung",
@@ -924,7 +927,10 @@ const translations = {
       tertiary_opacity: "Tertiary Opacity",
       tertiary_font_weight: "Tertiary Font Weight",
       select_entity: "Select Entity",
-      select_icon: "Select Icon"
+      select_icon: "Select Icon",
+      theme: "Theme",
+      theme_helper: "Select a predefined color theme",
+      select_theme: "Select Theme"
     },
     status: {
       feed_in: "Feed-in",
@@ -1054,7 +1060,10 @@ const translations = {
       tertiary_opacity: "Opacité Tertiaire",
       tertiary_font_weight: "Épaisseur Police Tertiaire",
       select_entity: "Sélectionner Entité",
-      select_icon: "Sélectionner Icône"
+      select_icon: "Sélectionner Icône",
+      theme: "Thème",
+      theme_helper: "Sélectionner un thème de couleur prédéfini",
+      select_theme: "Sélectionner Thème"
     },
     status: {
       feed_in: "Injection",
@@ -1184,7 +1193,10 @@ const translations = {
       tertiary_opacity: "Opacità Terziaria",
       tertiary_font_weight: "Spessore Font Terziario",
       select_entity: "Seleziona Entità",
-      select_icon: "Seleziona Icona"
+      select_icon: "Seleziona Icona",
+      theme: "Tema",
+      theme_helper: "Seleziona un tema di colori predefinito",
+      select_theme: "Seleziona Tema"
     },
     status: {
       feed_in: "Immissione",
@@ -1314,7 +1326,10 @@ const translations = {
       tertiary_opacity: "Opacidad Terciaria",
       tertiary_font_weight: "Grosor Fuente Terciaria",
       select_entity: "Seleccionar Entidad",
-      select_icon: "Seleccionar Icono"
+      select_icon: "Seleccionar Icono",
+      theme: "Tema",
+      theme_helper: "Seleccionar un tema de colores predefinido",
+      select_theme: "Seleccionar Tema"
     },
     status: {
       feed_in: "Inyección",
@@ -1336,105 +1351,251 @@ function getTranslations(language) {
   const lang = language || detectLanguage();
   return translations[lang] || translations.en;
 }
-function getDefaultConfig(config) {
-  const t2 = getTranslations(config.language || detectLanguage());
+const defaultThemes = {
+  dark: {
+    id: "dark",
+    name: "Dark",
+    colors: {
+      card_background_color: "rgba(21, 20, 27, 1)",
+      card_border_color: "rgba(255, 255, 255, 0.1)",
+      card_text_color: "white",
+      primary_color: "white",
+      secondary_color: "white",
+      title_color: "white",
+      subtitle_color: "rgba(255, 255, 255, 0.7)",
+      infobar_background_color: "rgba(21, 20, 27, 1)",
+      infobar_border_color: "rgba(255, 255, 255, 0.1)",
+      infobar_icon_color: "white",
+      infobar_label_color: "rgba(255, 255, 255, 0.7)",
+      infobar_value_color: "white"
+    }
+  },
+  light: {
+    id: "light",
+    name: "Light",
+    colors: {
+      card_background_color: "rgba(255, 255, 255, 1)",
+      card_border_color: "rgba(0, 0, 0, 0.1)",
+      card_text_color: "rgba(0, 0, 0, 0.87)",
+      primary_color: "rgba(0, 0, 0, 0.87)",
+      secondary_color: "rgba(0, 0, 0, 0.6)",
+      title_color: "rgba(0, 0, 0, 0.87)",
+      subtitle_color: "rgba(0, 0, 0, 0.6)",
+      infobar_background_color: "rgba(250, 250, 250, 1)",
+      infobar_border_color: "rgba(0, 0, 0, 0.1)",
+      infobar_icon_color: "rgba(0, 0, 0, 0.6)",
+      infobar_label_color: "rgba(0, 0, 0, 0.6)",
+      infobar_value_color: "rgba(0, 0, 0, 0.87)"
+    }
+  },
+  blue: {
+    id: "blue",
+    name: "Blue",
+    colors: {
+      card_background_color: "rgba(15, 23, 42, 1)",
+      card_border_color: "rgba(59, 130, 246, 0.3)",
+      card_text_color: "rgba(226, 232, 240, 1)",
+      primary_color: "rgba(96, 165, 250, 1)",
+      secondary_color: "rgba(147, 197, 253, 0.8)",
+      title_color: "rgba(96, 165, 250, 1)",
+      subtitle_color: "rgba(148, 163, 184, 1)",
+      infobar_background_color: "rgba(30, 41, 59, 1)",
+      infobar_border_color: "rgba(59, 130, 246, 0.3)",
+      infobar_icon_color: "rgba(96, 165, 250, 1)",
+      infobar_label_color: "rgba(148, 163, 184, 1)",
+      infobar_value_color: "rgba(226, 232, 240, 1)"
+    }
+  },
+  green: {
+    id: "green",
+    name: "Green",
+    colors: {
+      card_background_color: "rgba(20, 30, 20, 1)",
+      card_border_color: "rgba(34, 197, 94, 0.3)",
+      card_text_color: "rgba(240, 253, 244, 1)",
+      primary_color: "rgba(74, 222, 128, 1)",
+      secondary_color: "rgba(134, 239, 172, 0.8)",
+      title_color: "rgba(74, 222, 128, 1)",
+      subtitle_color: "rgba(187, 247, 208, 0.7)",
+      infobar_background_color: "rgba(22, 40, 25, 1)",
+      infobar_border_color: "rgba(34, 197, 94, 0.3)",
+      infobar_icon_color: "rgba(74, 222, 128, 1)",
+      infobar_label_color: "rgba(187, 247, 208, 0.7)",
+      infobar_value_color: "rgba(240, 253, 244, 1)"
+    }
+  },
+  monochrome: {
+    id: "monochrome",
+    name: "Monochrome",
+    colors: {
+      card_background_color: "rgba(30, 30, 30, 1)",
+      card_border_color: "rgba(128, 128, 128, 0.3)",
+      card_text_color: "rgba(220, 220, 220, 1)",
+      primary_color: "rgba(240, 240, 240, 1)",
+      secondary_color: "rgba(180, 180, 180, 1)",
+      title_color: "rgba(255, 255, 255, 1)",
+      subtitle_color: "rgba(160, 160, 160, 1)",
+      infobar_background_color: "rgba(40, 40, 40, 1)",
+      infobar_border_color: "rgba(128, 128, 128, 0.3)",
+      infobar_icon_color: "rgba(200, 200, 200, 1)",
+      infobar_label_color: "rgba(160, 160, 160, 1)",
+      infobar_value_color: "rgba(220, 220, 220, 1)"
+    }
+  }
+};
+const customThemes = {};
+function getAllThemes() {
+  return [
+    ...Object.values(defaultThemes),
+    ...Object.values(customThemes)
+  ];
+}
+function getTheme(themeId) {
+  if (!themeId) return null;
+  if (defaultThemes[themeId]) {
+    return defaultThemes[themeId];
+  }
+  if (customThemes[themeId]) {
+    return customThemes[themeId];
+  }
+  return null;
+}
+function applyThemeToConfig(config, themeId) {
+  const theme = getTheme(themeId);
+  if (!theme) return config;
   return {
     ...config,
-    language: config.language || detectLanguage(),
-    show_title: config.show_title !== false,
-    show_subtitle: config.show_subtitle !== false,
-    show_icon: config.show_icon !== false,
-    grid_gap: config.grid_gap ?? "6px",
+    style: {
+      // Apply theme colors
+      card_background_color: theme.colors.card_background_color,
+      card_border_color: theme.colors.card_border_color,
+      card_text_color: theme.colors.card_text_color,
+      primary_color: theme.colors.primary_color,
+      secondary_color: theme.colors.secondary_color,
+      title_color: theme.colors.title_color,
+      subtitle_color: theme.colors.subtitle_color,
+      // Preserve any manual overrides from existing config
+      ...config.style
+    },
     info_bar: {
-      show: config.info_bar?.show === true,
+      ...config.info_bar,
+      style: {
+        // Apply theme colors
+        background_color: theme.colors.infobar_background_color,
+        border_color: theme.colors.infobar_border_color,
+        icon_color: theme.colors.infobar_icon_color,
+        label_color: theme.colors.infobar_label_color,
+        value_color: theme.colors.infobar_value_color,
+        // Preserve any manual overrides
+        ...config.info_bar?.style
+      }
+    }
+  };
+}
+function getDefaultConfig(config) {
+  const t2 = getTranslations(config.language || detectLanguage());
+  let themedConfig = config;
+  if (config.theme) {
+    themedConfig = applyThemeToConfig(config, config.theme);
+  }
+  return {
+    ...themedConfig,
+    language: themedConfig.language || detectLanguage(),
+    theme: themedConfig.theme,
+    show_title: themedConfig.show_title !== false,
+    show_subtitle: themedConfig.show_subtitle !== false,
+    show_icon: themedConfig.show_icon !== false,
+    grid_gap: themedConfig.grid_gap ?? "6px",
+    info_bar: {
+      show: themedConfig.info_bar?.show === true,
       item1: {
-        icon: config.info_bar?.item1?.icon ?? "mdi:home-lightning-bolt",
-        label: config.info_bar?.item1?.label ?? t2.editor.default_autarky,
-        ...config.info_bar?.item1
+        icon: themedConfig.info_bar?.item1?.icon ?? "mdi:home-lightning-bolt",
+        label: themedConfig.info_bar?.item1?.label ?? t2.editor.default_autarky,
+        ...themedConfig.info_bar?.item1
       },
       item2: {
-        icon: config.info_bar?.item2?.icon ?? "mdi:battery-clock",
-        label: config.info_bar?.item2?.label ?? t2.editor.default_runtime,
-        ...config.info_bar?.item2
+        icon: themedConfig.info_bar?.item2?.icon ?? "mdi:battery-clock",
+        label: themedConfig.info_bar?.item2?.label ?? t2.editor.default_runtime,
+        ...themedConfig.info_bar?.item2
       },
       item3: {
-        icon: config.info_bar?.item3?.icon ?? "mdi:battery-charging",
-        label: config.info_bar?.item3?.label ?? t2.editor.default_chargetime,
-        ...config.info_bar?.item3
+        icon: themedConfig.info_bar?.item3?.icon ?? "mdi:battery-charging",
+        label: themedConfig.info_bar?.item3?.label ?? t2.editor.default_chargetime,
+        ...themedConfig.info_bar?.item3
       },
       style: {
-        background_color: config.info_bar?.style?.background_color ?? "rgba(21, 20, 27, 1)",
-        border_color: config.info_bar?.style?.border_color ?? "rgba(255, 255, 255, 0.1)",
-        border_radius: config.info_bar?.style?.border_radius ?? "16px",
-        padding: config.info_bar?.style?.padding ?? "12px",
-        gap: config.info_bar?.style?.gap ?? "8px",
-        icon_size: config.info_bar?.style?.icon_size ?? "1.5em",
-        icon_color: config.info_bar?.style?.icon_color ?? "white",
-        label_size: config.info_bar?.style?.label_size ?? "0.8em",
-        label_color: config.info_bar?.style?.label_color ?? "rgba(255, 255, 255, 0.7)",
-        label_font_weight: config.info_bar?.style?.label_font_weight ?? "normal",
-        value_size: config.info_bar?.style?.value_size ?? "1em",
-        value_color: config.info_bar?.style?.value_color ?? "white",
-        value_font_weight: config.info_bar?.style?.value_font_weight ?? "bold",
-        ...config.info_bar?.style
+        background_color: themedConfig.info_bar?.style?.background_color ?? "rgba(21, 20, 27, 1)",
+        border_color: themedConfig.info_bar?.style?.border_color ?? "rgba(255, 255, 255, 0.1)",
+        border_radius: themedConfig.info_bar?.style?.border_radius ?? "16px",
+        padding: themedConfig.info_bar?.style?.padding ?? "12px",
+        gap: themedConfig.info_bar?.style?.gap ?? "8px",
+        icon_size: themedConfig.info_bar?.style?.icon_size ?? "1.5em",
+        icon_color: themedConfig.info_bar?.style?.icon_color ?? "white",
+        label_size: themedConfig.info_bar?.style?.label_size ?? "0.8em",
+        label_color: themedConfig.info_bar?.style?.label_color ?? "rgba(255, 255, 255, 0.7)",
+        label_font_weight: themedConfig.info_bar?.style?.label_font_weight ?? "normal",
+        value_size: themedConfig.info_bar?.style?.value_size ?? "1em",
+        value_color: themedConfig.info_bar?.style?.value_color ?? "white",
+        value_font_weight: themedConfig.info_bar?.style?.value_font_weight ?? "bold",
+        ...themedConfig.info_bar?.style
       }
     },
     style: {
-      card_background_color: config.style?.card_background_color ?? "rgba(21, 20, 27, 1)",
-      card_border_color: config.style?.card_border_color ?? "rgba(255, 255, 255, 0.1)",
-      card_boxshadow: config.style?.card_boxshadow ?? "0 8px 32px 0 rgba(0, 0, 0, 0.37), inset 0 1px 0 0 rgba(255, 255, 255, 0.1)",
-      card_border_radius: config.style?.card_border_radius ?? "16px",
-      card_text_color: config.style?.card_text_color ?? "white",
-      card_cursor: config.style?.card_cursor ?? "pointer",
-      card_padding: config.style?.card_padding ?? "12px",
-      title_align: config.style?.title_align ?? "center",
-      title_size: config.style?.title_size ?? "1.5em",
-      title_font_weight: config.style?.title_font_weight ?? "bold",
-      title_color: config.style?.title_color ?? "white",
-      subtitle_align: config.style?.subtitle_align ?? "center",
-      subtitle_size: config.style?.subtitle_size ?? "1em",
-      subtitle_font_weight: config.style?.subtitle_font_weight ?? "normal",
-      subtitle_color: config.style?.subtitle_color ?? "rgba(255, 255, 255, 0.7)",
-      icon_size: config.style?.icon_size ?? "2em",
-      icon_opacity: config.style?.icon_opacity ?? "1",
-      icon_margin: config.style?.icon_margin ?? "6px",
-      primary_size: config.style?.primary_size ?? "1.2em",
-      primary_color: config.style?.primary_color ?? "white",
-      primary_font_opacity: config.style?.primary_font_opacity ?? "1",
-      primary_font_weight: config.style?.primary_font_weight ?? "normal",
-      secondary_size: config.style?.secondary_size ?? "0.9em",
-      secondary_color: config.style?.secondary_color ?? "white",
-      secondary_font_weight: config.style?.secondary_font_weight ?? "normal",
-      secondary_font_opacity: config.style?.secondary_font_opacity ?? "0.7",
-      tertiary_size: config.style?.tertiary_size ?? "0.9em",
-      tertiary_color: config.style?.tertiary_color ?? "white",
-      tertiary_font_weight: config.style?.tertiary_font_weight ?? "normal",
-      tertiary_font_opacity: config.style?.tertiary_font_opacity ?? "0.7",
-      ...config.style
+      card_background_color: themedConfig.style?.card_background_color ?? "rgba(21, 20, 27, 1)",
+      card_border_color: themedConfig.style?.card_border_color ?? "rgba(255, 255, 255, 0.1)",
+      card_boxshadow: themedConfig.style?.card_boxshadow ?? "0 8px 32px 0 rgba(0, 0, 0, 0.37), inset 0 1px 0 0 rgba(255, 255, 255, 0.1)",
+      card_border_radius: themedConfig.style?.card_border_radius ?? "16px",
+      card_text_color: themedConfig.style?.card_text_color ?? "white",
+      card_cursor: themedConfig.style?.card_cursor ?? "pointer",
+      card_padding: themedConfig.style?.card_padding ?? "12px",
+      title_align: themedConfig.style?.title_align ?? "center",
+      title_size: themedConfig.style?.title_size ?? "1.5em",
+      title_font_weight: themedConfig.style?.title_font_weight ?? "bold",
+      title_color: themedConfig.style?.title_color ?? "white",
+      subtitle_align: themedConfig.style?.subtitle_align ?? "center",
+      subtitle_size: themedConfig.style?.subtitle_size ?? "1em",
+      subtitle_font_weight: themedConfig.style?.subtitle_font_weight ?? "normal",
+      subtitle_color: themedConfig.style?.subtitle_color ?? "rgba(255, 255, 255, 0.7)",
+      icon_size: themedConfig.style?.icon_size ?? "2em",
+      icon_opacity: themedConfig.style?.icon_opacity ?? "1",
+      icon_margin: themedConfig.style?.icon_margin ?? "6px",
+      primary_size: themedConfig.style?.primary_size ?? "1.2em",
+      primary_color: themedConfig.style?.primary_color ?? "white",
+      primary_font_opacity: themedConfig.style?.primary_font_opacity ?? "1",
+      primary_font_weight: themedConfig.style?.primary_font_weight ?? "normal",
+      secondary_size: themedConfig.style?.secondary_size ?? "0.9em",
+      secondary_color: themedConfig.style?.secondary_color ?? "white",
+      secondary_font_weight: themedConfig.style?.secondary_font_weight ?? "normal",
+      secondary_font_opacity: themedConfig.style?.secondary_font_opacity ?? "0.7",
+      tertiary_size: themedConfig.style?.tertiary_size ?? "0.9em",
+      tertiary_color: themedConfig.style?.tertiary_color ?? "white",
+      tertiary_font_weight: themedConfig.style?.tertiary_font_weight ?? "normal",
+      tertiary_font_opacity: themedConfig.style?.tertiary_font_opacity ?? "0.7",
+      ...themedConfig.style
     },
     netz: {
-      animation: config.netz?.animation !== false,
-      threshold: config.netz?.threshold ?? 10,
-      text_einspeisen: config.netz?.text_einspeisen ?? t2.status.feed_in,
-      text_neutral: config.netz?.text_neutral ?? t2.status.neutral,
-      text_bezug: config.netz?.text_bezug ?? t2.status.grid_consumption,
-      ...config.netz
+      animation: themedConfig.netz?.animation !== false,
+      threshold: themedConfig.netz?.threshold ?? 10,
+      text_einspeisen: themedConfig.netz?.text_einspeisen ?? t2.status.feed_in,
+      text_neutral: themedConfig.netz?.text_neutral ?? t2.status.neutral,
+      text_bezug: themedConfig.netz?.text_bezug ?? t2.status.grid_consumption,
+      ...themedConfig.netz
     },
     pv: {
-      animation: config.pv?.animation !== false,
-      icon_rotation: config.pv?.icon_rotation === true,
-      max_power: config.pv?.max_power ?? 1e4,
-      ...config.pv
+      animation: themedConfig.pv?.animation !== false,
+      icon_rotation: themedConfig.pv?.icon_rotation === true,
+      max_power: themedConfig.pv?.max_power ?? 1e4,
+      ...themedConfig.pv
     },
     batterie: {
-      animation: config.batterie?.animation !== false,
-      battery_capacity: config.batterie?.battery_capacity ?? 1e4,
-      calculate_runtime: config.batterie?.calculate_runtime === true,
-      ...config.batterie
+      animation: themedConfig.batterie?.animation !== false,
+      battery_capacity: themedConfig.batterie?.battery_capacity ?? 1e4,
+      calculate_runtime: themedConfig.batterie?.calculate_runtime === true,
+      ...themedConfig.batterie
     },
     haus: {
-      animation: config.haus?.animation !== false,
-      ...config.haus
+      animation: themedConfig.haus?.animation !== false,
+      ...themedConfig.haus
     }
   };
 }
@@ -2305,6 +2466,44 @@ const _PVMonitorCardEditor = class _PVMonitorCardEditor extends i {
             </div>
         `;
   }
+  _renderThemeSelector() {
+    const t2 = this._getT();
+    const allThemes = getAllThemes();
+    const themeItems = allThemes.map((theme) => ({
+      value: theme.id,
+      label: theme.name
+    }));
+    return x`
+            <div class="option">
+                <div class="option-label">
+                    ${t2.editor.theme}
+                    <div class="info-text">${t2.editor.theme_helper}</div>
+                </div>
+                <div class="option-control">
+                    <ha-combo-box
+                            .value=${this._config?.theme || ""}
+                            .items=${themeItems}
+                            item-value-path="value"
+                            item-label-path="label"
+                            allow-custom-value
+                            @value-changed=${(ev) => {
+      if (!this._config) return;
+      const newValue = ev.detail?.value;
+      const newConfig = { ...this._config };
+      if (!newValue || newValue === "") {
+        delete newConfig.theme;
+      } else {
+        newConfig.theme = newValue;
+      }
+      this._config = newConfig;
+      this._fireEvent();
+      this.requestUpdate();
+    }}
+                    ></ha-combo-box>
+                </div>
+            </div>
+        `;
+  }
   _renderGeneralTab() {
     const t2 = this._getT();
     return x`
@@ -2314,6 +2513,16 @@ const _PVMonitorCardEditor = class _PVMonitorCardEditor extends i {
                     ${t2.editor.language}
                 </div>
                 ${this._renderLanguageSelector()}
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="section">
+                <div class="section-header">
+                    <ha-icon icon="mdi:palette"></ha-icon>
+                    ${t2.editor.theme}
+                </div>
+                ${this._renderThemeSelector()}
             </div>
 
             <div class="divider"></div>
