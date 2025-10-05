@@ -8,15 +8,32 @@ export class PVMonitorCardEditor extends LitElement {
     @property({ attribute: false }) public hass?: any;
     @state() private _config?: PVMonitorCardConfig;
     @state() private _activeTab: string = 'general';
+    @state() private _isInteracting: boolean = false;
+    private _debounceTimer?: number;
+    private _localValues: Map<string, string> = new Map();
+    @state() private _autocompleteResults: Map<string, string[]> = new Map();
+    @state() private _showAutocomplete: Map<string, boolean> = new Map();
 
     static styles = css`
         :host {
             display: block;
+            position: relative;
+            z-index: 1;
         }
+
+        /* Critical fix: Ensure entity picker dropdowns appear above everything */
+        :host ::slotted(*),
+        :host * {
+            --ha-entity-picker-z-index: 9999;
+            --mdc-menu-z-index: 9999;
+            --mdc-dialog-z-index: 9999;
+        }
+
         .card-config {
             display: flex;
             flex-direction: column;
             gap: 16px;
+            position: relative;
         }
         .tabs {
             display: flex;
@@ -52,6 +69,8 @@ export class PVMonitorCardEditor extends LitElement {
         }
         .section {
             margin-bottom: 24px;
+            position: relative;
+            z-index: 1;
         }
         .section-header {
             font-size: 16px;
@@ -71,6 +90,8 @@ export class PVMonitorCardEditor extends LitElement {
             justify-content: space-between;
             padding: 8px 0;
             gap: 16px;
+            position: relative;
+            z-index: 1;
         }
         .option-label {
             flex: 1;
@@ -80,10 +101,82 @@ export class PVMonitorCardEditor extends LitElement {
         .option-control {
             flex: 0 0 auto;
             min-width: 200px;
+            position: relative;
         }
+
+        /* Fix entity picker autocomplete being covered by dropdown */
+        ha-entity-picker,
+        ha-selector-entity {
+            position: relative;
+            z-index: 100;
+        }
+
+        ha-entity-picker[opened],
+        ha-selector-entity[opened] {
+            z-index: 1000;
+        }
+
+        /* Ensure combo-box dropdowns have proper z-index */
+        ha-combo-box {
+            position: relative;
+        }
+
         ha-textfield, ha-select {
             width: 100%;
         }
+
+        /* Fix dropdown text visibility - try different approach */
+        ha-combo-box {
+            color: #e1e1e1 !important;
+        }
+
+        ha-combo-box mwc-list-item {
+            color: #e1e1e1 !important;
+            background-color: #2c2c2c !important;
+        }
+
+        ha-combo-box mwc-menu {
+            background-color: #2c2c2c !important;
+        }
+
+        /* Custom autocomplete dropdown */
+        .autocomplete-wrapper {
+            position: relative;
+            width: 100%;
+            z-index: 100;
+        }
+
+        .autocomplete-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: auto;
+            min-width: 400px;
+            max-height: 200px;
+            overflow-y: auto;
+            background: #1c1c1c;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 4px;
+            margin-top: 4px;
+            z-index: 10000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+        }
+
+        .autocomplete-item {
+            padding: 8px 12px;
+            cursor: pointer;
+            color: #e1e1e1;
+            font-size: 14px;
+            background: #1c1c1c;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .autocomplete-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
         .subsection {
             margin-left: 16px;
             padding-left: 16px;
@@ -153,6 +246,124 @@ export class PVMonitorCardEditor extends LitElement {
             composed: true,
         });
         this.dispatchEvent(event);
+    }
+
+    private _debouncedFireEvent(): void {
+        // Clear existing timer
+        if (this._debounceTimer) {
+            window.clearTimeout(this._debounceTimer);
+        }
+
+        // Set new timer - fire event after 1000ms of inactivity
+        this._debounceTimer = window.setTimeout(() => {
+            this._fireEvent();
+            this._debounceTimer = undefined;
+        }, 1000);
+    }
+
+    private _renderTapActions(cardType: 'pv' | 'batterie' | 'haus' | 'netz' | 'info_bar') {
+        const t = this._getT();
+        const config = cardType === 'info_bar' ? this._config?.info_bar : this._config?.[cardType];
+
+        return html`
+            <div class="subsection">
+                <div class="section-header">
+                    <ha-icon icon="mdi:gesture-tap"></ha-icon>
+                    Tap Actions
+                </div>
+
+                ${this._renderActionSelector('Tap Action', [cardType, 'tap_action'], config?.tap_action)}
+                ${this._renderActionSelector('Double Tap', [cardType, 'double_tap_action'], config?.double_tap_action)}
+                ${this._renderActionSelector('Hold Action', [cardType, 'hold_action'], config?.hold_action)}
+            </div>
+        `;
+    }
+
+    private _renderActionSelector(label: string, path: string[], action?: any) {
+        const t = this._getT();
+
+        const actions = [
+            { value: 'none', label: t.editor.action_none || 'None' },
+            { value: 'more-info', label: t.editor.action_more_info || 'More Info' },
+            { value: 'navigate', label: t.editor.action_navigate || 'Navigate' },
+            { value: 'url', label: t.editor.action_url || 'URL' },
+            { value: 'call-service', label: t.editor.action_call_service || 'Call Service' }
+        ];
+
+        return html`
+            <div class="option">
+                <div class="option-label">${label}</div>
+                <div class="option-control">
+                    <ha-combo-box
+                            .value=${action?.action || 'none'}
+                            .items=${actions}
+                            item-value-path="value"
+                            item-label-path="label"
+                            @value-changed=${(ev: any) => this._updateTapAction(path, 'action', ev.detail.value)}
+                    ></ha-combo-box>
+                </div>
+            </div>
+
+            ${action?.action === 'navigate' ? html`
+                <div class="option">
+                    <div class="option-label">Navigation Path</div>
+                    <div class="option-control">
+                        <ha-textfield
+                                .value=${action.navigation_path || ''}
+                                placeholder="/lovelace/view"
+                                @input=${(ev: any) => this._updateTapAction(path, 'navigation_path', ev.target.value)}
+                        ></ha-textfield>
+                    </div>
+                </div>
+            ` : ''}
+
+            ${action?.action === 'url' ? html`
+                <div class="option">
+                    <div class="option-label">URL</div>
+                    <div class="option-control">
+                        <ha-textfield
+                                .value=${action.url_path || ''}
+                                placeholder="https://example.com"
+                                @input=${(ev: any) => this._updateTapAction(path, 'url_path', ev.target.value)}
+                        ></ha-textfield>
+                    </div>
+                </div>
+            ` : ''}
+
+            ${action?.action === 'call-service' ? html`
+                <div class="option">
+                    <div class="option-label">Service</div>
+                    <div class="option-control">
+                        <ha-textfield
+                                .value=${action.service || ''}
+                                placeholder="light.turn_on"
+                                @input=${(ev: any) => this._updateTapAction(path, 'service', ev.target.value)}
+                        ></ha-textfield>
+                    </div>
+                </div>
+            ` : ''}
+        `;
+    }
+
+    private _updateTapAction(path: string[], key: string, value: any) {
+        if (!this._config) return;
+
+        const newConfig = JSON.parse(JSON.stringify(this._config));
+        let current: any = newConfig;
+
+        for (let i = 0; i < path.length; i++) {
+            if (i === path.length - 1) {
+                // Last element is the action object (tap_action, double_tap_action, etc)
+                if (!current[path[i]]) current[path[i]] = {};
+                current[path[i]][key] = value;
+            } else {
+                if (!current[path[i]]) current[path[i]] = {};
+                current = current[path[i]];
+            }
+        }
+
+        this._config = newConfig;
+        this._fireEvent();
     }
 
     private _getT() {
@@ -241,42 +452,103 @@ export class PVMonitorCardEditor extends LitElement {
     }
 
     private _renderEntityPicker(label: string, path: string[], value?: string, helper?: string) {
-        const entities = this.hass ? Object.keys(this.hass.states).sort() : [];
+        if (!this.hass) return html``;
+
+        const entities = Object.keys(this.hass.states).sort();
         const t = this._getT();
+        const pathKey = path.join('.');
+
+        const filteredEntities = this._autocompleteResults.get(pathKey) || [];
+        const showDropdown = this._showAutocomplete.get(pathKey) || false;
 
         return html`
-            <div class="option">
+            <div class="option" style="${showDropdown ? 'z-index: 1000; position: relative;' : ''}">
                 <div class="option-label">
                     ${label}
                     ${helper ? html`<div class="info-text">${helper}</div>` : ''}
                 </div>
                 <div class="option-control">
-                    <ha-combo-box
-                            .hass=${this.hass}
-                            .value=${value || ''}
-                            .items=${entities}
-                            .label=${t.editor.select_entity}
-                            item-value-path=""
-                            item-label-path=""
-                            allow-custom-value
-                            @value-changed=${(ev: any) => {
-                                if (!this._config) return;
-                                const newValue = ev.detail?.value || '';
-                                const newConfig = JSON.parse(JSON.stringify(this._config));
-                                let current: any = newConfig;
-                                for (let i = 0; i < path.length - 1; i++) {
-                                    if (!current[path[i]]) current[path[i]] = {};
-                                    current = current[path[i]];
-                                }
-                                if (newValue === '') {
-                                    delete current[path[path.length - 1]];
-                                } else {
-                                    current[path[path.length - 1]] = newValue;
-                                }
-                                this._config = newConfig;
-                                this._fireEvent();
-                            }}
-                    ></ha-combo-box>
+                    <div class="autocomplete-wrapper">
+                        <ha-textfield
+                                .value=${value || ''}
+                                .placeholder=${t.editor.select_entity}
+                                @input=${(ev: CustomEvent) => {
+                                    const target = ev.target as any;
+                                    const inputValue = target.value;
+
+                                    // Filter entities basierend auf Eingabe
+                                    const filtered = inputValue
+                                            ? entities.filter(e => e.toLowerCase().includes(inputValue.toLowerCase())).slice(0, 50)
+                                            : [];
+
+                                    this._autocompleteResults.set(pathKey, filtered);
+                                    this._showAutocomplete.set(pathKey, filtered.length > 0);
+                                    this.requestUpdate();
+
+                                    // Config Update
+                                    if (!this._config) return;
+                                    const newConfig = JSON.parse(JSON.stringify(this._config));
+                                    let current: any = newConfig;
+                                    for (let i = 0; i < path.length - 1; i++) {
+                                        if (!current[path[i]]) current[path[i]] = {};
+                                        current = current[path[i]];
+                                    }
+
+                                    if (inputValue === '') {
+                                        delete current[path[path.length - 1]];
+                                    } else {
+                                        current[path[path.length - 1]] = inputValue;
+                                    }
+
+                                    this._config = newConfig;
+                                    this._debouncedFireEvent();
+                                }}
+                                @focus=${() => {
+                                    // Zeige alle Entities beim Fokus wenn leer
+                                    const currentValue = value || '';
+                                    if (!currentValue) {
+                                        this._autocompleteResults.set(pathKey, entities.slice(0, 50));
+                                        this._showAutocomplete.set(pathKey, true);
+                                        this.requestUpdate();
+                                    }
+                                }}
+                                @blur=${() => {
+                                    // Verzögert schließen, damit Klick auf Item noch funktioniert
+                                    setTimeout(() => {
+                                        this._showAutocomplete.set(pathKey, false);
+                                        this.requestUpdate();
+                                    }, 200);
+                                }}
+                        ></ha-textfield>
+
+                        ${showDropdown ? html`
+                            <div class="autocomplete-dropdown" @mousedown=${(ev: Event) => ev.preventDefault()}>
+                                ${filteredEntities.map(entity => html`
+                                    <div
+                                            class="autocomplete-item"
+                                            @click=${() => {
+                                                if (!this._config) return;
+
+                                                const newConfig = JSON.parse(JSON.stringify(this._config));
+                                                let current: any = newConfig;
+                                                for (let i = 0; i < path.length - 1; i++) {
+                                                    if (!current[path[i]]) current[path[i]] = {};
+                                                    current = current[path[i]];
+                                                }
+                                                current[path[path.length - 1]] = entity;
+
+                                                this._config = newConfig;
+                                                this._showAutocomplete.set(pathKey, false);
+                                                this._fireEvent();
+                                                this.requestUpdate();
+                                            }}
+                                    >
+                                        ${entity}
+                                    </div>
+                                `)}
+                            </div>
+                        ` : ''}
+                    </div>
                 </div>
             </div>
         `;
@@ -424,10 +696,44 @@ export class PVMonitorCardEditor extends LitElement {
 
             <div class="section">
                 <div class="section-header">
-                    <ha-icon icon="mdi:palette"></ha-icon>
-                    ${t.editor.theme}
+                    <ha-icon icon="mdi:link-variant"></ha-icon>
+                    ${t.editor.central_entities}
                 </div>
-                ${this._renderThemeSelector()}
+                <div class="info-text" style="margin-bottom: 12px;">${t.editor.central_entities_helper}</div>
+
+                ${this._renderEntityPicker(t.editor.entity_pv_production, ['entities', 'pv_production'], this._config?.entities?.pv_production, t.editor.entity_pv_production_helper)}
+                ${this._renderEntityPicker(t.editor.entity_battery_soc, ['entities', 'battery_soc'], this._config?.entities?.battery_soc, t.editor.entity_battery_soc_helper)}
+                ${this._renderEntityPicker(t.editor.entity_battery_charge, ['entities', 'battery_charge'], this._config?.entities?.battery_charge, t.editor.entity_battery_charge_helper)}
+                ${this._renderEntityPicker(t.editor.entity_battery_discharge, ['entities', 'battery_discharge'], this._config?.entities?.battery_discharge, t.editor.entity_battery_discharge_helper)}
+                ${this._renderEntityPicker(t.editor.entity_house_consumption, ['entities', 'house_consumption'], this._config?.entities?.house_consumption, t.editor.entity_house_consumption_helper)}
+                ${this._renderEntityPicker(t.editor.entity_grid_power, ['entities', 'grid_power'], this._config?.entities?.grid_power, t.editor.entity_grid_power_helper)}
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="section">
+                <div class="section-header">
+                    <ha-icon icon="mdi:cog"></ha-icon>
+                    ${t.editor.central_config}
+                </div>
+                <div class="info-text" style="margin-bottom: 12px;">${t.editor.central_config_helper}</div>
+
+                ${this._renderNumberfield(t.editor.pv_max_power_label, ['pv_max_power'], this._config?.pv_max_power, 0, 100000, 100, t.editor.pv_max_power_helper)}
+                ${this._renderNumberfield(t.editor.battery_capacity_label, ['battery_capacity'], this._config?.battery_capacity, 0, 100000, 100, t.editor.battery_capacity_label_helper)}
+                ${this._renderNumberfield(t.editor.grid_threshold_label, ['grid_threshold'], this._config?.grid_threshold, 0, 1000, 10, t.editor.grid_threshold_helper)}
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="section">
+                <div class="section-header">
+                    <ha-icon icon="mdi:eye"></ha-icon>
+                    ${t.editor.card_visibility}
+                </div>
+                ${this._renderSwitch(t.editor.show_pv_card, ['pv', 'show'], this._config?.pv?.show !== false)}
+                ${this._renderSwitch(t.editor.show_battery_card, ['batterie', 'show'], this._config?.batterie?.show !== false)}
+                ${this._renderSwitch(t.editor.show_house_card, ['haus', 'show'], this._config?.haus?.show !== false)}
+                ${this._renderSwitch(t.editor.show_grid_card, ['netz', 'show'], this._config?.netz?.show !== false)}
             </div>
 
             <div class="divider"></div>
@@ -440,16 +746,6 @@ export class PVMonitorCardEditor extends LitElement {
                 ${this._renderTextfield(t.editor.title, ['title'], this._config?.title, t.editor.title_placeholder, t.editor.title_helper)}
                 ${this._renderTextfield(t.editor.subtitle, ['subtitle'], this._config?.subtitle, t.editor.subtitle_placeholder, t.editor.subtitle_helper)}
                 ${this._renderIconPicker(t.editor.icon, ['icon'], this._config?.icon, t.editor.icon_helper)}
-            </div>
-
-            <div class="divider"></div>
-
-            <div class="section">
-                <div class="section-header">
-                    <ha-icon icon="mdi:grid"></ha-icon>
-                    ${t.editor.layout}
-                </div>
-                ${this._renderTextfield(t.editor.grid_gap, ['grid_gap'], this._config?.grid_gap, t.editor.grid_gap_placeholder, t.editor.grid_gap_helper)}
             </div>
         `;
     }
@@ -464,9 +760,77 @@ export class PVMonitorCardEditor extends LitElement {
                     ${t.editor.infobar_settings}
                 </div>
                 ${this._renderSwitch(t.editor.enable_infobar, ['info_bar', 'show'], this._config?.info_bar?.show)}
+
+                ${this._config?.info_bar?.show ? html`
+                    <div class="option">
+                        <div class="option-label">${t.editor.infobar_position}</div>
+                        <div class="option-control">
+                            <ha-combo-box
+                                    .value=${this._config?.info_bar?.position || 'top'}
+                                    .items=${[
+                                        { value: 'top', label: t.editor.position_top },
+                                        { value: 'bottom', label: t.editor.position_bottom }
+                                    ]}
+                                    item-value-path="value"
+                                    item-label-path="label"
+                                    @value-changed=${(ev: any) => {
+                                        if (!this._config) return;
+                                        const newValue = ev.detail?.value;
+                                        if (!newValue) return;
+                                        const newConfig = { ...this._config };
+                                        if (!newConfig.info_bar) newConfig.info_bar = {};
+                                        newConfig.info_bar.position = newValue;
+                                        this._config = newConfig;
+                                        this._fireEvent();
+                                    }}
+                            ></ha-combo-box>
+                        </div>
+                    </div>
+                ` : ''}
             </div>
 
             ${this._config?.info_bar?.show ? html`
+                <div class="divider"></div>
+
+                ${this._renderTapActions('info_bar')}
+
+                <div class="divider"></div>
+
+                <div class="section">
+                    <div class="section-header">
+                        <ha-icon icon="mdi:calculator"></ha-icon>
+                        ${t.editor.calculation_mode}
+                    </div>
+                    <div class="info-text" style="margin-bottom: 12px;">${t.editor.calculation_mode_helper}</div>
+
+                    <div class="option">
+                        <div class="option-label">${t.editor.calculation_mode}</div>
+                        <div class="option-control">
+                            <ha-combo-box
+                                    .value=${this._config?.info_bar?.calculation_mode || 'autarky'}
+                                    .items=${[
+                                        { value: 'autarky', label: t.editor.mode_autarky },
+                                        { value: 'self_consumption', label: t.editor.mode_self_consumption }
+                                    ]}
+                                    item-value-path="value"
+                                    item-label-path="label"
+                                    @value-changed=${(ev: any) => {
+                                        if (!this._config) return;
+                                        const newValue = ev.detail?.value;
+                                        if (!newValue) return;
+                                        const newConfig = { ...this._config };
+                                        if (!newConfig.info_bar) newConfig.info_bar = {};
+                                        newConfig.info_bar.calculation_mode = newValue;
+                                        this._config = newConfig;
+                                        this._fireEvent();
+                                    }}
+                            ></ha-combo-box>
+                        </div>
+                    </div>
+
+                    ${this._renderSwitch(t.editor.calculate_battery_times, ['info_bar', 'calculate_battery_times'], this._config?.info_bar?.calculate_battery_times, t.editor.calculate_battery_times_helper)}
+                </div>
+
                 <div class="divider"></div>
 
                 <div class="section">
@@ -518,11 +882,9 @@ export class PVMonitorCardEditor extends LitElement {
                     <ha-icon icon="mdi:solar-panel"></ha-icon>
                     ${t.editor.pv_system}
                 </div>
-                ${this._renderEntityPicker(t.editor.pv_entity, ['pv', 'entity'], this._config?.pv?.entity, t.editor.pv_entity_helper)}
                 ${this._renderIconPicker(t.editor.icon_label, ['pv', 'icon'], this._config?.pv?.icon)}
                 ${this._renderSwitch(t.editor.enable_animation, ['pv', 'animation'], this._config?.pv?.animation)}
                 ${this._renderSwitch(t.editor.icon_rotation, ['pv', 'icon_rotation'], this._config?.pv?.icon_rotation, t.editor.icon_rotation_helper)}
-                ${this._renderNumberfield(t.editor.max_power, ['pv', 'max_power'], this._config?.pv?.max_power, 0, 100000, 100, t.editor.max_power_helper)}
             </div>
 
             <div class="divider"></div>
@@ -537,6 +899,10 @@ export class PVMonitorCardEditor extends LitElement {
                 ${this._renderEntityPicker(t.editor.tertiary_entity, ['pv', 'tertiary_entity'], this._config?.pv?.tertiary_entity)}
                 ${this._renderTextfield(t.editor.tertiary_text, ['pv', 'tertiary_text'], this._config?.pv?.tertiary_text)}
             </div>
+
+            <div class="divider"></div>
+
+            ${this._renderTapActions('pv')}
 
             <div class="divider"></div>
 
@@ -563,11 +929,6 @@ export class PVMonitorCardEditor extends LitElement {
                     <ha-icon icon="mdi:battery"></ha-icon>
                     ${t.editor.battery}
                 </div>
-                ${this._renderEntityPicker(t.editor.battery_entity, ['batterie', 'entity'], this._config?.batterie?.entity, t.editor.battery_entity_helper)}
-                ${this._renderEntityPicker(t.editor.charge_entity, ['batterie', 'ladung_entity'], this._config?.batterie?.ladung_entity, t.editor.charge_entity_helper)}
-                ${this._renderEntityPicker(t.editor.discharge_entity, ['batterie', 'entladung_entity'], this._config?.batterie?.entladung_entity, t.editor.discharge_entity_helper)}
-                ${this._renderNumberfield(t.editor.battery_capacity, ['batterie', 'battery_capacity'], this._config?.batterie?.battery_capacity, 0, 100000, 100, t.editor.battery_capacity_helper)}
-                ${this._renderSwitch(t.editor.calculate_runtime, ['batterie', 'calculate_runtime'], this._config?.batterie?.calculate_runtime, t.editor.calculate_runtime_helper)}
                 ${this._renderIconPicker(t.editor.icon_label, ['batterie', 'icon'], this._config?.batterie?.icon, t.editor.icon_auto_helper)}
                 ${this._renderSwitch(t.editor.enable_animation, ['batterie', 'animation'], this._config?.batterie?.animation)}
             </div>
@@ -584,6 +945,10 @@ export class PVMonitorCardEditor extends LitElement {
                 ${this._renderEntityPicker(t.editor.tertiary_entity, ['batterie', 'tertiary_entity'], this._config?.batterie?.tertiary_entity)}
                 ${this._renderTextfield(t.editor.tertiary_text, ['batterie', 'tertiary_text'], this._config?.batterie?.tertiary_text)}
             </div>
+
+            <div class="divider"></div>
+
+            ${this._renderTapActions('batterie')}
 
             <div class="divider"></div>
 
@@ -610,7 +975,6 @@ export class PVMonitorCardEditor extends LitElement {
                     <ha-icon icon="mdi:home"></ha-icon>
                     ${t.editor.house_consumption}
                 </div>
-                ${this._renderEntityPicker(t.editor.house_entity, ['haus', 'entity'], this._config?.haus?.entity, t.editor.house_entity_helper)}
                 ${this._renderIconPicker(t.editor.icon_label, ['haus', 'icon'], this._config?.haus?.icon)}
                 ${this._renderSwitch(t.editor.enable_animation, ['haus', 'animation'], this._config?.haus?.animation)}
             </div>
@@ -627,6 +991,10 @@ export class PVMonitorCardEditor extends LitElement {
                 ${this._renderEntityPicker(t.editor.tertiary_entity, ['haus', 'tertiary_entity'], this._config?.haus?.tertiary_entity)}
                 ${this._renderTextfield(t.editor.tertiary_text, ['haus', 'tertiary_text'], this._config?.haus?.tertiary_text)}
             </div>
+
+            <div class="divider"></div>
+
+            ${this._renderTapActions('haus')}
 
             <div class="divider"></div>
 
@@ -653,10 +1021,8 @@ export class PVMonitorCardEditor extends LitElement {
                     <ha-icon icon="mdi:transmission-tower"></ha-icon>
                     ${t.editor.grid}
                 </div>
-                ${this._renderEntityPicker(t.editor.grid_entity, ['netz', 'entity'], this._config?.netz?.entity, t.editor.grid_entity_helper)}
                 ${this._renderIconPicker(t.editor.icon_label, ['netz', 'icon'], this._config?.netz?.icon)}
                 ${this._renderSwitch(t.editor.enable_animation, ['netz', 'animation'], this._config?.netz?.animation)}
-                ${this._renderNumberfield(t.editor.threshold, ['netz', 'threshold'], this._config?.netz?.threshold, 0, 1000, 10, t.editor.threshold_helper)}
             </div>
 
             <div class="divider"></div>
@@ -686,6 +1052,10 @@ export class PVMonitorCardEditor extends LitElement {
 
             <div class="divider"></div>
 
+            ${this._renderTapActions('netz')}
+
+            <div class="divider"></div>
+
             <div class="section">
                 <div class="section-header">
                     <ha-icon icon="mdi:palette"></ha-icon>
@@ -704,6 +1074,28 @@ export class PVMonitorCardEditor extends LitElement {
         const t = this._getT();
 
         return html`
+            <div class="section">
+                <div class="section-header">
+                    <ha-icon icon="mdi:palette"></ha-icon>
+                    ${t.editor.theme}
+                </div>
+                ${this._renderThemeSelector()}
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="section">
+                <div class="section-header">
+                    <ha-icon icon="mdi:grid"></ha-icon>
+                    ${t.editor.layout}
+                </div>
+                ${this._renderTextfield(t.editor.grid_gap, ['grid_gap'], this._config?.grid_gap, t.editor.grid_gap_placeholder, t.editor.grid_gap_helper)}
+                ${this._renderTextfield(t.editor.header_margin_bottom, ['style', 'header_margin_bottom'], this._config?.style?.header_margin_bottom, '12px', t.editor.header_margin_bottom_helper)}
+                ${this._renderTextfield(t.editor.infobar_gap, ['style', 'infobar_gap'], this._config?.style?.infobar_gap, '6px', t.editor.infobar_gap_helper)}
+            </div>
+
+            <div class="divider"></div>
+
             <div class="section">
                 <div class="section-header">
                     <ha-icon icon="mdi:card"></ha-icon>

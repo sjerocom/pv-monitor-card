@@ -342,3 +342,70 @@ function formatTime(totalSeconds: number): string {
 
     return parts.join(' ');
 }
+
+/**
+ * Berechnet die Autarkie (Selbstversorgungsgrad)
+ * Autarkie = (PV-Produktion + Batterie-Entladung - Netzeinspeisung) / Hausverbrauch * 100
+ *
+ * @param pvProductionW PV-Produktion in W
+ * @param batteryDischargeW Batterie-Entladung in W
+ * @param gridFeedInW Netzeinspeisung in W (positiv bei Einspeisung)
+ * @param houseConsumptionW Hausverbrauch in W
+ * @returns Autarkie in Prozent (0-100) oder "—" wenn nicht berechenbar
+ */
+export function calculateAutarky(
+    pvProductionW: number,
+    batteryDischargeW: number,
+    gridFeedInW: number,
+    houseConsumptionW: number
+): string {
+    // Hausverbrauch muss positiv sein
+    if (houseConsumptionW <= 0) return '—';
+
+    // Eigenproduktion = PV + Batterie-Entladung
+    const selfProduction = pvProductionW + batteryDischargeW;
+
+    // Netzbezug berechnen (negativ bei Bezug, positiv bei Einspeisung)
+    const gridConsumption = gridFeedInW < 0 ? Math.abs(gridFeedInW) : 0;
+
+    // Eigenverbrauch = Hausverbrauch - Netzbezug
+    const selfConsumption = houseConsumptionW - gridConsumption;
+
+    // Autarkie = Eigenverbrauch / Hausverbrauch * 100
+    const autarky = (selfConsumption / houseConsumptionW) * 100;
+
+    // Auf 0-100 begrenzen
+    const clampedAutarky = Math.max(0, Math.min(100, autarky));
+
+    return `${Math.round(clampedAutarky)}%`;
+}
+
+/**
+ * Berechnet den Eigenverbrauch (Anteil der selbst genutzten PV-Produktion)
+ * Eigenverbrauch = (PV-Produktion - Netzeinspeisung) / PV-Produktion * 100
+ *
+ * @param pvProductionW PV-Produktion in W
+ * @param gridFeedInW Netzeinspeisung in W (positiv bei Einspeisung)
+ * @returns Eigenverbrauch in Prozent (0-100) oder "—" wenn nicht berechenbar
+ */
+export function calculateSelfConsumption(
+    pvProductionW: number,
+    gridFeedInW: number
+): string {
+    // PV-Produktion muss positiv sein
+    if (pvProductionW <= 10) return '—';
+
+    // Einspeisung (positiv wenn ins Netz eingespeist wird)
+    const feedIn = gridFeedInW > 0 ? gridFeedInW : 0;
+
+    // Selbst verbrauchte PV-Energie = PV - Einspeisung
+    const selfUsed = pvProductionW - feedIn;
+
+    // Eigenverbrauch = Selbst verbrauchte Energie / PV-Produktion * 100
+    const selfConsumption = (selfUsed / pvProductionW) * 100;
+
+    // Auf 0-100 begrenzen
+    const clampedSelfConsumption = Math.max(0, Math.min(100, selfConsumption));
+
+    return `${Math.round(clampedSelfConsumption)}%`;
+}

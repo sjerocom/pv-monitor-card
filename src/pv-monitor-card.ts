@@ -15,8 +15,10 @@ import {
     getHausColor,
     getAnimationStyle,
     calculateBatteryRuntime,
-    calculateBatteryChargeTime
-} from "./pv-monitor-utils";
+    calculateBatteryChargeTime,
+    calculateAutarky,
+    calculateSelfConsumption
+} from "./pv-monitor-card-utils";
 
 const CARD_TAG = "pv-monitor-card";
 
@@ -79,6 +81,8 @@ export class PVMonitorCard extends LitElement {
         if (tapAction.action === 'navigate' && tapAction.navigation_path) {
             history.pushState(null, '', tapAction.navigation_path);
             window.dispatchEvent(new CustomEvent('location-changed'));
+        } else if (tapAction.action === 'url' && tapAction.url_path) {
+            window.open(tapAction.url_path, '_blank');
         } else if (tapAction.action === 'call-service' && tapAction.service && this.hass) {
             const [domain, service] = tapAction.service.split('.');
 
@@ -176,32 +180,55 @@ export class PVMonitorCard extends LitElement {
         let value = '';
         let unit = '';
 
-        // Spezielle Behandlung für berechnete Werte
-        if (itemType === 'runtime' && this.config.batterie?.calculate_runtime && this.config.batterie?.entity) {
-            const batteryCapacity = this.config.batterie.battery_capacity || 10000;
-            const socPercent = parseFloat(this.hass.states[this.config.batterie.entity]?.state) || 0;
-            const charge = this.config.batterie.ladung_entity
-                ? parseFloat(this.hass.states[this.config.batterie.ladung_entity]?.state) || 0
-                : 0;
-            const discharge = this.config.batterie.entladung_entity
-                ? parseFloat(this.hass.states[this.config.batterie.entladung_entity]?.state) || 0
-                : 0;
+        // Get central entity values with fallback
+        const getCentralEntityValue = (entityKey: string): number => {
+            const entityId = this.config.entities?.[entityKey as keyof typeof this.config.entities];
+            if (!entityId) return 0;
+            return parseFloat(this.hass!.states[entityId]?.state) || 0;
+        };
+
+        // Item 1: Autarky or Self-Consumption based on calculation_mode
+        if (itemType === 'calculation') {
+            const mode = this.config.info_bar?.calculation_mode || 'autarky';
+
+            if (mode === 'autarky') {
+                const pvProd = getCentralEntityValue('pv_production');
+                const batteryDischarge = getCentralEntityValue('battery_discharge');
+                const gridPower = getCentralEntityValue('grid_power');
+                const houseConsumption = getCentralEntityValue('house_consumption');
+
+                value = calculateAutarky(pvProd, batteryDischarge, gridPower, houseConsumption);
+                unit = '';
+            } else {
+                const pvProd = getCentralEntityValue('pv_production');
+                const gridPower = getCentralEntityValue('grid_power');
+
+                value = calculateSelfConsumption(pvProd, gridPower);
+                unit = '';
+            }
+        }
+        // Item 2: Battery Runtime (if calculate_battery_times enabled)
+        else if (itemType === 'runtime' && this.config.info_bar?.calculate_battery_times) {
+            const batteryCapacity = this.config.battery_capacity || 10000;
+            const socPercent = getCentralEntityValue('battery_soc');
+            const charge = getCentralEntityValue('battery_charge');
+            const discharge = getCentralEntityValue('battery_discharge');
 
             value = calculateBatteryRuntime(batteryCapacity, socPercent, charge, discharge);
             unit = '';
-        } else if (itemType === 'chargetime' && this.config.batterie?.calculate_runtime && this.config.batterie?.entity) {
-            const batteryCapacity = this.config.batterie.battery_capacity || 10000;
-            const socPercent = parseFloat(this.hass.states[this.config.batterie.entity]?.state) || 0;
-            const charge = this.config.batterie.ladung_entity
-                ? parseFloat(this.hass.states[this.config.batterie.ladung_entity]?.state) || 0
-                : 0;
-            const discharge = this.config.batterie.entladung_entity
-                ? parseFloat(this.hass.states[this.config.batterie.entladung_entity]?.state) || 0
-                : 0;
+        }
+        // Item 3: Battery Charge Time (if calculate_battery_times enabled)
+        else if (itemType === 'chargetime' && this.config.info_bar?.calculate_battery_times) {
+            const batteryCapacity = this.config.battery_capacity || 10000;
+            const socPercent = getCentralEntityValue('battery_soc');
+            const charge = getCentralEntityValue('battery_charge');
+            const discharge = getCentralEntityValue('battery_discharge');
 
             value = calculateBatteryChargeTime(batteryCapacity, socPercent, charge, discharge);
             unit = '';
-        } else if (item.entity) {
+        }
+        // Manual entity override
+        else if (item.entity) {
             const entity = this.hass.states[item.entity];
             if (!entity) return html``;
             value = entity.state;
@@ -231,9 +258,13 @@ export class PVMonitorCard extends LitElement {
         const ib = this.config.info_bar;
         const s = ib.style!;
 
-        const hasAnyEntity = ib.item1?.entity || ib.item2?.entity || ib.item3?.entity ||
-            (this.config.batterie?.calculate_runtime && (ib.item2 || ib.item3));
-        if (!hasAnyEntity) return html``;
+        const hasAnyContent = ib.calculation_mode || ib.calculate_battery_times ||
+            ib.item1?.entity || ib.item2?.entity || ib.item3?.entity;
+        if (!hasAnyContent) return html``;
+
+        // Check if any tap actions are defined
+        const hasActions = ib.tap_action || ib.double_tap_action || ib.hold_action;
+        const cursor = hasActions ? 'pointer' : 'default';
 
         const infoBarStyle = `
             background: ${s.background_color};
@@ -241,12 +272,23 @@ export class PVMonitorCard extends LitElement {
             border-radius: ${s.border_radius};
             padding: ${s.padding};
             gap: ${s.gap};
+            cursor: ${cursor};
             ${s.background_color !== 'transparent' ? `box-shadow: ${this.config.style!.card_boxshadow};` : ''}
         `;
 
         return html`
-            <div class="info-bar" style="${infoBarStyle}">
-                ${this._renderInfoBarItem(ib.item1, s, 'item1')}
+            <div class="info-bar"
+                 style="${infoBarStyle}"
+                 @click=${() => hasActions && this._handleTap(ib.tap_action)}
+                 @dblclick=${() => hasActions && this._handleTap(ib.double_tap_action)}
+                 @contextmenu=${(ev: Event) => {
+                     if (hasActions && ib.hold_action) {
+                         ev.preventDefault();
+                         this._handleTap(ib.hold_action);
+                     }
+                 }}
+            >
+                ${this._renderInfoBarItem(ib.item1, s, 'calculation')}
                 ${this._renderInfoBarItem(ib.item2, s, 'runtime')}
                 ${this._renderInfoBarItem(ib.item3, s, 'chargetime')}
             </div>
@@ -254,22 +296,25 @@ export class PVMonitorCard extends LitElement {
     }
 
     private _renderNetz() {
-        if (!this.config.netz?.entity || !this.hass) return html``;
-        const entity = this.hass.states[this.config.netz.entity];
+        // Use card-specific entity or fall back to central entity
+        const entityId = this.config.netz?.entity || this.config.entities?.grid_power;
+        if (!entityId || !this.hass) return html``;
+
+        const entity = this.hass.states[entityId];
         const t = getTranslations(this.config.language);
 
-        if (!entity) return html`<div class="card">⚠️ ${this.config.netz.entity} ${t.general.missing_entity}</div>`;
+        if (!entity) return html`<div class="card">⚠️ ${entityId} ${t.general.missing_entity}</div>`;
 
         const value = parseFloat(entity.state) || 0;
-        const threshold = this.config.netz.threshold || 10;
+        const threshold = this.config.netz?.threshold || this.config.grid_threshold || 10;
 
         let statusText = '';
         if (value < -threshold) {
-            statusText = this.config.netz.text_einspeisen || t.status.feed_in;
+            statusText = this.config.netz?.text_einspeisen || t.status.feed_in;
         } else if (value > threshold) {
-            statusText = this.config.netz.text_bezug || t.status.grid_consumption;
+            statusText = this.config.netz?.text_bezug || t.status.grid_consumption;
         } else {
-            statusText = this.config.netz.text_neutral || t.status.neutral;
+            statusText = this.config.netz?.text_neutral || t.status.neutral;
         }
 
         const secondaryText = this._getTextFromEntityOrConfig(this.config.netz.secondary_entity, this.config.netz.secondary_text) || statusText;
@@ -286,14 +331,17 @@ export class PVMonitorCard extends LitElement {
     }
 
     private _renderPV() {
-        if (!this.config.pv?.entity || !this.hass) return html``;
-        const entity = this.hass.states[this.config.pv.entity];
+        // Use card-specific entity or fall back to central entity
+        const entityId = this.config.pv?.entity || this.config.entities?.pv_production;
+        if (!entityId || !this.hass) return html``;
+
+        const entity = this.hass.states[entityId];
         const t = getTranslations(this.config.language);
 
-        if (!entity) return html`<div class="card">⚠️ ${this.config.pv.entity} ${t.general.missing_entity}</div>`;
+        if (!entity) return html`<div class="card">⚠️ ${entityId} ${t.general.missing_entity}</div>`;
 
         const value = parseFloat(entity.state) || 0;
-        const maxPower = this.config.pv.max_power || 10000;
+        const maxPower = this.config.pv?.max_power || this.config.pv_max_power || 10000;
 
         const shouldRotate = this.config.pv.icon_rotation === true;
         let rotation = 0;
@@ -317,24 +365,31 @@ export class PVMonitorCard extends LitElement {
     }
 
     private _renderBatterie() {
-        if (!this.config.batterie?.entity || !this.hass) return html``;
-        const entity = this.hass.states[this.config.batterie.entity];
+        // Use card-specific entity or fall back to central entity
+        const entityId = this.config.batterie?.entity || this.config.entities?.battery_soc;
+        if (!entityId || !this.hass) return html``;
+
+        const entity = this.hass.states[entityId];
         const t = getTranslations(this.config.language);
 
-        if (!entity) return html`<div class="card">⚠️ ${this.config.batterie.entity} ${t.general.missing_entity}</div>`;
+        if (!entity) return html`<div class="card">⚠️ ${entityId} ${t.general.missing_entity}</div>`;
 
         const percentage = parseFloat(entity.state) || 0;
         const icon = this.config.batterie.icon || getBatteryIcon(percentage);
         const iconColor = getBatteryIconColor(percentage);
 
-        const charge = this.config.batterie.ladung_entity
-            ? parseFloat(this.hass.states[this.config.batterie.ladung_entity]?.state) || 0
+        // Use card-specific or central entities for charge/discharge
+        const chargeEntityId = this.config.batterie.ladung_entity || this.config.entities?.battery_charge;
+        const dischargeEntityId = this.config.batterie.entladung_entity || this.config.entities?.battery_discharge;
+
+        const charge = chargeEntityId && this.hass.states[chargeEntityId]
+            ? parseFloat(this.hass.states[chargeEntityId]?.state) || 0
             : 0;
-        const discharge = this.config.batterie.entladung_entity
-            ? parseFloat(this.hass.states[this.config.batterie.entladung_entity]?.state) || 0
+        const discharge = dischargeEntityId && this.hass.states[dischargeEntityId]
+            ? parseFloat(this.hass.states[dischargeEntityId]?.state) || 0
             : 0;
 
-        const batteryCapacity = this.config.batterie.battery_capacity || 10000;
+        const batteryCapacity = this.config.batterie.battery_capacity || this.config.battery_capacity || 10000;
 
         let statusText = '';
         if (charge > 1) {
@@ -360,11 +415,14 @@ export class PVMonitorCard extends LitElement {
     }
 
     private _renderHaus() {
-        if (!this.config.haus?.entity || !this.hass) return html``;
-        const entity = this.hass.states[this.config.haus.entity];
+        // Use card-specific entity or fall back to central entity
+        const entityId = this.config.haus?.entity || this.config.entities?.house_consumption;
+        if (!entityId || !this.hass) return html``;
+
+        const entity = this.hass.states[entityId];
         const t = getTranslations(this.config.language);
 
-        if (!entity) return html`<div class="card">⚠️ ${this.config.haus.entity} ${t.general.missing_entity}</div>`;
+        if (!entity) return html`<div class="card">⚠️ ${entityId} ${t.general.missing_entity}</div>`;
 
         const value = parseFloat(entity.state) || 0;
 
@@ -383,6 +441,8 @@ export class PVMonitorCard extends LitElement {
         const showTitle = this.config.show_title && this.config.title;
         const showSubtitle = this.config.show_subtitle && this.config.subtitle;
         const showIcon = this.config.show_icon && this.config.icon;
+
+        const infoBarPosition = this.config.info_bar?.position || 'top';
 
         const titleStyle = `
             text-align: ${s.title_align};
@@ -405,29 +465,39 @@ export class PVMonitorCard extends LitElement {
             color: ${s.title_color};
         `;
 
+        const headerStyle = `
+            margin-bottom: ${s.header_margin_bottom || '12px'};
+        `;
+
         return html`
             ${showTitle || showSubtitle ? html`
-                <div class="card-header">
-                    ${showIcon && showTitle ? html`
+                <div class="card-header" style="${headerStyle}">
+                    ${showIcon ? html`
                         <div class="card-header-with-icon">
                             <ha-icon .icon=${this.config.icon} style="${headerIconStyle}"></ha-icon>
-                            <h2 style="${titleStyle}">${this.config.title}</h2>
+                            <div class="card-header-text">
+                                ${showTitle ? html`<h2 style="${titleStyle}">${this.config.title}</h2>` : ''}
+                                ${showSubtitle ? html`<p style="${subtitleStyle}">${this.config.subtitle}</p>` : ''}
+                            </div>
                         </div>
-                    ` : showTitle ? html`
-                        <h2 style="${titleStyle}">${this.config.title}</h2>
-                    ` : ''}
-                    ${showSubtitle ? html`
-                        <p style="${subtitleStyle}">${this.config.subtitle}</p>
-                    ` : ''}
+                    ` : html`
+                        ${showTitle ? html`<h2 style="${titleStyle}">${this.config.title}</h2>` : ''}
+                        ${showSubtitle ? html`<p style="${subtitleStyle}">${this.config.subtitle}</p>` : ''}
+                    `}
                 </div>
             ` : ''}
-            ${this._renderInfoBar()}
-            <div class="grid" style="gap: ${this.config.grid_gap};">
-                ${this._renderPV()}
-                ${this._renderBatterie()}
-                ${this._renderHaus()}
-                ${this._renderNetz()}
+            ${infoBarPosition === 'top' ? this._renderInfoBar() : ''}
+            <div class="grid" style="gap: ${this.config.grid_gap}; ${infoBarPosition === 'top' && this.config.info_bar?.show ? `margin-top: ${s.infobar_gap || '6px'};` : ''}">
+                ${this.config.pv?.show !== false ? this._renderPV() : ''}
+                ${this.config.batterie?.show !== false ? this._renderBatterie() : ''}
+                ${this.config.haus?.show !== false ? this._renderHaus() : ''}
+                ${this.config.netz?.show !== false ? this._renderNetz() : ''}
             </div>
+            ${infoBarPosition === 'bottom' ? html`
+                <div style="margin-top: ${s.infobar_gap || '6px'};">
+                    ${this._renderInfoBar()}
+                </div>
+            ` : ''}
         `;
     }
 }

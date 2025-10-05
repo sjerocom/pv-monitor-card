@@ -1,7 +1,7 @@
 // Theme System for PV Monitor Card
 // Supports predefined themes and custom theme files
 
-export type ThemeId = 'dark' | 'light' | 'blue' | 'green' | 'monochrome' | string;
+export type ThemeId = 'dark' | 'light' | 'blue' | 'green' | 'monochrome' | 'solarized' | 'nord' | 'dracula' | 'catppuccin' | 'material' | 'minimalist' | 'slate' | string;
 
 export interface Theme {
     id: ThemeId;
@@ -123,6 +123,139 @@ export const defaultThemes: Record<string, Theme> = {
             infobar_icon_color: 'rgba(200, 200, 200, 1)',
             infobar_label_color: 'rgba(160, 160, 160, 1)',
             infobar_value_color: 'rgba(220, 220, 220, 1)',
+        }
+    },
+
+    solarized: {
+        id: 'solarized',
+        name: 'Solarized Dark',
+        colors: {
+            card_background_color: 'rgba(0, 43, 54, 1)',           // base03
+            card_border_color: 'rgba(88, 110, 117, 0.3)',          // base01
+            card_text_color: 'rgba(131, 148, 150, 1)',             // base0
+            primary_color: 'rgba(147, 161, 161, 1)',               // base1
+            secondary_color: 'rgba(131, 148, 150, 0.8)',           // base0
+            title_color: 'rgba(38, 139, 210, 1)',                  // blue
+            subtitle_color: 'rgba(101, 123, 131, 1)',              // base00
+            infobar_background_color: 'rgba(7, 54, 66, 1)',        // base02
+            infobar_border_color: 'rgba(88, 110, 117, 0.3)',       // base01
+            infobar_icon_color: 'rgba(42, 161, 152, 1)',           // cyan
+            infobar_label_color: 'rgba(101, 123, 131, 1)',         // base00
+            infobar_value_color: 'rgba(147, 161, 161, 1)',         // base1
+        }
+    },
+
+    nord: {
+        id: 'nord',
+        name: 'Nord',
+        colors: {
+            card_background_color: 'rgba(46, 52, 64, 1)',          // nord0
+            card_border_color: 'rgba(136, 192, 208, 0.3)',         // nord8
+            card_text_color: 'rgba(236, 239, 244, 1)',             // nord6
+            primary_color: 'rgba(216, 222, 233, 1)',               // nord5
+            secondary_color: 'rgba(229, 233, 240, 0.8)',           // nord4
+            title_color: 'rgba(136, 192, 208, 1)',                 // nord8
+            subtitle_color: 'rgba(216, 222, 233, 0.7)',            // nord5
+            infobar_background_color: 'rgba(59, 66, 82, 1)',       // nord1
+            infobar_border_color: 'rgba(136, 192, 208, 0.3)',      // nord8
+            infobar_icon_color: 'rgba(143, 188, 187, 1)',          // nord7
+            infobar_label_color: 'rgba(216, 222, 233, 0.7)',       // nord5
+            infobar_value_color: 'rgba(236, 239, 244, 1)',         // nord6
+        }
+    },
+
+    dracula: {
+        id: 'dracula',
+        name: 'Dracula',
+        colors: {
+            card_background_color: 'rgba(40, 42, 54, 1)',          // background
+            card_border_color: 'rgba(189, 147, 249, 0.3)',         // purple
+            card_text_color: 'rgba(248, 248, 242, 1)',             // foreground
+            primary_color: 'rgba(139, 233, 253, 1)',               // cyan
+            secondary_color: 'rgba(248, 248, 242, 0.8)',           // foreground
+            title_color: 'rgba(189, 147, 249, 1)',                 // purple
+            subtitle_color: 'rgba(248, 248, 242, 0.7)',            // foreground
+            infobar_background_color: 'rgba(68, 71, 90, 1)',       // current line
+            infobar_border_color: 'rgba(189, 147, 249, 0.3)',      // purple
+            infobar_icon_color: 'rgba(255, 121, 198, 1)',          // pink
+            infobar_label_color: 'rgba(248, 248, 242, 0.7)',       // foreground
+            infobar_value_color: 'rgba(248, 248, 242, 1)',         // foreground
+        }
+    },
+
+    catppuccin: {
+        id: 'catppuccin',
+        name: 'Catppuccin Mocha',
+        colors: {
+            card_background_color: 'rgba(30, 30, 46, 1)',          // base
+            card_border_color: 'rgba(137, 180, 250, 0.3)',         // blue
+            card_text_color: 'rgba(205, 214, 244, 1)',             // text
+            primary_color: 'rgba(137, 180, 250, 1)',               // blue
+            secondary_color: 'rgba(205, 214, 244, 0.8)',           // text
+            title_color: 'rgba(203, 166, 247, 1)',                 // mauve
+            subtitle_color: 'rgba(186, 194, 222, 1)',              // subtext0
+            infobar_background_color: 'rgba(49, 50, 68, 1)',       // surface0
+            infobar_border_color: 'rgba(137, 180, 250, 0.3)',      // blue
+            infobar_icon_color: 'rgba(148, 226, 213, 1)',          // teal
+            infobar_label_color: 'rgba(186, 194, 222, 1)',         // subtext0
+            infobar_value_color: 'rgba(205, 214, 244, 1)',         // text
+        }
+    },
+
+    material: {
+        id: 'material',
+        name: 'Material Design',
+        colors: {
+            card_background_color: 'rgba(18, 18, 18, 1)',          // Material dark background
+            card_border_color: 'rgba(3, 218, 198, 0.3)',           // teal accent
+            card_text_color: 'rgba(255, 255, 255, 0.87)',          // high emphasis text
+            primary_color: 'rgba(3, 218, 198, 1)',                 // teal accent
+            secondary_color: 'rgba(255, 255, 255, 0.6)',           // medium emphasis
+            title_color: 'rgba(3, 218, 198, 1)',                   // teal accent
+            subtitle_color: 'rgba(255, 255, 255, 0.6)',            // medium emphasis
+            infobar_background_color: 'rgba(33, 33, 33, 1)',       // elevated surface
+            infobar_border_color: 'rgba(3, 218, 198, 0.3)',        // teal accent
+            infobar_icon_color: 'rgba(3, 218, 198, 1)',            // teal accent
+            infobar_label_color: 'rgba(255, 255, 255, 0.6)',       // medium emphasis
+            infobar_value_color: 'rgba(255, 255, 255, 0.87)',      // high emphasis
+        }
+    },
+
+    minimalist: {
+        id: 'minimalist',
+        name: 'Minimalist',
+        colors: {
+            card_background_color: 'rgba(242, 242, 242, 1)',       // light gray background
+            card_border_color: 'rgba(0, 0, 0, 0.1)',               // subtle border
+            card_text_color: 'rgba(33, 33, 33, 1)',                // almost black text
+            primary_color: 'rgba(33, 33, 33, 1)',                  // black
+            secondary_color: 'rgba(117, 117, 117, 1)',             // gray
+            title_color: 'rgba(33, 33, 33, 1)',                    // black
+            subtitle_color: 'rgba(117, 117, 117, 1)',              // gray
+            infobar_background_color: 'rgba(255, 255, 255, 1)',    // white
+            infobar_border_color: 'rgba(0, 0, 0, 0.1)',            // subtle border
+            infobar_icon_color: 'rgba(66, 66, 66, 1)',             // dark gray
+            infobar_label_color: 'rgba(117, 117, 117, 1)',         // gray
+            infobar_value_color: 'rgba(33, 33, 33, 1)',            // black
+        }
+    },
+
+    slate: {
+        id: 'slate',
+        name: 'Slate',
+        colors: {
+            card_background_color: 'rgba(30, 41, 59, 1)',          // slate-800
+            card_border_color: 'rgba(148, 163, 184, 0.3)',         // slate-400
+            card_text_color: 'rgba(226, 232, 240, 1)',             // slate-200
+            primary_color: 'rgba(100, 116, 139, 1)',               // slate-500
+            secondary_color: 'rgba(148, 163, 184, 1)',             // slate-400
+            title_color: 'rgba(148, 163, 184, 1)',                 // slate-400
+            subtitle_color: 'rgba(148, 163, 184, 0.8)',            // slate-400
+            infobar_background_color: 'rgba(51, 65, 85, 1)',       // slate-700
+            infobar_border_color: 'rgba(148, 163, 184, 0.3)',      // slate-400
+            infobar_icon_color: 'rgba(148, 163, 184, 1)',          // slate-400
+            infobar_label_color: 'rgba(148, 163, 184, 0.8)',       // slate-400
+            infobar_value_color: 'rgba(226, 232, 240, 1)',         // slate-200
         }
     }
 };

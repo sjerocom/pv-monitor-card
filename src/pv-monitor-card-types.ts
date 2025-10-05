@@ -11,6 +11,7 @@ export interface Hass {
 export interface TapAction {
     action: string;
     navigation_path?: string;
+    url_path?: string;
     service?: string;
     service_data?: any;
     target?: any;
@@ -43,8 +44,33 @@ export interface PVMonitorCardConfig {
     icon?: string;
     show_icon?: boolean;
     grid_gap?: string;
+
+    // Central entity definitions
+    entities?: {
+        pv_production?: string;
+        battery_soc?: string;
+        battery_charge?: string;
+        battery_discharge?: string;
+        house_consumption?: string;
+        grid_power?: string;
+    };
+
+    // Central configuration values
+    pv_max_power?: number;
+    battery_capacity?: number;
+    grid_threshold?: number;
+
     info_bar?: {
         show?: boolean;
+        position?: 'top' | 'bottom';  // Position der Info Bar
+        // Item 1: Choose between Autarky OR Self-Consumption
+        calculation_mode?: 'autarky' | 'self_consumption';  // Which calculation to show in item 1
+        // Item 2 & 3: Battery runtime calculations
+        calculate_battery_times?: boolean;  // If true: auto-calculate runtime (item2) and charge time (item3)
+        // Tap Actions
+        tap_action?: TapAction;
+        double_tap_action?: TapAction;
+        hold_action?: TapAction;
         item1?: InfoBarItem;
         item2?: InfoBarItem;
         item3?: InfoBarItem;
@@ -72,6 +98,8 @@ export interface PVMonitorCardConfig {
         card_text_color?: string;
         card_cursor?: string;
         card_padding?: string;
+        header_margin_bottom?: string;
+        infobar_gap?: string;
         title_align?: "left" | "center" | "right";
         title_size?: string;
         title_font_weight?: string;
@@ -97,7 +125,8 @@ export interface PVMonitorCardConfig {
         tertiary_font_opacity?: string;
     };
     netz?: {
-        entity?: string;
+        show?: boolean;
+        entity?: string;  // Optional: overrides central grid_power entity
         animation?: boolean;
         icon?: string;
         tap_action?: TapAction;
@@ -106,7 +135,7 @@ export interface PVMonitorCardConfig {
         text_einspeisen?: string;
         text_neutral?: string;
         text_bezug?: string;
-        threshold?: number;
+        threshold?: number;  // Optional: overrides central grid_threshold
         secondary_entity?: string;
         secondary_text?: string;
         tertiary_entity?: string;
@@ -114,11 +143,12 @@ export interface PVMonitorCardConfig {
         style?: CardStyle;
     };
     pv?: {
-        entity?: string;
+        show?: boolean;
+        entity?: string;  // Optional: overrides central pv_production entity
         animation?: boolean;
         icon?: string;
         icon_rotation?: boolean;
-        max_power?: number;
+        max_power?: number;  // Optional: overrides central pv_max_power
         tap_action?: TapAction;
         double_tap_action?: TapAction;
         hold_action?: TapAction;
@@ -129,17 +159,18 @@ export interface PVMonitorCardConfig {
         style?: CardStyle;
     };
     batterie?: {
-        entity?: string;
+        show?: boolean;
+        entity?: string;  // Optional: overrides central battery_soc entity
         animation?: boolean;
         icon?: string;
         tap_action?: TapAction;
         double_tap_action?: TapAction;
         hold_action?: TapAction;
-        ladung_entity?: string;
-        entladung_entity?: string;
+        ladung_entity?: string;  // Optional: overrides central battery_charge entity
+        entladung_entity?: string;  // Optional: overrides central battery_discharge entity
         status_entity?: string;
-        battery_capacity?: number;
-        calculate_runtime?: boolean;
+        battery_capacity?: number;  // Optional: overrides central battery_capacity
+        calculate_runtime?: boolean;  // Deprecated: use info_bar.calculate_battery_times instead
         secondary_entity?: string;
         secondary_text?: string;
         tertiary_entity?: string;
@@ -147,7 +178,8 @@ export interface PVMonitorCardConfig {
         style?: CardStyle;
     };
     haus?: {
-        entity?: string;
+        show?: boolean;
+        entity?: string;  // Optional: overrides central house_consumption entity
         animation?: boolean;
         icon?: string;
         tap_action?: TapAction;
