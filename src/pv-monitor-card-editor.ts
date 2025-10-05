@@ -2,6 +2,7 @@ import { LitElement, html, css } from "lit";
 import { property, state } from "lit/decorators.js";
 import { PVMonitorCardConfig } from "./pv-monitor-card-types";
 import { getTranslations, SupportedLanguage, detectLanguage } from "./pv-monitor-card-i18n";
+import { getAllThemes, getTheme } from "./pv-monitor-card-themes";
 
 export class PVMonitorCardEditor extends LitElement {
     @property({ attribute: false }) public hass?: any;
@@ -363,6 +364,50 @@ export class PVMonitorCardEditor extends LitElement {
         `;
     }
 
+    private _renderThemeSelector() {
+        const t = this._getT();
+        const allThemes = getAllThemes();
+        const themeItems = allThemes.map(theme => ({
+            value: theme.id,
+            label: theme.name
+        }));
+
+        return html`
+            <div class="option">
+                <div class="option-label">
+                    ${t.editor.theme}
+                    <div class="info-text">${t.editor.theme_helper}</div>
+                </div>
+                <div class="option-control">
+                    <ha-combo-box
+                            .value=${this._config?.theme || ''}
+                            .items=${themeItems}
+                            item-value-path="value"
+                            item-label-path="label"
+                            allow-custom-value
+                            @value-changed=${(ev: any) => {
+                                if (!this._config) return;
+                                const newValue = ev.detail?.value;
+
+                                // Update config
+                                const newConfig = { ...this._config };
+                                if (!newValue || newValue === '') {
+                                    delete newConfig.theme;
+                                } else {
+                                    newConfig.theme = newValue;
+                                }
+                                this._config = newConfig;
+
+                                // Fire event and re-render
+                                this._fireEvent();
+                                this.requestUpdate();
+                            }}
+                    ></ha-combo-box>
+                </div>
+            </div>
+        `;
+    }
+
     private _renderGeneralTab() {
         const t = this._getT();
 
@@ -373,6 +418,16 @@ export class PVMonitorCardEditor extends LitElement {
                     ${t.editor.language}
                 </div>
                 ${this._renderLanguageSelector()}
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="section">
+                <div class="section-header">
+                    <ha-icon icon="mdi:palette"></ha-icon>
+                    ${t.editor.theme}
+                </div>
+                ${this._renderThemeSelector()}
             </div>
 
             <div class="divider"></div>
