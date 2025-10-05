@@ -24,6 +24,12 @@ export const pvMonitorCardStyles = css`
         justify-content: center;
         gap: 8px;
     }
+    .card-header-text {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+    }
     .info-bar {
         display: flex;
         justify-content: space-around;

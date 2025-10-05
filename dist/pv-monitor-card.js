@@ -583,6 +583,12 @@ const pvMonitorCardStyles = i$3`
         justify-content: center;
         gap: 8px;
     }
+    .card-header-text {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+    }
     .info-bar {
         display: flex;
         justify-content: space-around;
@@ -699,10 +705,50 @@ const translations = {
       grid_gap: "Grid Abstand",
       grid_gap_placeholder: "6px",
       grid_gap_helper: "Abstand zwischen den Karten.",
+      header_margin_bottom: "Abstand Header zu Karten/Info Bar",
+      header_margin_bottom_helper: "Abstand zwischen Titel/Untertitel und Info Bar/Karten",
+      infobar_gap: "Abstand Info Bar zu Karten",
+      infobar_gap_helper: "Abstand zwischen Info Bar und den 4 Karten",
       language: "Sprache",
       language_helper: "Wählen Sie die Anzeigesprache",
+      central_entities: "Zentrale Entities",
+      central_entities_helper: "Definieren Sie hier die Haupt-Entities für Berechnungen",
+      entity_pv_production: "PV-Produktion Entity",
+      entity_pv_production_helper: "Entity für PV-Leistung (wird für Berechnungen verwendet)",
+      entity_battery_soc: "Batterie SOC Entity",
+      entity_battery_soc_helper: "Entity für Batterieladezustand in % (für Berechnungen)",
+      entity_battery_charge: "Batterie Laden Entity",
+      entity_battery_charge_helper: "Entity für Batterie-Ladeleistung (für Berechnungen)",
+      entity_battery_discharge: "Batterie Entladen Entity",
+      entity_battery_discharge_helper: "Entity für Batterie-Entladeleistung (für Berechnungen)",
+      entity_house_consumption: "Hausverbrauch Entity",
+      entity_house_consumption_helper: "Entity für Hausverbrauch (für Autarkie-Berechnung, optional)",
+      entity_grid_power: "Netz Entity",
+      entity_grid_power_helper: "Entity für Netzbezug/Einspeisung (für Berechnungen)",
+      central_config: "Zentrale Konfiguration",
+      central_config_helper: "Diese Werte gelten für alle Karten",
+      pv_max_power_label: "PV Max. Leistung (W)",
+      pv_max_power_helper: "Maximale PV-Leistung für Animationen",
+      battery_capacity_label: "Batteriekapazität (Wh)",
+      battery_capacity_label_helper: "Kapazität der Batterie (z.B. 10000 für 10 kWh)",
+      grid_threshold_label: "Netz-Schwellwert (W)",
+      grid_threshold_helper: 'Unterhalb dieses Werts wird "Neutral" angezeigt',
+      card_visibility: "Karten-Sichtbarkeit",
+      show_pv_card: "PV-Karte anzeigen",
+      show_battery_card: "Batterie-Karte anzeigen",
+      show_house_card: "Haus-Karte anzeigen",
+      show_grid_card: "Netz-Karte anzeigen",
       infobar_settings: "Info Bar Einstellungen",
       enable_infobar: "Info Bar aktivieren",
+      infobar_position: "Info Bar Position",
+      position_top: "Oben (über den Karten)",
+      position_bottom: "Unten (unter den Karten)",
+      calculation_mode: "Berechnung für Item 1",
+      calculation_mode_helper: "Wählen Sie: Autarkie oder Eigenverbrauch",
+      mode_autarky: "Autarkie (Selbstversorgungsgrad)",
+      mode_self_consumption: "Eigenverbrauch (Selbstnutzungsgrad)",
+      calculate_battery_times: "Batteriezeiten berechnen",
+      calculate_battery_times_helper: "Automatische Berechnung für Item 2 (Restlaufzeit) und Item 3 (Restladezeit)",
       item: "Item",
       entity: "Entity",
       icon_label: "Icon",
@@ -795,6 +841,11 @@ const translations = {
       tertiary_font_weight: "Tertiär Font-Weight",
       select_entity: "Entity auswählen",
       select_icon: "Icon auswählen",
+      action_none: "Keine",
+      action_more_info: "Mehr Info",
+      action_navigate: "Navigieren",
+      action_url: "URL",
+      action_call_service: "Service aufrufen",
       theme: "Theme",
       theme_helper: "Wählen Sie ein vordefiniertes Farbthema",
       select_theme: "Theme auswählen"
@@ -832,10 +883,50 @@ const translations = {
       grid_gap: "Grid Gap",
       grid_gap_placeholder: "6px",
       grid_gap_helper: "Space between cards.",
+      header_margin_bottom: "Header to Cards/Info Bar Gap",
+      header_margin_bottom_helper: "Space between title/subtitle and info bar/cards",
+      infobar_gap: "Info Bar to Cards Gap",
+      infobar_gap_helper: "Space between info bar and the 4 cards",
       language: "Language",
       language_helper: "Select display language",
+      central_entities: "Central Entities",
+      central_entities_helper: "Define the main entities for calculations here",
+      entity_pv_production: "PV Production Entity",
+      entity_pv_production_helper: "Entity for PV power (used for calculations)",
+      entity_battery_soc: "Battery SOC Entity",
+      entity_battery_soc_helper: "Entity for battery state of charge in % (for calculations)",
+      entity_battery_charge: "Battery Charge Entity",
+      entity_battery_charge_helper: "Entity for battery charging power (for calculations)",
+      entity_battery_discharge: "Battery Discharge Entity",
+      entity_battery_discharge_helper: "Entity for battery discharging power (for calculations)",
+      entity_house_consumption: "House Consumption Entity",
+      entity_house_consumption_helper: "Entity for house consumption (for autarky calculation, optional)",
+      entity_grid_power: "Grid Entity",
+      entity_grid_power_helper: "Entity for grid consumption/feed-in (for calculations)",
+      central_config: "Central Configuration",
+      central_config_helper: "These values apply to all cards",
+      pv_max_power_label: "PV Max Power (W)",
+      pv_max_power_helper: "Maximum PV power for animations",
+      battery_capacity_label: "Battery Capacity (Wh)",
+      battery_capacity_label_helper: "Battery capacity (e.g. 10000 for 10 kWh)",
+      grid_threshold_label: "Grid Threshold (W)",
+      grid_threshold_helper: 'Below this value "Neutral" is displayed',
+      card_visibility: "Card Visibility",
+      show_pv_card: "Show PV Card",
+      show_battery_card: "Show Battery Card",
+      show_house_card: "Show House Card",
+      show_grid_card: "Show Grid Card",
       infobar_settings: "Info Bar Settings",
       enable_infobar: "Enable Info Bar",
+      infobar_position: "Info Bar Position",
+      position_top: "Top (above cards)",
+      position_bottom: "Bottom (below cards)",
+      calculation_mode: "Calculation for Item 1",
+      calculation_mode_helper: "Choose: Autarky or Self-Consumption",
+      mode_autarky: "Autarky (Self-Sufficiency)",
+      mode_self_consumption: "Self-Consumption (Self-Usage)",
+      calculate_battery_times: "Calculate Battery Times",
+      calculate_battery_times_helper: "Automatic calculation for Item 2 (runtime) and Item 3 (charge time)",
       item: "Item",
       entity: "Entity",
       icon_label: "Icon",
@@ -928,6 +1019,11 @@ const translations = {
       tertiary_font_weight: "Tertiary Font Weight",
       select_entity: "Select Entity",
       select_icon: "Select Icon",
+      action_none: "None",
+      action_more_info: "More Info",
+      action_navigate: "Navigate",
+      action_url: "URL",
+      action_call_service: "Call Service",
       theme: "Theme",
       theme_helper: "Select a predefined color theme",
       select_theme: "Select Theme"
@@ -965,10 +1061,50 @@ const translations = {
       grid_gap: "Espacement Grille",
       grid_gap_placeholder: "6px",
       grid_gap_helper: "Espace entre les cartes.",
+      header_margin_bottom: "Espace En-tête vers Cartes/Barre Info",
+      header_margin_bottom_helper: "Espace entre titre/sous-titre et barre info/cartes",
+      infobar_gap: "Espace Barre Info vers Cartes",
+      infobar_gap_helper: "Espace entre la barre info et les 4 cartes",
       language: "Langue",
       language_helper: "Sélectionner la langue d'affichage",
+      central_entities: "Entités Centrales",
+      central_entities_helper: "Définissez ici les entités principales pour les calculs",
+      entity_pv_production: "Entité Production PV",
+      entity_pv_production_helper: "Entité pour la puissance PV (utilisée pour les calculs)",
+      entity_battery_soc: "Entité SOC Batterie",
+      entity_battery_soc_helper: "Entité pour l'état de charge de la batterie en % (pour les calculs)",
+      entity_battery_charge: "Entité Charge Batterie",
+      entity_battery_charge_helper: "Entité pour la puissance de charge (pour les calculs)",
+      entity_battery_discharge: "Entité Décharge Batterie",
+      entity_battery_discharge_helper: "Entité pour la puissance de décharge (pour les calculs)",
+      entity_house_consumption: "Entité Consommation Maison",
+      entity_house_consumption_helper: "Entité pour la consommation maison (pour calcul autosuffisance, optionnel)",
+      entity_grid_power: "Entité Réseau",
+      entity_grid_power_helper: "Entité pour consommation/injection réseau (pour les calculs)",
+      central_config: "Configuration Centrale",
+      central_config_helper: "Ces valeurs s'appliquent à toutes les cartes",
+      pv_max_power_label: "Puissance Max PV (W)",
+      pv_max_power_helper: "Puissance PV maximale pour les animations",
+      battery_capacity_label: "Capacité Batterie (Wh)",
+      battery_capacity_label_helper: "Capacité de la batterie (ex: 10000 pour 10 kWh)",
+      grid_threshold_label: "Seuil Réseau (W)",
+      grid_threshold_helper: 'En dessous de cette valeur "Neutre" est affiché',
+      card_visibility: "Visibilité des Cartes",
+      show_pv_card: "Afficher Carte PV",
+      show_battery_card: "Afficher Carte Batterie",
+      show_house_card: "Afficher Carte Maison",
+      show_grid_card: "Afficher Carte Réseau",
       infobar_settings: "Paramètres Barre d'Info",
       enable_infobar: "Activer la Barre d'Info",
+      infobar_position: "Position Barre d'Info",
+      position_top: "Haut (au-dessus des cartes)",
+      position_bottom: "Bas (en dessous des cartes)",
+      calculation_mode: "Calcul pour Élément 1",
+      calculation_mode_helper: "Choisir: Autosuffisance ou Autoconsommation",
+      mode_autarky: "Autosuffisance",
+      mode_self_consumption: "Autoconsommation",
+      calculate_battery_times: "Calculer Temps Batterie",
+      calculate_battery_times_helper: "Calcul automatique pour Élément 2 (autonomie) et Élément 3 (temps de charge)",
       item: "Élément",
       entity: "Entité",
       icon_label: "Icône",
@@ -1061,6 +1197,11 @@ const translations = {
       tertiary_font_weight: "Épaisseur Police Tertiaire",
       select_entity: "Sélectionner Entité",
       select_icon: "Sélectionner Icône",
+      action_none: "Aucune",
+      action_more_info: "Plus d'Info",
+      action_navigate: "Naviguer",
+      action_url: "URL",
+      action_call_service: "Appeler Service",
       theme: "Thème",
       theme_helper: "Sélectionner un thème de couleur prédéfini",
       select_theme: "Sélectionner Thème"
@@ -1098,10 +1239,50 @@ const translations = {
       grid_gap: "Spaziatura Griglia",
       grid_gap_placeholder: "6px",
       grid_gap_helper: "Spazio tra le schede.",
+      header_margin_bottom: "Spazio Intestazione a Schede/Barra Info",
+      header_margin_bottom_helper: "Spazio tra titolo/sottotitolo e barra info/schede",
+      infobar_gap: "Spazio Barra Info a Schede",
+      infobar_gap_helper: "Spazio tra barra info e le 4 schede",
       language: "Lingua",
       language_helper: "Seleziona lingua di visualizzazione",
+      central_entities: "Entità Centrali",
+      central_entities_helper: "Definisci qui le entità principali per i calcoli",
+      entity_pv_production: "Entità Produzione FV",
+      entity_pv_production_helper: "Entità per potenza FV (usata per i calcoli)",
+      entity_battery_soc: "Entità SOC Batteria",
+      entity_battery_soc_helper: "Entità per stato di carica batteria in % (per i calcoli)",
+      entity_battery_charge: "Entità Carica Batteria",
+      entity_battery_charge_helper: "Entità per potenza di carica (per i calcoli)",
+      entity_battery_discharge: "Entità Scarica Batteria",
+      entity_battery_discharge_helper: "Entità per potenza di scarica (per i calcoli)",
+      entity_house_consumption: "Entità Consumo Casa",
+      entity_house_consumption_helper: "Entità per consumo casa (per calcolo autosufficienza, opzionale)",
+      entity_grid_power: "Entità Rete",
+      entity_grid_power_helper: "Entità per consumo/immissione rete (per i calcoli)",
+      central_config: "Configurazione Centrale",
+      central_config_helper: "Questi valori si applicano a tutte le schede",
+      pv_max_power_label: "Potenza Max FV (W)",
+      pv_max_power_helper: "Potenza FV massima per le animazioni",
+      battery_capacity_label: "Capacità Batteria (Wh)",
+      battery_capacity_label_helper: "Capacità della batteria (es: 10000 per 10 kWh)",
+      grid_threshold_label: "Soglia Rete (W)",
+      grid_threshold_helper: 'Sotto questo valore viene visualizzato "Neutrale"',
+      card_visibility: "Visibilità Schede",
+      show_pv_card: "Mostra Scheda FV",
+      show_battery_card: "Mostra Scheda Batteria",
+      show_house_card: "Mostra Scheda Casa",
+      show_grid_card: "Mostra Scheda Rete",
       infobar_settings: "Impostazioni Barra Info",
       enable_infobar: "Attiva Barra Info",
+      infobar_position: "Posizione Barra Info",
+      position_top: "Alto (sopra le schede)",
+      position_bottom: "Basso (sotto le schede)",
+      calculation_mode: "Calcolo per Elemento 1",
+      calculation_mode_helper: "Scegli: Autosufficienza o Autoconsumo",
+      mode_autarky: "Autosufficienza",
+      mode_self_consumption: "Autoconsumo",
+      calculate_battery_times: "Calcola Tempi Batteria",
+      calculate_battery_times_helper: "Calcolo automatico per Elemento 2 (autonomia) e Elemento 3 (tempo di ricarica)",
       item: "Elemento",
       entity: "Entità",
       icon_label: "Icona",
@@ -1194,6 +1375,11 @@ const translations = {
       tertiary_font_weight: "Spessore Font Terziario",
       select_entity: "Seleziona Entità",
       select_icon: "Seleziona Icona",
+      action_none: "Nessuna",
+      action_more_info: "Più Info",
+      action_navigate: "Naviga",
+      action_url: "URL",
+      action_call_service: "Chiama Servizio",
       theme: "Tema",
       theme_helper: "Seleziona un tema di colori predefinito",
       select_theme: "Seleziona Tema"
@@ -1231,10 +1417,50 @@ const translations = {
       grid_gap: "Espaciado Cuadrícula",
       grid_gap_placeholder: "6px",
       grid_gap_helper: "Espacio entre tarjetas.",
+      header_margin_bottom: "Espacio Encabezado a Tarjetas/Barra Info",
+      header_margin_bottom_helper: "Espacio entre título/subtítulo y barra info/tarjetas",
+      infobar_gap: "Espacio Barra Info a Tarjetas",
+      infobar_gap_helper: "Espacio entre barra info y las 4 tarjetas",
       language: "Idioma",
       language_helper: "Seleccionar idioma de visualización",
+      central_entities: "Entidades Centrales",
+      central_entities_helper: "Defina aquí las entidades principales para los cálculos",
+      entity_pv_production: "Entidad Producción FV",
+      entity_pv_production_helper: "Entidad para potencia FV (usada para cálculos)",
+      entity_battery_soc: "Entidad SOC Batería",
+      entity_battery_soc_helper: "Entidad para estado de carga de batería en % (para cálculos)",
+      entity_battery_charge: "Entidad Carga Batería",
+      entity_battery_charge_helper: "Entidad para potencia de carga (para cálculos)",
+      entity_battery_discharge: "Entidad Descarga Batería",
+      entity_battery_discharge_helper: "Entidad para potencia de descarga (para cálculos)",
+      entity_house_consumption: "Entidad Consumo Casa",
+      entity_house_consumption_helper: "Entidad para consumo casa (para cálculo autosuficiencia, opcional)",
+      entity_grid_power: "Entidad Red",
+      entity_grid_power_helper: "Entidad para consumo/inyección red (para cálculos)",
+      central_config: "Configuración Central",
+      central_config_helper: "Estos valores se aplican a todas las tarjetas",
+      pv_max_power_label: "Potencia Máx FV (W)",
+      pv_max_power_helper: "Potencia FV máxima para animaciones",
+      battery_capacity_label: "Capacidad Batería (Wh)",
+      battery_capacity_label_helper: "Capacidad de la batería (ej: 10000 para 10 kWh)",
+      grid_threshold_label: "Umbral Red (W)",
+      grid_threshold_helper: 'Por debajo de este valor se muestra "Neutro"',
+      card_visibility: "Visibilidad Tarjetas",
+      show_pv_card: "Mostrar Tarjeta FV",
+      show_battery_card: "Mostrar Tarjeta Batería",
+      show_house_card: "Mostrar Tarjeta Casa",
+      show_grid_card: "Mostrar Tarjeta Red",
       infobar_settings: "Configuración Barra Info",
       enable_infobar: "Activar Barra Info",
+      infobar_position: "Posición Barra Info",
+      position_top: "Arriba (sobre las tarjetas)",
+      position_bottom: "Abajo (debajo de las tarjetas)",
+      calculation_mode: "Cálculo para Elemento 1",
+      calculation_mode_helper: "Elegir: Autosuficiencia o Autoconsumo",
+      mode_autarky: "Autosuficiencia",
+      mode_self_consumption: "Autoconsumo",
+      calculate_battery_times: "Calcular Tiempos Batería",
+      calculate_battery_times_helper: "Cálculo automático para Elemento 2 (autonomía) y Elemento 3 (tiempo de carga)",
       item: "Elemento",
       entity: "Entidad",
       icon_label: "Icono",
@@ -1327,6 +1553,11 @@ const translations = {
       tertiary_font_weight: "Grosor Fuente Terciaria",
       select_entity: "Seleccionar Entidad",
       select_icon: "Seleccionar Icono",
+      action_none: "Ninguna",
+      action_more_info: "Más Info",
+      action_navigate: "Navegar",
+      action_url: "URL",
+      action_call_service: "Llamar Servicio",
       theme: "Tema",
       theme_helper: "Seleccionar un tema de colores predefinido",
       select_theme: "Seleccionar Tema"
@@ -1441,6 +1672,216 @@ const defaultThemes = {
       infobar_label_color: "rgba(160, 160, 160, 1)",
       infobar_value_color: "rgba(220, 220, 220, 1)"
     }
+  },
+  solarized: {
+    id: "solarized",
+    name: "Solarized Dark",
+    colors: {
+      card_background_color: "rgba(0, 43, 54, 1)",
+      // base03
+      card_border_color: "rgba(88, 110, 117, 0.3)",
+      // base01
+      card_text_color: "rgba(131, 148, 150, 1)",
+      // base0
+      primary_color: "rgba(147, 161, 161, 1)",
+      // base1
+      secondary_color: "rgba(131, 148, 150, 0.8)",
+      // base0
+      title_color: "rgba(38, 139, 210, 1)",
+      // blue
+      subtitle_color: "rgba(101, 123, 131, 1)",
+      // base00
+      infobar_background_color: "rgba(7, 54, 66, 1)",
+      // base02
+      infobar_border_color: "rgba(88, 110, 117, 0.3)",
+      // base01
+      infobar_icon_color: "rgba(42, 161, 152, 1)",
+      // cyan
+      infobar_label_color: "rgba(101, 123, 131, 1)",
+      // base00
+      infobar_value_color: "rgba(147, 161, 161, 1)"
+      // base1
+    }
+  },
+  nord: {
+    id: "nord",
+    name: "Nord",
+    colors: {
+      card_background_color: "rgba(46, 52, 64, 1)",
+      // nord0
+      card_border_color: "rgba(136, 192, 208, 0.3)",
+      // nord8
+      card_text_color: "rgba(236, 239, 244, 1)",
+      // nord6
+      primary_color: "rgba(216, 222, 233, 1)",
+      // nord5
+      secondary_color: "rgba(229, 233, 240, 0.8)",
+      // nord4
+      title_color: "rgba(136, 192, 208, 1)",
+      // nord8
+      subtitle_color: "rgba(216, 222, 233, 0.7)",
+      // nord5
+      infobar_background_color: "rgba(59, 66, 82, 1)",
+      // nord1
+      infobar_border_color: "rgba(136, 192, 208, 0.3)",
+      // nord8
+      infobar_icon_color: "rgba(143, 188, 187, 1)",
+      // nord7
+      infobar_label_color: "rgba(216, 222, 233, 0.7)",
+      // nord5
+      infobar_value_color: "rgba(236, 239, 244, 1)"
+      // nord6
+    }
+  },
+  dracula: {
+    id: "dracula",
+    name: "Dracula",
+    colors: {
+      card_background_color: "rgba(40, 42, 54, 1)",
+      // background
+      card_border_color: "rgba(189, 147, 249, 0.3)",
+      // purple
+      card_text_color: "rgba(248, 248, 242, 1)",
+      // foreground
+      primary_color: "rgba(139, 233, 253, 1)",
+      // cyan
+      secondary_color: "rgba(248, 248, 242, 0.8)",
+      // foreground
+      title_color: "rgba(189, 147, 249, 1)",
+      // purple
+      subtitle_color: "rgba(248, 248, 242, 0.7)",
+      // foreground
+      infobar_background_color: "rgba(68, 71, 90, 1)",
+      // current line
+      infobar_border_color: "rgba(189, 147, 249, 0.3)",
+      // purple
+      infobar_icon_color: "rgba(255, 121, 198, 1)",
+      // pink
+      infobar_label_color: "rgba(248, 248, 242, 0.7)",
+      // foreground
+      infobar_value_color: "rgba(248, 248, 242, 1)"
+      // foreground
+    }
+  },
+  catppuccin: {
+    id: "catppuccin",
+    name: "Catppuccin Mocha",
+    colors: {
+      card_background_color: "rgba(30, 30, 46, 1)",
+      // base
+      card_border_color: "rgba(137, 180, 250, 0.3)",
+      // blue
+      card_text_color: "rgba(205, 214, 244, 1)",
+      // text
+      primary_color: "rgba(137, 180, 250, 1)",
+      // blue
+      secondary_color: "rgba(205, 214, 244, 0.8)",
+      // text
+      title_color: "rgba(203, 166, 247, 1)",
+      // mauve
+      subtitle_color: "rgba(186, 194, 222, 1)",
+      // subtext0
+      infobar_background_color: "rgba(49, 50, 68, 1)",
+      // surface0
+      infobar_border_color: "rgba(137, 180, 250, 0.3)",
+      // blue
+      infobar_icon_color: "rgba(148, 226, 213, 1)",
+      // teal
+      infobar_label_color: "rgba(186, 194, 222, 1)",
+      // subtext0
+      infobar_value_color: "rgba(205, 214, 244, 1)"
+      // text
+    }
+  },
+  material: {
+    id: "material",
+    name: "Material Design",
+    colors: {
+      card_background_color: "rgba(18, 18, 18, 1)",
+      // Material dark background
+      card_border_color: "rgba(3, 218, 198, 0.3)",
+      // teal accent
+      card_text_color: "rgba(255, 255, 255, 0.87)",
+      // high emphasis text
+      primary_color: "rgba(3, 218, 198, 1)",
+      // teal accent
+      secondary_color: "rgba(255, 255, 255, 0.6)",
+      // medium emphasis
+      title_color: "rgba(3, 218, 198, 1)",
+      // teal accent
+      subtitle_color: "rgba(255, 255, 255, 0.6)",
+      // medium emphasis
+      infobar_background_color: "rgba(33, 33, 33, 1)",
+      // elevated surface
+      infobar_border_color: "rgba(3, 218, 198, 0.3)",
+      // teal accent
+      infobar_icon_color: "rgba(3, 218, 198, 1)",
+      // teal accent
+      infobar_label_color: "rgba(255, 255, 255, 0.6)",
+      // medium emphasis
+      infobar_value_color: "rgba(255, 255, 255, 0.87)"
+      // high emphasis
+    }
+  },
+  minimalist: {
+    id: "minimalist",
+    name: "Minimalist",
+    colors: {
+      card_background_color: "rgba(242, 242, 242, 1)",
+      // light gray background
+      card_border_color: "rgba(0, 0, 0, 0.1)",
+      // subtle border
+      card_text_color: "rgba(33, 33, 33, 1)",
+      // almost black text
+      primary_color: "rgba(33, 33, 33, 1)",
+      // black
+      secondary_color: "rgba(117, 117, 117, 1)",
+      // gray
+      title_color: "rgba(33, 33, 33, 1)",
+      // black
+      subtitle_color: "rgba(117, 117, 117, 1)",
+      // gray
+      infobar_background_color: "rgba(255, 255, 255, 1)",
+      // white
+      infobar_border_color: "rgba(0, 0, 0, 0.1)",
+      // subtle border
+      infobar_icon_color: "rgba(66, 66, 66, 1)",
+      // dark gray
+      infobar_label_color: "rgba(117, 117, 117, 1)",
+      // gray
+      infobar_value_color: "rgba(33, 33, 33, 1)"
+      // black
+    }
+  },
+  slate: {
+    id: "slate",
+    name: "Slate",
+    colors: {
+      card_background_color: "rgba(30, 41, 59, 1)",
+      // slate-800
+      card_border_color: "rgba(148, 163, 184, 0.3)",
+      // slate-400
+      card_text_color: "rgba(226, 232, 240, 1)",
+      // slate-200
+      primary_color: "rgba(100, 116, 139, 1)",
+      // slate-500
+      secondary_color: "rgba(148, 163, 184, 1)",
+      // slate-400
+      title_color: "rgba(148, 163, 184, 1)",
+      // slate-400
+      subtitle_color: "rgba(148, 163, 184, 0.8)",
+      // slate-400
+      infobar_background_color: "rgba(51, 65, 85, 1)",
+      // slate-700
+      infobar_border_color: "rgba(148, 163, 184, 0.3)",
+      // slate-400
+      infobar_icon_color: "rgba(148, 163, 184, 1)",
+      // slate-400
+      infobar_label_color: "rgba(148, 163, 184, 0.8)",
+      // slate-400
+      infobar_value_color: "rgba(226, 232, 240, 1)"
+      // slate-200
+    }
   }
 };
 const customThemes = {};
@@ -1506,8 +1947,17 @@ function getDefaultConfig(config) {
     show_subtitle: themedConfig.show_subtitle !== false,
     show_icon: themedConfig.show_icon !== false,
     grid_gap: themedConfig.grid_gap ?? "6px",
+    // Central entities - keep as is if provided
+    entities: themedConfig.entities,
+    // Central configuration values
+    pv_max_power: themedConfig.pv_max_power ?? 1e4,
+    battery_capacity: themedConfig.battery_capacity ?? 1e4,
+    grid_threshold: themedConfig.grid_threshold ?? 10,
     info_bar: {
       show: themedConfig.info_bar?.show === true,
+      position: themedConfig.info_bar?.position || "top",
+      calculation_mode: themedConfig.info_bar?.calculation_mode || "autarky",
+      calculate_battery_times: themedConfig.info_bar?.calculate_battery_times === true,
       item1: {
         icon: themedConfig.info_bar?.item1?.icon ?? "mdi:home-lightning-bolt",
         label: themedConfig.info_bar?.item1?.label ?? t2.editor.default_autarky,
@@ -1548,6 +1998,8 @@ function getDefaultConfig(config) {
       card_text_color: themedConfig.style?.card_text_color ?? "white",
       card_cursor: themedConfig.style?.card_cursor ?? "pointer",
       card_padding: themedConfig.style?.card_padding ?? "12px",
+      header_margin_bottom: themedConfig.style?.header_margin_bottom ?? "12px",
+      infobar_gap: themedConfig.style?.infobar_gap ?? "6px",
       title_align: themedConfig.style?.title_align ?? "center",
       title_size: themedConfig.style?.title_size ?? "1.5em",
       title_font_weight: themedConfig.style?.title_font_weight ?? "bold",
@@ -1574,6 +2026,7 @@ function getDefaultConfig(config) {
       ...themedConfig.style
     },
     netz: {
+      show: themedConfig.netz?.show !== false,
       animation: themedConfig.netz?.animation !== false,
       threshold: themedConfig.netz?.threshold ?? 10,
       text_einspeisen: themedConfig.netz?.text_einspeisen ?? t2.status.feed_in,
@@ -1582,18 +2035,21 @@ function getDefaultConfig(config) {
       ...themedConfig.netz
     },
     pv: {
+      show: themedConfig.pv?.show !== false,
       animation: themedConfig.pv?.animation !== false,
       icon_rotation: themedConfig.pv?.icon_rotation === true,
       max_power: themedConfig.pv?.max_power ?? 1e4,
       ...themedConfig.pv
     },
     batterie: {
+      show: themedConfig.batterie?.show !== false,
       animation: themedConfig.batterie?.animation !== false,
       battery_capacity: themedConfig.batterie?.battery_capacity ?? 1e4,
       calculate_runtime: themedConfig.batterie?.calculate_runtime === true,
       ...themedConfig.batterie
     },
     haus: {
+      show: themedConfig.haus?.show !== false,
       animation: themedConfig.haus?.animation !== false,
       ...themedConfig.haus
     }
@@ -1873,6 +2329,22 @@ function formatTime(totalSeconds) {
   if (seconds > 0 || parts.length === 0) parts.push(`${seconds}s`);
   return parts.join(" ");
 }
+function calculateAutarky(pvProductionW, batteryDischargeW, gridFeedInW, houseConsumptionW) {
+  if (houseConsumptionW <= 0) return "—";
+  const gridConsumption = gridFeedInW < 0 ? Math.abs(gridFeedInW) : 0;
+  const selfConsumption = houseConsumptionW - gridConsumption;
+  const autarky = selfConsumption / houseConsumptionW * 100;
+  const clampedAutarky = Math.max(0, Math.min(100, autarky));
+  return `${Math.round(clampedAutarky)}%`;
+}
+function calculateSelfConsumption(pvProductionW, gridFeedInW) {
+  if (pvProductionW <= 10) return "—";
+  const feedIn = gridFeedInW > 0 ? gridFeedInW : 0;
+  const selfUsed = pvProductionW - feedIn;
+  const selfConsumption = selfUsed / pvProductionW * 100;
+  const clampedSelfConsumption = Math.max(0, Math.min(100, selfConsumption));
+  return `${Math.round(clampedSelfConsumption)}%`;
+}
 var __defProp$1 = Object.defineProperty;
 var __decorateClass$1 = (decorators, target, key, kind) => {
   var result = void 0;
@@ -1930,6 +2402,8 @@ const _PVMonitorCard = class _PVMonitorCard extends i {
     if (tapAction.action === "navigate" && tapAction.navigation_path) {
       history.pushState(null, "", tapAction.navigation_path);
       window.dispatchEvent(new CustomEvent("location-changed"));
+    } else if (tapAction.action === "url" && tapAction.url_path) {
+      window.open(tapAction.url_path, "_blank");
     } else if (tapAction.action === "call-service" && tapAction.service && this.hass) {
       const [domain, service] = tapAction.service.split(".");
       if (this.hass.callService) {
@@ -2006,18 +2480,38 @@ const _PVMonitorCard = class _PVMonitorCard extends i {
     if (!item || !this.hass) return x``;
     let value = "";
     let unit = "";
-    if (itemType === "runtime" && this.config.batterie?.calculate_runtime && this.config.batterie?.entity) {
-      const batteryCapacity = this.config.batterie.battery_capacity || 1e4;
-      const socPercent = parseFloat(this.hass.states[this.config.batterie.entity]?.state) || 0;
-      const charge = this.config.batterie.ladung_entity ? parseFloat(this.hass.states[this.config.batterie.ladung_entity]?.state) || 0 : 0;
-      const discharge = this.config.batterie.entladung_entity ? parseFloat(this.hass.states[this.config.batterie.entladung_entity]?.state) || 0 : 0;
+    const getCentralEntityValue = (entityKey) => {
+      const entityId = this.config.entities?.[entityKey];
+      if (!entityId) return 0;
+      return parseFloat(this.hass.states[entityId]?.state) || 0;
+    };
+    if (itemType === "calculation") {
+      const mode = this.config.info_bar?.calculation_mode || "autarky";
+      if (mode === "autarky") {
+        const pvProd = getCentralEntityValue("pv_production");
+        const batteryDischarge = getCentralEntityValue("battery_discharge");
+        const gridPower = getCentralEntityValue("grid_power");
+        const houseConsumption = getCentralEntityValue("house_consumption");
+        value = calculateAutarky(pvProd, batteryDischarge, gridPower, houseConsumption);
+        unit = "";
+      } else {
+        const pvProd = getCentralEntityValue("pv_production");
+        const gridPower = getCentralEntityValue("grid_power");
+        value = calculateSelfConsumption(pvProd, gridPower);
+        unit = "";
+      }
+    } else if (itemType === "runtime" && this.config.info_bar?.calculate_battery_times) {
+      const batteryCapacity = this.config.battery_capacity || 1e4;
+      const socPercent = getCentralEntityValue("battery_soc");
+      const charge = getCentralEntityValue("battery_charge");
+      const discharge = getCentralEntityValue("battery_discharge");
       value = calculateBatteryRuntime(batteryCapacity, socPercent, charge, discharge);
       unit = "";
-    } else if (itemType === "chargetime" && this.config.batterie?.calculate_runtime && this.config.batterie?.entity) {
-      const batteryCapacity = this.config.batterie.battery_capacity || 1e4;
-      const socPercent = parseFloat(this.hass.states[this.config.batterie.entity]?.state) || 0;
-      const charge = this.config.batterie.ladung_entity ? parseFloat(this.hass.states[this.config.batterie.ladung_entity]?.state) || 0 : 0;
-      const discharge = this.config.batterie.entladung_entity ? parseFloat(this.hass.states[this.config.batterie.entladung_entity]?.state) || 0 : 0;
+    } else if (itemType === "chargetime" && this.config.info_bar?.calculate_battery_times) {
+      const batteryCapacity = this.config.battery_capacity || 1e4;
+      const socPercent = getCentralEntityValue("battery_soc");
+      const charge = getCentralEntityValue("battery_charge");
+      const discharge = getCentralEntityValue("battery_discharge");
       value = calculateBatteryChargeTime(batteryCapacity, socPercent, charge, discharge);
       unit = "";
     } else if (item.entity) {
@@ -2046,38 +2540,52 @@ const _PVMonitorCard = class _PVMonitorCard extends i {
     if (!this.config.info_bar?.show || !this.hass) return x``;
     const ib = this.config.info_bar;
     const s2 = ib.style;
-    const hasAnyEntity = ib.item1?.entity || ib.item2?.entity || ib.item3?.entity || this.config.batterie?.calculate_runtime && (ib.item2 || ib.item3);
-    if (!hasAnyEntity) return x``;
+    const hasAnyContent = ib.calculation_mode || ib.calculate_battery_times || ib.item1?.entity || ib.item2?.entity || ib.item3?.entity;
+    if (!hasAnyContent) return x``;
+    const hasActions = ib.tap_action || ib.double_tap_action || ib.hold_action;
+    const cursor = hasActions ? "pointer" : "default";
     const infoBarStyle = `
             background: ${s2.background_color};
             border: 1px solid ${s2.border_color};
             border-radius: ${s2.border_radius};
             padding: ${s2.padding};
             gap: ${s2.gap};
+            cursor: ${cursor};
             ${s2.background_color !== "transparent" ? `box-shadow: ${this.config.style.card_boxshadow};` : ""}
         `;
     return x`
-            <div class="info-bar" style="${infoBarStyle}">
-                ${this._renderInfoBarItem(ib.item1, s2, "item1")}
+            <div class="info-bar"
+                 style="${infoBarStyle}"
+                 @click=${() => hasActions && this._handleTap(ib.tap_action)}
+                 @dblclick=${() => hasActions && this._handleTap(ib.double_tap_action)}
+                 @contextmenu=${(ev) => {
+      if (hasActions && ib.hold_action) {
+        ev.preventDefault();
+        this._handleTap(ib.hold_action);
+      }
+    }}
+            >
+                ${this._renderInfoBarItem(ib.item1, s2, "calculation")}
                 ${this._renderInfoBarItem(ib.item2, s2, "runtime")}
                 ${this._renderInfoBarItem(ib.item3, s2, "chargetime")}
             </div>
         `;
   }
   _renderNetz() {
-    if (!this.config.netz?.entity || !this.hass) return x``;
-    const entity = this.hass.states[this.config.netz.entity];
+    const entityId = this.config.netz?.entity || this.config.entities?.grid_power;
+    if (!entityId || !this.hass) return x``;
+    const entity = this.hass.states[entityId];
     const t2 = getTranslations(this.config.language);
-    if (!entity) return x`<div class="card">⚠️ ${this.config.netz.entity} ${t2.general.missing_entity}</div>`;
+    if (!entity) return x`<div class="card">⚠️ ${entityId} ${t2.general.missing_entity}</div>`;
     const value = parseFloat(entity.state) || 0;
-    const threshold = this.config.netz.threshold || 10;
+    const threshold = this.config.netz?.threshold || this.config.grid_threshold || 10;
     let statusText = "";
     if (value < -threshold) {
-      statusText = this.config.netz.text_einspeisen || t2.status.feed_in;
+      statusText = this.config.netz?.text_einspeisen || t2.status.feed_in;
     } else if (value > threshold) {
-      statusText = this.config.netz.text_bezug || t2.status.grid_consumption;
+      statusText = this.config.netz?.text_bezug || t2.status.grid_consumption;
     } else {
-      statusText = this.config.netz.text_neutral || t2.status.neutral;
+      statusText = this.config.netz?.text_neutral || t2.status.neutral;
     }
     const secondaryText = this._getTextFromEntityOrConfig(this.config.netz.secondary_entity, this.config.netz.secondary_text) || statusText;
     const tertiaryText = this._getTextFromEntityOrConfig(this.config.netz.tertiary_entity, this.config.netz.tertiary_text);
@@ -2091,12 +2599,13 @@ const _PVMonitorCard = class _PVMonitorCard extends i {
     });
   }
   _renderPV() {
-    if (!this.config.pv?.entity || !this.hass) return x``;
-    const entity = this.hass.states[this.config.pv.entity];
+    const entityId = this.config.pv?.entity || this.config.entities?.pv_production;
+    if (!entityId || !this.hass) return x``;
+    const entity = this.hass.states[entityId];
     const t2 = getTranslations(this.config.language);
-    if (!entity) return x`<div class="card">⚠️ ${this.config.pv.entity} ${t2.general.missing_entity}</div>`;
+    if (!entity) return x`<div class="card">⚠️ ${entityId} ${t2.general.missing_entity}</div>`;
     const value = parseFloat(entity.state) || 0;
-    const maxPower = this.config.pv.max_power || 1e4;
+    const maxPower = this.config.pv?.max_power || this.config.pv_max_power || 1e4;
     const shouldRotate = this.config.pv.icon_rotation === true;
     let rotation = 0;
     if (shouldRotate) {
@@ -2117,16 +2626,19 @@ const _PVMonitorCard = class _PVMonitorCard extends i {
     });
   }
   _renderBatterie() {
-    if (!this.config.batterie?.entity || !this.hass) return x``;
-    const entity = this.hass.states[this.config.batterie.entity];
+    const entityId = this.config.batterie?.entity || this.config.entities?.battery_soc;
+    if (!entityId || !this.hass) return x``;
+    const entity = this.hass.states[entityId];
     const t2 = getTranslations(this.config.language);
-    if (!entity) return x`<div class="card">⚠️ ${this.config.batterie.entity} ${t2.general.missing_entity}</div>`;
+    if (!entity) return x`<div class="card">⚠️ ${entityId} ${t2.general.missing_entity}</div>`;
     const percentage = parseFloat(entity.state) || 0;
     const icon = this.config.batterie.icon || getBatteryIcon(percentage);
     const iconColor = getBatteryIconColor(percentage);
-    const charge = this.config.batterie.ladung_entity ? parseFloat(this.hass.states[this.config.batterie.ladung_entity]?.state) || 0 : 0;
-    const discharge = this.config.batterie.entladung_entity ? parseFloat(this.hass.states[this.config.batterie.entladung_entity]?.state) || 0 : 0;
-    const batteryCapacity = this.config.batterie.battery_capacity || 1e4;
+    const chargeEntityId = this.config.batterie.ladung_entity || this.config.entities?.battery_charge;
+    const dischargeEntityId = this.config.batterie.entladung_entity || this.config.entities?.battery_discharge;
+    const charge = chargeEntityId && this.hass.states[chargeEntityId] ? parseFloat(this.hass.states[chargeEntityId]?.state) || 0 : 0;
+    const discharge = dischargeEntityId && this.hass.states[dischargeEntityId] ? parseFloat(this.hass.states[dischargeEntityId]?.state) || 0 : 0;
+    const batteryCapacity = this.config.batterie.battery_capacity || this.config.battery_capacity || 1e4;
     let statusText = "";
     if (charge > 1) {
       statusText = formatPower(charge);
@@ -2148,10 +2660,11 @@ const _PVMonitorCard = class _PVMonitorCard extends i {
     });
   }
   _renderHaus() {
-    if (!this.config.haus?.entity || !this.hass) return x``;
-    const entity = this.hass.states[this.config.haus.entity];
+    const entityId = this.config.haus?.entity || this.config.entities?.house_consumption;
+    if (!entityId || !this.hass) return x``;
+    const entity = this.hass.states[entityId];
     const t2 = getTranslations(this.config.language);
-    if (!entity) return x`<div class="card">⚠️ ${this.config.haus.entity} ${t2.general.missing_entity}</div>`;
+    if (!entity) return x`<div class="card">⚠️ ${entityId} ${t2.general.missing_entity}</div>`;
     const value = parseFloat(entity.state) || 0;
     return this._renderCard({
       cardConfig: this.config.haus,
@@ -2167,6 +2680,7 @@ const _PVMonitorCard = class _PVMonitorCard extends i {
     const showTitle = this.config.show_title && this.config.title;
     const showSubtitle = this.config.show_subtitle && this.config.subtitle;
     const showIcon = this.config.show_icon && this.config.icon;
+    const infoBarPosition = this.config.info_bar?.position || "top";
     const titleStyle = `
             text-align: ${s2.title_align};
             font-size: ${s2.title_size};
@@ -2185,29 +2699,38 @@ const _PVMonitorCard = class _PVMonitorCard extends i {
             font-size: ${s2.title_size};
             color: ${s2.title_color};
         `;
+    const headerStyle = `
+            margin-bottom: ${s2.header_margin_bottom || "12px"};
+        `;
     return x`
             ${showTitle || showSubtitle ? x`
-                <div class="card-header">
-                    ${showIcon && showTitle ? x`
+                <div class="card-header" style="${headerStyle}">
+                    ${showIcon ? x`
                         <div class="card-header-with-icon">
                             <ha-icon .icon=${this.config.icon} style="${headerIconStyle}"></ha-icon>
-                            <h2 style="${titleStyle}">${this.config.title}</h2>
+                            <div class="card-header-text">
+                                ${showTitle ? x`<h2 style="${titleStyle}">${this.config.title}</h2>` : ""}
+                                ${showSubtitle ? x`<p style="${subtitleStyle}">${this.config.subtitle}</p>` : ""}
+                            </div>
                         </div>
-                    ` : showTitle ? x`
-                        <h2 style="${titleStyle}">${this.config.title}</h2>
-                    ` : ""}
-                    ${showSubtitle ? x`
-                        <p style="${subtitleStyle}">${this.config.subtitle}</p>
-                    ` : ""}
+                    ` : x`
+                        ${showTitle ? x`<h2 style="${titleStyle}">${this.config.title}</h2>` : ""}
+                        ${showSubtitle ? x`<p style="${subtitleStyle}">${this.config.subtitle}</p>` : ""}
+                    `}
                 </div>
             ` : ""}
-            ${this._renderInfoBar()}
-            <div class="grid" style="gap: ${this.config.grid_gap};">
-                ${this._renderPV()}
-                ${this._renderBatterie()}
-                ${this._renderHaus()}
-                ${this._renderNetz()}
+            ${infoBarPosition === "top" ? this._renderInfoBar() : ""}
+            <div class="grid" style="gap: ${this.config.grid_gap}; ${infoBarPosition === "top" && this.config.info_bar?.show ? `margin-top: ${s2.infobar_gap || "6px"};` : ""}">
+                ${this.config.pv?.show !== false ? this._renderPV() : ""}
+                ${this.config.batterie?.show !== false ? this._renderBatterie() : ""}
+                ${this.config.haus?.show !== false ? this._renderHaus() : ""}
+                ${this.config.netz?.show !== false ? this._renderNetz() : ""}
             </div>
+            ${infoBarPosition === "bottom" ? x`
+                <div style="margin-top: ${s2.infobar_gap || "6px"};">
+                    ${this._renderInfoBar()}
+                </div>
+            ` : ""}
         `;
   }
 };
@@ -2235,6 +2758,10 @@ const _PVMonitorCardEditor = class _PVMonitorCardEditor extends i {
   constructor() {
     super(...arguments);
     this._activeTab = "general";
+    this._isInteracting = false;
+    this._localValues = /* @__PURE__ */ new Map();
+    this._autocompleteResults = /* @__PURE__ */ new Map();
+    this._showAutocomplete = /* @__PURE__ */ new Map();
   }
   setConfig(config) {
     this._config = config;
@@ -2273,6 +2800,110 @@ const _PVMonitorCardEditor = class _PVMonitorCardEditor extends i {
       composed: true
     });
     this.dispatchEvent(event);
+  }
+  _debouncedFireEvent() {
+    if (this._debounceTimer) {
+      window.clearTimeout(this._debounceTimer);
+    }
+    this._debounceTimer = window.setTimeout(() => {
+      this._fireEvent();
+      this._debounceTimer = void 0;
+    }, 1e3);
+  }
+  _renderTapActions(cardType) {
+    this._getT();
+    const config = cardType === "info_bar" ? this._config?.info_bar : this._config?.[cardType];
+    return x`
+            <div class="subsection">
+                <div class="section-header">
+                    <ha-icon icon="mdi:gesture-tap"></ha-icon>
+                    Tap Actions
+                </div>
+
+                ${this._renderActionSelector("Tap Action", [cardType, "tap_action"], config?.tap_action)}
+                ${this._renderActionSelector("Double Tap", [cardType, "double_tap_action"], config?.double_tap_action)}
+                ${this._renderActionSelector("Hold Action", [cardType, "hold_action"], config?.hold_action)}
+            </div>
+        `;
+  }
+  _renderActionSelector(label, path, action) {
+    const t2 = this._getT();
+    const actions = [
+      { value: "none", label: t2.editor.action_none || "None" },
+      { value: "more-info", label: t2.editor.action_more_info || "More Info" },
+      { value: "navigate", label: t2.editor.action_navigate || "Navigate" },
+      { value: "url", label: t2.editor.action_url || "URL" },
+      { value: "call-service", label: t2.editor.action_call_service || "Call Service" }
+    ];
+    return x`
+            <div class="option">
+                <div class="option-label">${label}</div>
+                <div class="option-control">
+                    <ha-combo-box
+                            .value=${action?.action || "none"}
+                            .items=${actions}
+                            item-value-path="value"
+                            item-label-path="label"
+                            @value-changed=${(ev) => this._updateTapAction(path, "action", ev.detail.value)}
+                    ></ha-combo-box>
+                </div>
+            </div>
+
+            ${action?.action === "navigate" ? x`
+                <div class="option">
+                    <div class="option-label">Navigation Path</div>
+                    <div class="option-control">
+                        <ha-textfield
+                                .value=${action.navigation_path || ""}
+                                placeholder="/lovelace/view"
+                                @input=${(ev) => this._updateTapAction(path, "navigation_path", ev.target.value)}
+                        ></ha-textfield>
+                    </div>
+                </div>
+            ` : ""}
+
+            ${action?.action === "url" ? x`
+                <div class="option">
+                    <div class="option-label">URL</div>
+                    <div class="option-control">
+                        <ha-textfield
+                                .value=${action.url_path || ""}
+                                placeholder="https://example.com"
+                                @input=${(ev) => this._updateTapAction(path, "url_path", ev.target.value)}
+                        ></ha-textfield>
+                    </div>
+                </div>
+            ` : ""}
+
+            ${action?.action === "call-service" ? x`
+                <div class="option">
+                    <div class="option-label">Service</div>
+                    <div class="option-control">
+                        <ha-textfield
+                                .value=${action.service || ""}
+                                placeholder="light.turn_on"
+                                @input=${(ev) => this._updateTapAction(path, "service", ev.target.value)}
+                        ></ha-textfield>
+                    </div>
+                </div>
+            ` : ""}
+        `;
+  }
+  _updateTapAction(path, key, value) {
+    if (!this._config) return;
+    const newConfig = JSON.parse(JSON.stringify(this._config));
+    let current = newConfig;
+    for (let i2 = 0; i2 < path.length; i2++) {
+      if (i2 === path.length - 1) {
+        if (!current[path[i2]]) current[path[i2]] = {};
+        current[path[i2]][key] = value;
+      } else {
+        if (!current[path[i2]]) current[path[i2]] = {};
+        current = current[path[i2]];
+      }
+    }
+    this._config = newConfig;
+    this._fireEvent();
   }
   _getT() {
     return getTranslations(this._config?.language);
@@ -2355,41 +2986,87 @@ const _PVMonitorCardEditor = class _PVMonitorCardEditor extends i {
         `;
   }
   _renderEntityPicker(label, path, value, helper) {
-    const entities = this.hass ? Object.keys(this.hass.states).sort() : [];
+    if (!this.hass) return x``;
+    const entities = Object.keys(this.hass.states).sort();
     const t2 = this._getT();
+    const pathKey = path.join(".");
+    const filteredEntities = this._autocompleteResults.get(pathKey) || [];
+    const showDropdown = this._showAutocomplete.get(pathKey) || false;
     return x`
-            <div class="option">
+            <div class="option" style="${showDropdown ? "z-index: 1000; position: relative;" : ""}">
                 <div class="option-label">
                     ${label}
                     ${helper ? x`<div class="info-text">${helper}</div>` : ""}
                 </div>
                 <div class="option-control">
-                    <ha-combo-box
-                            .hass=${this.hass}
-                            .value=${value || ""}
-                            .items=${entities}
-                            .label=${t2.editor.select_entity}
-                            item-value-path=""
-                            item-label-path=""
-                            allow-custom-value
-                            @value-changed=${(ev) => {
+                    <div class="autocomplete-wrapper">
+                        <ha-textfield
+                                .value=${value || ""}
+                                .placeholder=${t2.editor.select_entity}
+                                @input=${(ev) => {
+      const target = ev.target;
+      const inputValue = target.value;
+      const filtered = inputValue ? entities.filter((e2) => e2.toLowerCase().includes(inputValue.toLowerCase())).slice(0, 50) : [];
+      this._autocompleteResults.set(pathKey, filtered);
+      this._showAutocomplete.set(pathKey, filtered.length > 0);
+      this.requestUpdate();
       if (!this._config) return;
-      const newValue = ev.detail?.value || "";
       const newConfig = JSON.parse(JSON.stringify(this._config));
       let current = newConfig;
       for (let i2 = 0; i2 < path.length - 1; i2++) {
         if (!current[path[i2]]) current[path[i2]] = {};
         current = current[path[i2]];
       }
-      if (newValue === "") {
+      if (inputValue === "") {
         delete current[path[path.length - 1]];
       } else {
-        current[path[path.length - 1]] = newValue;
+        current[path[path.length - 1]] = inputValue;
       }
       this._config = newConfig;
-      this._fireEvent();
+      this._debouncedFireEvent();
     }}
-                    ></ha-combo-box>
+                                @focus=${() => {
+      const currentValue = value || "";
+      if (!currentValue) {
+        this._autocompleteResults.set(pathKey, entities.slice(0, 50));
+        this._showAutocomplete.set(pathKey, true);
+        this.requestUpdate();
+      }
+    }}
+                                @blur=${() => {
+      setTimeout(() => {
+        this._showAutocomplete.set(pathKey, false);
+        this.requestUpdate();
+      }, 200);
+    }}
+                        ></ha-textfield>
+
+                        ${showDropdown ? x`
+                            <div class="autocomplete-dropdown" @mousedown=${(ev) => ev.preventDefault()}>
+                                ${filteredEntities.map((entity) => x`
+                                    <div
+                                            class="autocomplete-item"
+                                            @click=${() => {
+      if (!this._config) return;
+      const newConfig = JSON.parse(JSON.stringify(this._config));
+      let current = newConfig;
+      for (let i2 = 0; i2 < path.length - 1; i2++) {
+        if (!current[path[i2]]) current[path[i2]] = {};
+        current = current[path[i2]];
+      }
+      current[path[path.length - 1]] = entity;
+      this._config = newConfig;
+      this._showAutocomplete.set(pathKey, false);
+      this._fireEvent();
+      this.requestUpdate();
+    }}
+                                    >
+                                        ${entity}
+                                    </div>
+                                `)}
+                            </div>
+                        ` : ""}
+                    </div>
                 </div>
             </div>
         `;
@@ -2519,10 +3196,44 @@ const _PVMonitorCardEditor = class _PVMonitorCardEditor extends i {
 
             <div class="section">
                 <div class="section-header">
-                    <ha-icon icon="mdi:palette"></ha-icon>
-                    ${t2.editor.theme}
+                    <ha-icon icon="mdi:link-variant"></ha-icon>
+                    ${t2.editor.central_entities}
                 </div>
-                ${this._renderThemeSelector()}
+                <div class="info-text" style="margin-bottom: 12px;">${t2.editor.central_entities_helper}</div>
+
+                ${this._renderEntityPicker(t2.editor.entity_pv_production, ["entities", "pv_production"], this._config?.entities?.pv_production, t2.editor.entity_pv_production_helper)}
+                ${this._renderEntityPicker(t2.editor.entity_battery_soc, ["entities", "battery_soc"], this._config?.entities?.battery_soc, t2.editor.entity_battery_soc_helper)}
+                ${this._renderEntityPicker(t2.editor.entity_battery_charge, ["entities", "battery_charge"], this._config?.entities?.battery_charge, t2.editor.entity_battery_charge_helper)}
+                ${this._renderEntityPicker(t2.editor.entity_battery_discharge, ["entities", "battery_discharge"], this._config?.entities?.battery_discharge, t2.editor.entity_battery_discharge_helper)}
+                ${this._renderEntityPicker(t2.editor.entity_house_consumption, ["entities", "house_consumption"], this._config?.entities?.house_consumption, t2.editor.entity_house_consumption_helper)}
+                ${this._renderEntityPicker(t2.editor.entity_grid_power, ["entities", "grid_power"], this._config?.entities?.grid_power, t2.editor.entity_grid_power_helper)}
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="section">
+                <div class="section-header">
+                    <ha-icon icon="mdi:cog"></ha-icon>
+                    ${t2.editor.central_config}
+                </div>
+                <div class="info-text" style="margin-bottom: 12px;">${t2.editor.central_config_helper}</div>
+
+                ${this._renderNumberfield(t2.editor.pv_max_power_label, ["pv_max_power"], this._config?.pv_max_power, 0, 1e5, 100, t2.editor.pv_max_power_helper)}
+                ${this._renderNumberfield(t2.editor.battery_capacity_label, ["battery_capacity"], this._config?.battery_capacity, 0, 1e5, 100, t2.editor.battery_capacity_label_helper)}
+                ${this._renderNumberfield(t2.editor.grid_threshold_label, ["grid_threshold"], this._config?.grid_threshold, 0, 1e3, 10, t2.editor.grid_threshold_helper)}
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="section">
+                <div class="section-header">
+                    <ha-icon icon="mdi:eye"></ha-icon>
+                    ${t2.editor.card_visibility}
+                </div>
+                ${this._renderSwitch(t2.editor.show_pv_card, ["pv", "show"], this._config?.pv?.show !== false)}
+                ${this._renderSwitch(t2.editor.show_battery_card, ["batterie", "show"], this._config?.batterie?.show !== false)}
+                ${this._renderSwitch(t2.editor.show_house_card, ["haus", "show"], this._config?.haus?.show !== false)}
+                ${this._renderSwitch(t2.editor.show_grid_card, ["netz", "show"], this._config?.netz?.show !== false)}
             </div>
 
             <div class="divider"></div>
@@ -2536,16 +3247,6 @@ const _PVMonitorCardEditor = class _PVMonitorCardEditor extends i {
                 ${this._renderTextfield(t2.editor.subtitle, ["subtitle"], this._config?.subtitle, t2.editor.subtitle_placeholder, t2.editor.subtitle_helper)}
                 ${this._renderIconPicker(t2.editor.icon, ["icon"], this._config?.icon, t2.editor.icon_helper)}
             </div>
-
-            <div class="divider"></div>
-
-            <div class="section">
-                <div class="section-header">
-                    <ha-icon icon="mdi:grid"></ha-icon>
-                    ${t2.editor.layout}
-                </div>
-                ${this._renderTextfield(t2.editor.grid_gap, ["grid_gap"], this._config?.grid_gap, t2.editor.grid_gap_placeholder, t2.editor.grid_gap_helper)}
-            </div>
         `;
   }
   _renderInfoBarTab() {
@@ -2557,9 +3258,77 @@ const _PVMonitorCardEditor = class _PVMonitorCardEditor extends i {
                     ${t2.editor.infobar_settings}
                 </div>
                 ${this._renderSwitch(t2.editor.enable_infobar, ["info_bar", "show"], this._config?.info_bar?.show)}
+
+                ${this._config?.info_bar?.show ? x`
+                    <div class="option">
+                        <div class="option-label">${t2.editor.infobar_position}</div>
+                        <div class="option-control">
+                            <ha-combo-box
+                                    .value=${this._config?.info_bar?.position || "top"}
+                                    .items=${[
+      { value: "top", label: t2.editor.position_top },
+      { value: "bottom", label: t2.editor.position_bottom }
+    ]}
+                                    item-value-path="value"
+                                    item-label-path="label"
+                                    @value-changed=${(ev) => {
+      if (!this._config) return;
+      const newValue = ev.detail?.value;
+      if (!newValue) return;
+      const newConfig = { ...this._config };
+      if (!newConfig.info_bar) newConfig.info_bar = {};
+      newConfig.info_bar.position = newValue;
+      this._config = newConfig;
+      this._fireEvent();
+    }}
+                            ></ha-combo-box>
+                        </div>
+                    </div>
+                ` : ""}
             </div>
 
             ${this._config?.info_bar?.show ? x`
+                <div class="divider"></div>
+
+                ${this._renderTapActions("info_bar")}
+
+                <div class="divider"></div>
+
+                <div class="section">
+                    <div class="section-header">
+                        <ha-icon icon="mdi:calculator"></ha-icon>
+                        ${t2.editor.calculation_mode}
+                    </div>
+                    <div class="info-text" style="margin-bottom: 12px;">${t2.editor.calculation_mode_helper}</div>
+
+                    <div class="option">
+                        <div class="option-label">${t2.editor.calculation_mode}</div>
+                        <div class="option-control">
+                            <ha-combo-box
+                                    .value=${this._config?.info_bar?.calculation_mode || "autarky"}
+                                    .items=${[
+      { value: "autarky", label: t2.editor.mode_autarky },
+      { value: "self_consumption", label: t2.editor.mode_self_consumption }
+    ]}
+                                    item-value-path="value"
+                                    item-label-path="label"
+                                    @value-changed=${(ev) => {
+      if (!this._config) return;
+      const newValue = ev.detail?.value;
+      if (!newValue) return;
+      const newConfig = { ...this._config };
+      if (!newConfig.info_bar) newConfig.info_bar = {};
+      newConfig.info_bar.calculation_mode = newValue;
+      this._config = newConfig;
+      this._fireEvent();
+    }}
+                            ></ha-combo-box>
+                        </div>
+                    </div>
+
+                    ${this._renderSwitch(t2.editor.calculate_battery_times, ["info_bar", "calculate_battery_times"], this._config?.info_bar?.calculate_battery_times, t2.editor.calculate_battery_times_helper)}
+                </div>
+
                 <div class="divider"></div>
 
                 <div class="section">
@@ -2609,11 +3378,9 @@ const _PVMonitorCardEditor = class _PVMonitorCardEditor extends i {
                     <ha-icon icon="mdi:solar-panel"></ha-icon>
                     ${t2.editor.pv_system}
                 </div>
-                ${this._renderEntityPicker(t2.editor.pv_entity, ["pv", "entity"], this._config?.pv?.entity, t2.editor.pv_entity_helper)}
                 ${this._renderIconPicker(t2.editor.icon_label, ["pv", "icon"], this._config?.pv?.icon)}
                 ${this._renderSwitch(t2.editor.enable_animation, ["pv", "animation"], this._config?.pv?.animation)}
                 ${this._renderSwitch(t2.editor.icon_rotation, ["pv", "icon_rotation"], this._config?.pv?.icon_rotation, t2.editor.icon_rotation_helper)}
-                ${this._renderNumberfield(t2.editor.max_power, ["pv", "max_power"], this._config?.pv?.max_power, 0, 1e5, 100, t2.editor.max_power_helper)}
             </div>
 
             <div class="divider"></div>
@@ -2628,6 +3395,10 @@ const _PVMonitorCardEditor = class _PVMonitorCardEditor extends i {
                 ${this._renderEntityPicker(t2.editor.tertiary_entity, ["pv", "tertiary_entity"], this._config?.pv?.tertiary_entity)}
                 ${this._renderTextfield(t2.editor.tertiary_text, ["pv", "tertiary_text"], this._config?.pv?.tertiary_text)}
             </div>
+
+            <div class="divider"></div>
+
+            ${this._renderTapActions("pv")}
 
             <div class="divider"></div>
 
@@ -2652,11 +3423,6 @@ const _PVMonitorCardEditor = class _PVMonitorCardEditor extends i {
                     <ha-icon icon="mdi:battery"></ha-icon>
                     ${t2.editor.battery}
                 </div>
-                ${this._renderEntityPicker(t2.editor.battery_entity, ["batterie", "entity"], this._config?.batterie?.entity, t2.editor.battery_entity_helper)}
-                ${this._renderEntityPicker(t2.editor.charge_entity, ["batterie", "ladung_entity"], this._config?.batterie?.ladung_entity, t2.editor.charge_entity_helper)}
-                ${this._renderEntityPicker(t2.editor.discharge_entity, ["batterie", "entladung_entity"], this._config?.batterie?.entladung_entity, t2.editor.discharge_entity_helper)}
-                ${this._renderNumberfield(t2.editor.battery_capacity, ["batterie", "battery_capacity"], this._config?.batterie?.battery_capacity, 0, 1e5, 100, t2.editor.battery_capacity_helper)}
-                ${this._renderSwitch(t2.editor.calculate_runtime, ["batterie", "calculate_runtime"], this._config?.batterie?.calculate_runtime, t2.editor.calculate_runtime_helper)}
                 ${this._renderIconPicker(t2.editor.icon_label, ["batterie", "icon"], this._config?.batterie?.icon, t2.editor.icon_auto_helper)}
                 ${this._renderSwitch(t2.editor.enable_animation, ["batterie", "animation"], this._config?.batterie?.animation)}
             </div>
@@ -2673,6 +3439,10 @@ const _PVMonitorCardEditor = class _PVMonitorCardEditor extends i {
                 ${this._renderEntityPicker(t2.editor.tertiary_entity, ["batterie", "tertiary_entity"], this._config?.batterie?.tertiary_entity)}
                 ${this._renderTextfield(t2.editor.tertiary_text, ["batterie", "tertiary_text"], this._config?.batterie?.tertiary_text)}
             </div>
+
+            <div class="divider"></div>
+
+            ${this._renderTapActions("batterie")}
 
             <div class="divider"></div>
 
@@ -2697,7 +3467,6 @@ const _PVMonitorCardEditor = class _PVMonitorCardEditor extends i {
                     <ha-icon icon="mdi:home"></ha-icon>
                     ${t2.editor.house_consumption}
                 </div>
-                ${this._renderEntityPicker(t2.editor.house_entity, ["haus", "entity"], this._config?.haus?.entity, t2.editor.house_entity_helper)}
                 ${this._renderIconPicker(t2.editor.icon_label, ["haus", "icon"], this._config?.haus?.icon)}
                 ${this._renderSwitch(t2.editor.enable_animation, ["haus", "animation"], this._config?.haus?.animation)}
             </div>
@@ -2714,6 +3483,10 @@ const _PVMonitorCardEditor = class _PVMonitorCardEditor extends i {
                 ${this._renderEntityPicker(t2.editor.tertiary_entity, ["haus", "tertiary_entity"], this._config?.haus?.tertiary_entity)}
                 ${this._renderTextfield(t2.editor.tertiary_text, ["haus", "tertiary_text"], this._config?.haus?.tertiary_text)}
             </div>
+
+            <div class="divider"></div>
+
+            ${this._renderTapActions("haus")}
 
             <div class="divider"></div>
 
@@ -2738,10 +3511,8 @@ const _PVMonitorCardEditor = class _PVMonitorCardEditor extends i {
                     <ha-icon icon="mdi:transmission-tower"></ha-icon>
                     ${t2.editor.grid}
                 </div>
-                ${this._renderEntityPicker(t2.editor.grid_entity, ["netz", "entity"], this._config?.netz?.entity, t2.editor.grid_entity_helper)}
                 ${this._renderIconPicker(t2.editor.icon_label, ["netz", "icon"], this._config?.netz?.icon)}
                 ${this._renderSwitch(t2.editor.enable_animation, ["netz", "animation"], this._config?.netz?.animation)}
-                ${this._renderNumberfield(t2.editor.threshold, ["netz", "threshold"], this._config?.netz?.threshold, 0, 1e3, 10, t2.editor.threshold_helper)}
             </div>
 
             <div class="divider"></div>
@@ -2771,6 +3542,10 @@ const _PVMonitorCardEditor = class _PVMonitorCardEditor extends i {
 
             <div class="divider"></div>
 
+            ${this._renderTapActions("netz")}
+
+            <div class="divider"></div>
+
             <div class="section">
                 <div class="section-header">
                     <ha-icon icon="mdi:palette"></ha-icon>
@@ -2787,6 +3562,28 @@ const _PVMonitorCardEditor = class _PVMonitorCardEditor extends i {
   _renderStylingTab() {
     const t2 = this._getT();
     return x`
+            <div class="section">
+                <div class="section-header">
+                    <ha-icon icon="mdi:palette"></ha-icon>
+                    ${t2.editor.theme}
+                </div>
+                ${this._renderThemeSelector()}
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="section">
+                <div class="section-header">
+                    <ha-icon icon="mdi:grid"></ha-icon>
+                    ${t2.editor.layout}
+                </div>
+                ${this._renderTextfield(t2.editor.grid_gap, ["grid_gap"], this._config?.grid_gap, t2.editor.grid_gap_placeholder, t2.editor.grid_gap_helper)}
+                ${this._renderTextfield(t2.editor.header_margin_bottom, ["style", "header_margin_bottom"], this._config?.style?.header_margin_bottom, "12px", t2.editor.header_margin_bottom_helper)}
+                ${this._renderTextfield(t2.editor.infobar_gap, ["style", "infobar_gap"], this._config?.style?.infobar_gap, "6px", t2.editor.infobar_gap_helper)}
+            </div>
+
+            <div class="divider"></div>
+
             <div class="section">
                 <div class="section-header">
                     <ha-icon icon="mdi:card"></ha-icon>
@@ -2923,11 +3720,23 @@ const _PVMonitorCardEditor = class _PVMonitorCardEditor extends i {
 _PVMonitorCardEditor.styles = i$3`
         :host {
             display: block;
+            position: relative;
+            z-index: 1;
         }
+
+        /* Critical fix: Ensure entity picker dropdowns appear above everything */
+        :host ::slotted(*),
+        :host * {
+            --ha-entity-picker-z-index: 9999;
+            --mdc-menu-z-index: 9999;
+            --mdc-dialog-z-index: 9999;
+        }
+
         .card-config {
             display: flex;
             flex-direction: column;
             gap: 16px;
+            position: relative;
         }
         .tabs {
             display: flex;
@@ -2963,6 +3772,8 @@ _PVMonitorCardEditor.styles = i$3`
         }
         .section {
             margin-bottom: 24px;
+            position: relative;
+            z-index: 1;
         }
         .section-header {
             font-size: 16px;
@@ -2982,6 +3793,8 @@ _PVMonitorCardEditor.styles = i$3`
             justify-content: space-between;
             padding: 8px 0;
             gap: 16px;
+            position: relative;
+            z-index: 1;
         }
         .option-label {
             flex: 1;
@@ -2991,10 +3804,82 @@ _PVMonitorCardEditor.styles = i$3`
         .option-control {
             flex: 0 0 auto;
             min-width: 200px;
+            position: relative;
         }
+
+        /* Fix entity picker autocomplete being covered by dropdown */
+        ha-entity-picker,
+        ha-selector-entity {
+            position: relative;
+            z-index: 100;
+        }
+
+        ha-entity-picker[opened],
+        ha-selector-entity[opened] {
+            z-index: 1000;
+        }
+
+        /* Ensure combo-box dropdowns have proper z-index */
+        ha-combo-box {
+            position: relative;
+        }
+
         ha-textfield, ha-select {
             width: 100%;
         }
+
+        /* Fix dropdown text visibility - try different approach */
+        ha-combo-box {
+            color: #e1e1e1 !important;
+        }
+
+        ha-combo-box mwc-list-item {
+            color: #e1e1e1 !important;
+            background-color: #2c2c2c !important;
+        }
+
+        ha-combo-box mwc-menu {
+            background-color: #2c2c2c !important;
+        }
+
+        /* Custom autocomplete dropdown */
+        .autocomplete-wrapper {
+            position: relative;
+            width: 100%;
+            z-index: 100;
+        }
+
+        .autocomplete-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: auto;
+            min-width: 400px;
+            max-height: 200px;
+            overflow-y: auto;
+            background: #1c1c1c;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 4px;
+            margin-top: 4px;
+            z-index: 10000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+        }
+
+        .autocomplete-item {
+            padding: 8px 12px;
+            cursor: pointer;
+            color: #e1e1e1;
+            font-size: 14px;
+            background: #1c1c1c;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .autocomplete-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
         .subsection {
             margin-left: 16px;
             padding-left: 16px;
@@ -3028,6 +3913,15 @@ __decorateClass([
 __decorateClass([
   r()
 ], PVMonitorCardEditor.prototype, "_activeTab");
+__decorateClass([
+  r()
+], PVMonitorCardEditor.prototype, "_isInteracting");
+__decorateClass([
+  r()
+], PVMonitorCardEditor.prototype, "_autocompleteResults");
+__decorateClass([
+  r()
+], PVMonitorCardEditor.prototype, "_showAutocomplete");
 customElements.define("pv-monitor-card-editor", PVMonitorCardEditor);
 const pvMonitorCardEditor = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,

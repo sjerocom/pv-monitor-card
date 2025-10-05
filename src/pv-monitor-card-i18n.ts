@@ -35,12 +35,58 @@ export interface Translations {
         grid_gap: string;
         grid_gap_placeholder: string;
         grid_gap_helper: string;
+        header_margin_bottom: string;
+        header_margin_bottom_helper: string;
+        infobar_gap: string;
+        infobar_gap_helper: string;
         language: string;
         language_helper: string;
+
+        // Central Entities
+        central_entities: string;
+        central_entities_helper: string;
+        entity_pv_production: string;
+        entity_pv_production_helper: string;
+        entity_battery_soc: string;
+        entity_battery_soc_helper: string;
+        entity_battery_charge: string;
+        entity_battery_charge_helper: string;
+        entity_battery_discharge: string;
+        entity_battery_discharge_helper: string;
+        entity_house_consumption: string;
+        entity_house_consumption_helper: string;
+        entity_grid_power: string;
+        entity_grid_power_helper: string;
+
+        // Central Configuration
+        central_config: string;
+        central_config_helper: string;
+        pv_max_power_label: string;
+        pv_max_power_helper: string;
+        battery_capacity_label: string;
+        battery_capacity_label_helper: string;
+        grid_threshold_label: string;
+        grid_threshold_helper: string;
+
+        // Show/Hide Cards
+        card_visibility: string;
+        show_pv_card: string;
+        show_battery_card: string;
+        show_house_card: string;
+        show_grid_card: string;
 
         // Info Bar Tab
         infobar_settings: string;
         enable_infobar: string;
+        infobar_position: string;
+        position_top: string;
+        position_bottom: string;
+        calculation_mode: string;
+        calculation_mode_helper: string;
+        mode_autarky: string;
+        mode_self_consumption: string;
+        calculate_battery_times: string;
+        calculate_battery_times_helper: string;
         item: string;
         entity: string;
         icon_label: string;
@@ -150,6 +196,13 @@ export interface Translations {
         select_entity: string;
         select_icon: string;
 
+        // Action Labels
+        action_none: string;
+        action_more_info: string;
+        action_navigate: string;
+        action_url: string;
+        action_call_service: string;
+
         // Theme
         theme: string;
         theme_helper: string;
@@ -193,11 +246,54 @@ export const translations: Record<SupportedLanguage, Translations> = {
             grid_gap: 'Grid Abstand',
             grid_gap_placeholder: '6px',
             grid_gap_helper: 'Abstand zwischen den Karten.',
+            header_margin_bottom: 'Abstand Header zu Karten/Info Bar',
+            header_margin_bottom_helper: 'Abstand zwischen Titel/Untertitel und Info Bar/Karten',
+            infobar_gap: 'Abstand Info Bar zu Karten',
+            infobar_gap_helper: 'Abstand zwischen Info Bar und den 4 Karten',
             language: 'Sprache',
             language_helper: 'Wählen Sie die Anzeigesprache',
 
+            central_entities: 'Zentrale Entities',
+            central_entities_helper: 'Definieren Sie hier die Haupt-Entities für Berechnungen',
+            entity_pv_production: 'PV-Produktion Entity',
+            entity_pv_production_helper: 'Entity für PV-Leistung (wird für Berechnungen verwendet)',
+            entity_battery_soc: 'Batterie SOC Entity',
+            entity_battery_soc_helper: 'Entity für Batterieladezustand in % (für Berechnungen)',
+            entity_battery_charge: 'Batterie Laden Entity',
+            entity_battery_charge_helper: 'Entity für Batterie-Ladeleistung (für Berechnungen)',
+            entity_battery_discharge: 'Batterie Entladen Entity',
+            entity_battery_discharge_helper: 'Entity für Batterie-Entladeleistung (für Berechnungen)',
+            entity_house_consumption: 'Hausverbrauch Entity',
+            entity_house_consumption_helper: 'Entity für Hausverbrauch (für Autarkie-Berechnung, optional)',
+            entity_grid_power: 'Netz Entity',
+            entity_grid_power_helper: 'Entity für Netzbezug/Einspeisung (für Berechnungen)',
+
+            central_config: 'Zentrale Konfiguration',
+            central_config_helper: 'Diese Werte gelten für alle Karten',
+            pv_max_power_label: 'PV Max. Leistung (W)',
+            pv_max_power_helper: 'Maximale PV-Leistung für Animationen',
+            battery_capacity_label: 'Batteriekapazität (Wh)',
+            battery_capacity_label_helper: 'Kapazität der Batterie (z.B. 10000 für 10 kWh)',
+            grid_threshold_label: 'Netz-Schwellwert (W)',
+            grid_threshold_helper: 'Unterhalb dieses Werts wird "Neutral" angezeigt',
+
+            card_visibility: 'Karten-Sichtbarkeit',
+            show_pv_card: 'PV-Karte anzeigen',
+            show_battery_card: 'Batterie-Karte anzeigen',
+            show_house_card: 'Haus-Karte anzeigen',
+            show_grid_card: 'Netz-Karte anzeigen',
+
             infobar_settings: 'Info Bar Einstellungen',
             enable_infobar: 'Info Bar aktivieren',
+            infobar_position: 'Info Bar Position',
+            position_top: 'Oben (über den Karten)',
+            position_bottom: 'Unten (unter den Karten)',
+            calculation_mode: 'Berechnung für Item 1',
+            calculation_mode_helper: 'Wählen Sie: Autarkie oder Eigenverbrauch',
+            mode_autarky: 'Autarkie (Selbstversorgungsgrad)',
+            mode_self_consumption: 'Eigenverbrauch (Selbstnutzungsgrad)',
+            calculate_battery_times: 'Batteriezeiten berechnen',
+            calculate_battery_times_helper: 'Automatische Berechnung für Item 2 (Restlaufzeit) und Item 3 (Restladezeit)',
             item: 'Item',
             entity: 'Entity',
             icon_label: 'Icon',
@@ -299,6 +395,12 @@ export const translations: Record<SupportedLanguage, Translations> = {
             select_entity: 'Entity auswählen',
             select_icon: 'Icon auswählen',
 
+            action_none: 'Keine',
+            action_more_info: 'Mehr Info',
+            action_navigate: 'Navigieren',
+            action_url: 'URL',
+            action_call_service: 'Service aufrufen',
+
             theme: 'Theme',
             theme_helper: 'Wählen Sie ein vordefiniertes Farbthema',
             select_theme: 'Theme auswählen',
@@ -338,11 +440,54 @@ export const translations: Record<SupportedLanguage, Translations> = {
             grid_gap: 'Grid Gap',
             grid_gap_placeholder: '6px',
             grid_gap_helper: 'Space between cards.',
+            header_margin_bottom: 'Header to Cards/Info Bar Gap',
+            header_margin_bottom_helper: 'Space between title/subtitle and info bar/cards',
+            infobar_gap: 'Info Bar to Cards Gap',
+            infobar_gap_helper: 'Space between info bar and the 4 cards',
             language: 'Language',
             language_helper: 'Select display language',
 
+            central_entities: 'Central Entities',
+            central_entities_helper: 'Define the main entities for calculations here',
+            entity_pv_production: 'PV Production Entity',
+            entity_pv_production_helper: 'Entity for PV power (used for calculations)',
+            entity_battery_soc: 'Battery SOC Entity',
+            entity_battery_soc_helper: 'Entity for battery state of charge in % (for calculations)',
+            entity_battery_charge: 'Battery Charge Entity',
+            entity_battery_charge_helper: 'Entity for battery charging power (for calculations)',
+            entity_battery_discharge: 'Battery Discharge Entity',
+            entity_battery_discharge_helper: 'Entity for battery discharging power (for calculations)',
+            entity_house_consumption: 'House Consumption Entity',
+            entity_house_consumption_helper: 'Entity for house consumption (for autarky calculation, optional)',
+            entity_grid_power: 'Grid Entity',
+            entity_grid_power_helper: 'Entity for grid consumption/feed-in (for calculations)',
+
+            central_config: 'Central Configuration',
+            central_config_helper: 'These values apply to all cards',
+            pv_max_power_label: 'PV Max Power (W)',
+            pv_max_power_helper: 'Maximum PV power for animations',
+            battery_capacity_label: 'Battery Capacity (Wh)',
+            battery_capacity_label_helper: 'Battery capacity (e.g. 10000 for 10 kWh)',
+            grid_threshold_label: 'Grid Threshold (W)',
+            grid_threshold_helper: 'Below this value "Neutral" is displayed',
+
+            card_visibility: 'Card Visibility',
+            show_pv_card: 'Show PV Card',
+            show_battery_card: 'Show Battery Card',
+            show_house_card: 'Show House Card',
+            show_grid_card: 'Show Grid Card',
+
             infobar_settings: 'Info Bar Settings',
             enable_infobar: 'Enable Info Bar',
+            infobar_position: 'Info Bar Position',
+            position_top: 'Top (above cards)',
+            position_bottom: 'Bottom (below cards)',
+            calculation_mode: 'Calculation for Item 1',
+            calculation_mode_helper: 'Choose: Autarky or Self-Consumption',
+            mode_autarky: 'Autarky (Self-Sufficiency)',
+            mode_self_consumption: 'Self-Consumption (Self-Usage)',
+            calculate_battery_times: 'Calculate Battery Times',
+            calculate_battery_times_helper: 'Automatic calculation for Item 2 (runtime) and Item 3 (charge time)',
             item: 'Item',
             entity: 'Entity',
             icon_label: 'Icon',
@@ -444,6 +589,12 @@ export const translations: Record<SupportedLanguage, Translations> = {
             select_entity: 'Select Entity',
             select_icon: 'Select Icon',
 
+            action_none: 'None',
+            action_more_info: 'More Info',
+            action_navigate: 'Navigate',
+            action_url: 'URL',
+            action_call_service: 'Call Service',
+
             theme: 'Theme',
             theme_helper: 'Select a predefined color theme',
             select_theme: 'Select Theme',
@@ -483,11 +634,54 @@ export const translations: Record<SupportedLanguage, Translations> = {
             grid_gap: 'Espacement Grille',
             grid_gap_placeholder: '6px',
             grid_gap_helper: 'Espace entre les cartes.',
+            header_margin_bottom: 'Espace En-tête vers Cartes/Barre Info',
+            header_margin_bottom_helper: 'Espace entre titre/sous-titre et barre info/cartes',
+            infobar_gap: 'Espace Barre Info vers Cartes',
+            infobar_gap_helper: 'Espace entre la barre info et les 4 cartes',
             language: 'Langue',
             language_helper: 'Sélectionner la langue d\'affichage',
 
+            central_entities: 'Entités Centrales',
+            central_entities_helper: 'Définissez ici les entités principales pour les calculs',
+            entity_pv_production: 'Entité Production PV',
+            entity_pv_production_helper: 'Entité pour la puissance PV (utilisée pour les calculs)',
+            entity_battery_soc: 'Entité SOC Batterie',
+            entity_battery_soc_helper: 'Entité pour l\'état de charge de la batterie en % (pour les calculs)',
+            entity_battery_charge: 'Entité Charge Batterie',
+            entity_battery_charge_helper: 'Entité pour la puissance de charge (pour les calculs)',
+            entity_battery_discharge: 'Entité Décharge Batterie',
+            entity_battery_discharge_helper: 'Entité pour la puissance de décharge (pour les calculs)',
+            entity_house_consumption: 'Entité Consommation Maison',
+            entity_house_consumption_helper: 'Entité pour la consommation maison (pour calcul autosuffisance, optionnel)',
+            entity_grid_power: 'Entité Réseau',
+            entity_grid_power_helper: 'Entité pour consommation/injection réseau (pour les calculs)',
+
+            central_config: 'Configuration Centrale',
+            central_config_helper: 'Ces valeurs s\'appliquent à toutes les cartes',
+            pv_max_power_label: 'Puissance Max PV (W)',
+            pv_max_power_helper: 'Puissance PV maximale pour les animations',
+            battery_capacity_label: 'Capacité Batterie (Wh)',
+            battery_capacity_label_helper: 'Capacité de la batterie (ex: 10000 pour 10 kWh)',
+            grid_threshold_label: 'Seuil Réseau (W)',
+            grid_threshold_helper: 'En dessous de cette valeur "Neutre" est affiché',
+
+            card_visibility: 'Visibilité des Cartes',
+            show_pv_card: 'Afficher Carte PV',
+            show_battery_card: 'Afficher Carte Batterie',
+            show_house_card: 'Afficher Carte Maison',
+            show_grid_card: 'Afficher Carte Réseau',
+
             infobar_settings: 'Paramètres Barre d\'Info',
             enable_infobar: 'Activer la Barre d\'Info',
+            infobar_position: 'Position Barre d\'Info',
+            position_top: 'Haut (au-dessus des cartes)',
+            position_bottom: 'Bas (en dessous des cartes)',
+            calculation_mode: 'Calcul pour Élément 1',
+            calculation_mode_helper: 'Choisir: Autosuffisance ou Autoconsommation',
+            mode_autarky: 'Autosuffisance',
+            mode_self_consumption: 'Autoconsommation',
+            calculate_battery_times: 'Calculer Temps Batterie',
+            calculate_battery_times_helper: 'Calcul automatique pour Élément 2 (autonomie) et Élément 3 (temps de charge)',
             item: 'Élément',
             entity: 'Entité',
             icon_label: 'Icône',
@@ -589,6 +783,12 @@ export const translations: Record<SupportedLanguage, Translations> = {
             select_entity: 'Sélectionner Entité',
             select_icon: 'Sélectionner Icône',
 
+            action_none: 'Aucune',
+            action_more_info: 'Plus d\'Info',
+            action_navigate: 'Naviguer',
+            action_url: 'URL',
+            action_call_service: 'Appeler Service',
+
             theme: 'Thème',
             theme_helper: 'Sélectionner un thème de couleur prédéfini',
             select_theme: 'Sélectionner Thème',
@@ -628,11 +828,54 @@ export const translations: Record<SupportedLanguage, Translations> = {
             grid_gap: 'Spaziatura Griglia',
             grid_gap_placeholder: '6px',
             grid_gap_helper: 'Spazio tra le schede.',
+            header_margin_bottom: 'Spazio Intestazione a Schede/Barra Info',
+            header_margin_bottom_helper: 'Spazio tra titolo/sottotitolo e barra info/schede',
+            infobar_gap: 'Spazio Barra Info a Schede',
+            infobar_gap_helper: 'Spazio tra barra info e le 4 schede',
             language: 'Lingua',
             language_helper: 'Seleziona lingua di visualizzazione',
 
+            central_entities: 'Entità Centrali',
+            central_entities_helper: 'Definisci qui le entità principali per i calcoli',
+            entity_pv_production: 'Entità Produzione FV',
+            entity_pv_production_helper: 'Entità per potenza FV (usata per i calcoli)',
+            entity_battery_soc: 'Entità SOC Batteria',
+            entity_battery_soc_helper: 'Entità per stato di carica batteria in % (per i calcoli)',
+            entity_battery_charge: 'Entità Carica Batteria',
+            entity_battery_charge_helper: 'Entità per potenza di carica (per i calcoli)',
+            entity_battery_discharge: 'Entità Scarica Batteria',
+            entity_battery_discharge_helper: 'Entità per potenza di scarica (per i calcoli)',
+            entity_house_consumption: 'Entità Consumo Casa',
+            entity_house_consumption_helper: 'Entità per consumo casa (per calcolo autosufficienza, opzionale)',
+            entity_grid_power: 'Entità Rete',
+            entity_grid_power_helper: 'Entità per consumo/immissione rete (per i calcoli)',
+
+            central_config: 'Configurazione Centrale',
+            central_config_helper: 'Questi valori si applicano a tutte le schede',
+            pv_max_power_label: 'Potenza Max FV (W)',
+            pv_max_power_helper: 'Potenza FV massima per le animazioni',
+            battery_capacity_label: 'Capacità Batteria (Wh)',
+            battery_capacity_label_helper: 'Capacità della batteria (es: 10000 per 10 kWh)',
+            grid_threshold_label: 'Soglia Rete (W)',
+            grid_threshold_helper: 'Sotto questo valore viene visualizzato "Neutrale"',
+
+            card_visibility: 'Visibilità Schede',
+            show_pv_card: 'Mostra Scheda FV',
+            show_battery_card: 'Mostra Scheda Batteria',
+            show_house_card: 'Mostra Scheda Casa',
+            show_grid_card: 'Mostra Scheda Rete',
+
             infobar_settings: 'Impostazioni Barra Info',
             enable_infobar: 'Attiva Barra Info',
+            infobar_position: 'Posizione Barra Info',
+            position_top: 'Alto (sopra le schede)',
+            position_bottom: 'Basso (sotto le schede)',
+            calculation_mode: 'Calcolo per Elemento 1',
+            calculation_mode_helper: 'Scegli: Autosufficienza o Autoconsumo',
+            mode_autarky: 'Autosufficienza',
+            mode_self_consumption: 'Autoconsumo',
+            calculate_battery_times: 'Calcola Tempi Batteria',
+            calculate_battery_times_helper: 'Calcolo automatico per Elemento 2 (autonomia) e Elemento 3 (tempo di ricarica)',
             item: 'Elemento',
             entity: 'Entità',
             icon_label: 'Icona',
@@ -734,6 +977,12 @@ export const translations: Record<SupportedLanguage, Translations> = {
             select_entity: 'Seleziona Entità',
             select_icon: 'Seleziona Icona',
 
+            action_none: 'Nessuna',
+            action_more_info: 'Più Info',
+            action_navigate: 'Naviga',
+            action_url: 'URL',
+            action_call_service: 'Chiama Servizio',
+
             theme: 'Tema',
             theme_helper: 'Seleziona un tema di colori predefinito',
             select_theme: 'Seleziona Tema',
@@ -773,11 +1022,54 @@ export const translations: Record<SupportedLanguage, Translations> = {
             grid_gap: 'Espaciado Cuadrícula',
             grid_gap_placeholder: '6px',
             grid_gap_helper: 'Espacio entre tarjetas.',
+            header_margin_bottom: 'Espacio Encabezado a Tarjetas/Barra Info',
+            header_margin_bottom_helper: 'Espacio entre título/subtítulo y barra info/tarjetas',
+            infobar_gap: 'Espacio Barra Info a Tarjetas',
+            infobar_gap_helper: 'Espacio entre barra info y las 4 tarjetas',
             language: 'Idioma',
             language_helper: 'Seleccionar idioma de visualización',
 
+            central_entities: 'Entidades Centrales',
+            central_entities_helper: 'Defina aquí las entidades principales para los cálculos',
+            entity_pv_production: 'Entidad Producción FV',
+            entity_pv_production_helper: 'Entidad para potencia FV (usada para cálculos)',
+            entity_battery_soc: 'Entidad SOC Batería',
+            entity_battery_soc_helper: 'Entidad para estado de carga de batería en % (para cálculos)',
+            entity_battery_charge: 'Entidad Carga Batería',
+            entity_battery_charge_helper: 'Entidad para potencia de carga (para cálculos)',
+            entity_battery_discharge: 'Entidad Descarga Batería',
+            entity_battery_discharge_helper: 'Entidad para potencia de descarga (para cálculos)',
+            entity_house_consumption: 'Entidad Consumo Casa',
+            entity_house_consumption_helper: 'Entidad para consumo casa (para cálculo autosuficiencia, opcional)',
+            entity_grid_power: 'Entidad Red',
+            entity_grid_power_helper: 'Entidad para consumo/inyección red (para cálculos)',
+
+            central_config: 'Configuración Central',
+            central_config_helper: 'Estos valores se aplican a todas las tarjetas',
+            pv_max_power_label: 'Potencia Máx FV (W)',
+            pv_max_power_helper: 'Potencia FV máxima para animaciones',
+            battery_capacity_label: 'Capacidad Batería (Wh)',
+            battery_capacity_label_helper: 'Capacidad de la batería (ej: 10000 para 10 kWh)',
+            grid_threshold_label: 'Umbral Red (W)',
+            grid_threshold_helper: 'Por debajo de este valor se muestra "Neutro"',
+
+            card_visibility: 'Visibilidad Tarjetas',
+            show_pv_card: 'Mostrar Tarjeta FV',
+            show_battery_card: 'Mostrar Tarjeta Batería',
+            show_house_card: 'Mostrar Tarjeta Casa',
+            show_grid_card: 'Mostrar Tarjeta Red',
+
             infobar_settings: 'Configuración Barra Info',
             enable_infobar: 'Activar Barra Info',
+            infobar_position: 'Posición Barra Info',
+            position_top: 'Arriba (sobre las tarjetas)',
+            position_bottom: 'Abajo (debajo de las tarjetas)',
+            calculation_mode: 'Cálculo para Elemento 1',
+            calculation_mode_helper: 'Elegir: Autosuficiencia o Autoconsumo',
+            mode_autarky: 'Autosuficiencia',
+            mode_self_consumption: 'Autoconsumo',
+            calculate_battery_times: 'Calcular Tiempos Batería',
+            calculate_battery_times_helper: 'Cálculo automático para Elemento 2 (autonomía) y Elemento 3 (tiempo de carga)',
             item: 'Elemento',
             entity: 'Entidad',
             icon_label: 'Icono',
@@ -878,6 +1170,12 @@ export const translations: Record<SupportedLanguage, Translations> = {
 
             select_entity: 'Seleccionar Entidad',
             select_icon: 'Seleccionar Icono',
+
+            action_none: 'Ninguna',
+            action_more_info: 'Más Info',
+            action_navigate: 'Navegar',
+            action_url: 'URL',
+            action_call_service: 'Llamar Servicio',
 
             theme: 'Tema',
             theme_helper: 'Seleccionar un tema de colores predefinido',

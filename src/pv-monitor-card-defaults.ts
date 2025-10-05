@@ -20,8 +20,19 @@ export function getDefaultConfig(config: PVMonitorCardConfig): PVMonitorCardConf
         show_icon: themedConfig.show_icon !== false,
         grid_gap: themedConfig.grid_gap ?? '6px',
 
+        // Central entities - keep as is if provided
+        entities: themedConfig.entities,
+
+        // Central configuration values
+        pv_max_power: themedConfig.pv_max_power ?? 10000,
+        battery_capacity: themedConfig.battery_capacity ?? 10000,
+        grid_threshold: themedConfig.grid_threshold ?? 10,
+
         info_bar: {
             show: themedConfig.info_bar?.show === true,
+            position: themedConfig.info_bar?.position || 'top',
+            calculation_mode: themedConfig.info_bar?.calculation_mode || 'autarky',
+            calculate_battery_times: themedConfig.info_bar?.calculate_battery_times === true,
             item1: {
                 icon: themedConfig.info_bar?.item1?.icon ?? 'mdi:home-lightning-bolt',
                 label: themedConfig.info_bar?.item1?.label ?? t.editor.default_autarky,
@@ -63,6 +74,8 @@ export function getDefaultConfig(config: PVMonitorCardConfig): PVMonitorCardConf
             card_text_color: themedConfig.style?.card_text_color ?? 'white',
             card_cursor: themedConfig.style?.card_cursor ?? 'pointer',
             card_padding: themedConfig.style?.card_padding ?? '12px',
+            header_margin_bottom: themedConfig.style?.header_margin_bottom ?? '12px',
+            infobar_gap: themedConfig.style?.infobar_gap ?? '6px',
             title_align: themedConfig.style?.title_align ?? 'center',
             title_size: themedConfig.style?.title_size ?? '1.5em',
             title_font_weight: themedConfig.style?.title_font_weight ?? 'bold',
@@ -90,6 +103,7 @@ export function getDefaultConfig(config: PVMonitorCardConfig): PVMonitorCardConf
         },
 
         netz: {
+            show: themedConfig.netz?.show !== false,
             animation: themedConfig.netz?.animation !== false,
             threshold: themedConfig.netz?.threshold ?? 10,
             text_einspeisen: themedConfig.netz?.text_einspeisen ?? t.status.feed_in,
@@ -99,6 +113,7 @@ export function getDefaultConfig(config: PVMonitorCardConfig): PVMonitorCardConf
         },
 
         pv: {
+            show: themedConfig.pv?.show !== false,
             animation: themedConfig.pv?.animation !== false,
             icon_rotation: themedConfig.pv?.icon_rotation === true,
             max_power: themedConfig.pv?.max_power ?? 10000,
@@ -106,6 +121,7 @@ export function getDefaultConfig(config: PVMonitorCardConfig): PVMonitorCardConf
         },
 
         batterie: {
+            show: themedConfig.batterie?.show !== false,
             animation: themedConfig.batterie?.animation !== false,
             battery_capacity: themedConfig.batterie?.battery_capacity ?? 10000,
             calculate_runtime: themedConfig.batterie?.calculate_runtime === true,
@@ -113,6 +129,7 @@ export function getDefaultConfig(config: PVMonitorCardConfig): PVMonitorCardConf
         },
 
         haus: {
+            show: themedConfig.haus?.show !== false,
             animation: themedConfig.haus?.animation !== false,
             ...themedConfig.haus
         }
