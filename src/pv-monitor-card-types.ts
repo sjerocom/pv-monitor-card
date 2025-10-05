@@ -34,6 +34,7 @@ export interface InfoBarItem {
 
 export interface PVMonitorCardConfig {
     type: string;
+    language?: 'de' | 'en' | 'fr' | 'it' | 'es';
     title?: string;
     show_title?: boolean;
     subtitle?: string;

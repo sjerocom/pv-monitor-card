@@ -672,9 +672,675 @@ const pvMonitorCardStyles = i$3`
         100% { transform: rotate(360deg); }
     }
 `;
+const translations = {
+  de: {
+    general: {
+      missing_entity: "fehlt",
+      inactive: "Inaktiv"
+    },
+    editor: {
+      tab_general: "Allgemein",
+      tab_styling: "Styling",
+      tab_infobar: "Info Bar",
+      tab_pv: "PV-Anlage",
+      tab_battery: "Batterie",
+      tab_house: "Haus",
+      tab_grid: "Netz",
+      card_header: "Karten-Header",
+      title: "Titel",
+      title_placeholder: "PV Monitor",
+      title_helper: "Leer lassen um auszublenden.",
+      subtitle: "Untertitel",
+      subtitle_placeholder: "Energieübersicht",
+      subtitle_helper: "Leer lassen um auszublenden.",
+      icon: "Icon",
+      icon_helper: "Wird nur angezeigt, wenn auch ein Titel vorhanden ist, leer lassen um auszublenden.",
+      layout: "Layout",
+      grid_gap: "Grid Abstand",
+      grid_gap_placeholder: "6px",
+      grid_gap_helper: "Abstand zwischen den Karten.",
+      language: "Sprache",
+      language_helper: "Wählen Sie die Anzeigesprache",
+      infobar_settings: "Info Bar Einstellungen",
+      enable_infobar: "Info Bar aktivieren",
+      item: "Item",
+      entity: "Entity",
+      icon_label: "Icon",
+      label: "Label",
+      unit: "Einheit",
+      default_autarky: "Autarkie",
+      default_runtime: "Restlaufzeit",
+      default_chargetime: "Restladezeit",
+      pv_system: "PV-Anlage",
+      pv_entity: "PV Entity",
+      pv_entity_helper: "Entity für PV-Leistung",
+      enable_animation: "Animation aktivieren",
+      icon_rotation: "Icon Rotation",
+      icon_rotation_helper: "Icon dreht sich je nach Leistung",
+      max_power: "Max. Leistung (W)",
+      max_power_helper: "Maximale PV-Leistung für Animation & Rotation",
+      battery: "Batterie",
+      battery_entity: "Batterie Entity",
+      battery_entity_helper: "Entity für Batteriestand (%)",
+      charge_entity: "Ladung Entity",
+      charge_entity_helper: "Entity für Ladeleistung",
+      discharge_entity: "Entladung Entity",
+      discharge_entity_helper: "Entity für Entladeleistung",
+      battery_capacity: "Batteriekapazität (Wh)",
+      battery_capacity_helper: "Kapazität der Batterie für Animation (z.B. 10000 für 10 kWh)",
+      calculate_runtime: "Rest-/Ladezeit berechnen",
+      calculate_runtime_helper: "Automatische Berechnung für Info Bar Item 2 & 3",
+      icon_auto_helper: "Leer lassen für automatisches Icon",
+      house_consumption: "Hausverbrauch",
+      house_entity: "Haus Entity",
+      house_entity_helper: "Entity für Hausverbrauch",
+      grid: "Netz",
+      grid_entity: "Netz Entity",
+      grid_entity_helper: "Entity für Netzbezug/Einspeisung",
+      threshold: "Schwellwert (W)",
+      threshold_helper: 'Unterhalb dieses Werts wird "Neutral" angezeigt',
+      status_texts: "Status-Texte",
+      text_feed_in: "Text bei Einspeisung",
+      text_feed_in_placeholder: "Einspeisung",
+      text_neutral: "Text bei Neutral",
+      text_neutral_placeholder: "Neutral",
+      text_consumption: "Text bei Bezug",
+      text_consumption_placeholder: "Netzbezug",
+      additional_texts: "Zusätzliche Texte",
+      secondary_entity: "Sekundär Entity",
+      secondary_entity_helper: "Optional: Entity für 2. Zeile",
+      secondary_text: "Sekundär Text",
+      secondary_text_helper: "Optional: Statischer Text für 2. Zeile",
+      tertiary_entity: "Tertiär Entity",
+      tertiary_text: "Tertiär Text",
+      styling: "Styling",
+      background_color: "Hintergrundfarbe",
+      border_color: "Rahmenfarbe",
+      primary_color: "Primärfarbe",
+      secondary_color: "Sekundärfarbe",
+      icon_color: "Icon Farbe",
+      card_styling: "Karten-Styling",
+      border_radius: "Border Radius",
+      text_color: "Textfarbe",
+      padding: "Padding",
+      cursor: "Cursor",
+      title_subtitle: "Titel & Untertitel",
+      title_size: "Titel Größe",
+      title_color: "Titel Farbe",
+      title_alignment: "Titel Ausrichtung",
+      title_alignment_helper: "left, center, right",
+      title_font_weight: "Titel Font-Weight",
+      subtitle_size: "Untertitel Größe",
+      subtitle_color: "Untertitel Farbe",
+      subtitle_alignment: "Untertitel Ausrichtung",
+      subtitle_font_weight: "Untertitel Font-Weight",
+      icons: "Icons",
+      icon_size: "Icon Größe",
+      icon_opacity: "Icon Opacity",
+      icon_margin: "Icon Margin",
+      primary_text_styling: "Primär-Text (Hauptwert)",
+      primary_size: "Primär Größe",
+      primary_color_label: "Primär Farbe",
+      primary_opacity: "Primär Opacity",
+      primary_font_weight: "Primär Font-Weight",
+      secondary_text_styling: "Sekundär-Text (2. Zeile)",
+      secondary_size: "Sekundär Größe",
+      secondary_color_label: "Sekundär Farbe",
+      secondary_opacity: "Sekundär Opacity",
+      secondary_font_weight: "Sekundär Font-Weight",
+      tertiary_text_styling: "Tertiär-Text (3. Zeile)",
+      tertiary_size: "Tertiär Größe",
+      tertiary_color_label: "Tertiär Farbe",
+      tertiary_opacity: "Tertiär Opacity",
+      tertiary_font_weight: "Tertiär Font-Weight",
+      select_entity: "Entity auswählen",
+      select_icon: "Icon auswählen"
+    },
+    status: {
+      feed_in: "Einspeisung",
+      neutral: "Neutral",
+      grid_consumption: "Netzbezug",
+      inactive: "Inaktiv"
+    }
+  },
+  en: {
+    general: {
+      missing_entity: "missing",
+      inactive: "Inactive"
+    },
+    editor: {
+      tab_general: "General",
+      tab_styling: "Styling",
+      tab_infobar: "Info Bar",
+      tab_pv: "PV System",
+      tab_battery: "Battery",
+      tab_house: "House",
+      tab_grid: "Grid",
+      card_header: "Card Header",
+      title: "Title",
+      title_placeholder: "PV Monitor",
+      title_helper: "Leave empty to hide.",
+      subtitle: "Subtitle",
+      subtitle_placeholder: "Energy Overview",
+      subtitle_helper: "Leave empty to hide.",
+      icon: "Icon",
+      icon_helper: "Only shown when a title is present, leave empty to hide.",
+      layout: "Layout",
+      grid_gap: "Grid Gap",
+      grid_gap_placeholder: "6px",
+      grid_gap_helper: "Space between cards.",
+      language: "Language",
+      language_helper: "Select display language",
+      infobar_settings: "Info Bar Settings",
+      enable_infobar: "Enable Info Bar",
+      item: "Item",
+      entity: "Entity",
+      icon_label: "Icon",
+      label: "Label",
+      unit: "Unit",
+      default_autarky: "Self-Sufficiency",
+      default_runtime: "Battery Runtime",
+      default_chargetime: "Charge Time",
+      pv_system: "PV System",
+      pv_entity: "PV Entity",
+      pv_entity_helper: "Entity for PV power",
+      enable_animation: "Enable Animation",
+      icon_rotation: "Icon Rotation",
+      icon_rotation_helper: "Icon rotates based on power",
+      max_power: "Max. Power (W)",
+      max_power_helper: "Maximum PV power for animation & rotation",
+      battery: "Battery",
+      battery_entity: "Battery Entity",
+      battery_entity_helper: "Entity for battery level (%)",
+      charge_entity: "Charge Entity",
+      charge_entity_helper: "Entity for charging power",
+      discharge_entity: "Discharge Entity",
+      discharge_entity_helper: "Entity for discharging power",
+      battery_capacity: "Battery Capacity (Wh)",
+      battery_capacity_helper: "Battery capacity for animation (e.g. 10000 for 10 kWh)",
+      calculate_runtime: "Calculate Runtime/Charge Time",
+      calculate_runtime_helper: "Automatic calculation for Info Bar Item 2 & 3",
+      icon_auto_helper: "Leave empty for automatic icon",
+      house_consumption: "House Consumption",
+      house_entity: "House Entity",
+      house_entity_helper: "Entity for house consumption",
+      grid: "Grid",
+      grid_entity: "Grid Entity",
+      grid_entity_helper: "Entity for grid consumption/feed-in",
+      threshold: "Threshold (W)",
+      threshold_helper: 'Below this value "Neutral" is displayed',
+      status_texts: "Status Texts",
+      text_feed_in: "Text for Feed-in",
+      text_feed_in_placeholder: "Feed-in",
+      text_neutral: "Text for Neutral",
+      text_neutral_placeholder: "Neutral",
+      text_consumption: "Text for Consumption",
+      text_consumption_placeholder: "Grid Consumption",
+      additional_texts: "Additional Texts",
+      secondary_entity: "Secondary Entity",
+      secondary_entity_helper: "Optional: Entity for 2nd line",
+      secondary_text: "Secondary Text",
+      secondary_text_helper: "Optional: Static text for 2nd line",
+      tertiary_entity: "Tertiary Entity",
+      tertiary_text: "Tertiary Text",
+      styling: "Styling",
+      background_color: "Background Color",
+      border_color: "Border Color",
+      primary_color: "Primary Color",
+      secondary_color: "Secondary Color",
+      icon_color: "Icon Color",
+      card_styling: "Card Styling",
+      border_radius: "Border Radius",
+      text_color: "Text Color",
+      padding: "Padding",
+      cursor: "Cursor",
+      title_subtitle: "Title & Subtitle",
+      title_size: "Title Size",
+      title_color: "Title Color",
+      title_alignment: "Title Alignment",
+      title_alignment_helper: "left, center, right",
+      title_font_weight: "Title Font Weight",
+      subtitle_size: "Subtitle Size",
+      subtitle_color: "Subtitle Color",
+      subtitle_alignment: "Subtitle Alignment",
+      subtitle_font_weight: "Subtitle Font Weight",
+      icons: "Icons",
+      icon_size: "Icon Size",
+      icon_opacity: "Icon Opacity",
+      icon_margin: "Icon Margin",
+      primary_text_styling: "Primary Text (Main Value)",
+      primary_size: "Primary Size",
+      primary_color_label: "Primary Color",
+      primary_opacity: "Primary Opacity",
+      primary_font_weight: "Primary Font Weight",
+      secondary_text_styling: "Secondary Text (2nd Line)",
+      secondary_size: "Secondary Size",
+      secondary_color_label: "Secondary Color",
+      secondary_opacity: "Secondary Opacity",
+      secondary_font_weight: "Secondary Font Weight",
+      tertiary_text_styling: "Tertiary Text (3rd Line)",
+      tertiary_size: "Tertiary Size",
+      tertiary_color_label: "Tertiary Color",
+      tertiary_opacity: "Tertiary Opacity",
+      tertiary_font_weight: "Tertiary Font Weight",
+      select_entity: "Select Entity",
+      select_icon: "Select Icon"
+    },
+    status: {
+      feed_in: "Feed-in",
+      neutral: "Neutral",
+      grid_consumption: "Grid Consumption",
+      inactive: "Inactive"
+    }
+  },
+  fr: {
+    general: {
+      missing_entity: "manquant",
+      inactive: "Inactif"
+    },
+    editor: {
+      tab_general: "Général",
+      tab_styling: "Style",
+      tab_infobar: "Barre d'Info",
+      tab_pv: "Installation PV",
+      tab_battery: "Batterie",
+      tab_house: "Maison",
+      tab_grid: "Réseau",
+      card_header: "En-tête de Carte",
+      title: "Titre",
+      title_placeholder: "Moniteur PV",
+      title_helper: "Laisser vide pour masquer.",
+      subtitle: "Sous-titre",
+      subtitle_placeholder: "Aperçu Énergétique",
+      subtitle_helper: "Laisser vide pour masquer.",
+      icon: "Icône",
+      icon_helper: "Affiché uniquement si un titre est présent, laisser vide pour masquer.",
+      layout: "Disposition",
+      grid_gap: "Espacement Grille",
+      grid_gap_placeholder: "6px",
+      grid_gap_helper: "Espace entre les cartes.",
+      language: "Langue",
+      language_helper: "Sélectionner la langue d'affichage",
+      infobar_settings: "Paramètres Barre d'Info",
+      enable_infobar: "Activer la Barre d'Info",
+      item: "Élément",
+      entity: "Entité",
+      icon_label: "Icône",
+      label: "Libellé",
+      unit: "Unité",
+      default_autarky: "Autosuffisance",
+      default_runtime: "Autonomie Batterie",
+      default_chargetime: "Temps de Charge",
+      pv_system: "Installation PV",
+      pv_entity: "Entité PV",
+      pv_entity_helper: "Entité pour la puissance PV",
+      enable_animation: "Activer l'Animation",
+      icon_rotation: "Rotation d'Icône",
+      icon_rotation_helper: "L'icône tourne selon la puissance",
+      max_power: "Puissance Max. (W)",
+      max_power_helper: "Puissance PV maximale pour animation & rotation",
+      battery: "Batterie",
+      battery_entity: "Entité Batterie",
+      battery_entity_helper: "Entité pour le niveau de batterie (%)",
+      charge_entity: "Entité Charge",
+      charge_entity_helper: "Entité pour la puissance de charge",
+      discharge_entity: "Entité Décharge",
+      discharge_entity_helper: "Entité pour la puissance de décharge",
+      battery_capacity: "Capacité Batterie (Wh)",
+      battery_capacity_helper: "Capacité de la batterie pour animation (ex: 10000 pour 10 kWh)",
+      calculate_runtime: "Calculer Autonomie/Temps de Charge",
+      calculate_runtime_helper: "Calcul automatique pour Barre d'Info Élément 2 & 3",
+      icon_auto_helper: "Laisser vide pour icône automatique",
+      house_consumption: "Consommation Maison",
+      house_entity: "Entité Maison",
+      house_entity_helper: "Entité pour consommation de la maison",
+      grid: "Réseau",
+      grid_entity: "Entité Réseau",
+      grid_entity_helper: "Entité pour consommation/injection réseau",
+      threshold: "Seuil (W)",
+      threshold_helper: 'En dessous de cette valeur "Neutre" est affiché',
+      status_texts: "Textes de Statut",
+      text_feed_in: "Texte pour Injection",
+      text_feed_in_placeholder: "Injection",
+      text_neutral: "Texte pour Neutre",
+      text_neutral_placeholder: "Neutre",
+      text_consumption: "Texte pour Consommation",
+      text_consumption_placeholder: "Consommation Réseau",
+      additional_texts: "Textes Supplémentaires",
+      secondary_entity: "Entité Secondaire",
+      secondary_entity_helper: "Optionnel: Entité pour 2ème ligne",
+      secondary_text: "Texte Secondaire",
+      secondary_text_helper: "Optionnel: Texte statique pour 2ème ligne",
+      tertiary_entity: "Entité Tertiaire",
+      tertiary_text: "Texte Tertiaire",
+      styling: "Style",
+      background_color: "Couleur de Fond",
+      border_color: "Couleur de Bordure",
+      primary_color: "Couleur Primaire",
+      secondary_color: "Couleur Secondaire",
+      icon_color: "Couleur d'Icône",
+      card_styling: "Style de Carte",
+      border_radius: "Rayon de Bordure",
+      text_color: "Couleur de Texte",
+      padding: "Espacement",
+      cursor: "Curseur",
+      title_subtitle: "Titre & Sous-titre",
+      title_size: "Taille Titre",
+      title_color: "Couleur Titre",
+      title_alignment: "Alignement Titre",
+      title_alignment_helper: "left, center, right",
+      title_font_weight: "Épaisseur Police Titre",
+      subtitle_size: "Taille Sous-titre",
+      subtitle_color: "Couleur Sous-titre",
+      subtitle_alignment: "Alignement Sous-titre",
+      subtitle_font_weight: "Épaisseur Police Sous-titre",
+      icons: "Icônes",
+      icon_size: "Taille Icône",
+      icon_opacity: "Opacité Icône",
+      icon_margin: "Marge Icône",
+      primary_text_styling: "Texte Primaire (Valeur Principale)",
+      primary_size: "Taille Primaire",
+      primary_color_label: "Couleur Primaire",
+      primary_opacity: "Opacité Primaire",
+      primary_font_weight: "Épaisseur Police Primaire",
+      secondary_text_styling: "Texte Secondaire (2ème Ligne)",
+      secondary_size: "Taille Secondaire",
+      secondary_color_label: "Couleur Secondaire",
+      secondary_opacity: "Opacité Secondaire",
+      secondary_font_weight: "Épaisseur Police Secondaire",
+      tertiary_text_styling: "Texte Tertiaire (3ème Ligne)",
+      tertiary_size: "Taille Tertiaire",
+      tertiary_color_label: "Couleur Tertiaire",
+      tertiary_opacity: "Opacité Tertiaire",
+      tertiary_font_weight: "Épaisseur Police Tertiaire",
+      select_entity: "Sélectionner Entité",
+      select_icon: "Sélectionner Icône"
+    },
+    status: {
+      feed_in: "Injection",
+      neutral: "Neutre",
+      grid_consumption: "Consommation Réseau",
+      inactive: "Inactif"
+    }
+  },
+  it: {
+    general: {
+      missing_entity: "mancante",
+      inactive: "Inattivo"
+    },
+    editor: {
+      tab_general: "Generale",
+      tab_styling: "Stile",
+      tab_infobar: "Barra Info",
+      tab_pv: "Impianto FV",
+      tab_battery: "Batteria",
+      tab_house: "Casa",
+      tab_grid: "Rete",
+      card_header: "Intestazione Scheda",
+      title: "Titolo",
+      title_placeholder: "Monitor FV",
+      title_helper: "Lasciare vuoto per nascondere.",
+      subtitle: "Sottotitolo",
+      subtitle_placeholder: "Panoramica Energia",
+      subtitle_helper: "Lasciare vuoto per nascondere.",
+      icon: "Icona",
+      icon_helper: "Mostrato solo se è presente un titolo, lasciare vuoto per nascondere.",
+      layout: "Layout",
+      grid_gap: "Spaziatura Griglia",
+      grid_gap_placeholder: "6px",
+      grid_gap_helper: "Spazio tra le schede.",
+      language: "Lingua",
+      language_helper: "Seleziona lingua di visualizzazione",
+      infobar_settings: "Impostazioni Barra Info",
+      enable_infobar: "Attiva Barra Info",
+      item: "Elemento",
+      entity: "Entità",
+      icon_label: "Icona",
+      label: "Etichetta",
+      unit: "Unità",
+      default_autarky: "Autosufficienza",
+      default_runtime: "Autonomia Batteria",
+      default_chargetime: "Tempo di Ricarica",
+      pv_system: "Impianto FV",
+      pv_entity: "Entità FV",
+      pv_entity_helper: "Entità per potenza FV",
+      enable_animation: "Attiva Animazione",
+      icon_rotation: "Rotazione Icona",
+      icon_rotation_helper: "L'icona ruota in base alla potenza",
+      max_power: "Potenza Max. (W)",
+      max_power_helper: "Potenza FV massima per animazione & rotazione",
+      battery: "Batteria",
+      battery_entity: "Entità Batteria",
+      battery_entity_helper: "Entità per livello batteria (%)",
+      charge_entity: "Entità Carica",
+      charge_entity_helper: "Entità per potenza di carica",
+      discharge_entity: "Entità Scarica",
+      discharge_entity_helper: "Entità per potenza di scarica",
+      battery_capacity: "Capacità Batteria (Wh)",
+      battery_capacity_helper: "Capacità della batteria per animazione (es. 10000 per 10 kWh)",
+      calculate_runtime: "Calcola Autonomia/Tempo di Ricarica",
+      calculate_runtime_helper: "Calcolo automatico per Barra Info Elemento 2 & 3",
+      icon_auto_helper: "Lasciare vuoto per icona automatica",
+      house_consumption: "Consumo Casa",
+      house_entity: "Entità Casa",
+      house_entity_helper: "Entità per consumo casa",
+      grid: "Rete",
+      grid_entity: "Entità Rete",
+      grid_entity_helper: "Entità per consumo/immissione rete",
+      threshold: "Soglia (W)",
+      threshold_helper: 'Sotto questo valore viene visualizzato "Neutrale"',
+      status_texts: "Testi di Stato",
+      text_feed_in: "Testo per Immissione",
+      text_feed_in_placeholder: "Immissione",
+      text_neutral: "Testo per Neutrale",
+      text_neutral_placeholder: "Neutrale",
+      text_consumption: "Testo per Consumo",
+      text_consumption_placeholder: "Consumo Rete",
+      additional_texts: "Testi Aggiuntivi",
+      secondary_entity: "Entità Secondaria",
+      secondary_entity_helper: "Opzionale: Entità per 2a riga",
+      secondary_text: "Testo Secondario",
+      secondary_text_helper: "Opzionale: Testo statico per 2a riga",
+      tertiary_entity: "Entità Terziaria",
+      tertiary_text: "Testo Terziario",
+      styling: "Stile",
+      background_color: "Colore Sfondo",
+      border_color: "Colore Bordo",
+      primary_color: "Colore Primario",
+      secondary_color: "Colore Secondario",
+      icon_color: "Colore Icona",
+      card_styling: "Stile Scheda",
+      border_radius: "Raggio Bordo",
+      text_color: "Colore Testo",
+      padding: "Spaziatura",
+      cursor: "Cursore",
+      title_subtitle: "Titolo & Sottotitolo",
+      title_size: "Dimensione Titolo",
+      title_color: "Colore Titolo",
+      title_alignment: "Allineamento Titolo",
+      title_alignment_helper: "left, center, right",
+      title_font_weight: "Spessore Font Titolo",
+      subtitle_size: "Dimensione Sottotitolo",
+      subtitle_color: "Colore Sottotitolo",
+      subtitle_alignment: "Allineamento Sottotitolo",
+      subtitle_font_weight: "Spessore Font Sottotitolo",
+      icons: "Icone",
+      icon_size: "Dimensione Icona",
+      icon_opacity: "Opacità Icona",
+      icon_margin: "Margine Icona",
+      primary_text_styling: "Testo Primario (Valore Principale)",
+      primary_size: "Dimensione Primaria",
+      primary_color_label: "Colore Primario",
+      primary_opacity: "Opacità Primaria",
+      primary_font_weight: "Spessore Font Primario",
+      secondary_text_styling: "Testo Secondario (2a Riga)",
+      secondary_size: "Dimensione Secondaria",
+      secondary_color_label: "Colore Secondario",
+      secondary_opacity: "Opacità Secondaria",
+      secondary_font_weight: "Spessore Font Secondario",
+      tertiary_text_styling: "Testo Terziario (3a Riga)",
+      tertiary_size: "Dimensione Terziaria",
+      tertiary_color_label: "Colore Terziario",
+      tertiary_opacity: "Opacità Terziaria",
+      tertiary_font_weight: "Spessore Font Terziario",
+      select_entity: "Seleziona Entità",
+      select_icon: "Seleziona Icona"
+    },
+    status: {
+      feed_in: "Immissione",
+      neutral: "Neutrale",
+      grid_consumption: "Consumo Rete",
+      inactive: "Inattivo"
+    }
+  },
+  es: {
+    general: {
+      missing_entity: "falta",
+      inactive: "Inactivo"
+    },
+    editor: {
+      tab_general: "General",
+      tab_styling: "Estilo",
+      tab_infobar: "Barra Info",
+      tab_pv: "Sistema FV",
+      tab_battery: "Batería",
+      tab_house: "Casa",
+      tab_grid: "Red",
+      card_header: "Encabezado de Tarjeta",
+      title: "Título",
+      title_placeholder: "Monitor FV",
+      title_helper: "Dejar vacío para ocultar.",
+      subtitle: "Subtítulo",
+      subtitle_placeholder: "Resumen de Energía",
+      subtitle_helper: "Dejar vacío para ocultar.",
+      icon: "Icono",
+      icon_helper: "Solo se muestra cuando hay un título, dejar vacío para ocultar.",
+      layout: "Diseño",
+      grid_gap: "Espaciado Cuadrícula",
+      grid_gap_placeholder: "6px",
+      grid_gap_helper: "Espacio entre tarjetas.",
+      language: "Idioma",
+      language_helper: "Seleccionar idioma de visualización",
+      infobar_settings: "Configuración Barra Info",
+      enable_infobar: "Activar Barra Info",
+      item: "Elemento",
+      entity: "Entidad",
+      icon_label: "Icono",
+      label: "Etiqueta",
+      unit: "Unidad",
+      default_autarky: "Autosuficiencia",
+      default_runtime: "Autonomía Batería",
+      default_chargetime: "Tiempo de Carga",
+      pv_system: "Sistema FV",
+      pv_entity: "Entidad FV",
+      pv_entity_helper: "Entidad para potencia FV",
+      enable_animation: "Activar Animación",
+      icon_rotation: "Rotación Icono",
+      icon_rotation_helper: "El icono gira según la potencia",
+      max_power: "Potencia Máx. (W)",
+      max_power_helper: "Potencia FV máxima para animación y rotación",
+      battery: "Batería",
+      battery_entity: "Entidad Batería",
+      battery_entity_helper: "Entidad para nivel de batería (%)",
+      charge_entity: "Entidad Carga",
+      charge_entity_helper: "Entidad para potencia de carga",
+      discharge_entity: "Entidad Descarga",
+      discharge_entity_helper: "Entidad para potencia de descarga",
+      battery_capacity: "Capacidad Batería (Wh)",
+      battery_capacity_helper: "Capacidad de la batería para animación (ej: 10000 para 10 kWh)",
+      calculate_runtime: "Calcular Autonomía/Tiempo de Carga",
+      calculate_runtime_helper: "Cálculo automático para Barra Info Elemento 2 y 3",
+      icon_auto_helper: "Dejar vacío para icono automático",
+      house_consumption: "Consumo Casa",
+      house_entity: "Entidad Casa",
+      house_entity_helper: "Entidad para consumo de la casa",
+      grid: "Red",
+      grid_entity: "Entidad Red",
+      grid_entity_helper: "Entidad para consumo/inyección de red",
+      threshold: "Umbral (W)",
+      threshold_helper: 'Por debajo de este valor se muestra "Neutro"',
+      status_texts: "Textos de Estado",
+      text_feed_in: "Texto para Inyección",
+      text_feed_in_placeholder: "Inyección",
+      text_neutral: "Texto para Neutro",
+      text_neutral_placeholder: "Neutro",
+      text_consumption: "Texto para Consumo",
+      text_consumption_placeholder: "Consumo Red",
+      additional_texts: "Textos Adicionales",
+      secondary_entity: "Entidad Secundaria",
+      secondary_entity_helper: "Opcional: Entidad para 2ª línea",
+      secondary_text: "Texto Secundario",
+      secondary_text_helper: "Opcional: Texto estático para 2ª línea",
+      tertiary_entity: "Entidad Terciaria",
+      tertiary_text: "Texto Terciario",
+      styling: "Estilo",
+      background_color: "Color de Fondo",
+      border_color: "Color de Borde",
+      primary_color: "Color Primario",
+      secondary_color: "Color Secundario",
+      icon_color: "Color Icono",
+      card_styling: "Estilo de Tarjeta",
+      border_radius: "Radio de Borde",
+      text_color: "Color de Texto",
+      padding: "Espaciado",
+      cursor: "Cursor",
+      title_subtitle: "Título y Subtítulo",
+      title_size: "Tamaño Título",
+      title_color: "Color Título",
+      title_alignment: "Alineación Título",
+      title_alignment_helper: "left, center, right",
+      title_font_weight: "Grosor Fuente Título",
+      subtitle_size: "Tamaño Subtítulo",
+      subtitle_color: "Color Subtítulo",
+      subtitle_alignment: "Alineación Subtítulo",
+      subtitle_font_weight: "Grosor Fuente Subtítulo",
+      icons: "Iconos",
+      icon_size: "Tamaño Icono",
+      icon_opacity: "Opacidad Icono",
+      icon_margin: "Margen Icono",
+      primary_text_styling: "Texto Primario (Valor Principal)",
+      primary_size: "Tamaño Primario",
+      primary_color_label: "Color Primario",
+      primary_opacity: "Opacidad Primaria",
+      primary_font_weight: "Grosor Fuente Primaria",
+      secondary_text_styling: "Texto Secundario (2ª Línea)",
+      secondary_size: "Tamaño Secundario",
+      secondary_color_label: "Color Secundario",
+      secondary_opacity: "Opacidad Secundaria",
+      secondary_font_weight: "Grosor Fuente Secundaria",
+      tertiary_text_styling: "Texto Terciario (3ª Línea)",
+      tertiary_size: "Tamaño Terciario",
+      tertiary_color_label: "Color Terciario",
+      tertiary_opacity: "Opacidad Terciaria",
+      tertiary_font_weight: "Grosor Fuente Terciaria",
+      select_entity: "Seleccionar Entidad",
+      select_icon: "Seleccionar Icono"
+    },
+    status: {
+      feed_in: "Inyección",
+      neutral: "Neutro",
+      grid_consumption: "Consumo Red",
+      inactive: "Inactivo"
+    }
+  }
+};
+function detectLanguage() {
+  const browserLang = navigator.language.toLowerCase();
+  if (browserLang.startsWith("de")) return "de";
+  if (browserLang.startsWith("fr")) return "fr";
+  if (browserLang.startsWith("it")) return "it";
+  if (browserLang.startsWith("es")) return "es";
+  return "en";
+}
+function getTranslations(language) {
+  const lang = language || detectLanguage();
+  return translations[lang] || translations.en;
+}
 function getDefaultConfig(config) {
+  const t2 = getTranslations(config.language || detectLanguage());
   return {
     ...config,
+    language: config.language || detectLanguage(),
     show_title: config.show_title !== false,
     show_subtitle: config.show_subtitle !== false,
     show_icon: config.show_icon !== false,
@@ -683,17 +1349,17 @@ function getDefaultConfig(config) {
       show: config.info_bar?.show === true,
       item1: {
         icon: config.info_bar?.item1?.icon ?? "mdi:home-lightning-bolt",
-        label: config.info_bar?.item1?.label ?? "Autarkie",
+        label: config.info_bar?.item1?.label ?? t2.editor.default_autarky,
         ...config.info_bar?.item1
       },
       item2: {
         icon: config.info_bar?.item2?.icon ?? "mdi:battery-clock",
-        label: config.info_bar?.item2?.label ?? "Restlaufzeit",
+        label: config.info_bar?.item2?.label ?? t2.editor.default_runtime,
         ...config.info_bar?.item2
       },
       item3: {
         icon: config.info_bar?.item3?.icon ?? "mdi:battery-charging",
-        label: config.info_bar?.item3?.label ?? "Restladezeit",
+        label: config.info_bar?.item3?.label ?? t2.editor.default_chargetime,
         ...config.info_bar?.item3
       },
       style: {
@@ -749,9 +1415,9 @@ function getDefaultConfig(config) {
     netz: {
       animation: config.netz?.animation !== false,
       threshold: config.netz?.threshold ?? 10,
-      text_einspeisen: config.netz?.text_einspeisen ?? "Einspeisung",
-      text_neutral: config.netz?.text_neutral ?? "Neutral",
-      text_bezug: config.netz?.text_bezug ?? "Netzbezug",
+      text_einspeisen: config.netz?.text_einspeisen ?? t2.status.feed_in,
+      text_neutral: config.netz?.text_neutral ?? t2.status.neutral,
+      text_bezug: config.netz?.text_bezug ?? t2.status.grid_consumption,
       ...config.netz
     },
     pv: {
@@ -1240,16 +1906,17 @@ const _PVMonitorCard = class _PVMonitorCard extends i {
   _renderNetz() {
     if (!this.config.netz?.entity || !this.hass) return x``;
     const entity = this.hass.states[this.config.netz.entity];
-    if (!entity) return x`<div class="card">⚠️ ${this.config.netz.entity} fehlt</div>`;
+    const t2 = getTranslations(this.config.language);
+    if (!entity) return x`<div class="card">⚠️ ${this.config.netz.entity} ${t2.general.missing_entity}</div>`;
     const value = parseFloat(entity.state) || 0;
     const threshold = this.config.netz.threshold || 10;
     let statusText = "";
     if (value < -threshold) {
-      statusText = this.config.netz.text_einspeisen || "Einspeisung";
+      statusText = this.config.netz.text_einspeisen || t2.status.feed_in;
     } else if (value > threshold) {
-      statusText = this.config.netz.text_bezug || "Netzbezug";
+      statusText = this.config.netz.text_bezug || t2.status.grid_consumption;
     } else {
-      statusText = this.config.netz.text_neutral || "Neutral";
+      statusText = this.config.netz.text_neutral || t2.status.neutral;
     }
     const secondaryText = this._getTextFromEntityOrConfig(this.config.netz.secondary_entity, this.config.netz.secondary_text) || statusText;
     const tertiaryText = this._getTextFromEntityOrConfig(this.config.netz.tertiary_entity, this.config.netz.tertiary_text);
@@ -1265,7 +1932,8 @@ const _PVMonitorCard = class _PVMonitorCard extends i {
   _renderPV() {
     if (!this.config.pv?.entity || !this.hass) return x``;
     const entity = this.hass.states[this.config.pv.entity];
-    if (!entity) return x`<div class="card">⚠️ ${this.config.pv.entity} fehlt</div>`;
+    const t2 = getTranslations(this.config.language);
+    if (!entity) return x`<div class="card">⚠️ ${this.config.pv.entity} ${t2.general.missing_entity}</div>`;
     const value = parseFloat(entity.state) || 0;
     const maxPower = this.config.pv.max_power || 1e4;
     const shouldRotate = this.config.pv.icon_rotation === true;
@@ -1290,7 +1958,8 @@ const _PVMonitorCard = class _PVMonitorCard extends i {
   _renderBatterie() {
     if (!this.config.batterie?.entity || !this.hass) return x``;
     const entity = this.hass.states[this.config.batterie.entity];
-    if (!entity) return x`<div class="card">⚠️ ${this.config.batterie.entity} fehlt</div>`;
+    const t2 = getTranslations(this.config.language);
+    if (!entity) return x`<div class="card">⚠️ ${this.config.batterie.entity} ${t2.general.missing_entity}</div>`;
     const percentage = parseFloat(entity.state) || 0;
     const icon = this.config.batterie.icon || getBatteryIcon(percentage);
     const iconColor = getBatteryIconColor(percentage);
@@ -1303,7 +1972,7 @@ const _PVMonitorCard = class _PVMonitorCard extends i {
     } else if (discharge > 1) {
       statusText = "-" + formatPower(discharge);
     } else {
-      statusText = "Inaktiv";
+      statusText = t2.general.inactive;
     }
     const secondaryText = this._getTextFromEntityOrConfig(this.config.batterie.secondary_entity, this.config.batterie.secondary_text) || statusText;
     const tertiaryText = this._getTextFromEntityOrConfig(this.config.batterie.tertiary_entity, this.config.batterie.tertiary_text);
@@ -1320,7 +1989,8 @@ const _PVMonitorCard = class _PVMonitorCard extends i {
   _renderHaus() {
     if (!this.config.haus?.entity || !this.hass) return x``;
     const entity = this.hass.states[this.config.haus.entity];
-    if (!entity) return x`<div class="card">⚠️ ${this.config.haus.entity} fehlt</div>`;
+    const t2 = getTranslations(this.config.language);
+    if (!entity) return x`<div class="card">⚠️ ${this.config.haus.entity} ${t2.general.missing_entity}</div>`;
     const value = parseFloat(entity.state) || 0;
     return this._renderCard({
       cardConfig: this.config.haus,
@@ -1443,6 +2113,9 @@ const _PVMonitorCardEditor = class _PVMonitorCardEditor extends i {
     });
     this.dispatchEvent(event);
   }
+  _getT() {
+    return getTranslations(this._config?.language);
+  }
   _renderTab(id, label, icon) {
     return x`
             <button
@@ -1522,6 +2195,7 @@ const _PVMonitorCardEditor = class _PVMonitorCardEditor extends i {
   }
   _renderEntityPicker(label, path, value, helper) {
     const entities = this.hass ? Object.keys(this.hass.states).sort() : [];
+    const t2 = this._getT();
     return x`
             <div class="option">
                 <div class="option-label">
@@ -1533,7 +2207,7 @@ const _PVMonitorCardEditor = class _PVMonitorCardEditor extends i {
                             .hass=${this.hass}
                             .value=${value || ""}
                             .items=${entities}
-                            .label=${"Entity auswählen"}
+                            .label=${t2.editor.select_entity}
                             item-value-path=""
                             item-label-path=""
                             allow-custom-value
@@ -1560,6 +2234,7 @@ const _PVMonitorCardEditor = class _PVMonitorCardEditor extends i {
         `;
   }
   _renderIconPicker(label, path, value, helper) {
+    const t2 = this._getT();
     return x`
             <div class="option">
                 <div class="option-label">
@@ -1570,7 +2245,7 @@ const _PVMonitorCardEditor = class _PVMonitorCardEditor extends i {
                     <ha-icon-picker
                             .hass=${this.hass}
                             .value=${value || ""}
-                            .label=${"Icon auswählen"}
+                            .label=${t2.editor.select_icon}
                             @value-changed=${(ev) => {
       ev.stopPropagation();
       if (!this._config) return;
@@ -1594,16 +2269,63 @@ const _PVMonitorCardEditor = class _PVMonitorCardEditor extends i {
             </div>
         `;
   }
+  _renderLanguageSelector() {
+    const t2 = this._getT();
+    const currentLang = this._config?.language || detectLanguage();
+    return x`
+            <div class="option">
+                <div class="option-label">
+                    ${t2.editor.language}
+                    <div class="info-text">${t2.editor.language_helper}</div>
+                </div>
+                <div class="option-control">
+                    <ha-combo-box
+                            .value=${currentLang}
+                            .items=${[
+      { value: "de", label: "Deutsch" },
+      { value: "en", label: "English" },
+      { value: "fr", label: "Français" },
+      { value: "it", label: "Italiano" },
+      { value: "es", label: "Español" }
+    ]}
+                            item-value-path="value"
+                            item-label-path="label"
+                            @value-changed=${(ev) => {
+      if (!this._config) return;
+      const newValue = ev.detail?.value;
+      if (!newValue || newValue === this._config.language) return;
+      const newConfig = { ...this._config };
+      newConfig.language = newValue;
+      this._config = newConfig;
+      this._fireEvent();
+      this.requestUpdate();
+    }}
+                    ></ha-combo-box>
+                </div>
+            </div>
+        `;
+  }
   _renderGeneralTab() {
+    const t2 = this._getT();
     return x`
             <div class="section">
                 <div class="section-header">
-                    <ha-icon icon="mdi:card-text"></ha-icon>
-                    Karten-Header
+                    <ha-icon icon="mdi:translate"></ha-icon>
+                    ${t2.editor.language}
                 </div>
-                ${this._renderTextfield("Titel", ["title"], this._config?.title, "PV Monitor")}
-                ${this._renderTextfield("Untertitel", ["subtitle"], this._config?.subtitle, "Energieübersicht")}
-                ${this._renderIconPicker("Icon", ["icon"], this._config?.icon, "Wird nur angezeigt, wenn auch ein Titel vorhanden ist")}
+                ${this._renderLanguageSelector()}
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="section">
+                <div class="section-header">
+                    <ha-icon icon="mdi:card-text"></ha-icon>
+                    ${t2.editor.card_header}
+                </div>
+                ${this._renderTextfield(t2.editor.title, ["title"], this._config?.title, t2.editor.title_placeholder, t2.editor.title_helper)}
+                ${this._renderTextfield(t2.editor.subtitle, ["subtitle"], this._config?.subtitle, t2.editor.subtitle_placeholder, t2.editor.subtitle_helper)}
+                ${this._renderIconPicker(t2.editor.icon, ["icon"], this._config?.icon, t2.editor.icon_helper)}
             </div>
 
             <div class="divider"></div>
@@ -1611,20 +2333,21 @@ const _PVMonitorCardEditor = class _PVMonitorCardEditor extends i {
             <div class="section">
                 <div class="section-header">
                     <ha-icon icon="mdi:grid"></ha-icon>
-                    Layout
+                    ${t2.editor.layout}
                 </div>
-                ${this._renderTextfield("Grid Abstand", ["grid_gap"], this._config?.grid_gap, "6px", "Abstand zwischen den Karten (z.B. 6px, 0.5rem)")}
+                ${this._renderTextfield(t2.editor.grid_gap, ["grid_gap"], this._config?.grid_gap, t2.editor.grid_gap_placeholder, t2.editor.grid_gap_helper)}
             </div>
         `;
   }
   _renderInfoBarTab() {
+    const t2 = this._getT();
     return x`
             <div class="section">
                 <div class="section-header">
                     <ha-icon icon="mdi:information"></ha-icon>
-                    Info Bar Einstellungen
+                    ${t2.editor.infobar_settings}
                 </div>
-                ${this._renderSwitch("Info Bar aktivieren", ["info_bar", "show"], this._config?.info_bar?.show)}
+                ${this._renderSwitch(t2.editor.enable_infobar, ["info_bar", "show"], this._config?.info_bar?.show)}
             </div>
 
             ${this._config?.info_bar?.show ? x`
@@ -1633,12 +2356,12 @@ const _PVMonitorCardEditor = class _PVMonitorCardEditor extends i {
                 <div class="section">
                     <div class="section-header">
                         <ha-icon icon="mdi:numeric-1-box"></ha-icon>
-                        Item 1
+                        ${t2.editor.item} 1
                     </div>
-                    ${this._renderEntityPicker("Entity", ["info_bar", "item1", "entity"], this._config?.info_bar?.item1?.entity)}
-                    ${this._renderIconPicker("Icon", ["info_bar", "item1", "icon"], this._config?.info_bar?.item1?.icon)}
-                    ${this._renderTextfield("Label", ["info_bar", "item1", "label"], this._config?.info_bar?.item1?.label, "Autarkie")}
-                    ${this._renderTextfield("Einheit", ["info_bar", "item1", "unit"], this._config?.info_bar?.item1?.unit, "%")}
+                    ${this._renderEntityPicker(t2.editor.entity, ["info_bar", "item1", "entity"], this._config?.info_bar?.item1?.entity)}
+                    ${this._renderIconPicker(t2.editor.icon_label, ["info_bar", "item1", "icon"], this._config?.info_bar?.item1?.icon)}
+                    ${this._renderTextfield(t2.editor.label, ["info_bar", "item1", "label"], this._config?.info_bar?.item1?.label, t2.editor.default_autarky)}
+                    ${this._renderTextfield(t2.editor.unit, ["info_bar", "item1", "unit"], this._config?.info_bar?.item1?.unit, "%")}
                 </div>
 
                 <div class="divider"></div>
@@ -1646,12 +2369,12 @@ const _PVMonitorCardEditor = class _PVMonitorCardEditor extends i {
                 <div class="section">
                     <div class="section-header">
                         <ha-icon icon="mdi:numeric-2-box"></ha-icon>
-                        Item 2
+                        ${t2.editor.item} 2
                     </div>
-                    ${this._renderEntityPicker("Entity", ["info_bar", "item2", "entity"], this._config?.info_bar?.item2?.entity)}
-                    ${this._renderIconPicker("Icon", ["info_bar", "item2", "icon"], this._config?.info_bar?.item2?.icon)}
-                    ${this._renderTextfield("Label", ["info_bar", "item2", "label"], this._config?.info_bar?.item2?.label, "Restlaufzeit")}
-                    ${this._renderTextfield("Einheit", ["info_bar", "item2", "unit"], this._config?.info_bar?.item2?.unit)}
+                    ${this._renderEntityPicker(t2.editor.entity, ["info_bar", "item2", "entity"], this._config?.info_bar?.item2?.entity)}
+                    ${this._renderIconPicker(t2.editor.icon_label, ["info_bar", "item2", "icon"], this._config?.info_bar?.item2?.icon)}
+                    ${this._renderTextfield(t2.editor.label, ["info_bar", "item2", "label"], this._config?.info_bar?.item2?.label, t2.editor.default_runtime)}
+                    ${this._renderTextfield(t2.editor.unit, ["info_bar", "item2", "unit"], this._config?.info_bar?.item2?.unit)}
                 </div>
 
                 <div class="divider"></div>
@@ -1659,28 +2382,29 @@ const _PVMonitorCardEditor = class _PVMonitorCardEditor extends i {
                 <div class="section">
                     <div class="section-header">
                         <ha-icon icon="mdi:numeric-3-box"></ha-icon>
-                        Item 3
+                        ${t2.editor.item} 3
                     </div>
-                    ${this._renderEntityPicker("Entity", ["info_bar", "item3", "entity"], this._config?.info_bar?.item3?.entity)}
-                    ${this._renderIconPicker("Icon", ["info_bar", "item3", "icon"], this._config?.info_bar?.item3?.icon)}
-                    ${this._renderTextfield("Label", ["info_bar", "item3", "label"], this._config?.info_bar?.item3?.label, "Restladezeit")}
-                    ${this._renderTextfield("Einheit", ["info_bar", "item3", "unit"], this._config?.info_bar?.item3?.unit)}
+                    ${this._renderEntityPicker(t2.editor.entity, ["info_bar", "item3", "entity"], this._config?.info_bar?.item3?.entity)}
+                    ${this._renderIconPicker(t2.editor.icon_label, ["info_bar", "item3", "icon"], this._config?.info_bar?.item3?.icon)}
+                    ${this._renderTextfield(t2.editor.label, ["info_bar", "item3", "label"], this._config?.info_bar?.item3?.label, t2.editor.default_chargetime)}
+                    ${this._renderTextfield(t2.editor.unit, ["info_bar", "item3", "unit"], this._config?.info_bar?.item3?.unit)}
                 </div>
             ` : ""}
         `;
   }
   _renderPVTab() {
+    const t2 = this._getT();
     return x`
             <div class="section">
                 <div class="section-header">
                     <ha-icon icon="mdi:solar-panel"></ha-icon>
-                    PV-Anlage
+                    ${t2.editor.pv_system}
                 </div>
-                ${this._renderEntityPicker("PV Entity", ["pv", "entity"], this._config?.pv?.entity, "Entity für PV-Leistung")}
-                ${this._renderIconPicker("Icon", ["pv", "icon"], this._config?.pv?.icon)}
-                ${this._renderSwitch("Animation aktivieren", ["pv", "animation"], this._config?.pv?.animation)}
-                ${this._renderSwitch("Icon Rotation", ["pv", "icon_rotation"], this._config?.pv?.icon_rotation, "Icon dreht sich je nach Leistung")}
-                ${this._renderNumberfield("Max. Leistung (W)", ["pv", "max_power"], this._config?.pv?.max_power, 0, 1e5, 100, "Maximale PV-Leistung für Animation & Rotation")}
+                ${this._renderEntityPicker(t2.editor.pv_entity, ["pv", "entity"], this._config?.pv?.entity, t2.editor.pv_entity_helper)}
+                ${this._renderIconPicker(t2.editor.icon_label, ["pv", "icon"], this._config?.pv?.icon)}
+                ${this._renderSwitch(t2.editor.enable_animation, ["pv", "animation"], this._config?.pv?.animation)}
+                ${this._renderSwitch(t2.editor.icon_rotation, ["pv", "icon_rotation"], this._config?.pv?.icon_rotation, t2.editor.icon_rotation_helper)}
+                ${this._renderNumberfield(t2.editor.max_power, ["pv", "max_power"], this._config?.pv?.max_power, 0, 1e5, 100, t2.editor.max_power_helper)}
             </div>
 
             <div class="divider"></div>
@@ -1688,12 +2412,12 @@ const _PVMonitorCardEditor = class _PVMonitorCardEditor extends i {
             <div class="section">
                 <div class="section-header">
                     <ha-icon icon="mdi:text"></ha-icon>
-                    Zusätzliche Texte
+                    ${t2.editor.additional_texts}
                 </div>
-                ${this._renderEntityPicker("Sekundär Entity", ["pv", "secondary_entity"], this._config?.pv?.secondary_entity, "Optional: Entity für 2. Zeile")}
-                ${this._renderTextfield("Sekundär Text", ["pv", "secondary_text"], this._config?.pv?.secondary_text, "Optional: Statischer Text für 2. Zeile")}
-                ${this._renderEntityPicker("Tertiär Entity", ["pv", "tertiary_entity"], this._config?.pv?.tertiary_entity)}
-                ${this._renderTextfield("Tertiär Text", ["pv", "tertiary_text"], this._config?.pv?.tertiary_text)}
+                ${this._renderEntityPicker(t2.editor.secondary_entity, ["pv", "secondary_entity"], this._config?.pv?.secondary_entity, t2.editor.secondary_entity_helper)}
+                ${this._renderTextfield(t2.editor.secondary_text, ["pv", "secondary_text"], this._config?.pv?.secondary_text, "", t2.editor.secondary_text_helper)}
+                ${this._renderEntityPicker(t2.editor.tertiary_entity, ["pv", "tertiary_entity"], this._config?.pv?.tertiary_entity)}
+                ${this._renderTextfield(t2.editor.tertiary_text, ["pv", "tertiary_text"], this._config?.pv?.tertiary_text)}
             </div>
 
             <div class="divider"></div>
@@ -1701,30 +2425,31 @@ const _PVMonitorCardEditor = class _PVMonitorCardEditor extends i {
             <div class="section">
                 <div class="section-header">
                     <ha-icon icon="mdi:palette"></ha-icon>
-                    Styling
+                    ${t2.editor.styling}
                 </div>
-                ${this._renderTextfield("Hintergrundfarbe", ["pv", "style", "background_color"], this._config?.pv?.style?.background_color, "rgba(21, 20, 27, 1)")}
-                ${this._renderTextfield("Rahmenfarbe", ["pv", "style", "border_color"], this._config?.pv?.style?.border_color, "rgba(255, 255, 255, 0.1)")}
-                ${this._renderTextfield("Primärfarbe", ["pv", "style", "primary_color"], this._config?.pv?.style?.primary_color)}
-                ${this._renderTextfield("Sekundärfarbe", ["pv", "style", "secondary_color"], this._config?.pv?.style?.secondary_color)}
-                ${this._renderTextfield("Icon Farbe", ["pv", "style", "icon_color"], this._config?.pv?.style?.icon_color)}
+                ${this._renderTextfield(t2.editor.background_color, ["pv", "style", "background_color"], this._config?.pv?.style?.background_color, "rgba(21, 20, 27, 1)")}
+                ${this._renderTextfield(t2.editor.border_color, ["pv", "style", "border_color"], this._config?.pv?.style?.border_color, "rgba(255, 255, 255, 0.1)")}
+                ${this._renderTextfield(t2.editor.primary_color, ["pv", "style", "primary_color"], this._config?.pv?.style?.primary_color)}
+                ${this._renderTextfield(t2.editor.secondary_color, ["pv", "style", "secondary_color"], this._config?.pv?.style?.secondary_color)}
+                ${this._renderTextfield(t2.editor.icon_color, ["pv", "style", "icon_color"], this._config?.pv?.style?.icon_color)}
             </div>
         `;
   }
   _renderBatteryTab() {
+    const t2 = this._getT();
     return x`
             <div class="section">
                 <div class="section-header">
                     <ha-icon icon="mdi:battery"></ha-icon>
-                    Batterie
+                    ${t2.editor.battery}
                 </div>
-                ${this._renderEntityPicker("Batterie Entity", ["batterie", "entity"], this._config?.batterie?.entity, "Entity für Batteriestand (%)")}
-                ${this._renderEntityPicker("Ladung Entity", ["batterie", "ladung_entity"], this._config?.batterie?.ladung_entity, "Entity für Ladeleistung")}
-                ${this._renderEntityPicker("Entladung Entity", ["batterie", "entladung_entity"], this._config?.batterie?.entladung_entity, "Entity für Entladeleistung")}
-                ${this._renderNumberfield("Batteriekapazität (Wh)", ["batterie", "battery_capacity"], this._config?.batterie?.battery_capacity, 0, 1e5, 100, "Kapazität der Batterie für Animation (z.B. 10000 für 10 kWh)")}
-                ${this._renderSwitch("Rest-/Ladezeit berechnen", ["batterie", "calculate_runtime"], this._config?.batterie?.calculate_runtime, "Automatische Berechnung für Info Bar Item 2 & 3")}
-                ${this._renderIconPicker("Icon", ["batterie", "icon"], this._config?.batterie?.icon, "Leer lassen für automatisches Icon")}
-                ${this._renderSwitch("Animation aktivieren", ["batterie", "animation"], this._config?.batterie?.animation)}
+                ${this._renderEntityPicker(t2.editor.battery_entity, ["batterie", "entity"], this._config?.batterie?.entity, t2.editor.battery_entity_helper)}
+                ${this._renderEntityPicker(t2.editor.charge_entity, ["batterie", "ladung_entity"], this._config?.batterie?.ladung_entity, t2.editor.charge_entity_helper)}
+                ${this._renderEntityPicker(t2.editor.discharge_entity, ["batterie", "entladung_entity"], this._config?.batterie?.entladung_entity, t2.editor.discharge_entity_helper)}
+                ${this._renderNumberfield(t2.editor.battery_capacity, ["batterie", "battery_capacity"], this._config?.batterie?.battery_capacity, 0, 1e5, 100, t2.editor.battery_capacity_helper)}
+                ${this._renderSwitch(t2.editor.calculate_runtime, ["batterie", "calculate_runtime"], this._config?.batterie?.calculate_runtime, t2.editor.calculate_runtime_helper)}
+                ${this._renderIconPicker(t2.editor.icon_label, ["batterie", "icon"], this._config?.batterie?.icon, t2.editor.icon_auto_helper)}
+                ${this._renderSwitch(t2.editor.enable_animation, ["batterie", "animation"], this._config?.batterie?.animation)}
             </div>
 
             <div class="divider"></div>
@@ -1732,12 +2457,12 @@ const _PVMonitorCardEditor = class _PVMonitorCardEditor extends i {
             <div class="section">
                 <div class="section-header">
                     <ha-icon icon="mdi:text"></ha-icon>
-                    Zusätzliche Texte
+                    ${t2.editor.additional_texts}
                 </div>
-                ${this._renderEntityPicker("Sekundär Entity", ["batterie", "secondary_entity"], this._config?.batterie?.secondary_entity)}
-                ${this._renderTextfield("Sekundär Text", ["batterie", "secondary_text"], this._config?.batterie?.secondary_text)}
-                ${this._renderEntityPicker("Tertiär Entity", ["batterie", "tertiary_entity"], this._config?.batterie?.tertiary_entity)}
-                ${this._renderTextfield("Tertiär Text", ["batterie", "tertiary_text"], this._config?.batterie?.tertiary_text)}
+                ${this._renderEntityPicker(t2.editor.secondary_entity, ["batterie", "secondary_entity"], this._config?.batterie?.secondary_entity)}
+                ${this._renderTextfield(t2.editor.secondary_text, ["batterie", "secondary_text"], this._config?.batterie?.secondary_text)}
+                ${this._renderEntityPicker(t2.editor.tertiary_entity, ["batterie", "tertiary_entity"], this._config?.batterie?.tertiary_entity)}
+                ${this._renderTextfield(t2.editor.tertiary_text, ["batterie", "tertiary_text"], this._config?.batterie?.tertiary_text)}
             </div>
 
             <div class="divider"></div>
@@ -1745,26 +2470,27 @@ const _PVMonitorCardEditor = class _PVMonitorCardEditor extends i {
             <div class="section">
                 <div class="section-header">
                     <ha-icon icon="mdi:palette"></ha-icon>
-                    Styling
+                    ${t2.editor.styling}
                 </div>
-                ${this._renderTextfield("Hintergrundfarbe", ["batterie", "style", "background_color"], this._config?.batterie?.style?.background_color)}
-                ${this._renderTextfield("Rahmenfarbe", ["batterie", "style", "border_color"], this._config?.batterie?.style?.border_color)}
-                ${this._renderTextfield("Primärfarbe", ["batterie", "style", "primary_color"], this._config?.batterie?.style?.primary_color)}
-                ${this._renderTextfield("Sekundärfarbe", ["batterie", "style", "secondary_color"], this._config?.batterie?.style?.secondary_color)}
-                ${this._renderTextfield("Icon Farbe", ["batterie", "style", "icon_color"], this._config?.batterie?.style?.icon_color)}
+                ${this._renderTextfield(t2.editor.background_color, ["batterie", "style", "background_color"], this._config?.batterie?.style?.background_color)}
+                ${this._renderTextfield(t2.editor.border_color, ["batterie", "style", "border_color"], this._config?.batterie?.style?.border_color)}
+                ${this._renderTextfield(t2.editor.primary_color, ["batterie", "style", "primary_color"], this._config?.batterie?.style?.primary_color)}
+                ${this._renderTextfield(t2.editor.secondary_color, ["batterie", "style", "secondary_color"], this._config?.batterie?.style?.secondary_color)}
+                ${this._renderTextfield(t2.editor.icon_color, ["batterie", "style", "icon_color"], this._config?.batterie?.style?.icon_color)}
             </div>
         `;
   }
   _renderHouseTab() {
+    const t2 = this._getT();
     return x`
             <div class="section">
                 <div class="section-header">
                     <ha-icon icon="mdi:home"></ha-icon>
-                    Hausverbrauch
+                    ${t2.editor.house_consumption}
                 </div>
-                ${this._renderEntityPicker("Haus Entity", ["haus", "entity"], this._config?.haus?.entity, "Entity für Hausverbrauch")}
-                ${this._renderIconPicker("Icon", ["haus", "icon"], this._config?.haus?.icon)}
-                ${this._renderSwitch("Animation aktivieren", ["haus", "animation"], this._config?.haus?.animation)}
+                ${this._renderEntityPicker(t2.editor.house_entity, ["haus", "entity"], this._config?.haus?.entity, t2.editor.house_entity_helper)}
+                ${this._renderIconPicker(t2.editor.icon_label, ["haus", "icon"], this._config?.haus?.icon)}
+                ${this._renderSwitch(t2.editor.enable_animation, ["haus", "animation"], this._config?.haus?.animation)}
             </div>
 
             <div class="divider"></div>
@@ -1772,12 +2498,12 @@ const _PVMonitorCardEditor = class _PVMonitorCardEditor extends i {
             <div class="section">
                 <div class="section-header">
                     <ha-icon icon="mdi:text"></ha-icon>
-                    Zusätzliche Texte
+                    ${t2.editor.additional_texts}
                 </div>
-                ${this._renderEntityPicker("Sekundär Entity", ["haus", "secondary_entity"], this._config?.haus?.secondary_entity)}
-                ${this._renderTextfield("Sekundär Text", ["haus", "secondary_text"], this._config?.haus?.secondary_text)}
-                ${this._renderEntityPicker("Tertiär Entity", ["haus", "tertiary_entity"], this._config?.haus?.tertiary_entity)}
-                ${this._renderTextfield("Tertiär Text", ["haus", "tertiary_text"], this._config?.haus?.tertiary_text)}
+                ${this._renderEntityPicker(t2.editor.secondary_entity, ["haus", "secondary_entity"], this._config?.haus?.secondary_entity)}
+                ${this._renderTextfield(t2.editor.secondary_text, ["haus", "secondary_text"], this._config?.haus?.secondary_text)}
+                ${this._renderEntityPicker(t2.editor.tertiary_entity, ["haus", "tertiary_entity"], this._config?.haus?.tertiary_entity)}
+                ${this._renderTextfield(t2.editor.tertiary_text, ["haus", "tertiary_text"], this._config?.haus?.tertiary_text)}
             </div>
 
             <div class="divider"></div>
@@ -1785,27 +2511,28 @@ const _PVMonitorCardEditor = class _PVMonitorCardEditor extends i {
             <div class="section">
                 <div class="section-header">
                     <ha-icon icon="mdi:palette"></ha-icon>
-                    Styling
+                    ${t2.editor.styling}
                 </div>
-                ${this._renderTextfield("Hintergrundfarbe", ["haus", "style", "background_color"], this._config?.haus?.style?.background_color)}
-                ${this._renderTextfield("Rahmenfarbe", ["haus", "style", "border_color"], this._config?.haus?.style?.border_color)}
-                ${this._renderTextfield("Primärfarbe", ["haus", "style", "primary_color"], this._config?.haus?.style?.primary_color)}
-                ${this._renderTextfield("Sekundärfarbe", ["haus", "style", "secondary_color"], this._config?.haus?.style?.secondary_color)}
-                ${this._renderTextfield("Icon Farbe", ["haus", "style", "icon_color"], this._config?.haus?.style?.icon_color)}
+                ${this._renderTextfield(t2.editor.background_color, ["haus", "style", "background_color"], this._config?.haus?.style?.background_color)}
+                ${this._renderTextfield(t2.editor.border_color, ["haus", "style", "border_color"], this._config?.haus?.style?.border_color)}
+                ${this._renderTextfield(t2.editor.primary_color, ["haus", "style", "primary_color"], this._config?.haus?.style?.primary_color)}
+                ${this._renderTextfield(t2.editor.secondary_color, ["haus", "style", "secondary_color"], this._config?.haus?.style?.secondary_color)}
+                ${this._renderTextfield(t2.editor.icon_color, ["haus", "style", "icon_color"], this._config?.haus?.style?.icon_color)}
             </div>
         `;
   }
   _renderGridTab() {
+    const t2 = this._getT();
     return x`
             <div class="section">
                 <div class="section-header">
                     <ha-icon icon="mdi:transmission-tower"></ha-icon>
-                    Netz
+                    ${t2.editor.grid}
                 </div>
-                ${this._renderEntityPicker("Netz Entity", ["netz", "entity"], this._config?.netz?.entity, "Entity für Netzbezug/Einspeisung")}
-                ${this._renderIconPicker("Icon", ["netz", "icon"], this._config?.netz?.icon)}
-                ${this._renderSwitch("Animation aktivieren", ["netz", "animation"], this._config?.netz?.animation)}
-                ${this._renderNumberfield("Schwellwert (W)", ["netz", "threshold"], this._config?.netz?.threshold, 0, 1e3, 10, 'Unterhalb dieses Werts wird "Neutral" angezeigt')}
+                ${this._renderEntityPicker(t2.editor.grid_entity, ["netz", "entity"], this._config?.netz?.entity, t2.editor.grid_entity_helper)}
+                ${this._renderIconPicker(t2.editor.icon_label, ["netz", "icon"], this._config?.netz?.icon)}
+                ${this._renderSwitch(t2.editor.enable_animation, ["netz", "animation"], this._config?.netz?.animation)}
+                ${this._renderNumberfield(t2.editor.threshold, ["netz", "threshold"], this._config?.netz?.threshold, 0, 1e3, 10, t2.editor.threshold_helper)}
             </div>
 
             <div class="divider"></div>
@@ -1813,11 +2540,11 @@ const _PVMonitorCardEditor = class _PVMonitorCardEditor extends i {
             <div class="section">
                 <div class="section-header">
                     <ha-icon icon="mdi:text-box"></ha-icon>
-                    Status-Texte
+                    ${t2.editor.status_texts}
                 </div>
-                ${this._renderTextfield("Text bei Einspeisung", ["netz", "text_einspeisen"], this._config?.netz?.text_einspeisen, "Einspeisung")}
-                ${this._renderTextfield("Text bei Neutral", ["netz", "text_neutral"], this._config?.netz?.text_neutral, "Neutral")}
-                ${this._renderTextfield("Text bei Bezug", ["netz", "text_bezug"], this._config?.netz?.text_bezug, "Netzbezug")}
+                ${this._renderTextfield(t2.editor.text_feed_in, ["netz", "text_einspeisen"], this._config?.netz?.text_einspeisen, t2.editor.text_feed_in_placeholder)}
+                ${this._renderTextfield(t2.editor.text_neutral, ["netz", "text_neutral"], this._config?.netz?.text_neutral, t2.editor.text_neutral_placeholder)}
+                ${this._renderTextfield(t2.editor.text_consumption, ["netz", "text_bezug"], this._config?.netz?.text_bezug, t2.editor.text_consumption_placeholder)}
             </div>
 
             <div class="divider"></div>
@@ -1825,12 +2552,12 @@ const _PVMonitorCardEditor = class _PVMonitorCardEditor extends i {
             <div class="section">
                 <div class="section-header">
                     <ha-icon icon="mdi:text"></ha-icon>
-                    Zusätzliche Texte
+                    ${t2.editor.additional_texts}
                 </div>
-                ${this._renderEntityPicker("Sekundär Entity", ["netz", "secondary_entity"], this._config?.netz?.secondary_entity)}
-                ${this._renderTextfield("Sekundär Text", ["netz", "secondary_text"], this._config?.netz?.secondary_text)}
-                ${this._renderEntityPicker("Tertiär Entity", ["netz", "tertiary_entity"], this._config?.netz?.tertiary_entity)}
-                ${this._renderTextfield("Tertiär Text", ["netz", "tertiary_text"], this._config?.netz?.tertiary_text)}
+                ${this._renderEntityPicker(t2.editor.secondary_entity, ["netz", "secondary_entity"], this._config?.netz?.secondary_entity)}
+                ${this._renderTextfield(t2.editor.secondary_text, ["netz", "secondary_text"], this._config?.netz?.secondary_text)}
+                ${this._renderEntityPicker(t2.editor.tertiary_entity, ["netz", "tertiary_entity"], this._config?.netz?.tertiary_entity)}
+                ${this._renderTextfield(t2.editor.tertiary_text, ["netz", "tertiary_text"], this._config?.netz?.tertiary_text)}
             </div>
 
             <div class="divider"></div>
@@ -1838,29 +2565,30 @@ const _PVMonitorCardEditor = class _PVMonitorCardEditor extends i {
             <div class="section">
                 <div class="section-header">
                     <ha-icon icon="mdi:palette"></ha-icon>
-                    Styling
+                    ${t2.editor.styling}
                 </div>
-                ${this._renderTextfield("Hintergrundfarbe", ["netz", "style", "background_color"], this._config?.netz?.style?.background_color)}
-                ${this._renderTextfield("Rahmenfarbe", ["netz", "style", "border_color"], this._config?.netz?.style?.border_color)}
-                ${this._renderTextfield("Primärfarbe", ["netz", "style", "primary_color"], this._config?.netz?.style?.primary_color)}
-                ${this._renderTextfield("Sekundärfarbe", ["netz", "style", "secondary_color"], this._config?.netz?.style?.secondary_color)}
-                ${this._renderTextfield("Icon Farbe", ["netz", "style", "icon_color"], this._config?.netz?.style?.icon_color)}
+                ${this._renderTextfield(t2.editor.background_color, ["netz", "style", "background_color"], this._config?.netz?.style?.background_color)}
+                ${this._renderTextfield(t2.editor.border_color, ["netz", "style", "border_color"], this._config?.netz?.style?.border_color)}
+                ${this._renderTextfield(t2.editor.primary_color, ["netz", "style", "primary_color"], this._config?.netz?.style?.primary_color)}
+                ${this._renderTextfield(t2.editor.secondary_color, ["netz", "style", "secondary_color"], this._config?.netz?.style?.secondary_color)}
+                ${this._renderTextfield(t2.editor.icon_color, ["netz", "style", "icon_color"], this._config?.netz?.style?.icon_color)}
             </div>
         `;
   }
   _renderStylingTab() {
+    const t2 = this._getT();
     return x`
             <div class="section">
                 <div class="section-header">
                     <ha-icon icon="mdi:card"></ha-icon>
-                    Karten-Styling
+                    ${t2.editor.card_styling}
                 </div>
-                ${this._renderTextfield("Hintergrundfarbe", ["style", "card_background_color"], this._config?.style?.card_background_color, "rgba(21, 20, 27, 1)")}
-                ${this._renderTextfield("Rahmenfarbe", ["style", "card_border_color"], this._config?.style?.card_border_color, "rgba(255, 255, 255, 0.1)")}
-                ${this._renderTextfield("Border Radius", ["style", "card_border_radius"], this._config?.style?.card_border_radius, "16px")}
-                ${this._renderTextfield("Textfarbe", ["style", "card_text_color"], this._config?.style?.card_text_color, "white")}
-                ${this._renderTextfield("Padding", ["style", "card_padding"], this._config?.style?.card_padding, "12px")}
-                ${this._renderTextfield("Cursor", ["style", "card_cursor"], this._config?.style?.card_cursor, "pointer")}
+                ${this._renderTextfield(t2.editor.background_color, ["style", "card_background_color"], this._config?.style?.card_background_color, "rgba(21, 20, 27, 1)")}
+                ${this._renderTextfield(t2.editor.border_color, ["style", "card_border_color"], this._config?.style?.card_border_color, "rgba(255, 255, 255, 0.1)")}
+                ${this._renderTextfield(t2.editor.border_radius, ["style", "card_border_radius"], this._config?.style?.card_border_radius, "16px")}
+                ${this._renderTextfield(t2.editor.text_color, ["style", "card_text_color"], this._config?.style?.card_text_color, "white")}
+                ${this._renderTextfield(t2.editor.padding, ["style", "card_padding"], this._config?.style?.card_padding, "12px")}
+                ${this._renderTextfield(t2.editor.cursor, ["style", "card_cursor"], this._config?.style?.card_cursor, "pointer")}
             </div>
 
             <div class="divider"></div>
@@ -1868,19 +2596,19 @@ const _PVMonitorCardEditor = class _PVMonitorCardEditor extends i {
             <div class="section">
                 <div class="section-header">
                     <ha-icon icon="mdi:format-title"></ha-icon>
-                    Titel & Untertitel
+                    ${t2.editor.title_subtitle}
                 </div>
-                ${this._renderTextfield("Titel Größe", ["style", "title_size"], this._config?.style?.title_size, "1.5em")}
-                ${this._renderTextfield("Titel Farbe", ["style", "title_color"], this._config?.style?.title_color, "white")}
-                ${this._renderTextfield("Titel Ausrichtung", ["style", "title_align"], this._config?.style?.title_align, "center", "left, center, right")}
-                ${this._renderTextfield("Titel Font-Weight", ["style", "title_font_weight"], this._config?.style?.title_font_weight, "bold")}
+                ${this._renderTextfield(t2.editor.title_size, ["style", "title_size"], this._config?.style?.title_size, "1.5em")}
+                ${this._renderTextfield(t2.editor.title_color, ["style", "title_color"], this._config?.style?.title_color, "white")}
+                ${this._renderTextfield(t2.editor.title_alignment, ["style", "title_align"], this._config?.style?.title_align, "center", t2.editor.title_alignment_helper)}
+                ${this._renderTextfield(t2.editor.title_font_weight, ["style", "title_font_weight"], this._config?.style?.title_font_weight, "bold")}
 
                 <div class="divider"></div>
 
-                ${this._renderTextfield("Untertitel Größe", ["style", "subtitle_size"], this._config?.style?.subtitle_size, "1em")}
-                ${this._renderTextfield("Untertitel Farbe", ["style", "subtitle_color"], this._config?.style?.subtitle_color)}
-                ${this._renderTextfield("Untertitel Ausrichtung", ["style", "subtitle_align"], this._config?.style?.subtitle_align, "center")}
-                ${this._renderTextfield("Untertitel Font-Weight", ["style", "subtitle_font_weight"], this._config?.style?.subtitle_font_weight, "normal")}
+                ${this._renderTextfield(t2.editor.subtitle_size, ["style", "subtitle_size"], this._config?.style?.subtitle_size, "1em")}
+                ${this._renderTextfield(t2.editor.subtitle_color, ["style", "subtitle_color"], this._config?.style?.subtitle_color)}
+                ${this._renderTextfield(t2.editor.subtitle_alignment, ["style", "subtitle_align"], this._config?.style?.subtitle_align, "center")}
+                ${this._renderTextfield(t2.editor.subtitle_font_weight, ["style", "subtitle_font_weight"], this._config?.style?.subtitle_font_weight, "normal")}
             </div>
 
             <div class="divider"></div>
@@ -1888,11 +2616,11 @@ const _PVMonitorCardEditor = class _PVMonitorCardEditor extends i {
             <div class="section">
                 <div class="section-header">
                     <ha-icon icon="mdi:shape"></ha-icon>
-                    Icons
+                    ${t2.editor.icons}
                 </div>
-                ${this._renderTextfield("Icon Größe", ["style", "icon_size"], this._config?.style?.icon_size, "2em")}
-                ${this._renderTextfield("Icon Opacity", ["style", "icon_opacity"], this._config?.style?.icon_opacity, "1")}
-                ${this._renderTextfield("Icon Margin", ["style", "icon_margin"], this._config?.style?.icon_margin, "6px")}
+                ${this._renderTextfield(t2.editor.icon_size, ["style", "icon_size"], this._config?.style?.icon_size, "2em")}
+                ${this._renderTextfield(t2.editor.icon_opacity, ["style", "icon_opacity"], this._config?.style?.icon_opacity, "1")}
+                ${this._renderTextfield(t2.editor.icon_margin, ["style", "icon_margin"], this._config?.style?.icon_margin, "6px")}
             </div>
 
             <div class="divider"></div>
@@ -1900,12 +2628,12 @@ const _PVMonitorCardEditor = class _PVMonitorCardEditor extends i {
             <div class="section">
                 <div class="section-header">
                     <ha-icon icon="mdi:format-text"></ha-icon>
-                    Primär-Text (Hauptwert)
+                    ${t2.editor.primary_text_styling}
                 </div>
-                ${this._renderTextfield("Primär Größe", ["style", "primary_size"], this._config?.style?.primary_size, "1.2em")}
-                ${this._renderTextfield("Primär Farbe", ["style", "primary_color"], this._config?.style?.primary_color, "white")}
-                ${this._renderTextfield("Primär Opacity", ["style", "primary_font_opacity"], this._config?.style?.primary_font_opacity, "1")}
-                ${this._renderTextfield("Primär Font-Weight", ["style", "primary_font_weight"], this._config?.style?.primary_font_weight, "normal")}
+                ${this._renderTextfield(t2.editor.primary_size, ["style", "primary_size"], this._config?.style?.primary_size, "1.2em")}
+                ${this._renderTextfield(t2.editor.primary_color_label, ["style", "primary_color"], this._config?.style?.primary_color, "white")}
+                ${this._renderTextfield(t2.editor.primary_opacity, ["style", "primary_font_opacity"], this._config?.style?.primary_font_opacity, "1")}
+                ${this._renderTextfield(t2.editor.primary_font_weight, ["style", "primary_font_weight"], this._config?.style?.primary_font_weight, "normal")}
             </div>
 
             <div class="divider"></div>
@@ -1913,12 +2641,12 @@ const _PVMonitorCardEditor = class _PVMonitorCardEditor extends i {
             <div class="section">
                 <div class="section-header">
                     <ha-icon icon="mdi:format-text"></ha-icon>
-                    Sekundär-Text (2. Zeile)
+                    ${t2.editor.secondary_text_styling}
                 </div>
-                ${this._renderTextfield("Sekundär Größe", ["style", "secondary_size"], this._config?.style?.secondary_size, "0.9em")}
-                ${this._renderTextfield("Sekundär Farbe", ["style", "secondary_color"], this._config?.style?.secondary_color, "white")}
-                ${this._renderTextfield("Sekundär Opacity", ["style", "secondary_font_opacity"], this._config?.style?.secondary_font_opacity, "0.7")}
-                ${this._renderTextfield("Sekundär Font-Weight", ["style", "secondary_font_weight"], this._config?.style?.secondary_font_weight, "normal")}
+                ${this._renderTextfield(t2.editor.secondary_size, ["style", "secondary_size"], this._config?.style?.secondary_size, "0.9em")}
+                ${this._renderTextfield(t2.editor.secondary_color_label, ["style", "secondary_color"], this._config?.style?.secondary_color, "white")}
+                ${this._renderTextfield(t2.editor.secondary_opacity, ["style", "secondary_font_opacity"], this._config?.style?.secondary_font_opacity, "0.7")}
+                ${this._renderTextfield(t2.editor.secondary_font_weight, ["style", "secondary_font_weight"], this._config?.style?.secondary_font_weight, "normal")}
             </div>
 
             <div class="divider"></div>
@@ -1926,12 +2654,12 @@ const _PVMonitorCardEditor = class _PVMonitorCardEditor extends i {
             <div class="section">
                 <div class="section-header">
                     <ha-icon icon="mdi:format-text"></ha-icon>
-                    Tertiär-Text (3. Zeile)
+                    ${t2.editor.tertiary_text_styling}
                 </div>
-                ${this._renderTextfield("Tertiär Größe", ["style", "tertiary_size"], this._config?.style?.tertiary_size, "0.9em")}
-                ${this._renderTextfield("Tertiär Farbe", ["style", "tertiary_color"], this._config?.style?.tertiary_color, "white")}
-                ${this._renderTextfield("Tertiär Opacity", ["style", "tertiary_font_opacity"], this._config?.style?.tertiary_font_opacity, "0.7")}
-                ${this._renderTextfield("Tertiär Font-Weight", ["style", "tertiary_font_weight"], this._config?.style?.tertiary_font_weight, "normal")}
+                ${this._renderTextfield(t2.editor.tertiary_size, ["style", "tertiary_size"], this._config?.style?.tertiary_size, "0.9em")}
+                ${this._renderTextfield(t2.editor.tertiary_color_label, ["style", "tertiary_color"], this._config?.style?.tertiary_color, "white")}
+                ${this._renderTextfield(t2.editor.tertiary_opacity, ["style", "tertiary_font_opacity"], this._config?.style?.tertiary_font_opacity, "0.7")}
+                ${this._renderTextfield(t2.editor.tertiary_font_weight, ["style", "tertiary_font_weight"], this._config?.style?.tertiary_font_weight, "normal")}
             </div>
         `;
   }
@@ -1939,16 +2667,17 @@ const _PVMonitorCardEditor = class _PVMonitorCardEditor extends i {
     if (!this._config) {
       return x``;
     }
+    const t2 = this._getT();
     return x`
             <div class="card-config">
                 <div class="tabs">
-                    ${this._renderTab("general", "Allgemein", "mdi:cog")}
-                    ${this._renderTab("styling", "Styling", "mdi:palette")}
-                    ${this._renderTab("infobar", "Info Bar", "mdi:information")}
-                    ${this._renderTab("pv", "PV-Anlage", "mdi:solar-panel")}
-                    ${this._renderTab("battery", "Batterie", "mdi:battery")}
-                    ${this._renderTab("house", "Haus", "mdi:home")}
-                    ${this._renderTab("grid", "Netz", "mdi:transmission-tower")}
+                    ${this._renderTab("general", t2.editor.tab_general, "mdi:cog")}
+                    ${this._renderTab("styling", t2.editor.tab_styling, "mdi:palette")}
+                    ${this._renderTab("infobar", t2.editor.tab_infobar, "mdi:information")}
+                    ${this._renderTab("pv", t2.editor.tab_pv, "mdi:solar-panel")}
+                    ${this._renderTab("battery", t2.editor.tab_battery, "mdi:battery")}
+                    ${this._renderTab("house", t2.editor.tab_house, "mdi:home")}
+                    ${this._renderTab("grid", t2.editor.tab_grid, "mdi:transmission-tower")}
                 </div>
 
                 <div class="tab-content ${this._activeTab === "general" ? "active" : ""}">
