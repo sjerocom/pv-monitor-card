@@ -11,7 +11,11 @@ export default defineConfig({
         rollupOptions: {
             external: [],
             output: {
-                globals: {}
+                globals: {},
+                entryFileNames: 'pv-monitor-card.js',
+                chunkFileNames: 'pv-monitor-card.js',
+                assetFileNames: 'pv-monitor-card[extname]',
+                inlineDynamicImports: true  // ← Wichtig: Alles in eine Datei packen
             }
         },
         target: 'es2020',
