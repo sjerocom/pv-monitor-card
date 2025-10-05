@@ -1,6 +1,4 @@
 {
   "name": "PV Monitor Card",
-  "render_readme": true,
-  "filename": "pv-monitor-card.js",
-  "content_in_root": false
+  "render_readme": true
 }
