@@ -3,6 +3,7 @@ import { property } from "lit/decorators.js";
 import { pvMonitorCardStyles } from "./pv-monitor-card-styles";
 import { PVMonitorCardConfig, Hass, TapAction, CardStyle, InfoBarItem } from "./pv-monitor-card-types";
 import { getDefaultConfig } from "./pv-monitor-card-defaults";
+import { getTranslations, detectLanguage, SupportedLanguage } from "./pv-monitor-card-i18n";
 import {
     formatPower,
     getBatteryIcon,
@@ -255,18 +256,20 @@ export class PVMonitorCard extends LitElement {
     private _renderNetz() {
         if (!this.config.netz?.entity || !this.hass) return html``;
         const entity = this.hass.states[this.config.netz.entity];
-        if (!entity) return html`<div class="card">⚠️ ${this.config.netz.entity} fehlt</div>`;
+        const t = getTranslations(this.config.language);
+
+        if (!entity) return html`<div class="card">⚠️ ${this.config.netz.entity} ${t.general.missing_entity}</div>`;
 
         const value = parseFloat(entity.state) || 0;
         const threshold = this.config.netz.threshold || 10;
 
         let statusText = '';
         if (value < -threshold) {
-            statusText = this.config.netz.text_einspeisen || 'Einspeisung';
+            statusText = this.config.netz.text_einspeisen || t.status.feed_in;
         } else if (value > threshold) {
-            statusText = this.config.netz.text_bezug || 'Netzbezug';
+            statusText = this.config.netz.text_bezug || t.status.grid_consumption;
         } else {
-            statusText = this.config.netz.text_neutral || 'Neutral';
+            statusText = this.config.netz.text_neutral || t.status.neutral;
         }
 
         const secondaryText = this._getTextFromEntityOrConfig(this.config.netz.secondary_entity, this.config.netz.secondary_text) || statusText;
@@ -285,7 +288,9 @@ export class PVMonitorCard extends LitElement {
     private _renderPV() {
         if (!this.config.pv?.entity || !this.hass) return html``;
         const entity = this.hass.states[this.config.pv.entity];
-        if (!entity) return html`<div class="card">⚠️ ${this.config.pv.entity} fehlt</div>`;
+        const t = getTranslations(this.config.language);
+
+        if (!entity) return html`<div class="card">⚠️ ${this.config.pv.entity} ${t.general.missing_entity}</div>`;
 
         const value = parseFloat(entity.state) || 0;
         const maxPower = this.config.pv.max_power || 10000;
@@ -314,7 +319,9 @@ export class PVMonitorCard extends LitElement {
     private _renderBatterie() {
         if (!this.config.batterie?.entity || !this.hass) return html``;
         const entity = this.hass.states[this.config.batterie.entity];
-        if (!entity) return html`<div class="card">⚠️ ${this.config.batterie.entity} fehlt</div>`;
+        const t = getTranslations(this.config.language);
+
+        if (!entity) return html`<div class="card">⚠️ ${this.config.batterie.entity} ${t.general.missing_entity}</div>`;
 
         const percentage = parseFloat(entity.state) || 0;
         const icon = this.config.batterie.icon || getBatteryIcon(percentage);
@@ -335,7 +342,7 @@ export class PVMonitorCard extends LitElement {
         } else if (discharge > 1) {
             statusText = '-' + formatPower(discharge);
         } else {
-            statusText = 'Inaktiv';
+            statusText = t.general.inactive;
         }
 
         const secondaryText = this._getTextFromEntityOrConfig(this.config.batterie.secondary_entity, this.config.batterie.secondary_text) || statusText;
@@ -355,7 +362,9 @@ export class PVMonitorCard extends LitElement {
     private _renderHaus() {
         if (!this.config.haus?.entity || !this.hass) return html``;
         const entity = this.hass.states[this.config.haus.entity];
-        if (!entity) return html`<div class="card">⚠️ ${this.config.haus.entity} fehlt</div>`;
+        const t = getTranslations(this.config.language);
+
+        if (!entity) return html`<div class="card">⚠️ ${this.config.haus.entity} ${t.general.missing_entity}</div>`;
 
         const value = parseFloat(entity.state) || 0;
 

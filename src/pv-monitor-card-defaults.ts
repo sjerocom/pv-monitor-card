@@ -1,8 +1,12 @@
 import { PVMonitorCardConfig } from "./pv-monitor-card-types";
+import { getTranslations, detectLanguage } from "./pv-monitor-card-i18n";
 
 export function getDefaultConfig(config: PVMonitorCardConfig): PVMonitorCardConfig {
+    const t = getTranslations(config.language || detectLanguage());
+
     return {
         ...config,
+        language: config.language || detectLanguage(),
         show_title: config.show_title !== false,
         show_subtitle: config.show_subtitle !== false,
         show_icon: config.show_icon !== false,
@@ -12,17 +16,17 @@ export function getDefaultConfig(config: PVMonitorCardConfig): PVMonitorCardConf
             show: config.info_bar?.show === true,
             item1: {
                 icon: config.info_bar?.item1?.icon ?? 'mdi:home-lightning-bolt',
-                label: config.info_bar?.item1?.label ?? 'Autarkie',
+                label: config.info_bar?.item1?.label ?? t.editor.default_autarky,
                 ...config.info_bar?.item1
             },
             item2: {
                 icon: config.info_bar?.item2?.icon ?? 'mdi:battery-clock',
-                label: config.info_bar?.item2?.label ?? 'Restlaufzeit',
+                label: config.info_bar?.item2?.label ?? t.editor.default_runtime,
                 ...config.info_bar?.item2
             },
             item3: {
                 icon: config.info_bar?.item3?.icon ?? 'mdi:battery-charging',
-                label: config.info_bar?.item3?.label ?? 'Restladezeit',
+                label: config.info_bar?.item3?.label ?? t.editor.default_chargetime,
                 ...config.info_bar?.item3
             },
             style: {
@@ -80,9 +84,9 @@ export function getDefaultConfig(config: PVMonitorCardConfig): PVMonitorCardConf
         netz: {
             animation: config.netz?.animation !== false,
             threshold: config.netz?.threshold ?? 10,
-            text_einspeisen: config.netz?.text_einspeisen ?? "Einspeisung",
-            text_neutral: config.netz?.text_neutral ?? "Neutral",
-            text_bezug: config.netz?.text_bezug ?? "Netzbezug",
+            text_einspeisen: config.netz?.text_einspeisen ?? t.status.feed_in,
+            text_neutral: config.netz?.text_neutral ?? t.status.neutral,
+            text_bezug: config.netz?.text_bezug ?? t.status.grid_consumption,
             ...config.netz
         },
 

@@ -1,6 +1,7 @@
 import { LitElement, html, css } from "lit";
 import { property, state } from "lit/decorators.js";
 import { PVMonitorCardConfig } from "./pv-monitor-card-types";
+import { getTranslations, SupportedLanguage, detectLanguage } from "./pv-monitor-card-i18n";
 
 export class PVMonitorCardEditor extends LitElement {
     @property({ attribute: false }) public hass?: any;
@@ -153,6 +154,10 @@ export class PVMonitorCardEditor extends LitElement {
         this.dispatchEvent(event);
     }
 
+    private _getT() {
+        return getTranslations(this._config?.language);
+    }
+
     private _renderTab(id: string, label: string, icon: string) {
         return html`
             <button
@@ -235,8 +240,8 @@ export class PVMonitorCardEditor extends LitElement {
     }
 
     private _renderEntityPicker(label: string, path: string[], value?: string, helper?: string) {
-        // Get all entity IDs from hass
         const entities = this.hass ? Object.keys(this.hass.states).sort() : [];
+        const t = this._getT();
 
         return html`
             <div class="option">
@@ -249,7 +254,7 @@ export class PVMonitorCardEditor extends LitElement {
                             .hass=${this.hass}
                             .value=${value || ''}
                             .items=${entities}
-                            .label=${'Entity auswählen'}
+                            .label=${t.editor.select_entity}
                             item-value-path=""
                             item-label-path=""
                             allow-custom-value
@@ -277,6 +282,8 @@ export class PVMonitorCardEditor extends LitElement {
     }
 
     private _renderIconPicker(label: string, path: string[], value?: string, helper?: string) {
+        const t = this._getT();
+
         return html`
             <div class="option">
                 <div class="option-label">
@@ -287,7 +294,7 @@ export class PVMonitorCardEditor extends LitElement {
                     <ha-icon-picker
                             .hass=${this.hass}
                             .value=${value || ''}
-                            .label=${'Icon auswählen'}
+                            .label=${t.editor.select_icon}
                             @value-changed=${(ev: any) => {
                                 ev.stopPropagation();
                                 if (!this._config) return;
@@ -312,16 +319,72 @@ export class PVMonitorCardEditor extends LitElement {
         `;
     }
 
+    private _renderLanguageSelector() {
+        const t = this._getT();
+        const currentLang = this._config?.language || detectLanguage();
+
+        return html`
+            <div class="option">
+                <div class="option-label">
+                    ${t.editor.language}
+                    <div class="info-text">${t.editor.language_helper}</div>
+                </div>
+                <div class="option-control">
+                    <ha-combo-box
+                            .value=${currentLang}
+                            .items=${[
+                                { value: 'de', label: 'Deutsch' },
+                                { value: 'en', label: 'English' },
+                                { value: 'fr', label: 'Français' },
+                                { value: 'it', label: 'Italiano' },
+                                { value: 'es', label: 'Español' }
+                            ]}
+                            item-value-path="value"
+                            item-label-path="label"
+                            @value-changed=${(ev: any) => {
+                                if (!this._config) return;
+                                const newValue = ev.detail?.value;
+
+                                // Ignore if no value or same value
+                                if (!newValue || newValue === this._config.language) return;
+
+                                // Update config
+                                const newConfig = { ...this._config };
+                                newConfig.language = newValue as SupportedLanguage;
+                                this._config = newConfig;
+
+                                // Fire event and re-render
+                                this._fireEvent();
+                                this.requestUpdate();
+                            }}
+                    ></ha-combo-box>
+                </div>
+            </div>
+        `;
+    }
+
     private _renderGeneralTab() {
+        const t = this._getT();
+
         return html`
             <div class="section">
                 <div class="section-header">
-                    <ha-icon icon="mdi:card-text"></ha-icon>
-                    Karten-Header
+                    <ha-icon icon="mdi:translate"></ha-icon>
+                    ${t.editor.language}
                 </div>
-                ${this._renderTextfield('Titel', ['title'], this._config?.title, 'PV Monitor')}
-                ${this._renderTextfield('Untertitel', ['subtitle'], this._config?.subtitle, 'Energieübersicht')}
-                ${this._renderIconPicker('Icon', ['icon'], this._config?.icon, 'Wird nur angezeigt, wenn auch ein Titel vorhanden ist')}
+                ${this._renderLanguageSelector()}
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="section">
+                <div class="section-header">
+                    <ha-icon icon="mdi:card-text"></ha-icon>
+                    ${t.editor.card_header}
+                </div>
+                ${this._renderTextfield(t.editor.title, ['title'], this._config?.title, t.editor.title_placeholder, t.editor.title_helper)}
+                ${this._renderTextfield(t.editor.subtitle, ['subtitle'], this._config?.subtitle, t.editor.subtitle_placeholder, t.editor.subtitle_helper)}
+                ${this._renderIconPicker(t.editor.icon, ['icon'], this._config?.icon, t.editor.icon_helper)}
             </div>
 
             <div class="divider"></div>
@@ -329,21 +392,23 @@ export class PVMonitorCardEditor extends LitElement {
             <div class="section">
                 <div class="section-header">
                     <ha-icon icon="mdi:grid"></ha-icon>
-                    Layout
+                    ${t.editor.layout}
                 </div>
-                ${this._renderTextfield('Grid Abstand', ['grid_gap'], this._config?.grid_gap, '6px', 'Abstand zwischen den Karten (z.B. 6px, 0.5rem)')}
+                ${this._renderTextfield(t.editor.grid_gap, ['grid_gap'], this._config?.grid_gap, t.editor.grid_gap_placeholder, t.editor.grid_gap_helper)}
             </div>
         `;
     }
 
     private _renderInfoBarTab() {
+        const t = this._getT();
+
         return html`
             <div class="section">
                 <div class="section-header">
                     <ha-icon icon="mdi:information"></ha-icon>
-                    Info Bar Einstellungen
+                    ${t.editor.infobar_settings}
                 </div>
-                ${this._renderSwitch('Info Bar aktivieren', ['info_bar', 'show'], this._config?.info_bar?.show)}
+                ${this._renderSwitch(t.editor.enable_infobar, ['info_bar', 'show'], this._config?.info_bar?.show)}
             </div>
 
             ${this._config?.info_bar?.show ? html`
@@ -352,12 +417,12 @@ export class PVMonitorCardEditor extends LitElement {
                 <div class="section">
                     <div class="section-header">
                         <ha-icon icon="mdi:numeric-1-box"></ha-icon>
-                        Item 1
+                        ${t.editor.item} 1
                     </div>
-                    ${this._renderEntityPicker('Entity', ['info_bar', 'item1', 'entity'], this._config?.info_bar?.item1?.entity)}
-                    ${this._renderIconPicker('Icon', ['info_bar', 'item1', 'icon'], this._config?.info_bar?.item1?.icon)}
-                    ${this._renderTextfield('Label', ['info_bar', 'item1', 'label'], this._config?.info_bar?.item1?.label, 'Autarkie')}
-                    ${this._renderTextfield('Einheit', ['info_bar', 'item1', 'unit'], this._config?.info_bar?.item1?.unit, '%')}
+                    ${this._renderEntityPicker(t.editor.entity, ['info_bar', 'item1', 'entity'], this._config?.info_bar?.item1?.entity)}
+                    ${this._renderIconPicker(t.editor.icon_label, ['info_bar', 'item1', 'icon'], this._config?.info_bar?.item1?.icon)}
+                    ${this._renderTextfield(t.editor.label, ['info_bar', 'item1', 'label'], this._config?.info_bar?.item1?.label, t.editor.default_autarky)}
+                    ${this._renderTextfield(t.editor.unit, ['info_bar', 'item1', 'unit'], this._config?.info_bar?.item1?.unit, '%')}
                 </div>
 
                 <div class="divider"></div>
@@ -365,12 +430,12 @@ export class PVMonitorCardEditor extends LitElement {
                 <div class="section">
                     <div class="section-header">
                         <ha-icon icon="mdi:numeric-2-box"></ha-icon>
-                        Item 2
+                        ${t.editor.item} 2
                     </div>
-                    ${this._renderEntityPicker('Entity', ['info_bar', 'item2', 'entity'], this._config?.info_bar?.item2?.entity)}
-                    ${this._renderIconPicker('Icon', ['info_bar', 'item2', 'icon'], this._config?.info_bar?.item2?.icon)}
-                    ${this._renderTextfield('Label', ['info_bar', 'item2', 'label'], this._config?.info_bar?.item2?.label, 'Restlaufzeit')}
-                    ${this._renderTextfield('Einheit', ['info_bar', 'item2', 'unit'], this._config?.info_bar?.item2?.unit)}
+                    ${this._renderEntityPicker(t.editor.entity, ['info_bar', 'item2', 'entity'], this._config?.info_bar?.item2?.entity)}
+                    ${this._renderIconPicker(t.editor.icon_label, ['info_bar', 'item2', 'icon'], this._config?.info_bar?.item2?.icon)}
+                    ${this._renderTextfield(t.editor.label, ['info_bar', 'item2', 'label'], this._config?.info_bar?.item2?.label, t.editor.default_runtime)}
+                    ${this._renderTextfield(t.editor.unit, ['info_bar', 'item2', 'unit'], this._config?.info_bar?.item2?.unit)}
                 </div>
 
                 <div class="divider"></div>
@@ -378,29 +443,31 @@ export class PVMonitorCardEditor extends LitElement {
                 <div class="section">
                     <div class="section-header">
                         <ha-icon icon="mdi:numeric-3-box"></ha-icon>
-                        Item 3
+                        ${t.editor.item} 3
                     </div>
-                    ${this._renderEntityPicker('Entity', ['info_bar', 'item3', 'entity'], this._config?.info_bar?.item3?.entity)}
-                    ${this._renderIconPicker('Icon', ['info_bar', 'item3', 'icon'], this._config?.info_bar?.item3?.icon)}
-                    ${this._renderTextfield('Label', ['info_bar', 'item3', 'label'], this._config?.info_bar?.item3?.label, 'Restladezeit')}
-                    ${this._renderTextfield('Einheit', ['info_bar', 'item3', 'unit'], this._config?.info_bar?.item3?.unit)}
+                    ${this._renderEntityPicker(t.editor.entity, ['info_bar', 'item3', 'entity'], this._config?.info_bar?.item3?.entity)}
+                    ${this._renderIconPicker(t.editor.icon_label, ['info_bar', 'item3', 'icon'], this._config?.info_bar?.item3?.icon)}
+                    ${this._renderTextfield(t.editor.label, ['info_bar', 'item3', 'label'], this._config?.info_bar?.item3?.label, t.editor.default_chargetime)}
+                    ${this._renderTextfield(t.editor.unit, ['info_bar', 'item3', 'unit'], this._config?.info_bar?.item3?.unit)}
                 </div>
             ` : ''}
         `;
     }
 
     private _renderPVTab() {
+        const t = this._getT();
+
         return html`
             <div class="section">
                 <div class="section-header">
                     <ha-icon icon="mdi:solar-panel"></ha-icon>
-                    PV-Anlage
+                    ${t.editor.pv_system}
                 </div>
-                ${this._renderEntityPicker('PV Entity', ['pv', 'entity'], this._config?.pv?.entity, 'Entity für PV-Leistung')}
-                ${this._renderIconPicker('Icon', ['pv', 'icon'], this._config?.pv?.icon)}
-                ${this._renderSwitch('Animation aktivieren', ['pv', 'animation'], this._config?.pv?.animation)}
-                ${this._renderSwitch('Icon Rotation', ['pv', 'icon_rotation'], this._config?.pv?.icon_rotation, 'Icon dreht sich je nach Leistung')}
-                ${this._renderNumberfield('Max. Leistung (W)', ['pv', 'max_power'], this._config?.pv?.max_power, 0, 100000, 100, 'Maximale PV-Leistung für Animation & Rotation')}
+                ${this._renderEntityPicker(t.editor.pv_entity, ['pv', 'entity'], this._config?.pv?.entity, t.editor.pv_entity_helper)}
+                ${this._renderIconPicker(t.editor.icon_label, ['pv', 'icon'], this._config?.pv?.icon)}
+                ${this._renderSwitch(t.editor.enable_animation, ['pv', 'animation'], this._config?.pv?.animation)}
+                ${this._renderSwitch(t.editor.icon_rotation, ['pv', 'icon_rotation'], this._config?.pv?.icon_rotation, t.editor.icon_rotation_helper)}
+                ${this._renderNumberfield(t.editor.max_power, ['pv', 'max_power'], this._config?.pv?.max_power, 0, 100000, 100, t.editor.max_power_helper)}
             </div>
 
             <div class="divider"></div>
@@ -408,12 +475,12 @@ export class PVMonitorCardEditor extends LitElement {
             <div class="section">
                 <div class="section-header">
                     <ha-icon icon="mdi:text"></ha-icon>
-                    Zusätzliche Texte
+                    ${t.editor.additional_texts}
                 </div>
-                ${this._renderEntityPicker('Sekundär Entity', ['pv', 'secondary_entity'], this._config?.pv?.secondary_entity, 'Optional: Entity für 2. Zeile')}
-                ${this._renderTextfield('Sekundär Text', ['pv', 'secondary_text'], this._config?.pv?.secondary_text, 'Optional: Statischer Text für 2. Zeile')}
-                ${this._renderEntityPicker('Tertiär Entity', ['pv', 'tertiary_entity'], this._config?.pv?.tertiary_entity)}
-                ${this._renderTextfield('Tertiär Text', ['pv', 'tertiary_text'], this._config?.pv?.tertiary_text)}
+                ${this._renderEntityPicker(t.editor.secondary_entity, ['pv', 'secondary_entity'], this._config?.pv?.secondary_entity, t.editor.secondary_entity_helper)}
+                ${this._renderTextfield(t.editor.secondary_text, ['pv', 'secondary_text'], this._config?.pv?.secondary_text, '', t.editor.secondary_text_helper)}
+                ${this._renderEntityPicker(t.editor.tertiary_entity, ['pv', 'tertiary_entity'], this._config?.pv?.tertiary_entity)}
+                ${this._renderTextfield(t.editor.tertiary_text, ['pv', 'tertiary_text'], this._config?.pv?.tertiary_text)}
             </div>
 
             <div class="divider"></div>
@@ -421,31 +488,33 @@ export class PVMonitorCardEditor extends LitElement {
             <div class="section">
                 <div class="section-header">
                     <ha-icon icon="mdi:palette"></ha-icon>
-                    Styling
+                    ${t.editor.styling}
                 </div>
-                ${this._renderTextfield('Hintergrundfarbe', ['pv', 'style', 'background_color'], this._config?.pv?.style?.background_color, 'rgba(21, 20, 27, 1)')}
-                ${this._renderTextfield('Rahmenfarbe', ['pv', 'style', 'border_color'], this._config?.pv?.style?.border_color, 'rgba(255, 255, 255, 0.1)')}
-                ${this._renderTextfield('Primärfarbe', ['pv', 'style', 'primary_color'], this._config?.pv?.style?.primary_color)}
-                ${this._renderTextfield('Sekundärfarbe', ['pv', 'style', 'secondary_color'], this._config?.pv?.style?.secondary_color)}
-                ${this._renderTextfield('Icon Farbe', ['pv', 'style', 'icon_color'], this._config?.pv?.style?.icon_color)}
+                ${this._renderTextfield(t.editor.background_color, ['pv', 'style', 'background_color'], this._config?.pv?.style?.background_color, 'rgba(21, 20, 27, 1)')}
+                ${this._renderTextfield(t.editor.border_color, ['pv', 'style', 'border_color'], this._config?.pv?.style?.border_color, 'rgba(255, 255, 255, 0.1)')}
+                ${this._renderTextfield(t.editor.primary_color, ['pv', 'style', 'primary_color'], this._config?.pv?.style?.primary_color)}
+                ${this._renderTextfield(t.editor.secondary_color, ['pv', 'style', 'secondary_color'], this._config?.pv?.style?.secondary_color)}
+                ${this._renderTextfield(t.editor.icon_color, ['pv', 'style', 'icon_color'], this._config?.pv?.style?.icon_color)}
             </div>
         `;
     }
 
     private _renderBatteryTab() {
+        const t = this._getT();
+
         return html`
             <div class="section">
                 <div class="section-header">
                     <ha-icon icon="mdi:battery"></ha-icon>
-                    Batterie
+                    ${t.editor.battery}
                 </div>
-                ${this._renderEntityPicker('Batterie Entity', ['batterie', 'entity'], this._config?.batterie?.entity, 'Entity für Batteriestand (%)')}
-                ${this._renderEntityPicker('Ladung Entity', ['batterie', 'ladung_entity'], this._config?.batterie?.ladung_entity, 'Entity für Ladeleistung')}
-                ${this._renderEntityPicker('Entladung Entity', ['batterie', 'entladung_entity'], this._config?.batterie?.entladung_entity, 'Entity für Entladeleistung')}
-                ${this._renderNumberfield('Batteriekapazität (Wh)', ['batterie', 'battery_capacity'], this._config?.batterie?.battery_capacity, 0, 100000, 100, 'Kapazität der Batterie für Animation (z.B. 10000 für 10 kWh)')}
-                ${this._renderSwitch('Rest-/Ladezeit berechnen', ['batterie', 'calculate_runtime'], this._config?.batterie?.calculate_runtime, 'Automatische Berechnung für Info Bar Item 2 & 3')}
-                ${this._renderIconPicker('Icon', ['batterie', 'icon'], this._config?.batterie?.icon, 'Leer lassen für automatisches Icon')}
-                ${this._renderSwitch('Animation aktivieren', ['batterie', 'animation'], this._config?.batterie?.animation)}
+                ${this._renderEntityPicker(t.editor.battery_entity, ['batterie', 'entity'], this._config?.batterie?.entity, t.editor.battery_entity_helper)}
+                ${this._renderEntityPicker(t.editor.charge_entity, ['batterie', 'ladung_entity'], this._config?.batterie?.ladung_entity, t.editor.charge_entity_helper)}
+                ${this._renderEntityPicker(t.editor.discharge_entity, ['batterie', 'entladung_entity'], this._config?.batterie?.entladung_entity, t.editor.discharge_entity_helper)}
+                ${this._renderNumberfield(t.editor.battery_capacity, ['batterie', 'battery_capacity'], this._config?.batterie?.battery_capacity, 0, 100000, 100, t.editor.battery_capacity_helper)}
+                ${this._renderSwitch(t.editor.calculate_runtime, ['batterie', 'calculate_runtime'], this._config?.batterie?.calculate_runtime, t.editor.calculate_runtime_helper)}
+                ${this._renderIconPicker(t.editor.icon_label, ['batterie', 'icon'], this._config?.batterie?.icon, t.editor.icon_auto_helper)}
+                ${this._renderSwitch(t.editor.enable_animation, ['batterie', 'animation'], this._config?.batterie?.animation)}
             </div>
 
             <div class="divider"></div>
@@ -453,12 +522,12 @@ export class PVMonitorCardEditor extends LitElement {
             <div class="section">
                 <div class="section-header">
                     <ha-icon icon="mdi:text"></ha-icon>
-                    Zusätzliche Texte
+                    ${t.editor.additional_texts}
                 </div>
-                ${this._renderEntityPicker('Sekundär Entity', ['batterie', 'secondary_entity'], this._config?.batterie?.secondary_entity)}
-                ${this._renderTextfield('Sekundär Text', ['batterie', 'secondary_text'], this._config?.batterie?.secondary_text)}
-                ${this._renderEntityPicker('Tertiär Entity', ['batterie', 'tertiary_entity'], this._config?.batterie?.tertiary_entity)}
-                ${this._renderTextfield('Tertiär Text', ['batterie', 'tertiary_text'], this._config?.batterie?.tertiary_text)}
+                ${this._renderEntityPicker(t.editor.secondary_entity, ['batterie', 'secondary_entity'], this._config?.batterie?.secondary_entity)}
+                ${this._renderTextfield(t.editor.secondary_text, ['batterie', 'secondary_text'], this._config?.batterie?.secondary_text)}
+                ${this._renderEntityPicker(t.editor.tertiary_entity, ['batterie', 'tertiary_entity'], this._config?.batterie?.tertiary_entity)}
+                ${this._renderTextfield(t.editor.tertiary_text, ['batterie', 'tertiary_text'], this._config?.batterie?.tertiary_text)}
             </div>
 
             <div class="divider"></div>
@@ -466,27 +535,29 @@ export class PVMonitorCardEditor extends LitElement {
             <div class="section">
                 <div class="section-header">
                     <ha-icon icon="mdi:palette"></ha-icon>
-                    Styling
+                    ${t.editor.styling}
                 </div>
-                ${this._renderTextfield('Hintergrundfarbe', ['batterie', 'style', 'background_color'], this._config?.batterie?.style?.background_color)}
-                ${this._renderTextfield('Rahmenfarbe', ['batterie', 'style', 'border_color'], this._config?.batterie?.style?.border_color)}
-                ${this._renderTextfield('Primärfarbe', ['batterie', 'style', 'primary_color'], this._config?.batterie?.style?.primary_color)}
-                ${this._renderTextfield('Sekundärfarbe', ['batterie', 'style', 'secondary_color'], this._config?.batterie?.style?.secondary_color)}
-                ${this._renderTextfield('Icon Farbe', ['batterie', 'style', 'icon_color'], this._config?.batterie?.style?.icon_color)}
+                ${this._renderTextfield(t.editor.background_color, ['batterie', 'style', 'background_color'], this._config?.batterie?.style?.background_color)}
+                ${this._renderTextfield(t.editor.border_color, ['batterie', 'style', 'border_color'], this._config?.batterie?.style?.border_color)}
+                ${this._renderTextfield(t.editor.primary_color, ['batterie', 'style', 'primary_color'], this._config?.batterie?.style?.primary_color)}
+                ${this._renderTextfield(t.editor.secondary_color, ['batterie', 'style', 'secondary_color'], this._config?.batterie?.style?.secondary_color)}
+                ${this._renderTextfield(t.editor.icon_color, ['batterie', 'style', 'icon_color'], this._config?.batterie?.style?.icon_color)}
             </div>
         `;
     }
 
     private _renderHouseTab() {
+        const t = this._getT();
+
         return html`
             <div class="section">
                 <div class="section-header">
                     <ha-icon icon="mdi:home"></ha-icon>
-                    Hausverbrauch
+                    ${t.editor.house_consumption}
                 </div>
-                ${this._renderEntityPicker('Haus Entity', ['haus', 'entity'], this._config?.haus?.entity, 'Entity für Hausverbrauch')}
-                ${this._renderIconPicker('Icon', ['haus', 'icon'], this._config?.haus?.icon)}
-                ${this._renderSwitch('Animation aktivieren', ['haus', 'animation'], this._config?.haus?.animation)}
+                ${this._renderEntityPicker(t.editor.house_entity, ['haus', 'entity'], this._config?.haus?.entity, t.editor.house_entity_helper)}
+                ${this._renderIconPicker(t.editor.icon_label, ['haus', 'icon'], this._config?.haus?.icon)}
+                ${this._renderSwitch(t.editor.enable_animation, ['haus', 'animation'], this._config?.haus?.animation)}
             </div>
 
             <div class="divider"></div>
@@ -494,12 +565,12 @@ export class PVMonitorCardEditor extends LitElement {
             <div class="section">
                 <div class="section-header">
                     <ha-icon icon="mdi:text"></ha-icon>
-                    Zusätzliche Texte
+                    ${t.editor.additional_texts}
                 </div>
-                ${this._renderEntityPicker('Sekundär Entity', ['haus', 'secondary_entity'], this._config?.haus?.secondary_entity)}
-                ${this._renderTextfield('Sekundär Text', ['haus', 'secondary_text'], this._config?.haus?.secondary_text)}
-                ${this._renderEntityPicker('Tertiär Entity', ['haus', 'tertiary_entity'], this._config?.haus?.tertiary_entity)}
-                ${this._renderTextfield('Tertiär Text', ['haus', 'tertiary_text'], this._config?.haus?.tertiary_text)}
+                ${this._renderEntityPicker(t.editor.secondary_entity, ['haus', 'secondary_entity'], this._config?.haus?.secondary_entity)}
+                ${this._renderTextfield(t.editor.secondary_text, ['haus', 'secondary_text'], this._config?.haus?.secondary_text)}
+                ${this._renderEntityPicker(t.editor.tertiary_entity, ['haus', 'tertiary_entity'], this._config?.haus?.tertiary_entity)}
+                ${this._renderTextfield(t.editor.tertiary_text, ['haus', 'tertiary_text'], this._config?.haus?.tertiary_text)}
             </div>
 
             <div class="divider"></div>
@@ -507,28 +578,30 @@ export class PVMonitorCardEditor extends LitElement {
             <div class="section">
                 <div class="section-header">
                     <ha-icon icon="mdi:palette"></ha-icon>
-                    Styling
+                    ${t.editor.styling}
                 </div>
-                ${this._renderTextfield('Hintergrundfarbe', ['haus', 'style', 'background_color'], this._config?.haus?.style?.background_color)}
-                ${this._renderTextfield('Rahmenfarbe', ['haus', 'style', 'border_color'], this._config?.haus?.style?.border_color)}
-                ${this._renderTextfield('Primärfarbe', ['haus', 'style', 'primary_color'], this._config?.haus?.style?.primary_color)}
-                ${this._renderTextfield('Sekundärfarbe', ['haus', 'style', 'secondary_color'], this._config?.haus?.style?.secondary_color)}
-                ${this._renderTextfield('Icon Farbe', ['haus', 'style', 'icon_color'], this._config?.haus?.style?.icon_color)}
+                ${this._renderTextfield(t.editor.background_color, ['haus', 'style', 'background_color'], this._config?.haus?.style?.background_color)}
+                ${this._renderTextfield(t.editor.border_color, ['haus', 'style', 'border_color'], this._config?.haus?.style?.border_color)}
+                ${this._renderTextfield(t.editor.primary_color, ['haus', 'style', 'primary_color'], this._config?.haus?.style?.primary_color)}
+                ${this._renderTextfield(t.editor.secondary_color, ['haus', 'style', 'secondary_color'], this._config?.haus?.style?.secondary_color)}
+                ${this._renderTextfield(t.editor.icon_color, ['haus', 'style', 'icon_color'], this._config?.haus?.style?.icon_color)}
             </div>
         `;
     }
 
     private _renderGridTab() {
+        const t = this._getT();
+
         return html`
             <div class="section">
                 <div class="section-header">
                     <ha-icon icon="mdi:transmission-tower"></ha-icon>
-                    Netz
+                    ${t.editor.grid}
                 </div>
-                ${this._renderEntityPicker('Netz Entity', ['netz', 'entity'], this._config?.netz?.entity, 'Entity für Netzbezug/Einspeisung')}
-                ${this._renderIconPicker('Icon', ['netz', 'icon'], this._config?.netz?.icon)}
-                ${this._renderSwitch('Animation aktivieren', ['netz', 'animation'], this._config?.netz?.animation)}
-                ${this._renderNumberfield('Schwellwert (W)', ['netz', 'threshold'], this._config?.netz?.threshold, 0, 1000, 10, 'Unterhalb dieses Werts wird "Neutral" angezeigt')}
+                ${this._renderEntityPicker(t.editor.grid_entity, ['netz', 'entity'], this._config?.netz?.entity, t.editor.grid_entity_helper)}
+                ${this._renderIconPicker(t.editor.icon_label, ['netz', 'icon'], this._config?.netz?.icon)}
+                ${this._renderSwitch(t.editor.enable_animation, ['netz', 'animation'], this._config?.netz?.animation)}
+                ${this._renderNumberfield(t.editor.threshold, ['netz', 'threshold'], this._config?.netz?.threshold, 0, 1000, 10, t.editor.threshold_helper)}
             </div>
 
             <div class="divider"></div>
@@ -536,11 +609,11 @@ export class PVMonitorCardEditor extends LitElement {
             <div class="section">
                 <div class="section-header">
                     <ha-icon icon="mdi:text-box"></ha-icon>
-                    Status-Texte
+                    ${t.editor.status_texts}
                 </div>
-                ${this._renderTextfield('Text bei Einspeisung', ['netz', 'text_einspeisen'], this._config?.netz?.text_einspeisen, 'Einspeisung')}
-                ${this._renderTextfield('Text bei Neutral', ['netz', 'text_neutral'], this._config?.netz?.text_neutral, 'Neutral')}
-                ${this._renderTextfield('Text bei Bezug', ['netz', 'text_bezug'], this._config?.netz?.text_bezug, 'Netzbezug')}
+                ${this._renderTextfield(t.editor.text_feed_in, ['netz', 'text_einspeisen'], this._config?.netz?.text_einspeisen, t.editor.text_feed_in_placeholder)}
+                ${this._renderTextfield(t.editor.text_neutral, ['netz', 'text_neutral'], this._config?.netz?.text_neutral, t.editor.text_neutral_placeholder)}
+                ${this._renderTextfield(t.editor.text_consumption, ['netz', 'text_bezug'], this._config?.netz?.text_bezug, t.editor.text_consumption_placeholder)}
             </div>
 
             <div class="divider"></div>
@@ -548,12 +621,12 @@ export class PVMonitorCardEditor extends LitElement {
             <div class="section">
                 <div class="section-header">
                     <ha-icon icon="mdi:text"></ha-icon>
-                    Zusätzliche Texte
+                    ${t.editor.additional_texts}
                 </div>
-                ${this._renderEntityPicker('Sekundär Entity', ['netz', 'secondary_entity'], this._config?.netz?.secondary_entity)}
-                ${this._renderTextfield('Sekundär Text', ['netz', 'secondary_text'], this._config?.netz?.secondary_text)}
-                ${this._renderEntityPicker('Tertiär Entity', ['netz', 'tertiary_entity'], this._config?.netz?.tertiary_entity)}
-                ${this._renderTextfield('Tertiär Text', ['netz', 'tertiary_text'], this._config?.netz?.tertiary_text)}
+                ${this._renderEntityPicker(t.editor.secondary_entity, ['netz', 'secondary_entity'], this._config?.netz?.secondary_entity)}
+                ${this._renderTextfield(t.editor.secondary_text, ['netz', 'secondary_text'], this._config?.netz?.secondary_text)}
+                ${this._renderEntityPicker(t.editor.tertiary_entity, ['netz', 'tertiary_entity'], this._config?.netz?.tertiary_entity)}
+                ${this._renderTextfield(t.editor.tertiary_text, ['netz', 'tertiary_text'], this._config?.netz?.tertiary_text)}
             </div>
 
             <div class="divider"></div>
@@ -561,30 +634,32 @@ export class PVMonitorCardEditor extends LitElement {
             <div class="section">
                 <div class="section-header">
                     <ha-icon icon="mdi:palette"></ha-icon>
-                    Styling
+                    ${t.editor.styling}
                 </div>
-                ${this._renderTextfield('Hintergrundfarbe', ['netz', 'style', 'background_color'], this._config?.netz?.style?.background_color)}
-                ${this._renderTextfield('Rahmenfarbe', ['netz', 'style', 'border_color'], this._config?.netz?.style?.border_color)}
-                ${this._renderTextfield('Primärfarbe', ['netz', 'style', 'primary_color'], this._config?.netz?.style?.primary_color)}
-                ${this._renderTextfield('Sekundärfarbe', ['netz', 'style', 'secondary_color'], this._config?.netz?.style?.secondary_color)}
-                ${this._renderTextfield('Icon Farbe', ['netz', 'style', 'icon_color'], this._config?.netz?.style?.icon_color)}
+                ${this._renderTextfield(t.editor.background_color, ['netz', 'style', 'background_color'], this._config?.netz?.style?.background_color)}
+                ${this._renderTextfield(t.editor.border_color, ['netz', 'style', 'border_color'], this._config?.netz?.style?.border_color)}
+                ${this._renderTextfield(t.editor.primary_color, ['netz', 'style', 'primary_color'], this._config?.netz?.style?.primary_color)}
+                ${this._renderTextfield(t.editor.secondary_color, ['netz', 'style', 'secondary_color'], this._config?.netz?.style?.secondary_color)}
+                ${this._renderTextfield(t.editor.icon_color, ['netz', 'style', 'icon_color'], this._config?.netz?.style?.icon_color)}
             </div>
         `;
     }
 
     private _renderStylingTab() {
+        const t = this._getT();
+
         return html`
             <div class="section">
                 <div class="section-header">
                     <ha-icon icon="mdi:card"></ha-icon>
-                    Karten-Styling
+                    ${t.editor.card_styling}
                 </div>
-                ${this._renderTextfield('Hintergrundfarbe', ['style', 'card_background_color'], this._config?.style?.card_background_color, 'rgba(21, 20, 27, 1)')}
-                ${this._renderTextfield('Rahmenfarbe', ['style', 'card_border_color'], this._config?.style?.card_border_color, 'rgba(255, 255, 255, 0.1)')}
-                ${this._renderTextfield('Border Radius', ['style', 'card_border_radius'], this._config?.style?.card_border_radius, '16px')}
-                ${this._renderTextfield('Textfarbe', ['style', 'card_text_color'], this._config?.style?.card_text_color, 'white')}
-                ${this._renderTextfield('Padding', ['style', 'card_padding'], this._config?.style?.card_padding, '12px')}
-                ${this._renderTextfield('Cursor', ['style', 'card_cursor'], this._config?.style?.card_cursor, 'pointer')}
+                ${this._renderTextfield(t.editor.background_color, ['style', 'card_background_color'], this._config?.style?.card_background_color, 'rgba(21, 20, 27, 1)')}
+                ${this._renderTextfield(t.editor.border_color, ['style', 'card_border_color'], this._config?.style?.card_border_color, 'rgba(255, 255, 255, 0.1)')}
+                ${this._renderTextfield(t.editor.border_radius, ['style', 'card_border_radius'], this._config?.style?.card_border_radius, '16px')}
+                ${this._renderTextfield(t.editor.text_color, ['style', 'card_text_color'], this._config?.style?.card_text_color, 'white')}
+                ${this._renderTextfield(t.editor.padding, ['style', 'card_padding'], this._config?.style?.card_padding, '12px')}
+                ${this._renderTextfield(t.editor.cursor, ['style', 'card_cursor'], this._config?.style?.card_cursor, 'pointer')}
             </div>
 
             <div class="divider"></div>
@@ -592,19 +667,19 @@ export class PVMonitorCardEditor extends LitElement {
             <div class="section">
                 <div class="section-header">
                     <ha-icon icon="mdi:format-title"></ha-icon>
-                    Titel & Untertitel
+                    ${t.editor.title_subtitle}
                 </div>
-                ${this._renderTextfield('Titel Größe', ['style', 'title_size'], this._config?.style?.title_size, '1.5em')}
-                ${this._renderTextfield('Titel Farbe', ['style', 'title_color'], this._config?.style?.title_color, 'white')}
-                ${this._renderTextfield('Titel Ausrichtung', ['style', 'title_align'], this._config?.style?.title_align, 'center', 'left, center, right')}
-                ${this._renderTextfield('Titel Font-Weight', ['style', 'title_font_weight'], this._config?.style?.title_font_weight, 'bold')}
+                ${this._renderTextfield(t.editor.title_size, ['style', 'title_size'], this._config?.style?.title_size, '1.5em')}
+                ${this._renderTextfield(t.editor.title_color, ['style', 'title_color'], this._config?.style?.title_color, 'white')}
+                ${this._renderTextfield(t.editor.title_alignment, ['style', 'title_align'], this._config?.style?.title_align, 'center', t.editor.title_alignment_helper)}
+                ${this._renderTextfield(t.editor.title_font_weight, ['style', 'title_font_weight'], this._config?.style?.title_font_weight, 'bold')}
 
                 <div class="divider"></div>
 
-                ${this._renderTextfield('Untertitel Größe', ['style', 'subtitle_size'], this._config?.style?.subtitle_size, '1em')}
-                ${this._renderTextfield('Untertitel Farbe', ['style', 'subtitle_color'], this._config?.style?.subtitle_color)}
-                ${this._renderTextfield('Untertitel Ausrichtung', ['style', 'subtitle_align'], this._config?.style?.subtitle_align, 'center')}
-                ${this._renderTextfield('Untertitel Font-Weight', ['style', 'subtitle_font_weight'], this._config?.style?.subtitle_font_weight, 'normal')}
+                ${this._renderTextfield(t.editor.subtitle_size, ['style', 'subtitle_size'], this._config?.style?.subtitle_size, '1em')}
+                ${this._renderTextfield(t.editor.subtitle_color, ['style', 'subtitle_color'], this._config?.style?.subtitle_color)}
+                ${this._renderTextfield(t.editor.subtitle_alignment, ['style', 'subtitle_align'], this._config?.style?.subtitle_align, 'center')}
+                ${this._renderTextfield(t.editor.subtitle_font_weight, ['style', 'subtitle_font_weight'], this._config?.style?.subtitle_font_weight, 'normal')}
             </div>
 
             <div class="divider"></div>
@@ -612,11 +687,11 @@ export class PVMonitorCardEditor extends LitElement {
             <div class="section">
                 <div class="section-header">
                     <ha-icon icon="mdi:shape"></ha-icon>
-                    Icons
+                    ${t.editor.icons}
                 </div>
-                ${this._renderTextfield('Icon Größe', ['style', 'icon_size'], this._config?.style?.icon_size, '2em')}
-                ${this._renderTextfield('Icon Opacity', ['style', 'icon_opacity'], this._config?.style?.icon_opacity, '1')}
-                ${this._renderTextfield('Icon Margin', ['style', 'icon_margin'], this._config?.style?.icon_margin, '6px')}
+                ${this._renderTextfield(t.editor.icon_size, ['style', 'icon_size'], this._config?.style?.icon_size, '2em')}
+                ${this._renderTextfield(t.editor.icon_opacity, ['style', 'icon_opacity'], this._config?.style?.icon_opacity, '1')}
+                ${this._renderTextfield(t.editor.icon_margin, ['style', 'icon_margin'], this._config?.style?.icon_margin, '6px')}
             </div>
 
             <div class="divider"></div>
@@ -624,12 +699,12 @@ export class PVMonitorCardEditor extends LitElement {
             <div class="section">
                 <div class="section-header">
                     <ha-icon icon="mdi:format-text"></ha-icon>
-                    Primär-Text (Hauptwert)
+                    ${t.editor.primary_text_styling}
                 </div>
-                ${this._renderTextfield('Primär Größe', ['style', 'primary_size'], this._config?.style?.primary_size, '1.2em')}
-                ${this._renderTextfield('Primär Farbe', ['style', 'primary_color'], this._config?.style?.primary_color, 'white')}
-                ${this._renderTextfield('Primär Opacity', ['style', 'primary_font_opacity'], this._config?.style?.primary_font_opacity, '1')}
-                ${this._renderTextfield('Primär Font-Weight', ['style', 'primary_font_weight'], this._config?.style?.primary_font_weight, 'normal')}
+                ${this._renderTextfield(t.editor.primary_size, ['style', 'primary_size'], this._config?.style?.primary_size, '1.2em')}
+                ${this._renderTextfield(t.editor.primary_color_label, ['style', 'primary_color'], this._config?.style?.primary_color, 'white')}
+                ${this._renderTextfield(t.editor.primary_opacity, ['style', 'primary_font_opacity'], this._config?.style?.primary_font_opacity, '1')}
+                ${this._renderTextfield(t.editor.primary_font_weight, ['style', 'primary_font_weight'], this._config?.style?.primary_font_weight, 'normal')}
             </div>
 
             <div class="divider"></div>
@@ -637,12 +712,12 @@ export class PVMonitorCardEditor extends LitElement {
             <div class="section">
                 <div class="section-header">
                     <ha-icon icon="mdi:format-text"></ha-icon>
-                    Sekundär-Text (2. Zeile)
+                    ${t.editor.secondary_text_styling}
                 </div>
-                ${this._renderTextfield('Sekundär Größe', ['style', 'secondary_size'], this._config?.style?.secondary_size, '0.9em')}
-                ${this._renderTextfield('Sekundär Farbe', ['style', 'secondary_color'], this._config?.style?.secondary_color, 'white')}
-                ${this._renderTextfield('Sekundär Opacity', ['style', 'secondary_font_opacity'], this._config?.style?.secondary_font_opacity, '0.7')}
-                ${this._renderTextfield('Sekundär Font-Weight', ['style', 'secondary_font_weight'], this._config?.style?.secondary_font_weight, 'normal')}
+                ${this._renderTextfield(t.editor.secondary_size, ['style', 'secondary_size'], this._config?.style?.secondary_size, '0.9em')}
+                ${this._renderTextfield(t.editor.secondary_color_label, ['style', 'secondary_color'], this._config?.style?.secondary_color, 'white')}
+                ${this._renderTextfield(t.editor.secondary_opacity, ['style', 'secondary_font_opacity'], this._config?.style?.secondary_font_opacity, '0.7')}
+                ${this._renderTextfield(t.editor.secondary_font_weight, ['style', 'secondary_font_weight'], this._config?.style?.secondary_font_weight, 'normal')}
             </div>
 
             <div class="divider"></div>
@@ -650,12 +725,12 @@ export class PVMonitorCardEditor extends LitElement {
             <div class="section">
                 <div class="section-header">
                     <ha-icon icon="mdi:format-text"></ha-icon>
-                    Tertiär-Text (3. Zeile)
+                    ${t.editor.tertiary_text_styling}
                 </div>
-                ${this._renderTextfield('Tertiär Größe', ['style', 'tertiary_size'], this._config?.style?.tertiary_size, '0.9em')}
-                ${this._renderTextfield('Tertiär Farbe', ['style', 'tertiary_color'], this._config?.style?.tertiary_color, 'white')}
-                ${this._renderTextfield('Tertiär Opacity', ['style', 'tertiary_font_opacity'], this._config?.style?.tertiary_font_opacity, '0.7')}
-                ${this._renderTextfield('Tertiär Font-Weight', ['style', 'tertiary_font_weight'], this._config?.style?.tertiary_font_weight, 'normal')}
+                ${this._renderTextfield(t.editor.tertiary_size, ['style', 'tertiary_size'], this._config?.style?.tertiary_size, '0.9em')}
+                ${this._renderTextfield(t.editor.tertiary_color_label, ['style', 'tertiary_color'], this._config?.style?.tertiary_color, 'white')}
+                ${this._renderTextfield(t.editor.tertiary_opacity, ['style', 'tertiary_font_opacity'], this._config?.style?.tertiary_font_opacity, '0.7')}
+                ${this._renderTextfield(t.editor.tertiary_font_weight, ['style', 'tertiary_font_weight'], this._config?.style?.tertiary_font_weight, 'normal')}
             </div>
         `;
     }
@@ -665,16 +740,18 @@ export class PVMonitorCardEditor extends LitElement {
             return html``;
         }
 
+        const t = this._getT();
+
         return html`
             <div class="card-config">
                 <div class="tabs">
-                    ${this._renderTab('general', 'Allgemein', 'mdi:cog')}
-                    ${this._renderTab('styling', 'Styling', 'mdi:palette')}
-                    ${this._renderTab('infobar', 'Info Bar', 'mdi:information')}
-                    ${this._renderTab('pv', 'PV-Anlage', 'mdi:solar-panel')}
-                    ${this._renderTab('battery', 'Batterie', 'mdi:battery')}
-                    ${this._renderTab('house', 'Haus', 'mdi:home')}
-                    ${this._renderTab('grid', 'Netz', 'mdi:transmission-tower')}
+                    ${this._renderTab('general', t.editor.tab_general, 'mdi:cog')}
+                    ${this._renderTab('styling', t.editor.tab_styling, 'mdi:palette')}
+                    ${this._renderTab('infobar', t.editor.tab_infobar, 'mdi:information')}
+                    ${this._renderTab('pv', t.editor.tab_pv, 'mdi:solar-panel')}
+                    ${this._renderTab('battery', t.editor.tab_battery, 'mdi:battery')}
+                    ${this._renderTab('house', t.editor.tab_house, 'mdi:home')}
+                    ${this._renderTab('grid', t.editor.tab_grid, 'mdi:transmission-tower')}
                 </div>
 
                 <div class="tab-content ${this._activeTab === 'general' ? 'active' : ''}">
