@@ -13,6 +13,7 @@ export class PVMonitorCardEditor extends LitElement {
     private _localValues: Map<string, string> = new Map();
     @state() private _autocompleteResults: Map<string, string[]> = new Map();
     @state() private _showAutocomplete: Map<string, boolean> = new Map();
+    @state() private _expandedConsumerIndex: number | null = null;
 
     static styles = css`
         :host {
@@ -193,6 +194,49 @@ export class PVMonitorCardEditor extends LitElement {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 16px;
+        }
+        .consumer-section {
+            position: relative;
+            margin-bottom: 16px;
+            border: 1px solid rgba(127, 127, 127, 0.3);
+            border-radius: 8px;
+            background: rgba(0, 0, 0, 0.1);
+        }
+        .consumer-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            padding: 8px 0;
+            user-select: none;
+        }
+        .consumer-header:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        .consumer-title {
+            font-weight: bold;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .consumer-header-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .consumer-content {
+            margin-top: 12px;
+            overflow: hidden;
+        }
+        .consumer-content.collapsed {
+            display: none;
+        }
+        .expand-icon {
+            transition: transform 0.2s;
+        }
+        .expand-icon.expanded {
+            transform: rotate(180deg);
         }
     `;
 
@@ -465,19 +509,19 @@ export class PVMonitorCardEditor extends LitElement {
                     <ha-switch
                             .checked=${value === true}
                             @change=${(ev: CustomEvent) => {
-            if (!this._config) return;
-            const target = ev.target as any;
-            const newValue = target.checked;
-            const newConfig = { ...this._config };
-            let current: any = newConfig;
-            for (let i = 0; i < path.length - 1; i++) {
-                if (!current[path[i]]) current[path[i]] = {};
-                current = current[path[i]];
-            }
-            current[path[path.length - 1]] = newValue;
-            this._config = newConfig;
-            this._fireEvent();
-        }}
+                                if (!this._config) return;
+                                const target = ev.target as any;
+                                const newValue = target.checked;
+                                const newConfig = { ...this._config };
+                                let current: any = newConfig;
+                                for (let i = 0; i < path.length - 1; i++) {
+                                    if (!current[path[i]]) current[path[i]] = {};
+                                    current = current[path[i]];
+                                }
+                                current[path[path.length - 1]] = newValue;
+                                this._config = newConfig;
+                                this._fireEvent();
+                            }}
                     ></ha-switch>
                 </div>
             </div>
@@ -556,21 +600,21 @@ export class PVMonitorCardEditor extends LitElement {
                                     <div
                                             class="autocomplete-item"
                                             @click=${() => {
-                            if (!this._config) return;
+                                                if (!this._config) return;
 
-                            const newConfig = JSON.parse(JSON.stringify(this._config));
-                            let current: any = newConfig;
-                            for (let i = 0; i < path.length - 1; i++) {
-                                if (!current[path[i]]) current[path[i]] = {};
-                                current = current[path[i]];
-                            }
-                            current[path[path.length - 1]] = entity;
+                                                const newConfig = JSON.parse(JSON.stringify(this._config));
+                                                let current: any = newConfig;
+                                                for (let i = 0; i < path.length - 1; i++) {
+                                                    if (!current[path[i]]) current[path[i]] = {};
+                                                    current = current[path[i]];
+                                                }
+                                                current[path[path.length - 1]] = entity;
 
-                            this._config = newConfig;
-                            this._showAutocomplete.set(pathKey, false);
-                            this._fireEvent();
-                            this.requestUpdate();
-                        }}
+                                                this._config = newConfig;
+                                                this._showAutocomplete.set(pathKey, false);
+                                                this._fireEvent();
+                                                this.requestUpdate();
+                                            }}
                                     >
                                         ${entity}
                                     </div>
@@ -687,20 +731,20 @@ export class PVMonitorCardEditor extends LitElement {
                             item-label-path="label"
                             allow-custom-value
                             @value-changed=${(ev: any) => {
-            if (!this._config) return;
-            const newValue = ev.detail?.value;
+                                if (!this._config) return;
+                                const newValue = ev.detail?.value;
 
-            const newConfig = { ...this._config };
-            if (!newValue || newValue === '') {
-                delete newConfig.theme;
-            } else {
-                newConfig.theme = newValue;
-            }
-            this._config = newConfig;
+                                const newConfig = { ...this._config };
+                                if (!newValue || newValue === '') {
+                                    delete newConfig.theme;
+                                } else {
+                                    newConfig.theme = newValue;
+                                }
+                                this._config = newConfig;
 
-            this._fireEvent();
-            this.requestUpdate();
-        }}
+                                this._fireEvent();
+                                this.requestUpdate();
+                            }}
                     ></ha-combo-box>
                 </div>
             </div>
@@ -795,21 +839,21 @@ export class PVMonitorCardEditor extends LitElement {
                             <ha-combo-box
                                     .value=${this._config?.info_bar?.position || 'top'}
                                     .items=${[
-            { value: 'top', label: t.editor.position_top },
-            { value: 'bottom', label: t.editor.position_bottom }
-        ]}
+                                        { value: 'top', label: t.editor.position_top },
+                                        { value: 'bottom', label: t.editor.position_bottom }
+                                    ]}
                                     item-value-path="value"
                                     item-label-path="label"
                                     @value-changed=${(ev: any) => {
-            if (!this._config) return;
-            const newValue = ev.detail?.value;
-            if (!newValue) return;
-            const newConfig = { ...this._config };
-            if (!newConfig.info_bar) newConfig.info_bar = {};
-            newConfig.info_bar.position = newValue;
-            this._config = newConfig;
-            this._fireEvent();
-        }}
+                                        if (!this._config) return;
+                                        const newValue = ev.detail?.value;
+                                        if (!newValue) return;
+                                        const newConfig = { ...this._config };
+                                        if (!newConfig.info_bar) newConfig.info_bar = {};
+                                        newConfig.info_bar.position = newValue;
+                                        this._config = newConfig;
+                                        this._fireEvent();
+                                    }}
                             ></ha-combo-box>
                         </div>
                     </div>
@@ -836,21 +880,21 @@ export class PVMonitorCardEditor extends LitElement {
                             <ha-combo-box
                                     .value=${this._config?.info_bar?.calculation_mode || 'autarky'}
                                     .items=${[
-            { value: 'autarky', label: t.editor.mode_autarky },
-            { value: 'self_consumption', label: t.editor.mode_self_consumption }
-        ]}
+                                        { value: 'autarky', label: t.editor.mode_autarky },
+                                        { value: 'self_consumption', label: t.editor.mode_self_consumption }
+                                    ]}
                                     item-value-path="value"
                                     item-label-path="label"
                                     @value-changed=${(ev: any) => {
-            if (!this._config) return;
-            const newValue = ev.detail?.value;
-            if (!newValue) return;
-            const newConfig = { ...this._config };
-            if (!newConfig.info_bar) newConfig.info_bar = {};
-            newConfig.info_bar.calculation_mode = newValue;
-            this._config = newConfig;
-            this._fireEvent();
-        }}
+                                        if (!this._config) return;
+                                        const newValue = ev.detail?.value;
+                                        if (!newValue) return;
+                                        const newConfig = { ...this._config };
+                                        if (!newConfig.info_bar) newConfig.info_bar = {};
+                                        newConfig.info_bar.calculation_mode = newValue;
+                                        this._config = newConfig;
+                                        this._fireEvent();
+                                    }}
                             ></ha-combo-box>
                         </div>
                     </div>
@@ -1016,6 +1060,7 @@ export class PVMonitorCardEditor extends LitElement {
                     <ha-icon icon="mdi:text"></ha-icon>
                     ${t.editor.additional_texts}
                 </div>
+                ${this._renderSwitch(t.editor.show_consumer_total_in_house, ['haus', 'show_consumer_total'], this._config?.haus?.show_consumer_total, t.editor.show_consumer_total_helper)}
                 ${this._renderEntityPicker(t.editor.secondary_entity, ['haus', 'secondary_entity'], this._config?.haus?.secondary_entity)}
                 ${this._renderTextfield(t.editor.secondary_text, ['haus', 'secondary_text'], this._config?.haus?.secondary_text)}
                 ${this._renderEntityPicker(t.editor.tertiary_entity, ['haus', 'tertiary_entity'], this._config?.haus?.tertiary_entity)}
@@ -1099,6 +1144,239 @@ export class PVMonitorCardEditor extends LitElement {
                 ${this._renderTextfield(t.editor.icon_color, ['netz', 'style', 'icon_color'], this._config?.netz?.style?.icon_color)}
             </div>
         `;
+    }
+
+    private _renderConsumersTab() {
+        const t = this._getT();
+
+        return html`
+            <div class="section">
+                <div class="section-header">
+                    <ha-icon icon="mdi:flash"></ha-icon>
+                    ${t.editor.consumers_settings}
+                </div>
+                ${this._renderSwitch(t.editor.enable_consumers, ['consumers', 'show'], this._config?.consumers?.show)}
+
+                ${this._config?.consumers?.show ? html`
+                    <div class="option">
+                        <div class="option-label">${t.editor.consumers_position}</div>
+                        <div class="option-control">
+                            <ha-combo-box
+                                    .value=${this._config?.consumers?.position || 'bottom'}
+                                    .items=${[
+                                        { value: 'bottom', label: t.editor.position_bottom }
+                                    ]}
+                                    item-value-path="value"
+                                    item-label-path="label"
+                                    @value-changed=${(ev: any) => {
+                                        if (!this._config) return;
+                                        const newValue = ev.detail?.value;
+                                        if (!newValue) return;
+                                        const newConfig = { ...this._config };
+                                        if (!newConfig.consumers) newConfig.consumers = {};
+                                        newConfig.consumers.position = newValue;
+                                        this._config = newConfig;
+                                        this._fireEvent();
+                                    }}
+                            ></ha-combo-box>
+                        </div>
+                    </div>
+
+                    <div class="option">
+                        <div class="option-label">${t.editor.consumers_sort_mode}</div>
+                        <div class="option-control">
+                            <ha-combo-box
+                                    .value=${this._config?.consumers?.sort_mode || 'highest_first'}
+                                    .items=${[
+                                        { value: 'highest_first', label: t.editor.sort_highest_first },
+                                        { value: 'lowest_first', label: t.editor.sort_lowest_first },
+                                        { value: 'none', label: t.editor.sort_none },
+                                        { value: 'alpha_asc', label: t.editor.sort_alpha_asc },
+                                        { value: 'alpha_desc', label: t.editor.sort_alpha_desc }
+                                    ]}
+                                    item-value-path="value"
+                                    item-label-path="label"
+                                    @value-changed=${(ev: any) => {
+                                        if (!this._config) return;
+                                        const newValue = ev.detail?.value;
+                                        if (!newValue) return;
+                                        const newConfig = { ...this._config };
+                                        if (!newConfig.consumers) newConfig.consumers = {};
+                                        newConfig.consumers.sort_mode = newValue;
+                                        this._config = newConfig;
+                                        this._fireEvent();
+                                    }}
+                            ></ha-combo-box>
+                        </div>
+                    </div>
+
+                    ${this._renderNumberfield(t.editor.consumers_threshold, ['consumers', 'threshold'], this._config?.consumers?.threshold, 0, 10000, 1, t.editor.consumers_threshold_helper)}
+                ` : ''}
+            </div>
+
+            ${this._config?.consumers?.show ? html`
+                <div class="divider"></div>
+
+                <div class="section">
+                    <div class="section-header">
+                        <ha-icon icon="mdi:format-list-bulleted"></ha-icon>
+                        ${t.editor.add_consumer}
+                    </div>
+
+                    ${(this._config?.consumers?.items || []).map((item, index) => {
+                        const isExpanded = this._expandedConsumerIndex === index;
+                        const entityLabel = item.entity || t.editor.consumer_entity;
+
+                        return html`
+                            <div class="consumer-section">
+                                <div class="consumer-header" @click=${() => this._toggleConsumer(index)}>
+                                    <div class="consumer-title">
+                                        <ha-icon 
+                                            class="expand-icon ${isExpanded ? 'expanded' : ''}" 
+                                            icon="mdi:chevron-down"
+                                        ></ha-icon>
+                                        ${t.editor.consumer_entity} ${index + 1}
+                                        ${item.entity ? html`<span style="opacity: 0.6; font-weight: normal; font-size: 0.9em;">(${entityLabel})</span>` : ''}
+                                    </div>
+                                    <div class="consumer-header-actions" @click=${(e: Event) => e.stopPropagation()}>
+                                        <ha-icon-button
+                                            .path=${'M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z'}
+                                            @click=${() => this._removeConsumer(index)}
+                                            style="color: rgba(244,67,54,1);"
+                                        ></ha-icon-button>
+                                    </div>
+                                </div>
+
+                                <div class="consumer-content ${isExpanded ? '' : 'collapsed'}">
+                                    ${this._renderEntityPicker(t.editor.consumer_entity, ['consumers', 'items', index.toString(), 'entity'], item.entity)}
+                                    ${this._renderIconPicker(t.editor.consumer_icon, ['consumers', 'items', index.toString(), 'icon'], item.icon)}
+                                    ${this._renderTextfield(t.editor.consumer_label, ['consumers', 'items', index.toString(), 'label'], item.label)}
+                                    ${this._renderNumberfield(t.editor.consumer_threshold, ['consumers', 'items', index.toString(), 'threshold'], item.threshold, 0, 10000, 1)}
+                                    ${this._renderSwitch(t.editor.consumer_auto_color, ['consumers', 'items', index.toString(), 'auto_color'], item.auto_color !== false, t.editor.consumer_auto_color_helper)}
+
+                                    <div class="divider"></div>
+
+                                    <div style="font-weight: 500; margin: 12px 0 8px 0;">
+                                        ${t.editor.additional_texts}
+                                    </div>
+
+                                    ${this._renderSwitch(t.editor.consumer_show_primary, ['consumers', 'items', index.toString(), 'show_primary'], item.show_primary !== false)}
+                                    ${this._renderEntityPicker(t.editor.consumer_primary_entity, ['consumers', 'items', index.toString(), 'primary_entity'], item.primary_entity)}
+                                    ${this._renderTextfield(t.editor.consumer_primary_text, ['consumers', 'items', index.toString(), 'primary_text'], item.primary_text)}
+                                    
+                                    ${this._renderSwitch(t.editor.consumer_show_secondary, ['consumers', 'items', index.toString(), 'show_secondary'], item.show_secondary !== false)}
+                                    ${this._renderEntityPicker(t.editor.consumer_secondary_entity, ['consumers', 'items', index.toString(), 'secondary_entity'], item.secondary_entity)}
+                                    ${this._renderTextfield(t.editor.consumer_secondary_text, ['consumers', 'items', index.toString(), 'secondary_text'], item.secondary_text)}
+
+                                    <div class="divider"></div>
+
+                                    <div style="font-weight: 500; margin: 12px 0 8px 0;">
+                                        ${t.editor.consumer_tap_actions}
+                                    </div>
+
+                                    ${this._renderEntityPicker(t.editor.consumer_switch_entity, ['consumers', 'items', index.toString(), 'switch_entity'], item.switch_entity, t.editor.consumer_switch_entity_helper)}
+                                    ${this._renderActionSelector('Tap Action', ['consumers', 'items', index.toString(), 'tap_action'], item.tap_action)}
+                                    ${this._renderActionSelector('Double Tap', ['consumers', 'items', index.toString(), 'double_tap_action'], item.double_tap_action)}
+                                    ${this._renderActionSelector('Hold Action', ['consumers', 'items', index.toString(), 'hold_action'], item.hold_action)}
+
+                                    <div class="divider"></div>
+
+                                    <div style="font-weight: 500; margin: 12px 0 8px 0;">
+                                        ${t.editor.consumer_item_styling}
+                                    </div>
+
+                                    ${this._renderTextfield(t.editor.icon_size, ['consumers', 'items', index.toString(), 'style', 'icon_size'], item.style?.icon_size, '1.5em')}
+                                    ${this._renderTextfield(t.editor.icon_color, ['consumers', 'items', index.toString(), 'style', 'icon_color'], item.style?.icon_color)}
+                                    ${this._renderTextfield(t.editor.icon_opacity, ['consumers', 'items', index.toString(), 'style', 'icon_opacity'], item.style?.icon_opacity, '1')}
+                                    ${this._renderTextfield(t.editor.primary_size, ['consumers', 'items', index.toString(), 'style', 'primary_size'], item.style?.primary_size, '1em')}
+                                    ${this._renderTextfield(t.editor.primary_color_label, ['consumers', 'items', index.toString(), 'style', 'primary_color'], item.style?.primary_color, 'white')}
+                                    ${this._renderTextfield(t.editor.primary_opacity, ['consumers', 'items', index.toString(), 'style', 'primary_opacity'], item.style?.primary_opacity, '1')}
+                                    ${this._renderTextfield(t.editor.primary_font_weight, ['consumers', 'items', index.toString(), 'style', 'primary_font_weight'], item.style?.primary_font_weight, 'bold')}
+                                    ${this._renderTextfield(t.editor.secondary_size, ['consumers', 'items', index.toString(), 'style', 'secondary_size'], item.style?.secondary_size, '0.8em')}
+                                    ${this._renderTextfield(t.editor.secondary_color_label, ['consumers', 'items', index.toString(), 'style', 'secondary_color'], item.style?.secondary_color, 'white')}
+                                    ${this._renderTextfield(t.editor.secondary_opacity, ['consumers', 'items', index.toString(), 'style', 'secondary_opacity'], item.style?.secondary_opacity, '0.7')}
+                                    ${this._renderTextfield(t.editor.secondary_font_weight, ['consumers', 'items', index.toString(), 'style', 'secondary_font_weight'], item.style?.secondary_font_weight, 'normal')}
+                                    ${this._renderTextfield(t.editor.background_color, ['consumers', 'items', index.toString(), 'style', 'background_color'], item.style?.background_color)}
+                                    ${this._renderTextfield(t.editor.border_color, ['consumers', 'items', index.toString(), 'style', 'border_color'], item.style?.border_color)}
+                                    ${this._renderTextfield(t.editor.border_radius, ['consumers', 'items', index.toString(), 'style', 'border_radius'], item.style?.border_radius, '12px')}
+                                    ${this._renderTextfield(t.editor.padding, ['consumers', 'items', index.toString(), 'style', 'padding'], item.style?.padding, '8px')}
+                                </div>
+                            </div>
+                        `;
+                    })}
+
+                    <ha-button @click=${this._addConsumer}>
+                        <ha-icon icon="mdi:plus"></ha-icon>
+                        ${t.editor.add_consumer}
+                    </ha-button>
+                </div>
+
+                <div class="divider"></div>
+
+                <div class="section">
+                    <div class="section-header">
+                        <ha-icon icon="mdi:palette"></ha-icon>
+                        ${t.editor.styling} (Global)
+                    </div>
+                    ${this._renderTextfield(t.editor.grid_gap, ['consumers', 'style', 'gap'], this._config?.consumers?.style?.gap, '6px')}
+                    ${this._renderTextfield(t.editor.background_color, ['consumers', 'style', 'item_background_color'], this._config?.consumers?.style?.item_background_color, 'rgba(21, 20, 27, 1)')}
+                    ${this._renderTextfield(t.editor.border_color, ['consumers', 'style', 'item_border_color'], this._config?.consumers?.style?.item_border_color, 'rgba(255, 255, 255, 0.1)')}
+                    ${this._renderTextfield(t.editor.border_radius, ['consumers', 'style', 'item_border_radius'], this._config?.consumers?.style?.item_border_radius, '12px')}
+                    ${this._renderTextfield(t.editor.padding, ['consumers', 'style', 'item_padding'], this._config?.consumers?.style?.item_padding, '8px')}
+                    ${this._renderTextfield(t.editor.icon_size, ['consumers', 'style', 'icon_size'], this._config?.consumers?.style?.icon_size, '1.5em')}
+                    ${this._renderTextfield(t.editor.icon_opacity, ['consumers', 'style', 'icon_opacity'], this._config?.consumers?.style?.icon_opacity, '1')}
+                    ${this._renderTextfield(t.editor.primary_size, ['consumers', 'style', 'primary_size'], this._config?.consumers?.style?.primary_size, '1em')}
+                    ${this._renderTextfield(t.editor.primary_font_weight, ['consumers', 'style', 'primary_font_weight'], this._config?.consumers?.style?.primary_font_weight, 'bold')}
+                    ${this._renderTextfield(t.editor.primary_opacity, ['consumers', 'style', 'primary_opacity'], this._config?.consumers?.style?.primary_opacity, '1')}
+                    ${this._renderTextfield(t.editor.secondary_size, ['consumers', 'style', 'secondary_size'], this._config?.consumers?.style?.secondary_size, '0.8em')}
+                    ${this._renderTextfield(t.editor.secondary_font_weight, ['consumers', 'style', 'secondary_font_weight'], this._config?.consumers?.style?.secondary_font_weight, 'normal')}
+                    ${this._renderTextfield(t.editor.secondary_opacity, ['consumers', 'style', 'secondary_opacity'], this._config?.consumers?.style?.secondary_opacity, '0.7')}
+                </div>
+            ` : ''}
+        `;
+    }
+
+    private _addConsumer() {
+        if (!this._config) return;
+
+        const newConfig = JSON.parse(JSON.stringify(this._config));
+        if (!newConfig.consumers) newConfig.consumers = { items: [] };
+        if (!newConfig.consumers.items) newConfig.consumers.items = [];
+
+        newConfig.consumers.items.push({
+            entity: '',
+            auto_color: true
+        });
+
+        this._config = newConfig;
+        this._expandedConsumerIndex = newConfig.consumers.items.length - 1;
+        this._fireEvent();
+    }
+
+    private _removeConsumer(index: number) {
+        if (!this._config) return;
+
+        const newConfig = JSON.parse(JSON.stringify(this._config));
+        if (!newConfig.consumers?.items) return;
+
+        newConfig.consumers.items.splice(index, 1);
+
+        this._config = newConfig;
+        if (this._expandedConsumerIndex === index) {
+            this._expandedConsumerIndex = null;
+        } else if (this._expandedConsumerIndex !== null && this._expandedConsumerIndex > index) {
+            this._expandedConsumerIndex--;
+        }
+        this._fireEvent();
+    }
+
+    private _toggleConsumer(index: number) {
+        if (this._expandedConsumerIndex === index) {
+            this._expandedConsumerIndex = null;
+        } else {
+            this._expandedConsumerIndex = index;
+        }
+        this.requestUpdate();
     }
 
     private _renderStylingTab() {
@@ -1226,6 +1504,7 @@ export class PVMonitorCardEditor extends LitElement {
                     ${this._renderTab('general', t.editor.tab_general, 'mdi:cog')}
                     ${this._renderTab('styling', t.editor.tab_styling, 'mdi:palette')}
                     ${this._renderTab('infobar', t.editor.tab_infobar, 'mdi:information')}
+                    ${this._renderTab('consumers', t.editor.tab_consumers, 'mdi:flash')}
                     ${this._renderTab('pv', t.editor.tab_pv, 'mdi:solar-panel')}
                     ${this._renderTab('battery', t.editor.tab_battery, 'mdi:battery')}
                     ${this._renderTab('house', t.editor.tab_house, 'mdi:home')}
@@ -1242,6 +1521,10 @@ export class PVMonitorCardEditor extends LitElement {
 
                 <div class="tab-content ${this._activeTab === 'infobar' ? 'active' : ''}">
                     ${this._renderInfoBarTab()}
+                </div>
+
+                <div class="tab-content ${this._activeTab === 'consumers' ? 'active' : ''}">
+                    ${this._renderConsumersTab()}
                 </div>
 
                 <div class="tab-content ${this._activeTab === 'pv' ? 'active' : ''}">

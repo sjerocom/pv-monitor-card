@@ -133,6 +133,32 @@ export function getDefaultConfig(config: PVMonitorCardConfig): PVMonitorCardConf
             animation: themedConfig.haus?.animation !== false,
             animation_style: themedConfig.haus?.animation_style || 'rotating-dots',
             ...themedConfig.haus
+        },
+
+        consumers: {
+            show: themedConfig.consumers?.show === true,
+            position: themedConfig.consumers?.position || 'bottom',
+            sort_mode: themedConfig.consumers?.sort_mode || 'highest_first',
+            threshold: themedConfig.consumers?.threshold ?? 0,
+            style: {
+                gap: themedConfig.consumers?.style?.gap ?? '6px',
+                item_background_color: themedConfig.consumers?.style?.item_background_color ?? 'rgba(21, 20, 27, 1)',
+                item_border_color: themedConfig.consumers?.style?.item_border_color ?? 'rgba(255, 255, 255, 0.1)',
+                item_border_radius: themedConfig.consumers?.style?.item_border_radius ?? '18px',
+                item_padding: themedConfig.consumers?.style?.item_padding ?? '6px 12px',
+                item_margin: themedConfig.consumers?.style?.item_margin ?? '2px',
+                item_box_shadow: themedConfig.consumers?.style?.item_box_shadow ?? '0 2px 8px 0 rgba(0, 0, 0, 0.15)',
+                icon_size: themedConfig.consumers?.style?.icon_size ?? '1.2em',
+                icon_opacity: themedConfig.consumers?.style?.icon_opacity ?? '1',
+                primary_size: themedConfig.consumers?.style?.primary_size ?? '0.9em',
+                primary_font_weight: themedConfig.consumers?.style?.primary_font_weight ?? 'bold',
+                primary_opacity: themedConfig.consumers?.style?.primary_opacity ?? '1',
+                secondary_size: themedConfig.consumers?.style?.secondary_size ?? '0.7em',
+                secondary_font_weight: themedConfig.consumers?.style?.secondary_font_weight ?? 'normal',
+                secondary_opacity: themedConfig.consumers?.style?.secondary_opacity ?? '0.7',
+                ...themedConfig.consumers?.style
+            },
+            items: themedConfig.consumers?.items || []
         }
     };
 }
