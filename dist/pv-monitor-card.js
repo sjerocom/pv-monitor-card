@@ -665,7 +665,7 @@ const pvMonitorCardStyles = i$3`
         margin-top: 2px;
     }
     .icon {
-        margin-top: -5px;
+        margin-top: -6px;
         margin-bottom: 4px;
         display: flex;
         align-items: center;
@@ -1925,7 +1925,11 @@ const defaultThemes = {
       infobar_border_color: "rgba(255, 255, 255, 0.1)",
       infobar_icon_color: "white",
       infobar_label_color: "rgba(255, 255, 255, 0.7)",
-      infobar_value_color: "white"
+      infobar_value_color: "white",
+      consumer_background_color: "rgba(21, 20, 27, 1)",
+      consumer_border_color: "rgba(255, 255, 255, 0.1)",
+      consumer_primary_color: "white",
+      consumer_secondary_color: "rgba(255, 255, 255, 0.7)"
     }
   },
   light: {
@@ -1943,7 +1947,11 @@ const defaultThemes = {
       infobar_border_color: "rgba(0, 0, 0, 0.1)",
       infobar_icon_color: "rgba(0, 0, 0, 0.6)",
       infobar_label_color: "rgba(0, 0, 0, 0.6)",
-      infobar_value_color: "rgba(0, 0, 0, 0.87)"
+      infobar_value_color: "rgba(0, 0, 0, 0.87)",
+      consumer_background_color: "rgba(250, 250, 250, 1)",
+      consumer_border_color: "rgba(0, 0, 0, 0.1)",
+      consumer_primary_color: "rgba(0, 0, 0, 0.87)",
+      consumer_secondary_color: "rgba(0, 0, 0, 0.6)"
     }
   },
   blue: {
@@ -1961,7 +1969,11 @@ const defaultThemes = {
       infobar_border_color: "rgba(59, 130, 246, 0.3)",
       infobar_icon_color: "rgba(96, 165, 250, 1)",
       infobar_label_color: "rgba(148, 163, 184, 1)",
-      infobar_value_color: "rgba(226, 232, 240, 1)"
+      infobar_value_color: "rgba(226, 232, 240, 1)",
+      consumer_background_color: "rgba(30, 41, 59, 1)",
+      consumer_border_color: "rgba(59, 130, 246, 0.3)",
+      consumer_primary_color: "rgba(96, 165, 250, 1)",
+      consumer_secondary_color: "rgba(148, 163, 184, 1)"
     }
   },
   green: {
@@ -1979,7 +1991,11 @@ const defaultThemes = {
       infobar_border_color: "rgba(34, 197, 94, 0.3)",
       infobar_icon_color: "rgba(74, 222, 128, 1)",
       infobar_label_color: "rgba(187, 247, 208, 0.7)",
-      infobar_value_color: "rgba(240, 253, 244, 1)"
+      infobar_value_color: "rgba(240, 253, 244, 1)",
+      consumer_background_color: "rgba(22, 40, 25, 1)",
+      consumer_border_color: "rgba(34, 197, 94, 0.3)",
+      consumer_primary_color: "rgba(74, 222, 128, 1)",
+      consumer_secondary_color: "rgba(187, 247, 208, 0.7)"
     }
   },
   monochrome: {
@@ -1997,7 +2013,11 @@ const defaultThemes = {
       infobar_border_color: "rgba(128, 128, 128, 0.3)",
       infobar_icon_color: "rgba(200, 200, 200, 1)",
       infobar_label_color: "rgba(160, 160, 160, 1)",
-      infobar_value_color: "rgba(220, 220, 220, 1)"
+      infobar_value_color: "rgba(220, 220, 220, 1)",
+      consumer_background_color: "rgba(40, 40, 40, 1)",
+      consumer_border_color: "rgba(128, 128, 128, 0.3)",
+      consumer_primary_color: "rgba(240, 240, 240, 1)",
+      consumer_secondary_color: "rgba(180, 180, 180, 1)"
     }
   },
   solarized: {
@@ -2015,7 +2035,11 @@ const defaultThemes = {
       infobar_border_color: "rgba(88, 110, 117, 0.3)",
       infobar_icon_color: "rgba(42, 161, 152, 1)",
       infobar_label_color: "rgba(101, 123, 131, 1)",
-      infobar_value_color: "rgba(147, 161, 161, 1)"
+      infobar_value_color: "rgba(147, 161, 161, 1)",
+      consumer_background_color: "rgba(7, 54, 66, 1)",
+      consumer_border_color: "rgba(88, 110, 117, 0.3)",
+      consumer_primary_color: "rgba(147, 161, 161, 1)",
+      consumer_secondary_color: "rgba(101, 123, 131, 1)"
     }
   },
   nord: {
@@ -2033,7 +2057,11 @@ const defaultThemes = {
       infobar_border_color: "rgba(136, 192, 208, 0.3)",
       infobar_icon_color: "rgba(143, 188, 187, 1)",
       infobar_label_color: "rgba(216, 222, 233, 0.7)",
-      infobar_value_color: "rgba(236, 239, 244, 1)"
+      infobar_value_color: "rgba(236, 239, 244, 1)",
+      consumer_background_color: "rgba(59, 66, 82, 1)",
+      consumer_border_color: "rgba(136, 192, 208, 0.3)",
+      consumer_primary_color: "rgba(216, 222, 233, 1)",
+      consumer_secondary_color: "rgba(216, 222, 233, 0.7)"
     }
   },
   dracula: {
@@ -2051,7 +2079,11 @@ const defaultThemes = {
       infobar_border_color: "rgba(189, 147, 249, 0.3)",
       infobar_icon_color: "rgba(255, 121, 198, 1)",
       infobar_label_color: "rgba(248, 248, 242, 0.7)",
-      infobar_value_color: "rgba(248, 248, 242, 1)"
+      infobar_value_color: "rgba(248, 248, 242, 1)",
+      consumer_background_color: "rgba(68, 71, 90, 1)",
+      consumer_border_color: "rgba(189, 147, 249, 0.3)",
+      consumer_primary_color: "rgba(139, 233, 253, 1)",
+      consumer_secondary_color: "rgba(248, 248, 242, 0.7)"
     }
   },
   catppuccin: {
@@ -2069,7 +2101,11 @@ const defaultThemes = {
       infobar_border_color: "rgba(137, 180, 250, 0.3)",
       infobar_icon_color: "rgba(148, 226, 213, 1)",
       infobar_label_color: "rgba(186, 194, 222, 1)",
-      infobar_value_color: "rgba(205, 214, 244, 1)"
+      infobar_value_color: "rgba(205, 214, 244, 1)",
+      consumer_background_color: "rgba(49, 50, 68, 1)",
+      consumer_border_color: "rgba(137, 180, 250, 0.3)",
+      consumer_primary_color: "rgba(137, 180, 250, 1)",
+      consumer_secondary_color: "rgba(186, 194, 222, 1)"
     }
   },
   material: {
@@ -2087,7 +2123,11 @@ const defaultThemes = {
       infobar_border_color: "rgba(3, 218, 198, 0.3)",
       infobar_icon_color: "rgba(3, 218, 198, 1)",
       infobar_label_color: "rgba(255, 255, 255, 0.6)",
-      infobar_value_color: "rgba(255, 255, 255, 0.87)"
+      infobar_value_color: "rgba(255, 255, 255, 0.87)",
+      consumer_background_color: "rgba(33, 33, 33, 1)",
+      consumer_border_color: "rgba(3, 218, 198, 0.3)",
+      consumer_primary_color: "rgba(3, 218, 198, 1)",
+      consumer_secondary_color: "rgba(255, 255, 255, 0.6)"
     }
   },
   minimalist: {
@@ -2105,7 +2145,11 @@ const defaultThemes = {
       infobar_border_color: "rgba(0, 0, 0, 0.1)",
       infobar_icon_color: "rgba(66, 66, 66, 1)",
       infobar_label_color: "rgba(117, 117, 117, 1)",
-      infobar_value_color: "rgba(33, 33, 33, 1)"
+      infobar_value_color: "rgba(33, 33, 33, 1)",
+      consumer_background_color: "rgba(255, 255, 255, 1)",
+      consumer_border_color: "rgba(0, 0, 0, 0.1)",
+      consumer_primary_color: "rgba(33, 33, 33, 1)",
+      consumer_secondary_color: "rgba(117, 117, 117, 1)"
     }
   },
   slate: {
@@ -2123,7 +2167,11 @@ const defaultThemes = {
       infobar_border_color: "rgba(148, 163, 184, 0.3)",
       infobar_icon_color: "rgba(148, 163, 184, 1)",
       infobar_label_color: "rgba(148, 163, 184, 0.8)",
-      infobar_value_color: "rgba(226, 232, 240, 1)"
+      infobar_value_color: "rgba(226, 232, 240, 1)",
+      consumer_background_color: "rgba(51, 65, 85, 1)",
+      consumer_border_color: "rgba(148, 163, 184, 0.3)",
+      consumer_primary_color: "rgba(148, 163, 184, 1)",
+      consumer_secondary_color: "rgba(148, 163, 184, 0.8)"
     }
   },
   sunset: {
@@ -2141,7 +2189,11 @@ const defaultThemes = {
       infobar_border_color: "rgba(255, 120, 80, 0.3)",
       infobar_icon_color: "rgba(255, 170, 100, 1)",
       infobar_label_color: "rgba(255, 180, 120, 0.7)",
-      infobar_value_color: "rgba(255, 230, 200, 1)"
+      infobar_value_color: "rgba(255, 230, 200, 1)",
+      consumer_background_color: "rgba(40, 30, 50, 1)",
+      consumer_border_color: "rgba(255, 120, 80, 0.3)",
+      consumer_primary_color: "rgba(255, 170, 100, 1)",
+      consumer_secondary_color: "rgba(255, 180, 120, 0.7)"
     }
   },
   ocean: {
@@ -2159,7 +2211,11 @@ const defaultThemes = {
       infobar_border_color: "rgba(0, 180, 216, 0.3)",
       infobar_icon_color: "rgba(56, 189, 248, 1)",
       infobar_label_color: "rgba(125, 211, 252, 0.7)",
-      infobar_value_color: "rgba(224, 242, 254, 1)"
+      infobar_value_color: "rgba(224, 242, 254, 1)",
+      consumer_background_color: "rgba(15, 35, 60, 1)",
+      consumer_border_color: "rgba(0, 180, 216, 0.3)",
+      consumer_primary_color: "rgba(56, 189, 248, 1)",
+      consumer_secondary_color: "rgba(125, 211, 252, 0.7)"
     }
   },
   purple: {
@@ -2177,7 +2233,55 @@ const defaultThemes = {
       infobar_border_color: "rgba(168, 85, 247, 0.3)",
       infobar_icon_color: "rgba(192, 132, 252, 1)",
       infobar_label_color: "rgba(216, 180, 254, 0.7)",
-      infobar_value_color: "rgba(250, 245, 255, 1)"
+      infobar_value_color: "rgba(250, 245, 255, 1)",
+      consumer_background_color: "rgba(30, 30, 50, 1)",
+      consumer_border_color: "rgba(168, 85, 247, 0.3)",
+      consumer_primary_color: "rgba(192, 132, 252, 1)",
+      consumer_secondary_color: "rgba(216, 180, 254, 0.7)"
+    }
+  },
+  matrix: {
+    id: "matrix",
+    name: "Matrix",
+    colors: {
+      card_background_color: "rgba(0, 0, 0, 1)",
+      card_border_color: "rgba(0, 255, 65, 0.3)",
+      card_text_color: "rgba(0, 255, 65, 1)",
+      primary_color: "rgba(0, 255, 65, 1)",
+      secondary_color: "rgba(0, 200, 50, 0.8)",
+      title_color: "rgba(0, 255, 65, 1)",
+      subtitle_color: "rgba(0, 200, 50, 0.7)",
+      infobar_background_color: "rgba(0, 10, 0, 1)",
+      infobar_border_color: "rgba(0, 255, 65, 0.3)",
+      infobar_icon_color: "rgba(0, 255, 65, 1)",
+      infobar_label_color: "rgba(0, 200, 50, 0.7)",
+      infobar_value_color: "rgba(0, 255, 65, 1)",
+      consumer_background_color: "rgba(0, 10, 0, 1)",
+      consumer_border_color: "rgba(0, 255, 65, 0.3)",
+      consumer_primary_color: "rgba(0, 255, 65, 1)",
+      consumer_secondary_color: "rgba(0, 200, 50, 0.7)"
+    }
+  },
+  bobs_burgers: {
+    id: "bobs_burgers",
+    name: "Bob's Burgers",
+    colors: {
+      card_background_color: "rgba(235, 231, 213, 1)",
+      card_border_color: "rgba(206, 48, 45, 0.4)",
+      card_text_color: "rgba(42, 54, 59, 1)",
+      primary_color: "rgba(206, 48, 45, 1)",
+      secondary_color: "rgba(42, 54, 59, 0.8)",
+      title_color: "rgba(206, 48, 45, 1)",
+      subtitle_color: "rgba(249, 176, 58, 1)",
+      infobar_background_color: "rgba(249, 241, 230, 1)",
+      infobar_border_color: "rgba(206, 48, 45, 0.3)",
+      infobar_icon_color: "rgba(206, 48, 45, 1)",
+      infobar_label_color: "rgba(42, 54, 59, 0.7)",
+      infobar_value_color: "rgba(42, 54, 59, 1)",
+      consumer_background_color: "rgba(249, 241, 230, 1)",
+      consumer_border_color: "rgba(206, 48, 45, 0.3)",
+      consumer_primary_color: "rgba(206, 48, 45, 1)",
+      consumer_secondary_color: "rgba(42, 54, 59, 0.7)"
     }
   }
 };
@@ -2222,6 +2326,14 @@ function applyThemeToConfig(config, themeId) {
         label_color: theme.colors.infobar_label_color,
         value_color: theme.colors.infobar_value_color,
         ...config.info_bar?.style
+      }
+    },
+    consumers: {
+      ...config.consumers,
+      style: {
+        item_background_color: theme.colors.consumer_background_color,
+        item_border_color: theme.colors.consumer_border_color,
+        ...config.consumers?.style
       }
     }
   };
@@ -2888,11 +3000,6 @@ const _PVMonitorCard = class _PVMonitorCard extends i {
     const bgColor = cardStyle?.background_color || s2.card_background_color || "rgba(21, 20, 27, 1)";
     const borderColor = cardStyle?.border_color || s2.card_border_color || "rgba(255, 255, 255, 0.1)";
     return `background: ${bgColor}; border: 1px solid ${borderColor}; box-shadow: ${s2.card_boxshadow}; border-radius: ${s2.card_border_radius}; color: ${s2.card_text_color}; cursor: ${s2.card_cursor}; padding: ${s2.card_padding};`;
-  }
-  _calculatePVRotation(value, maxPower) {
-    if (value <= 0) return 0;
-    if (value >= maxPower) return 360;
-    return value / maxPower * 360;
   }
   _getTextFromEntityOrConfig(entity, text) {
     if (entity && this.hass) {
