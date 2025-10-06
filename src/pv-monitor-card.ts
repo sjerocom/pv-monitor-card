@@ -9,7 +9,6 @@ import {
     getBatteryIcon,
     getBatteryIconColor,
     getNetzColor,
-    getPVRotation,
     getPVRotationSpeed,
     getPVColor,
     getBatterieColor,
@@ -138,12 +137,6 @@ export class PVMonitorCard extends LitElement {
         const borderColor = cardStyle?.border_color || s.card_border_color || 'rgba(255, 255, 255, 0.1)';
 
         return `background: ${bgColor}; border: 1px solid ${borderColor}; box-shadow: ${s.card_boxshadow}; border-radius: ${s.card_border_radius}; color: ${s.card_text_color}; cursor: ${s.card_cursor}; padding: ${s.card_padding};`;
-    }
-
-    private _calculatePVRotation(value: number, maxPower: number): number {
-        if (value <= 0) return 0;
-        if (value >= maxPower) return 360;
-        return (value / maxPower) * 360;
     }
 
     private _getTextFromEntityOrConfig(entity?: string, text?: string): string {

@@ -83,11 +83,6 @@ export function getNetzColor(power: number, threshold: number): { color: string;
     return { color, duration: dur, show: true };
 }
 
-export function getPVRotation(power: number, maxPower: number = 10000): number {
-    const abs_w = Math.abs(power);
-    return Math.min((abs_w / maxPower) * 360, 360);
-}
-
 export function getPVRotationSpeed(power: number, maxPower: number = 10000): number {
     const abs_w = Math.abs(power);
 
