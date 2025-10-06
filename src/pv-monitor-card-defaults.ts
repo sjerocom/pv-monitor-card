@@ -102,6 +102,7 @@ export function getDefaultConfig(config: PVMonitorCardConfig): PVMonitorCardConf
         netz: {
             show: themedConfig.netz?.show !== false,
             animation: themedConfig.netz?.animation !== false,
+            animation_style: themedConfig.netz?.animation_style || 'rotating-dots',
             threshold: themedConfig.netz?.threshold ?? 10,
             text_einspeisen: themedConfig.netz?.text_einspeisen ?? t.status.feed_in,
             text_neutral: themedConfig.netz?.text_neutral ?? t.status.neutral,
@@ -112,6 +113,7 @@ export function getDefaultConfig(config: PVMonitorCardConfig): PVMonitorCardConf
         pv: {
             show: themedConfig.pv?.show !== false,
             animation: themedConfig.pv?.animation !== false,
+            animation_style: themedConfig.pv?.animation_style || 'rotating-dots',
             icon_rotation: themedConfig.pv?.icon_rotation === true,
             max_power: themedConfig.pv?.max_power ?? 10000,
             ...themedConfig.pv
@@ -120,6 +122,7 @@ export function getDefaultConfig(config: PVMonitorCardConfig): PVMonitorCardConf
         batterie: {
             show: themedConfig.batterie?.show !== false,
             animation: themedConfig.batterie?.animation !== false,
+            animation_style: themedConfig.batterie?.animation_style || 'rotating-dots',
             battery_capacity: themedConfig.batterie?.battery_capacity ?? 10000,
             calculate_runtime: themedConfig.batterie?.calculate_runtime === true,
             ...themedConfig.batterie
@@ -128,6 +131,7 @@ export function getDefaultConfig(config: PVMonitorCardConfig): PVMonitorCardConf
         haus: {
             show: themedConfig.haus?.show !== false,
             animation: themedConfig.haus?.animation !== false,
+            animation_style: themedConfig.haus?.animation_style || 'rotating-dots',
             ...themedConfig.haus
         }
     };

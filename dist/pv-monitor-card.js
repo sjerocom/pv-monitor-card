@@ -677,6 +677,100 @@ const pvMonitorCardStyles = i$3`
         75%  { transform: rotate(300deg); }
         100% { transform: rotate(360deg); }
     }
+
+    @keyframes continuousRotation {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
+
+    @keyframes particleFloat {
+        0%, 100% {
+            transform: translate(0, 0) scale(1);
+            opacity: 0.7;
+        }
+        15% {
+            transform: translate(8px, -8px) scale(1.1);
+            opacity: 1;
+        }
+        30% {
+            transform: translate(12px, -4px) scale(0.95);
+            opacity: 0.8;
+        }
+        45% {
+            transform: translate(6px, 6px) scale(1.05);
+            opacity: 0.9;
+        }
+        60% {
+            transform: translate(-6px, 8px) scale(1);
+            opacity: 0.85;
+        }
+        75% {
+            transform: translate(-10px, -2px) scale(1.08);
+            opacity: 0.95;
+        }
+        90% {
+            transform: translate(-4px, -10px) scale(0.98);
+            opacity: 0.75;
+        }
+    }
+
+    @keyframes electricPulse {
+        0%, 100% {
+            transform: rotate(0deg);
+            opacity: 0.6;
+        }
+        5% {
+            opacity: 1;
+        }
+        10% {
+            transform: rotate(15deg);
+            opacity: 0.4;
+        }
+        15% {
+            opacity: 0.9;
+        }
+        20% {
+            transform: rotate(45deg);
+            opacity: 0.5;
+        }
+        25% {
+            opacity: 1;
+        }
+        30% {
+            transform: rotate(70deg);
+            opacity: 0.6;
+        }
+        40% {
+            transform: rotate(120deg);
+            opacity: 0.9;
+        }
+        50% {
+            transform: rotate(180deg);
+            opacity: 0.5;
+        }
+        55% {
+            opacity: 1;
+        }
+        60% {
+            transform: rotate(210deg);
+            opacity: 0.7;
+        }
+        70% {
+            transform: rotate(270deg);
+            opacity: 0.9;
+        }
+        75% {
+            opacity: 0.5;
+        }
+        80% {
+            transform: rotate(310deg);
+            opacity: 1;
+        }
+        90% {
+            transform: rotate(350deg);
+            opacity: 0.7;
+        }
+    }
 `;
 const translations = {
   de: {
@@ -761,6 +855,11 @@ const translations = {
       pv_entity: "PV Entity",
       pv_entity_helper: "Entity für PV-Leistung",
       enable_animation: "Animation aktivieren",
+      animation_style: "Animationsstil",
+      animation_style_helper: "Wählen Sie den Animationseffekt",
+      animation_rotating_dots: "Rotierende Punkte",
+      animation_particle_field: "Partikelfeld",
+      animation_electric_arc: "Elektrische Bögen",
       icon_rotation: "Icon Rotation",
       icon_rotation_helper: "Icon dreht sich je nach Leistung",
       max_power: "Max. Leistung (W)",
@@ -939,6 +1038,11 @@ const translations = {
       pv_entity: "PV Entity",
       pv_entity_helper: "Entity for PV power",
       enable_animation: "Enable Animation",
+      animation_style: "Animation Style",
+      animation_style_helper: "Choose the animation effect",
+      animation_rotating_dots: "Rotating Dots",
+      animation_particle_field: "Particle Field",
+      animation_electric_arc: "Electric Arc",
       icon_rotation: "Icon Rotation",
       icon_rotation_helper: "Icon rotates based on power",
       max_power: "Max. Power (W)",
@@ -1117,6 +1221,11 @@ const translations = {
       pv_entity: "Entité PV",
       pv_entity_helper: "Entité pour la puissance PV",
       enable_animation: "Activer l'Animation",
+      animation_style: "Style d'Animation",
+      animation_style_helper: "Choisir l'effet d'animation",
+      animation_rotating_dots: "Points Rotatifs",
+      animation_particle_field: "Champ de Particules",
+      animation_electric_arc: "Arc Électrique",
       icon_rotation: "Rotation d'Icône",
       icon_rotation_helper: "L'icône tourne selon la puissance",
       max_power: "Puissance Max. (W)",
@@ -1295,6 +1404,11 @@ const translations = {
       pv_entity: "Entità FV",
       pv_entity_helper: "Entità per potenza FV",
       enable_animation: "Attiva Animazione",
+      animation_style: "Stile Animazione",
+      animation_style_helper: "Scegli l'effetto di animazione",
+      animation_rotating_dots: "Punti Rotanti",
+      animation_particle_field: "Campo di Particelle",
+      animation_electric_arc: "Arco Elettrico",
       icon_rotation: "Rotazione Icona",
       icon_rotation_helper: "L'icona ruota in base alla potenza",
       max_power: "Potenza Max. (W)",
@@ -1473,6 +1587,11 @@ const translations = {
       pv_entity: "Entidad FV",
       pv_entity_helper: "Entidad para potencia FV",
       enable_animation: "Activar Animación",
+      animation_style: "Estilo de Animación",
+      animation_style_helper: "Elige el efecto de animación",
+      animation_rotating_dots: "Puntos Rotatorios",
+      animation_particle_field: "Campo de Partículas",
+      animation_electric_arc: "Arco Eléctrico",
       icon_rotation: "Rotación Icono",
       icon_rotation_helper: "El icono gira según la potencia",
       max_power: "Potencia Máx. (W)",
@@ -1678,29 +1797,17 @@ const defaultThemes = {
     name: "Solarized Dark",
     colors: {
       card_background_color: "rgba(0, 43, 54, 1)",
-      // base03
       card_border_color: "rgba(88, 110, 117, 0.3)",
-      // base01
       card_text_color: "rgba(131, 148, 150, 1)",
-      // base0
       primary_color: "rgba(147, 161, 161, 1)",
-      // base1
       secondary_color: "rgba(131, 148, 150, 0.8)",
-      // base0
       title_color: "rgba(38, 139, 210, 1)",
-      // blue
       subtitle_color: "rgba(101, 123, 131, 1)",
-      // base00
       infobar_background_color: "rgba(7, 54, 66, 1)",
-      // base02
       infobar_border_color: "rgba(88, 110, 117, 0.3)",
-      // base01
       infobar_icon_color: "rgba(42, 161, 152, 1)",
-      // cyan
       infobar_label_color: "rgba(101, 123, 131, 1)",
-      // base00
       infobar_value_color: "rgba(147, 161, 161, 1)"
-      // base1
     }
   },
   nord: {
@@ -1708,29 +1815,17 @@ const defaultThemes = {
     name: "Nord",
     colors: {
       card_background_color: "rgba(46, 52, 64, 1)",
-      // nord0
       card_border_color: "rgba(136, 192, 208, 0.3)",
-      // nord8
       card_text_color: "rgba(236, 239, 244, 1)",
-      // nord6
       primary_color: "rgba(216, 222, 233, 1)",
-      // nord5
       secondary_color: "rgba(229, 233, 240, 0.8)",
-      // nord4
       title_color: "rgba(136, 192, 208, 1)",
-      // nord8
       subtitle_color: "rgba(216, 222, 233, 0.7)",
-      // nord5
       infobar_background_color: "rgba(59, 66, 82, 1)",
-      // nord1
       infobar_border_color: "rgba(136, 192, 208, 0.3)",
-      // nord8
       infobar_icon_color: "rgba(143, 188, 187, 1)",
-      // nord7
       infobar_label_color: "rgba(216, 222, 233, 0.7)",
-      // nord5
       infobar_value_color: "rgba(236, 239, 244, 1)"
-      // nord6
     }
   },
   dracula: {
@@ -1738,29 +1833,17 @@ const defaultThemes = {
     name: "Dracula",
     colors: {
       card_background_color: "rgba(40, 42, 54, 1)",
-      // background
       card_border_color: "rgba(189, 147, 249, 0.3)",
-      // purple
       card_text_color: "rgba(248, 248, 242, 1)",
-      // foreground
       primary_color: "rgba(139, 233, 253, 1)",
-      // cyan
       secondary_color: "rgba(248, 248, 242, 0.8)",
-      // foreground
       title_color: "rgba(189, 147, 249, 1)",
-      // purple
       subtitle_color: "rgba(248, 248, 242, 0.7)",
-      // foreground
       infobar_background_color: "rgba(68, 71, 90, 1)",
-      // current line
       infobar_border_color: "rgba(189, 147, 249, 0.3)",
-      // purple
       infobar_icon_color: "rgba(255, 121, 198, 1)",
-      // pink
       infobar_label_color: "rgba(248, 248, 242, 0.7)",
-      // foreground
       infobar_value_color: "rgba(248, 248, 242, 1)"
-      // foreground
     }
   },
   catppuccin: {
@@ -1768,29 +1851,17 @@ const defaultThemes = {
     name: "Catppuccin Mocha",
     colors: {
       card_background_color: "rgba(30, 30, 46, 1)",
-      // base
       card_border_color: "rgba(137, 180, 250, 0.3)",
-      // blue
       card_text_color: "rgba(205, 214, 244, 1)",
-      // text
       primary_color: "rgba(137, 180, 250, 1)",
-      // blue
       secondary_color: "rgba(205, 214, 244, 0.8)",
-      // text
       title_color: "rgba(203, 166, 247, 1)",
-      // mauve
       subtitle_color: "rgba(186, 194, 222, 1)",
-      // subtext0
       infobar_background_color: "rgba(49, 50, 68, 1)",
-      // surface0
       infobar_border_color: "rgba(137, 180, 250, 0.3)",
-      // blue
       infobar_icon_color: "rgba(148, 226, 213, 1)",
-      // teal
       infobar_label_color: "rgba(186, 194, 222, 1)",
-      // subtext0
       infobar_value_color: "rgba(205, 214, 244, 1)"
-      // text
     }
   },
   material: {
@@ -1798,29 +1869,17 @@ const defaultThemes = {
     name: "Material Design",
     colors: {
       card_background_color: "rgba(18, 18, 18, 1)",
-      // Material dark background
       card_border_color: "rgba(3, 218, 198, 0.3)",
-      // teal accent
       card_text_color: "rgba(255, 255, 255, 0.87)",
-      // high emphasis text
       primary_color: "rgba(3, 218, 198, 1)",
-      // teal accent
       secondary_color: "rgba(255, 255, 255, 0.6)",
-      // medium emphasis
       title_color: "rgba(3, 218, 198, 1)",
-      // teal accent
       subtitle_color: "rgba(255, 255, 255, 0.6)",
-      // medium emphasis
       infobar_background_color: "rgba(33, 33, 33, 1)",
-      // elevated surface
       infobar_border_color: "rgba(3, 218, 198, 0.3)",
-      // teal accent
       infobar_icon_color: "rgba(3, 218, 198, 1)",
-      // teal accent
       infobar_label_color: "rgba(255, 255, 255, 0.6)",
-      // medium emphasis
       infobar_value_color: "rgba(255, 255, 255, 0.87)"
-      // high emphasis
     }
   },
   minimalist: {
@@ -1828,29 +1887,17 @@ const defaultThemes = {
     name: "Minimalist",
     colors: {
       card_background_color: "rgba(242, 242, 242, 1)",
-      // light gray background
       card_border_color: "rgba(0, 0, 0, 0.1)",
-      // subtle border
       card_text_color: "rgba(33, 33, 33, 1)",
-      // almost black text
       primary_color: "rgba(33, 33, 33, 1)",
-      // black
       secondary_color: "rgba(117, 117, 117, 1)",
-      // gray
       title_color: "rgba(33, 33, 33, 1)",
-      // black
       subtitle_color: "rgba(117, 117, 117, 1)",
-      // gray
       infobar_background_color: "rgba(255, 255, 255, 1)",
-      // white
       infobar_border_color: "rgba(0, 0, 0, 0.1)",
-      // subtle border
       infobar_icon_color: "rgba(66, 66, 66, 1)",
-      // dark gray
       infobar_label_color: "rgba(117, 117, 117, 1)",
-      // gray
       infobar_value_color: "rgba(33, 33, 33, 1)"
-      // black
     }
   },
   slate: {
@@ -1858,29 +1905,17 @@ const defaultThemes = {
     name: "Slate",
     colors: {
       card_background_color: "rgba(30, 41, 59, 1)",
-      // slate-800
       card_border_color: "rgba(148, 163, 184, 0.3)",
-      // slate-400
       card_text_color: "rgba(226, 232, 240, 1)",
-      // slate-200
       primary_color: "rgba(100, 116, 139, 1)",
-      // slate-500
       secondary_color: "rgba(148, 163, 184, 1)",
-      // slate-400
       title_color: "rgba(148, 163, 184, 1)",
-      // slate-400
       subtitle_color: "rgba(148, 163, 184, 0.8)",
-      // slate-400
       infobar_background_color: "rgba(51, 65, 85, 1)",
-      // slate-700
       infobar_border_color: "rgba(148, 163, 184, 0.3)",
-      // slate-400
       infobar_icon_color: "rgba(148, 163, 184, 1)",
-      // slate-400
       infobar_label_color: "rgba(148, 163, 184, 0.8)",
-      // slate-400
       infobar_value_color: "rgba(226, 232, 240, 1)"
-      // slate-200
     }
   }
 };
@@ -1907,7 +1942,6 @@ function applyThemeToConfig(config, themeId) {
   return {
     ...config,
     style: {
-      // Apply theme colors
       card_background_color: theme.colors.card_background_color,
       card_border_color: theme.colors.card_border_color,
       card_text_color: theme.colors.card_text_color,
@@ -1915,19 +1949,16 @@ function applyThemeToConfig(config, themeId) {
       secondary_color: theme.colors.secondary_color,
       title_color: theme.colors.title_color,
       subtitle_color: theme.colors.subtitle_color,
-      // Preserve any manual overrides from existing config
       ...config.style
     },
     info_bar: {
       ...config.info_bar,
       style: {
-        // Apply theme colors
         background_color: theme.colors.infobar_background_color,
         border_color: theme.colors.infobar_border_color,
         icon_color: theme.colors.infobar_icon_color,
         label_color: theme.colors.infobar_label_color,
         value_color: theme.colors.infobar_value_color,
-        // Preserve any manual overrides
         ...config.info_bar?.style
       }
     }
@@ -1947,9 +1978,7 @@ function getDefaultConfig(config) {
     show_subtitle: themedConfig.show_subtitle !== false,
     show_icon: themedConfig.show_icon !== false,
     grid_gap: themedConfig.grid_gap ?? "6px",
-    // Central entities - keep as is if provided
     entities: themedConfig.entities,
-    // Central configuration values
     pv_max_power: themedConfig.pv_max_power ?? 1e4,
     battery_capacity: themedConfig.battery_capacity ?? 1e4,
     grid_threshold: themedConfig.grid_threshold ?? 10,
@@ -2028,6 +2057,7 @@ function getDefaultConfig(config) {
     netz: {
       show: themedConfig.netz?.show !== false,
       animation: themedConfig.netz?.animation !== false,
+      animation_style: themedConfig.netz?.animation_style || "rotating-dots",
       threshold: themedConfig.netz?.threshold ?? 10,
       text_einspeisen: themedConfig.netz?.text_einspeisen ?? t2.status.feed_in,
       text_neutral: themedConfig.netz?.text_neutral ?? t2.status.neutral,
@@ -2037,6 +2067,7 @@ function getDefaultConfig(config) {
     pv: {
       show: themedConfig.pv?.show !== false,
       animation: themedConfig.pv?.animation !== false,
+      animation_style: themedConfig.pv?.animation_style || "rotating-dots",
       icon_rotation: themedConfig.pv?.icon_rotation === true,
       max_power: themedConfig.pv?.max_power ?? 1e4,
       ...themedConfig.pv
@@ -2044,6 +2075,7 @@ function getDefaultConfig(config) {
     batterie: {
       show: themedConfig.batterie?.show !== false,
       animation: themedConfig.batterie?.animation !== false,
+      animation_style: themedConfig.batterie?.animation_style || "rotating-dots",
       battery_capacity: themedConfig.batterie?.battery_capacity ?? 1e4,
       calculate_runtime: themedConfig.batterie?.calculate_runtime === true,
       ...themedConfig.batterie
@@ -2051,6 +2083,7 @@ function getDefaultConfig(config) {
     haus: {
       show: themedConfig.haus?.show !== false,
       animation: themedConfig.haus?.animation !== false,
+      animation_style: themedConfig.haus?.animation_style || "rotating-dots",
       ...themedConfig.haus
     }
   };
@@ -2134,9 +2167,12 @@ function getNetzColor(power, threshold) {
   }
   return { color, duration: dur, show: true };
 }
-function getPVRotation(power, maxPower = 1e4) {
+function getPVRotationSpeed(power, maxPower = 1e4) {
   const abs_w = Math.abs(power);
-  return Math.min(abs_w / maxPower * 360, 360);
+  if (abs_w < 10) return 60;
+  const ratio = abs_w / maxPower;
+  const speed = Math.max(2, 30 - ratio * 28);
+  return speed;
 }
 function getPVColor(power, maxPower = 1e4) {
   const abs_w = Math.abs(power);
@@ -2149,7 +2185,7 @@ function getPVColor(power, maxPower = 1e4) {
   const step5 = maxPower * 0.4;
   const step6 = maxPower * 0.6;
   const step7 = maxPower * 0.8;
-  const step8 = maxPower * 1;
+  const step8 = maxPower;
   const step9 = maxPower * 1.2;
   const step10 = maxPower * 1.4;
   let baseColor = "";
@@ -2282,6 +2318,105 @@ function getAnimationStyle(color, duration) {
         animation: spin ${duration}s linear infinite;
         z-index: 0;
     `;
+}
+function getParticleFieldStyle(color, duration) {
+  const opaqueColor = color.replace(/[\d.]+\)$/, "1)");
+  return `
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        right: -50%;
+        bottom: -50%;
+        border-radius: 50%;
+        background: 
+            radial-gradient(circle at 20% 30%, ${opaqueColor} 3px, transparent 3px),
+            radial-gradient(circle at 60% 70%, ${opaqueColor} 4px, transparent 4px),
+            radial-gradient(circle at 80% 20%, ${opaqueColor} 3px, transparent 3px),
+            radial-gradient(circle at 30% 80%, ${opaqueColor} 3.5px, transparent 3.5px),
+            radial-gradient(circle at 90% 60%, ${opaqueColor} 3px, transparent 3px),
+            radial-gradient(circle at 15% 60%, ${opaqueColor} 4px, transparent 4px),
+            radial-gradient(circle at 70% 40%, ${opaqueColor} 3px, transparent 3px),
+            radial-gradient(circle at 40% 15%, ${opaqueColor} 3.5px, transparent 3.5px),
+            radial-gradient(circle at 50% 50%, ${opaqueColor} 4px, transparent 4px),
+            radial-gradient(circle at 25% 55%, ${opaqueColor} 3px, transparent 3px),
+            radial-gradient(circle at 75% 65%, ${opaqueColor} 3.5px, transparent 3.5px),
+            radial-gradient(circle at 85% 45%, ${opaqueColor} 3px, transparent 3px);
+        background-size: 100% 100%;
+        animation: particleFloat ${duration}s ease-in-out infinite;
+        z-index: 0;
+        opacity: 0.9;
+    `;
+}
+function getElectricArcStyle(color, duration) {
+  const brightColor = color.replace(/[\d.]+\)$/, "1)");
+  const mediumColor = color.replace(/[\d.]+\)$/, "0.7)");
+  const dimColor = color.replace(/[\d.]+\)$/, "0.3)");
+  return `
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        right: -50%;
+        bottom: -50%;
+        border-radius: 50%;
+        background: 
+            conic-gradient(
+                from 0deg,
+                transparent 0deg,
+                ${dimColor} 1deg,
+                ${brightColor} 3deg,
+                ${mediumColor} 5deg,
+                transparent 7deg,
+                transparent 43deg,
+                ${dimColor} 44deg,
+                ${brightColor} 46deg,
+                ${mediumColor} 48deg,
+                transparent 50deg,
+                transparent 88deg,
+                ${dimColor} 89deg,
+                ${brightColor} 91deg,
+                ${mediumColor} 93deg,
+                transparent 95deg,
+                transparent 133deg,
+                ${dimColor} 134deg,
+                ${brightColor} 136deg,
+                ${mediumColor} 138deg,
+                transparent 140deg,
+                transparent 178deg,
+                ${dimColor} 179deg,
+                ${brightColor} 181deg,
+                ${mediumColor} 183deg,
+                transparent 185deg,
+                transparent 223deg,
+                ${dimColor} 224deg,
+                ${brightColor} 226deg,
+                ${mediumColor} 228deg,
+                transparent 230deg,
+                transparent 268deg,
+                ${dimColor} 269deg,
+                ${brightColor} 271deg,
+                ${mediumColor} 273deg,
+                transparent 275deg,
+                transparent 313deg,
+                ${dimColor} 314deg,
+                ${brightColor} 316deg,
+                ${mediumColor} 318deg,
+                transparent 320deg,
+                transparent 360deg
+            );
+        animation: electricPulse ${duration}s ease-in-out infinite;
+        z-index: 0;
+    `;
+}
+function getAnimationStyleByType(type, color, duration) {
+  switch (type) {
+    case "particle-field":
+      return getParticleFieldStyle(color, duration);
+    case "electric-arc":
+      return getElectricArcStyle(color, duration);
+    case "rotating-dots":
+    default:
+      return getAnimationStyle(color, duration);
+  }
 }
 function calculateBatteryRuntime(batteryCapacityWh, socPercent, chargeW, dischargeW) {
   const capKwh = batteryCapacityWh / 1e3;
@@ -2460,6 +2595,7 @@ const _PVMonitorCard = class _PVMonitorCard extends i {
     const primaryStyle = `font-size: ${s2.primary_size}; color: ${primaryColor}; opacity: ${s2.primary_font_opacity}; font-weight: ${s2.primary_font_weight}; line-height: calc(${s2.primary_size} + 2px);`;
     const secondaryStyle = `font-size: ${s2.secondary_size}; color: ${secondaryColor}; opacity: ${s2.secondary_font_opacity}; font-weight: ${s2.secondary_font_weight}; line-height: calc(${s2.secondary_size} + 2px);`;
     const tertiaryStyle = `font-size: ${s2.tertiary_size}; color: ${s2.tertiary_color}; opacity: ${s2.tertiary_font_opacity}; font-weight: ${s2.tertiary_font_weight}; line-height: calc(${s2.tertiary_size} + 2px);`;
+    const animationType = config.cardConfig?.animation_style || "rotating-dots";
     return x`
             <div class="card"
                  style="${this._getCardStyle(cardStyle)}"
@@ -2467,7 +2603,7 @@ const _PVMonitorCard = class _PVMonitorCard extends i {
                  @dblclick=${(e2) => this._handleAction(e2, { double_tap: config.cardConfig?.double_tap_action })}
                  @contextmenu=${(e2) => this._handleAction(e2, { hold: config.cardConfig?.hold_action })}>
                 ${config.animStyle.show && config.animStyle.color ? x`
-                    <div style="${getAnimationStyle(config.animStyle.color, config.animStyle.duration)}"></div>
+                    <div style="${getAnimationStyleByType(animationType, config.animStyle.color, config.animStyle.duration)}"></div>
                 ` : ""}
                 <div class="icon" style="${iconStyle}; margin-bottom: ${s2.icon_margin};"><ha-icon .icon=${config.icon} style="--mdc-icon-size: ${s2.icon_size}; width: ${s2.icon_size}; height: ${s2.icon_size};"></ha-icon></div>
                 <div class="primary" style="${primaryStyle}">${config.primaryValue}</div>
@@ -2607,13 +2743,10 @@ const _PVMonitorCard = class _PVMonitorCard extends i {
     const value = parseFloat(entity.state) || 0;
     const maxPower = this.config.pv?.max_power || this.config.pv_max_power || 1e4;
     const shouldRotate = this.config.pv.icon_rotation === true;
-    let rotation = 0;
+    let customIconStyle = "";
     if (shouldRotate) {
-      try {
-        rotation = getPVRotation(value, maxPower);
-      } catch (e2) {
-        rotation = this._calculatePVRotation(value, maxPower);
-      }
+      const rotationSpeed = getPVRotationSpeed(value, maxPower);
+      customIconStyle = `animation: continuousRotation ${rotationSpeed}s linear infinite;`;
     }
     return this._renderCard({
       cardConfig: this.config.pv,
@@ -2622,7 +2755,7 @@ const _PVMonitorCard = class _PVMonitorCard extends i {
       secondaryText: this._getTextFromEntityOrConfig(this.config.pv.secondary_entity, this.config.pv.secondary_text),
       tertiaryText: this._getTextFromEntityOrConfig(this.config.pv.tertiary_entity, this.config.pv.tertiary_text),
       animStyle: this.config.pv.animation ? getPVColor(value, maxPower) : { color: "", duration: 0, show: false },
-      customIconStyle: shouldRotate ? `transform: rotate(${rotation}deg); transition: transform 0.5s ease;` : ""
+      customIconStyle
     });
   }
   _renderBatterie() {
@@ -2809,6 +2942,41 @@ const _PVMonitorCardEditor = class _PVMonitorCardEditor extends i {
       this._fireEvent();
       this._debounceTimer = void 0;
     }, 1e3);
+  }
+  _renderAnimationSelector(cardType, animationEnabled, currentStyle) {
+    const t2 = this._getT();
+    if (!animationEnabled) return x``;
+    const animationOptions = [
+      { value: "rotating-dots", label: t2.editor.animation_rotating_dots || "Rotating Dots" },
+      { value: "particle-field", label: t2.editor.animation_particle_field || "Particle Field" },
+      { value: "electric-arc", label: t2.editor.animation_electric_arc || "Electric Arc" }
+    ];
+    return x`
+            <div class="option">
+                <div class="option-label">
+                    ${t2.editor.animation_style || "Animation Style"}
+                    <div class="info-text">${t2.editor.animation_style_helper || "Choose the animation effect"}</div>
+                </div>
+                <div class="option-control">
+                    <ha-combo-box
+                            .value=${currentStyle || "rotating-dots"}
+                            .items=${animationOptions}
+                            item-value-path="value"
+                            item-label-path="label"
+                            @value-changed=${(ev) => {
+      if (!this._config) return;
+      const newValue = ev.detail?.value;
+      if (!newValue) return;
+      const newConfig = { ...this._config };
+      if (!newConfig[cardType]) newConfig[cardType] = {};
+      newConfig[cardType].animation_style = newValue;
+      this._config = newConfig;
+      this._fireEvent();
+    }}
+                    ></ha-combo-box>
+                </div>
+            </div>
+        `;
   }
   _renderTapActions(cardType) {
     this._getT();
@@ -3380,6 +3548,7 @@ const _PVMonitorCardEditor = class _PVMonitorCardEditor extends i {
                 </div>
                 ${this._renderIconPicker(t2.editor.icon_label, ["pv", "icon"], this._config?.pv?.icon)}
                 ${this._renderSwitch(t2.editor.enable_animation, ["pv", "animation"], this._config?.pv?.animation)}
+                ${this._renderAnimationSelector("pv", this._config?.pv?.animation, this._config?.pv?.animation_style)}
                 ${this._renderSwitch(t2.editor.icon_rotation, ["pv", "icon_rotation"], this._config?.pv?.icon_rotation, t2.editor.icon_rotation_helper)}
             </div>
 
@@ -3425,6 +3594,7 @@ const _PVMonitorCardEditor = class _PVMonitorCardEditor extends i {
                 </div>
                 ${this._renderIconPicker(t2.editor.icon_label, ["batterie", "icon"], this._config?.batterie?.icon, t2.editor.icon_auto_helper)}
                 ${this._renderSwitch(t2.editor.enable_animation, ["batterie", "animation"], this._config?.batterie?.animation)}
+                ${this._renderAnimationSelector("batterie", this._config?.batterie?.animation, this._config?.batterie?.animation_style)}
             </div>
 
             <div class="divider"></div>
@@ -3469,6 +3639,7 @@ const _PVMonitorCardEditor = class _PVMonitorCardEditor extends i {
                 </div>
                 ${this._renderIconPicker(t2.editor.icon_label, ["haus", "icon"], this._config?.haus?.icon)}
                 ${this._renderSwitch(t2.editor.enable_animation, ["haus", "animation"], this._config?.haus?.animation)}
+                ${this._renderAnimationSelector("haus", this._config?.haus?.animation, this._config?.haus?.animation_style)}
             </div>
 
             <div class="divider"></div>
@@ -3513,6 +3684,7 @@ const _PVMonitorCardEditor = class _PVMonitorCardEditor extends i {
                 </div>
                 ${this._renderIconPicker(t2.editor.icon_label, ["netz", "icon"], this._config?.netz?.icon)}
                 ${this._renderSwitch(t2.editor.enable_animation, ["netz", "animation"], this._config?.netz?.animation)}
+                ${this._renderAnimationSelector("netz", this._config?.netz?.animation, this._config?.netz?.animation_style)}
             </div>
 
             <div class="divider"></div>
@@ -3724,7 +3896,6 @@ _PVMonitorCardEditor.styles = i$3`
             z-index: 1;
         }
 
-        /* Critical fix: Ensure entity picker dropdowns appear above everything */
         :host ::slotted(*),
         :host * {
             --ha-entity-picker-z-index: 9999;
@@ -3807,7 +3978,6 @@ _PVMonitorCardEditor.styles = i$3`
             position: relative;
         }
 
-        /* Fix entity picker autocomplete being covered by dropdown */
         ha-entity-picker,
         ha-selector-entity {
             position: relative;
@@ -3819,7 +3989,6 @@ _PVMonitorCardEditor.styles = i$3`
             z-index: 1000;
         }
 
-        /* Ensure combo-box dropdowns have proper z-index */
         ha-combo-box {
             position: relative;
         }
@@ -3828,7 +3997,6 @@ _PVMonitorCardEditor.styles = i$3`
             width: 100%;
         }
 
-        /* Fix dropdown text visibility - try different approach */
         ha-combo-box {
             color: #e1e1e1 !important;
         }
@@ -3842,7 +4010,6 @@ _PVMonitorCardEditor.styles = i$3`
             background-color: #2c2c2c !important;
         }
 
-        /* Custom autocomplete dropdown */
         .autocomplete-wrapper {
             position: relative;
             width: 100%;

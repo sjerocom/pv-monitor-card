@@ -10,10 +10,12 @@ import {
     getBatteryIconColor,
     getNetzColor,
     getPVRotation,
+    getPVRotationSpeed,
     getPVColor,
     getBatterieColor,
     getHausColor,
     getAnimationStyle,
+    getAnimationStyleByType,
     calculateBatteryRuntime,
     calculateBatteryChargeTime,
     calculateAutarky,
@@ -157,6 +159,9 @@ export class PVMonitorCard extends LitElement {
         const secondaryStyle = `font-size: ${s.secondary_size}; color: ${secondaryColor}; opacity: ${s.secondary_font_opacity}; font-weight: ${s.secondary_font_weight}; line-height: calc(${s.secondary_size} + 2px);`;
         const tertiaryStyle = `font-size: ${s.tertiary_size}; color: ${s.tertiary_color}; opacity: ${s.tertiary_font_opacity}; font-weight: ${s.tertiary_font_weight}; line-height: calc(${s.tertiary_size} + 2px);`;
 
+        // Get animation style type from card config, default to 'rotating-dots'
+        const animationType = config.cardConfig?.animation_style || 'rotating-dots';
+
         return html`
             <div class="card"
                  style="${this._getCardStyle(cardStyle)}"
@@ -164,7 +169,7 @@ export class PVMonitorCard extends LitElement {
                  @dblclick=${(e: Event) => this._handleAction(e, { double_tap: config.cardConfig?.double_tap_action })}
                  @contextmenu=${(e: Event) => this._handleAction(e, { hold: config.cardConfig?.hold_action })}>
                 ${config.animStyle.show && config.animStyle.color ? html`
-                    <div style="${getAnimationStyle(config.animStyle.color, config.animStyle.duration)}"></div>
+                    <div style="${getAnimationStyleByType(animationType, config.animStyle.color, config.animStyle.duration)}"></div>
                 ` : ''}
                 <div class="icon" style="${iconStyle}; margin-bottom: ${s.icon_margin};"><ha-icon .icon=${config.icon} style="--mdc-icon-size: ${s.icon_size}; width: ${s.icon_size}; height: ${s.icon_size};"></ha-icon></div>
                 <div class="primary" style="${primaryStyle}">${config.primaryValue}</div>
@@ -335,14 +340,13 @@ export class PVMonitorCard extends LitElement {
         const value = parseFloat(entity.state) || 0;
         const maxPower = this.config.pv?.max_power || this.config.pv_max_power || 10000;
 
+        // Calculate rotation speed based on power
         const shouldRotate = this.config.pv.icon_rotation === true;
-        let rotation = 0;
+        let customIconStyle = '';
+
         if (shouldRotate) {
-            try {
-                rotation = getPVRotation(value, maxPower);
-            } catch (e) {
-                rotation = this._calculatePVRotation(value, maxPower);
-            }
+            const rotationSpeed = getPVRotationSpeed(value, maxPower);
+            customIconStyle = `animation: continuousRotation ${rotationSpeed}s linear infinite;`;
         }
 
         return this._renderCard({
@@ -352,7 +356,7 @@ export class PVMonitorCard extends LitElement {
             secondaryText: this._getTextFromEntityOrConfig(this.config.pv.secondary_entity, this.config.pv.secondary_text),
             tertiaryText: this._getTextFromEntityOrConfig(this.config.pv.tertiary_entity, this.config.pv.tertiary_text),
             animStyle: this.config.pv.animation ? getPVColor(value, maxPower) : { color: '', duration: 0, show: false },
-            customIconStyle: shouldRotate ? `transform: rotate(${rotation}deg); transition: transform 0.5s ease;` : ''
+            customIconStyle: customIconStyle
         });
     }
 

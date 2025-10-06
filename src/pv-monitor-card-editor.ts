@@ -254,6 +254,46 @@ export class PVMonitorCardEditor extends LitElement {
         }, 1000);
     }
 
+    private _renderAnimationSelector(cardType: 'pv' | 'batterie' | 'haus' | 'netz', animationEnabled?: boolean, currentStyle?: string) {
+        const t = this._getT();
+
+        if (!animationEnabled) return html``;
+
+        const animationOptions = [
+            { value: 'rotating-dots', label: t.editor.animation_rotating_dots || 'Rotating Dots' },
+            { value: 'particle-field', label: t.editor.animation_particle_field || 'Particle Field' },
+            { value: 'electric-arc', label: t.editor.animation_electric_arc || 'Electric Arc' }
+        ];
+
+        return html`
+            <div class="option">
+                <div class="option-label">
+                    ${t.editor.animation_style || 'Animation Style'}
+                    <div class="info-text">${t.editor.animation_style_helper || 'Choose the animation effect'}</div>
+                </div>
+                <div class="option-control">
+                    <ha-combo-box
+                            .value=${currentStyle || 'rotating-dots'}
+                            .items=${animationOptions}
+                            item-value-path="value"
+                            item-label-path="label"
+                            @value-changed=${(ev: any) => {
+                                if (!this._config) return;
+                                const newValue = ev.detail?.value;
+                                if (!newValue) return;
+
+                                const newConfig = { ...this._config };
+                                if (!newConfig[cardType]) newConfig[cardType] = {};
+                                newConfig[cardType].animation_style = newValue;
+                                this._config = newConfig;
+                                this._fireEvent();
+                            }}
+                    ></ha-combo-box>
+                </div>
+            </div>
+        `;
+    }
+
     private _renderTapActions(cardType: 'pv' | 'batterie' | 'haus' | 'netz' | 'info_bar') {
         const t = this._getT();
         const config = cardType === 'info_bar' ? this._config?.info_bar : this._config?.[cardType];
@@ -425,19 +465,19 @@ export class PVMonitorCardEditor extends LitElement {
                     <ha-switch
                             .checked=${value === true}
                             @change=${(ev: CustomEvent) => {
-                                if (!this._config) return;
-                                const target = ev.target as any;
-                                const newValue = target.checked;
-                                const newConfig = { ...this._config };
-                                let current: any = newConfig;
-                                for (let i = 0; i < path.length - 1; i++) {
-                                    if (!current[path[i]]) current[path[i]] = {};
-                                    current = current[path[i]];
-                                }
-                                current[path[path.length - 1]] = newValue;
-                                this._config = newConfig;
-                                this._fireEvent();
-                            }}
+            if (!this._config) return;
+            const target = ev.target as any;
+            const newValue = target.checked;
+            const newConfig = { ...this._config };
+            let current: any = newConfig;
+            for (let i = 0; i < path.length - 1; i++) {
+                if (!current[path[i]]) current[path[i]] = {};
+                current = current[path[i]];
+            }
+            current[path[path.length - 1]] = newValue;
+            this._config = newConfig;
+            this._fireEvent();
+        }}
                     ></ha-switch>
                 </div>
             </div>
@@ -516,21 +556,21 @@ export class PVMonitorCardEditor extends LitElement {
                                     <div
                                             class="autocomplete-item"
                                             @click=${() => {
-                                                if (!this._config) return;
+                            if (!this._config) return;
 
-                                                const newConfig = JSON.parse(JSON.stringify(this._config));
-                                                let current: any = newConfig;
-                                                for (let i = 0; i < path.length - 1; i++) {
-                                                    if (!current[path[i]]) current[path[i]] = {};
-                                                    current = current[path[i]];
-                                                }
-                                                current[path[path.length - 1]] = entity;
+                            const newConfig = JSON.parse(JSON.stringify(this._config));
+                            let current: any = newConfig;
+                            for (let i = 0; i < path.length - 1; i++) {
+                                if (!current[path[i]]) current[path[i]] = {};
+                                current = current[path[i]];
+                            }
+                            current[path[path.length - 1]] = entity;
 
-                                                this._config = newConfig;
-                                                this._showAutocomplete.set(pathKey, false);
-                                                this._fireEvent();
-                                                this.requestUpdate();
-                                            }}
+                            this._config = newConfig;
+                            this._showAutocomplete.set(pathKey, false);
+                            this._fireEvent();
+                            this.requestUpdate();
+                        }}
                                     >
                                         ${entity}
                                     </div>
@@ -647,20 +687,20 @@ export class PVMonitorCardEditor extends LitElement {
                             item-label-path="label"
                             allow-custom-value
                             @value-changed=${(ev: any) => {
-                                if (!this._config) return;
-                                const newValue = ev.detail?.value;
+            if (!this._config) return;
+            const newValue = ev.detail?.value;
 
-                                const newConfig = { ...this._config };
-                                if (!newValue || newValue === '') {
-                                    delete newConfig.theme;
-                                } else {
-                                    newConfig.theme = newValue;
-                                }
-                                this._config = newConfig;
+            const newConfig = { ...this._config };
+            if (!newValue || newValue === '') {
+                delete newConfig.theme;
+            } else {
+                newConfig.theme = newValue;
+            }
+            this._config = newConfig;
 
-                                this._fireEvent();
-                                this.requestUpdate();
-                            }}
+            this._fireEvent();
+            this.requestUpdate();
+        }}
                     ></ha-combo-box>
                 </div>
             </div>
@@ -755,21 +795,21 @@ export class PVMonitorCardEditor extends LitElement {
                             <ha-combo-box
                                     .value=${this._config?.info_bar?.position || 'top'}
                                     .items=${[
-                                        { value: 'top', label: t.editor.position_top },
-                                        { value: 'bottom', label: t.editor.position_bottom }
-                                    ]}
+            { value: 'top', label: t.editor.position_top },
+            { value: 'bottom', label: t.editor.position_bottom }
+        ]}
                                     item-value-path="value"
                                     item-label-path="label"
                                     @value-changed=${(ev: any) => {
-                                        if (!this._config) return;
-                                        const newValue = ev.detail?.value;
-                                        if (!newValue) return;
-                                        const newConfig = { ...this._config };
-                                        if (!newConfig.info_bar) newConfig.info_bar = {};
-                                        newConfig.info_bar.position = newValue;
-                                        this._config = newConfig;
-                                        this._fireEvent();
-                                    }}
+            if (!this._config) return;
+            const newValue = ev.detail?.value;
+            if (!newValue) return;
+            const newConfig = { ...this._config };
+            if (!newConfig.info_bar) newConfig.info_bar = {};
+            newConfig.info_bar.position = newValue;
+            this._config = newConfig;
+            this._fireEvent();
+        }}
                             ></ha-combo-box>
                         </div>
                     </div>
@@ -796,21 +836,21 @@ export class PVMonitorCardEditor extends LitElement {
                             <ha-combo-box
                                     .value=${this._config?.info_bar?.calculation_mode || 'autarky'}
                                     .items=${[
-                                        { value: 'autarky', label: t.editor.mode_autarky },
-                                        { value: 'self_consumption', label: t.editor.mode_self_consumption }
-                                    ]}
+            { value: 'autarky', label: t.editor.mode_autarky },
+            { value: 'self_consumption', label: t.editor.mode_self_consumption }
+        ]}
                                     item-value-path="value"
                                     item-label-path="label"
                                     @value-changed=${(ev: any) => {
-                                        if (!this._config) return;
-                                        const newValue = ev.detail?.value;
-                                        if (!newValue) return;
-                                        const newConfig = { ...this._config };
-                                        if (!newConfig.info_bar) newConfig.info_bar = {};
-                                        newConfig.info_bar.calculation_mode = newValue;
-                                        this._config = newConfig;
-                                        this._fireEvent();
-                                    }}
+            if (!this._config) return;
+            const newValue = ev.detail?.value;
+            if (!newValue) return;
+            const newConfig = { ...this._config };
+            if (!newConfig.info_bar) newConfig.info_bar = {};
+            newConfig.info_bar.calculation_mode = newValue;
+            this._config = newConfig;
+            this._fireEvent();
+        }}
                             ></ha-combo-box>
                         </div>
                     </div>
@@ -871,6 +911,7 @@ export class PVMonitorCardEditor extends LitElement {
                 </div>
                 ${this._renderIconPicker(t.editor.icon_label, ['pv', 'icon'], this._config?.pv?.icon)}
                 ${this._renderSwitch(t.editor.enable_animation, ['pv', 'animation'], this._config?.pv?.animation)}
+                ${this._renderAnimationSelector('pv', this._config?.pv?.animation, this._config?.pv?.animation_style)}
                 ${this._renderSwitch(t.editor.icon_rotation, ['pv', 'icon_rotation'], this._config?.pv?.icon_rotation, t.editor.icon_rotation_helper)}
             </div>
 
@@ -918,6 +959,7 @@ export class PVMonitorCardEditor extends LitElement {
                 </div>
                 ${this._renderIconPicker(t.editor.icon_label, ['batterie', 'icon'], this._config?.batterie?.icon, t.editor.icon_auto_helper)}
                 ${this._renderSwitch(t.editor.enable_animation, ['batterie', 'animation'], this._config?.batterie?.animation)}
+                ${this._renderAnimationSelector('batterie', this._config?.batterie?.animation, this._config?.batterie?.animation_style)}
             </div>
 
             <div class="divider"></div>
@@ -964,6 +1006,7 @@ export class PVMonitorCardEditor extends LitElement {
                 </div>
                 ${this._renderIconPicker(t.editor.icon_label, ['haus', 'icon'], this._config?.haus?.icon)}
                 ${this._renderSwitch(t.editor.enable_animation, ['haus', 'animation'], this._config?.haus?.animation)}
+                ${this._renderAnimationSelector('haus', this._config?.haus?.animation, this._config?.haus?.animation_style)}
             </div>
 
             <div class="divider"></div>
@@ -1010,6 +1053,7 @@ export class PVMonitorCardEditor extends LitElement {
                 </div>
                 ${this._renderIconPicker(t.editor.icon_label, ['netz', 'icon'], this._config?.netz?.icon)}
                 ${this._renderSwitch(t.editor.enable_animation, ['netz', 'animation'], this._config?.netz?.animation)}
+                ${this._renderAnimationSelector('netz', this._config?.netz?.animation, this._config?.netz?.animation_style)}
             </div>
 
             <div class="divider"></div>

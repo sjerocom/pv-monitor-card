@@ -88,6 +88,22 @@ export function getPVRotation(power: number, maxPower: number = 10000): number {
     return Math.min((abs_w / maxPower) * 360, 360);
 }
 
+export function getPVRotationSpeed(power: number, maxPower: number = 10000): number {
+    const abs_w = Math.abs(power);
+
+    // Bei 0W keine Rotation (sehr langsam: 60 Sekunden)
+    // Bei maxPower schnelle Rotation (2 Sekunden)
+    // Je mehr Leistung, desto schneller die Rotation
+
+    if (abs_w < 10) return 60; // Quasi keine Rotation
+
+    const ratio = abs_w / maxPower;
+    // Von 30s bei wenig Leistung bis 2s bei max Leistung
+    const speed = Math.max(2, 30 - (ratio * 28));
+
+    return speed;
+}
+
 export function getPVColor(power: number, maxPower: number = 10000): { color: string; duration: number; show: boolean } {
     const abs_w = Math.abs(power);
     const dur_glow = Math.max(1, 15 - (abs_w / (maxPower * 0.6) * 6));
@@ -247,6 +263,112 @@ export function getAnimationStyle(color: string, duration: number): string {
         animation: spin ${duration}s linear infinite;
         z-index: 0;
     `;
+}
+
+export function getParticleFieldStyle(color: string, duration: number): string {
+    // Extract RGB values and create a more opaque version for particles
+    const opaqueColor = color.replace(/[\d.]+\)$/, '1)');
+
+    return `
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        right: -50%;
+        bottom: -50%;
+        border-radius: 50%;
+        background: 
+            radial-gradient(circle at 20% 30%, ${opaqueColor} 3px, transparent 3px),
+            radial-gradient(circle at 60% 70%, ${opaqueColor} 4px, transparent 4px),
+            radial-gradient(circle at 80% 20%, ${opaqueColor} 3px, transparent 3px),
+            radial-gradient(circle at 30% 80%, ${opaqueColor} 3.5px, transparent 3.5px),
+            radial-gradient(circle at 90% 60%, ${opaqueColor} 3px, transparent 3px),
+            radial-gradient(circle at 15% 60%, ${opaqueColor} 4px, transparent 4px),
+            radial-gradient(circle at 70% 40%, ${opaqueColor} 3px, transparent 3px),
+            radial-gradient(circle at 40% 15%, ${opaqueColor} 3.5px, transparent 3.5px),
+            radial-gradient(circle at 50% 50%, ${opaqueColor} 4px, transparent 4px),
+            radial-gradient(circle at 25% 55%, ${opaqueColor} 3px, transparent 3px),
+            radial-gradient(circle at 75% 65%, ${opaqueColor} 3.5px, transparent 3.5px),
+            radial-gradient(circle at 85% 45%, ${opaqueColor} 3px, transparent 3px);
+        background-size: 100% 100%;
+        animation: particleFloat ${duration}s ease-in-out infinite;
+        z-index: 0;
+        opacity: 0.9;
+    `;
+}
+
+export function getElectricArcStyle(color: string, duration: number): string {
+    // Create a brighter version for better visibility
+    const brightColor = color.replace(/[\d.]+\)$/, '1)');
+    const mediumColor = color.replace(/[\d.]+\)$/, '0.7)');
+    const dimColor = color.replace(/[\d.]+\)$/, '0.3)');
+
+    return `
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        right: -50%;
+        bottom: -50%;
+        border-radius: 50%;
+        background: 
+            conic-gradient(
+                from 0deg,
+                transparent 0deg,
+                ${dimColor} 1deg,
+                ${brightColor} 3deg,
+                ${mediumColor} 5deg,
+                transparent 7deg,
+                transparent 43deg,
+                ${dimColor} 44deg,
+                ${brightColor} 46deg,
+                ${mediumColor} 48deg,
+                transparent 50deg,
+                transparent 88deg,
+                ${dimColor} 89deg,
+                ${brightColor} 91deg,
+                ${mediumColor} 93deg,
+                transparent 95deg,
+                transparent 133deg,
+                ${dimColor} 134deg,
+                ${brightColor} 136deg,
+                ${mediumColor} 138deg,
+                transparent 140deg,
+                transparent 178deg,
+                ${dimColor} 179deg,
+                ${brightColor} 181deg,
+                ${mediumColor} 183deg,
+                transparent 185deg,
+                transparent 223deg,
+                ${dimColor} 224deg,
+                ${brightColor} 226deg,
+                ${mediumColor} 228deg,
+                transparent 230deg,
+                transparent 268deg,
+                ${dimColor} 269deg,
+                ${brightColor} 271deg,
+                ${mediumColor} 273deg,
+                transparent 275deg,
+                transparent 313deg,
+                ${dimColor} 314deg,
+                ${brightColor} 316deg,
+                ${mediumColor} 318deg,
+                transparent 320deg,
+                transparent 360deg
+            );
+        animation: electricPulse ${duration}s ease-in-out infinite;
+        z-index: 0;
+    `;
+}
+
+export function getAnimationStyleByType(type: string, color: string, duration: number): string {
+    switch(type) {
+        case 'particle-field':
+            return getParticleFieldStyle(color, duration);
+        case 'electric-arc':
+            return getElectricArcStyle(color, duration);
+        case 'rotating-dots':
+        default:
+            return getAnimationStyle(color, duration);
+    }
 }
 
 /**

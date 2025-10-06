@@ -93,6 +93,11 @@ export interface Translations {
         pv_entity: string;
         pv_entity_helper: string;
         enable_animation: string;
+        animation_style: string;
+        animation_style_helper: string;
+        animation_rotating_dots: string;
+        animation_particle_field: string;
+        animation_electric_arc: string;
         icon_rotation: string;
         icon_rotation_helper: string;
         max_power: string;
@@ -289,6 +294,11 @@ export const translations: Record<SupportedLanguage, Translations> = {
             pv_entity: 'PV Entity',
             pv_entity_helper: 'Entity für PV-Leistung',
             enable_animation: 'Animation aktivieren',
+            animation_style: 'Animationsstil',
+            animation_style_helper: 'Wählen Sie den Animationseffekt',
+            animation_rotating_dots: 'Rotierende Punkte',
+            animation_particle_field: 'Partikelfeld',
+            animation_electric_arc: 'Elektrische Bögen',
             icon_rotation: 'Icon Rotation',
             icon_rotation_helper: 'Icon dreht sich je nach Leistung',
             max_power: 'Max. Leistung (W)',
@@ -483,6 +493,11 @@ export const translations: Record<SupportedLanguage, Translations> = {
             pv_entity: 'PV Entity',
             pv_entity_helper: 'Entity for PV power',
             enable_animation: 'Enable Animation',
+            animation_style: 'Animation Style',
+            animation_style_helper: 'Choose the animation effect',
+            animation_rotating_dots: 'Rotating Dots',
+            animation_particle_field: 'Particle Field',
+            animation_electric_arc: 'Electric Arc',
             icon_rotation: 'Icon Rotation',
             icon_rotation_helper: 'Icon rotates based on power',
             max_power: 'Max. Power (W)',
@@ -677,6 +692,11 @@ export const translations: Record<SupportedLanguage, Translations> = {
             pv_entity: 'Entité PV',
             pv_entity_helper: 'Entité pour la puissance PV',
             enable_animation: 'Activer l\'Animation',
+            animation_style: 'Style d\'Animation',
+            animation_style_helper: 'Choisir l\'effet d\'animation',
+            animation_rotating_dots: 'Points Rotatifs',
+            animation_particle_field: 'Champ de Particules',
+            animation_electric_arc: 'Arc Électrique',
             icon_rotation: 'Rotation d\'Icône',
             icon_rotation_helper: 'L\'icône tourne selon la puissance',
             max_power: 'Puissance Max. (W)',
@@ -871,6 +891,11 @@ export const translations: Record<SupportedLanguage, Translations> = {
             pv_entity: 'Entità FV',
             pv_entity_helper: 'Entità per potenza FV',
             enable_animation: 'Attiva Animazione',
+            animation_style: 'Stile Animazione',
+            animation_style_helper: 'Scegli l\'effetto di animazione',
+            animation_rotating_dots: 'Punti Rotanti',
+            animation_particle_field: 'Campo di Particelle',
+            animation_electric_arc: 'Arco Elettrico',
             icon_rotation: 'Rotazione Icona',
             icon_rotation_helper: 'L\'icona ruota in base alla potenza',
             max_power: 'Potenza Max. (W)',
@@ -1065,6 +1090,11 @@ export const translations: Record<SupportedLanguage, Translations> = {
             pv_entity: 'Entidad FV',
             pv_entity_helper: 'Entidad para potencia FV',
             enable_animation: 'Activar Animación',
+            animation_style: 'Estilo de Animación',
+            animation_style_helper: 'Elige el efecto de animación',
+            animation_rotating_dots: 'Puntos Rotatorios',
+            animation_particle_field: 'Campo de Partículas',
+            animation_electric_arc: 'Arco Eléctrico',
             icon_rotation: 'Rotación Icono',
             icon_rotation_helper: 'El icono gira según la potencia',
             max_power: 'Potencia Máx. (W)',

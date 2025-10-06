@@ -1,3 +1,5 @@
+export type AnimationStyle = 'none' | 'rotating-dots' | 'particle-field' | 'electric-arc';
+
 export interface HassEntity {
     state: string;
     attributes: Record<string, any>;
@@ -123,6 +125,7 @@ export interface PVMonitorCardConfig {
         show?: boolean;
         entity?: string;
         animation?: boolean;
+        animation_style?: AnimationStyle;
         icon?: string;
         tap_action?: TapAction;
         double_tap_action?: TapAction;
@@ -141,6 +144,7 @@ export interface PVMonitorCardConfig {
         show?: boolean;
         entity?: string;
         animation?: boolean;
+        animation_style?: AnimationStyle;
         icon?: string;
         icon_rotation?: boolean;
         max_power?: number;
@@ -157,6 +161,7 @@ export interface PVMonitorCardConfig {
         show?: boolean;
         entity?: string;
         animation?: boolean;
+        animation_style?: AnimationStyle;
         icon?: string;
         tap_action?: TapAction;
         double_tap_action?: TapAction;
@@ -176,6 +181,7 @@ export interface PVMonitorCardConfig {
         show?: boolean;
         entity?: string;
         animation?: boolean;
+        animation_style?: AnimationStyle;
         icon?: string;
         tap_action?: TapAction;
         double_tap_action?: TapAction;
