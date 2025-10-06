@@ -194,6 +194,39 @@ export interface Translations {
         theme: string;
         theme_helper: string;
         select_theme: string;
+
+        tab_consumers: string;
+        consumers_settings: string;
+        enable_consumers: string;
+        consumers_position: string;
+        consumers_sort_mode: string;
+        sort_highest_first: string;
+        sort_lowest_first: string;
+        sort_none: string;
+        sort_alpha_asc: string;
+        sort_alpha_desc: string;
+        consumers_threshold: string;
+        consumers_threshold_helper: string;
+        add_consumer: string;
+        remove_consumer: string;
+        consumer_entity: string;
+        consumer_icon: string;
+        consumer_label: string;
+        consumer_threshold: string;
+        consumer_auto_color: string;
+        consumer_auto_color_helper: string;
+        consumer_item_styling: string;
+        consumer_primary_entity: string;
+        consumer_primary_text: string;
+        consumer_show_primary: string;
+        consumer_secondary_entity: string;
+        consumer_secondary_text: string;
+        consumer_show_secondary: string;
+        consumer_switch_entity: string;
+        consumer_switch_entity_helper: string;
+        consumer_tap_actions: string;
+        show_consumer_total_in_house: string;
+        show_consumer_total_helper: string;
     };
 
     status: {
@@ -395,6 +428,39 @@ export const translations: Record<SupportedLanguage, Translations> = {
             theme: 'Theme',
             theme_helper: 'Wählen Sie ein vordefiniertes Farbthema',
             select_theme: 'Theme auswählen',
+
+            tab_consumers: 'Verbraucher',
+            consumers_settings: 'Verbraucher-Einstellungen',
+            enable_consumers: 'Verbraucher-Leiste aktivieren',
+            consumers_position: 'Position',
+            consumers_sort_mode: 'Sortierung',
+            sort_highest_first: 'Höchster zuerst',
+            sort_lowest_first: 'Niedrigster zuerst',
+            sort_none: 'Keine Sortierung (Eingabe-Reihenfolge)',
+            sort_alpha_asc: 'Alphabetisch aufsteigend',
+            sort_alpha_desc: 'Alphabetisch absteigend',
+            consumers_threshold: 'Globaler Schwellwert (W)',
+            consumers_threshold_helper: 'Verbraucher unter diesem Wert werden nicht angezeigt',
+            add_consumer: 'Verbraucher hinzufügen',
+            remove_consumer: 'Verbraucher entfernen',
+            consumer_entity: 'Nr:',
+            consumer_icon: 'Icon',
+            consumer_label: 'Bezeichnung',
+            consumer_threshold: 'Individueller Schwellwert (W)',
+            consumer_auto_color: 'Automatische Farbanpassung',
+            consumer_auto_color_helper: 'Farbe basierend auf Verbrauch (grün bis purple)',
+            consumer_item_styling: 'Verbraucher Styling',
+            consumer_primary_entity: 'Primär Entity (für Wert)',
+            consumer_primary_text: 'Primär Text (überschreibt Wert)',
+            consumer_show_primary: 'Primär-Zeile anzeigen',
+            consumer_secondary_entity: 'Sekundär Entity (für Label)',
+            consumer_secondary_text: 'Sekundär Text (überschreibt Label)',
+            consumer_show_secondary: 'Sekundär-Zeile anzeigen',
+            consumer_switch_entity: 'Switch Entity (für Toggle)',
+            consumer_switch_entity_helper: 'Optional: Switch zum Ein-/Ausschalten',
+            consumer_tap_actions: 'Tap Actions',
+            show_consumer_total_in_house: 'Gesamtverbrauch als Sekundär-Text',
+            show_consumer_total_helper: 'Zeigt Summe aller Consumer unter Hausverbrauch',
         },
         status: {
             feed_in: 'Einspeisung',
@@ -594,6 +660,39 @@ export const translations: Record<SupportedLanguage, Translations> = {
             theme: 'Theme',
             theme_helper: 'Select a predefined color theme',
             select_theme: 'Select Theme',
+
+            tab_consumers: 'Consumers',
+            consumers_settings: 'Consumer Settings',
+            enable_consumers: 'Enable Consumer Bar',
+            consumers_position: 'Position',
+            consumers_sort_mode: 'Sort Mode',
+            sort_highest_first: 'Highest First',
+            sort_lowest_first: 'Lowest First',
+            sort_none: 'No Sorting (Input Order)',
+            sort_alpha_asc: 'Alphabetical Ascending',
+            sort_alpha_desc: 'Alphabetical Descending',
+            consumers_threshold: 'Global Threshold (W)',
+            consumers_threshold_helper: 'Consumers below this value won\'t be displayed',
+            add_consumer: 'Add Consumer',
+            remove_consumer: 'Remove Consumer',
+            consumer_entity: 'Nr:',
+            consumer_icon: 'Icon',
+            consumer_label: 'Label',
+            consumer_threshold: 'Individual Threshold (W)',
+            consumer_auto_color: 'Automatic Color',
+            consumer_auto_color_helper: 'Color based on consumption (green to purple)',
+            consumer_item_styling: 'Consumer Styling',
+            consumer_primary_entity: 'Primary Entity (for value)',
+            consumer_primary_text: 'Primary Text (overrides value)',
+            consumer_show_primary: 'Show Primary Line',
+            consumer_secondary_entity: 'Secondary Entity (for label)',
+            consumer_secondary_text: 'Secondary Text (overrides label)',
+            consumer_show_secondary: 'Show Secondary Line',
+            consumer_switch_entity: 'Switch Entity (for toggle)',
+            consumer_switch_entity_helper: 'Optional: Switch to turn on/off',
+            consumer_tap_actions: 'Tap Actions',
+            show_consumer_total_in_house: 'Show Total as Secondary Text',
+            show_consumer_total_helper: 'Shows sum of all consumers under house consumption',
         },
         status: {
             feed_in: 'Feed-in',
@@ -793,6 +892,39 @@ export const translations: Record<SupportedLanguage, Translations> = {
             theme: 'Thème',
             theme_helper: 'Sélectionner un thème de couleur prédéfini',
             select_theme: 'Sélectionner Thème',
+
+            tab_consumers: 'Consommateurs',
+            consumers_settings: 'Paramètres Consommateurs',
+            enable_consumers: 'Activer Barre Consommateurs',
+            consumers_position: 'Position',
+            consumers_sort_mode: 'Mode de Tri',
+            sort_highest_first: 'Plus Élevé en Premier',
+            sort_lowest_first: 'Plus Faible en Premier',
+            sort_none: 'Pas de Tri (Ordre de Saisie)',
+            sort_alpha_asc: 'Alphabétique Croissant',
+            sort_alpha_desc: 'Alphabétique Décroissant',
+            consumers_threshold: 'Seuil Global (W)',
+            consumers_threshold_helper: 'Les consommateurs en dessous ne seront pas affichés',
+            add_consumer: 'Ajouter Consommateur',
+            remove_consumer: 'Supprimer Consommateur',
+            consumer_entity: 'Nr:',
+            consumer_icon: 'Icône',
+            consumer_label: 'Libellé',
+            consumer_threshold: 'Seuil Individuel (W)',
+            consumer_auto_color: 'Couleur Automatique',
+            consumer_auto_color_helper: 'Couleur basée sur la consommation (vert à violet)',
+            consumer_item_styling: 'Style Consommateur',
+            consumer_primary_entity: 'Entité Primaire (pour valeur)',
+            consumer_primary_text: 'Texte Primaire (remplace valeur)',
+            consumer_show_primary: 'Afficher Ligne Primaire',
+            consumer_secondary_entity: 'Entité Secondaire (pour libellé)',
+            consumer_secondary_text: 'Texte Secondaire (remplace libellé)',
+            consumer_show_secondary: 'Afficher Ligne Secondaire',
+            consumer_switch_entity: 'Entité Switch (pour basculer)',
+            consumer_switch_entity_helper: 'Optionnel: Switch pour activer/désactiver',
+            consumer_tap_actions: 'Actions Tactiles',
+            show_consumer_total_in_house: 'Afficher Total comme Texte Secondaire',
+            show_consumer_total_helper: 'Affiche la somme de tous les consommateurs sous la consommation maison',
         },
         status: {
             feed_in: 'Injection',
@@ -992,6 +1124,39 @@ export const translations: Record<SupportedLanguage, Translations> = {
             theme: 'Tema',
             theme_helper: 'Seleziona un tema di colori predefinito',
             select_theme: 'Seleziona Tema',
+
+            tab_consumers: 'Consumatori',
+            consumers_settings: 'Impostazioni Consumatori',
+            enable_consumers: 'Attiva Barra Consumatori',
+            consumers_position: 'Posizione',
+            consumers_sort_mode: 'Modalità Ordinamento',
+            sort_highest_first: 'Più Alto per Primo',
+            sort_lowest_first: 'Più Basso per Primo',
+            sort_none: 'Nessun Ordinamento (Ordine di Inserimento)',
+            sort_alpha_asc: 'Alfabetico Crescente',
+            sort_alpha_desc: 'Alfabetico Decrescente',
+            consumers_threshold: 'Soglia Globale (W)',
+            consumers_threshold_helper: 'I consumatori sotto questo valore non verranno visualizzati',
+            add_consumer: 'Aggiungi Consumatore',
+            remove_consumer: 'Rimuovi Consumatore',
+            consumer_entity: 'Nr:',
+            consumer_icon: 'Icona',
+            consumer_label: 'Etichetta',
+            consumer_threshold: 'Soglia Individuale (W)',
+            consumer_auto_color: 'Colore Automatico',
+            consumer_auto_color_helper: 'Colore basato sul consumo (verde a viola)',
+            consumer_item_styling: 'Stile Consumatore',
+            consumer_primary_entity: 'Entità Primaria (per valore)',
+            consumer_primary_text: 'Testo Primario (sostituisce valore)',
+            consumer_show_primary: 'Mostra Riga Primaria',
+            consumer_secondary_entity: 'Entità Secondaria (per etichetta)',
+            consumer_secondary_text: 'Testo Secondario (sostituisce etichetta)',
+            consumer_show_secondary: 'Mostra Riga Secondaria',
+            consumer_switch_entity: 'Entità Switch (per commutare)',
+            consumer_switch_entity_helper: 'Opzionale: Switch per accendere/spegnere',
+            consumer_tap_actions: 'Azioni Tocco',
+            show_consumer_total_in_house: 'Mostra Totale come Testo Secondario',
+            show_consumer_total_helper: 'Mostra la somma di tutti i consumatori sotto il consumo casa',
         },
         status: {
             feed_in: 'Immissione',
@@ -1191,6 +1356,39 @@ export const translations: Record<SupportedLanguage, Translations> = {
             theme: 'Tema',
             theme_helper: 'Seleccionar un tema de colores predefinido',
             select_theme: 'Seleccionar Tema',
+
+            tab_consumers: 'Consumidores',
+            consumers_settings: 'Configuración Consumidores',
+            enable_consumers: 'Activar Barra Consumidores',
+            consumers_position: 'Posición',
+            consumers_sort_mode: 'Modo de Ordenación',
+            sort_highest_first: 'Más Alto Primero',
+            sort_lowest_first: 'Más Bajo Primero',
+            sort_none: 'Sin Ordenación (Orden de Entrada)',
+            sort_alpha_asc: 'Alfabético Ascendente',
+            sort_alpha_desc: 'Alfabético Descendente',
+            consumers_threshold: 'Umbral Global (W)',
+            consumers_threshold_helper: 'Los consumidores por debajo no se mostrarán',
+            add_consumer: 'Añadir Consumidor',
+            remove_consumer: 'Eliminar Consumidor',
+            consumer_entity: 'Nr:',
+            consumer_icon: 'Icono',
+            consumer_label: 'Etiqueta',
+            consumer_threshold: 'Umbral Individual (W)',
+            consumer_auto_color: 'Color Automático',
+            consumer_auto_color_helper: 'Color basado en consumo (verde a púrpura)',
+            consumer_item_styling: 'Estilo Consumidor',
+            consumer_primary_entity: 'Entidad Primaria (para valor)',
+            consumer_primary_text: 'Texto Primario (sobrescribe valor)',
+            consumer_show_primary: 'Mostrar Línea Primaria',
+            consumer_secondary_entity: 'Entidad Secundaria (para etiqueta)',
+            consumer_secondary_text: 'Texto Secundario (sobrescribe etiqueta)',
+            consumer_show_secondary: 'Mostrar Línea Secundaria',
+            consumer_switch_entity: 'Entidad Switch (para conmutar)',
+            consumer_switch_entity_helper: 'Opcional: Switch para encender/apagar',
+            consumer_tap_actions: 'Acciones Táctiles',
+            show_consumer_total_in_house: 'Mostrar Total como Texto Secundario',
+            show_consumer_total_helper: 'Muestra la suma de todos los consumidores bajo el consumo casa',
         },
         status: {
             feed_in: 'Inyección',

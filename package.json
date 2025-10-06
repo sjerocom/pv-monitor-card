@@ -1,6 +1,6 @@
 {
   "name": "pv-monitor-card",
-  "version": "0.0.83",
+  "version": "0.0.95",
   "description": "PV Monitor Card für Home Assistant",
   "main": "dist/pv-monitor-card.js",
   "scripts": {
@@ -21,7 +21,7 @@
     "battery",
     "energy"
   ],
-  "author": "sjerocom",
+  "author": "Markus Sjero @kaLABoskop",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/sjerocom/pv-monitor-card/issues"

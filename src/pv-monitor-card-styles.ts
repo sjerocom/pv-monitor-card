@@ -106,10 +106,58 @@ export const pvMonitorCardStyles = css`
         margin-top: 2px;
     }
     .icon {
+        margin-top: -6px;
         margin-bottom: 4px;
         display: flex;
         align-items: center;
         justify-content: center;
+    }
+    .icon ha-icon {
+        transform-origin: center center;
+    }
+    .consumers-bar {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        margin-top: 6px;
+    }
+    .consumer-item {
+        display: inline-flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 12px;
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        cursor: pointer;
+        white-space: nowrap;
+    }
+    .consumer-item .icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        min-width: 1.2em;
+        min-height: 1.2em;
+    }
+    .consumer-item .consumer-content {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 2px;
+        line-height: 1;
+    }
+    .consumer-item .primary {
+        font-weight: bold;
+        margin: 0;
+        line-height: 1;
+    }
+    .consumer-item .secondary {
+        margin: 0;
+        opacity: 0.7;
+        font-size: 0.75em;
+        line-height: 1;
     }
     @keyframes spin {
         0%   { transform: rotate(0deg); }

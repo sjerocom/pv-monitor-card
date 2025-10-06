@@ -1,7 +1,7 @@
 // Theme System for PV Monitor Card
 // Supports predefined themes and custom theme files
 
-export type ThemeId = 'dark' | 'light' | 'blue' | 'green' | 'monochrome' | 'solarized' | 'nord' | 'dracula' | 'catppuccin' | 'material' | 'minimalist' | 'slate' | string;
+export type ThemeId = 'dark' | 'light' | 'blue' | 'green' | 'monochrome' | 'solarized' | 'nord' | 'dracula' | 'catppuccin' | 'material' | 'minimalist' | 'slate' | 'sunset' | 'ocean' | 'purple' | string;
 
 export interface Theme {
     id: ThemeId;
@@ -252,6 +252,63 @@ export const defaultThemes: Record<string, Theme> = {
             infobar_label_color: 'rgba(148, 163, 184, 0.8)',
             infobar_value_color: 'rgba(226, 232, 240, 1)',
         }
+    },
+
+    sunset: {
+        id: 'sunset',
+        name: 'Sunset',
+        colors: {
+            card_background_color: 'rgba(30, 20, 40, 1)',
+            card_border_color: 'rgba(255, 120, 80, 0.3)',
+            card_text_color: 'rgba(255, 230, 200, 1)',
+            primary_color: 'rgba(255, 170, 100, 1)',
+            secondary_color: 'rgba(255, 200, 150, 0.8)',
+            title_color: 'rgba(255, 140, 80, 1)',
+            subtitle_color: 'rgba(255, 180, 120, 0.7)',
+            infobar_background_color: 'rgba(40, 30, 50, 1)',
+            infobar_border_color: 'rgba(255, 120, 80, 0.3)',
+            infobar_icon_color: 'rgba(255, 170, 100, 1)',
+            infobar_label_color: 'rgba(255, 180, 120, 0.7)',
+            infobar_value_color: 'rgba(255, 230, 200, 1)',
+        }
+    },
+
+    ocean: {
+        id: 'ocean',
+        name: 'Ocean',
+        colors: {
+            card_background_color: 'rgba(10, 25, 47, 1)',
+            card_border_color: 'rgba(0, 180, 216, 0.3)',
+            card_text_color: 'rgba(224, 242, 254, 1)',
+            primary_color: 'rgba(56, 189, 248, 1)',
+            secondary_color: 'rgba(125, 211, 252, 0.8)',
+            title_color: 'rgba(14, 165, 233, 1)',
+            subtitle_color: 'rgba(125, 211, 252, 0.7)',
+            infobar_background_color: 'rgba(15, 35, 60, 1)',
+            infobar_border_color: 'rgba(0, 180, 216, 0.3)',
+            infobar_icon_color: 'rgba(56, 189, 248, 1)',
+            infobar_label_color: 'rgba(125, 211, 252, 0.7)',
+            infobar_value_color: 'rgba(224, 242, 254, 1)',
+        }
+    },
+
+    purple: {
+        id: 'purple',
+        name: 'Purple',
+        colors: {
+            card_background_color: 'rgba(24, 24, 40, 1)',
+            card_border_color: 'rgba(168, 85, 247, 0.3)',
+            card_text_color: 'rgba(250, 245, 255, 1)',
+            primary_color: 'rgba(192, 132, 252, 1)',
+            secondary_color: 'rgba(216, 180, 254, 0.8)',
+            title_color: 'rgba(168, 85, 247, 1)',
+            subtitle_color: 'rgba(216, 180, 254, 0.7)',
+            infobar_background_color: 'rgba(30, 30, 50, 1)',
+            infobar_border_color: 'rgba(168, 85, 247, 0.3)',
+            infobar_icon_color: 'rgba(192, 132, 252, 1)',
+            infobar_label_color: 'rgba(216, 180, 254, 0.7)',
+            infobar_value_color: 'rgba(250, 245, 255, 1)',
+        }
     }
 };
 
@@ -322,14 +379,17 @@ export function getThemeDisplayName(themeId: ThemeId): string {
 export const themeNames: Record<string, string> = {
     dark: 'Dark',
     light: 'Light',
+    solarized: "Solarized",
+    monochrome: 'Monochrome',
+    purple: "Purple",
     blue: 'Blue',
     green: 'Green',
-    monochrome: 'Monochrome',
-    solarized: "Solarized",
+    sunset: "Sunset",
     nord: "Nord",
     dracula: "Dracula",
     catppuccin: "Catppuccin",
     material: "Material",
     minimalist: "Minimalist",
-    slate: "Slate"
+    slate: "Slate",
+    ocean: "Ocean"
 };

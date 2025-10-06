@@ -19,7 +19,8 @@ import {
     calculateBatteryRuntime,
     calculateBatteryChargeTime,
     calculateAutarky,
-    calculateSelfConsumption
+    calculateSelfConsumption,
+    getConsumerColor
 } from "./pv-monitor-card-utils";
 
 const CARD_TAG = "pv-monitor-card";
@@ -27,6 +28,7 @@ const CARD_TAG = "pv-monitor-card";
 export class PVMonitorCard extends LitElement {
     @property({ attribute: false }) public hass?: Hass;
     @property() private config!: PVMonitorCardConfig;
+    @property() private _consumersVisible: boolean = true;
 
     static styles = pvMonitorCardStyles;
 
@@ -66,7 +68,16 @@ export class PVMonitorCard extends LitElement {
         this.config = getDefaultConfig(config);
     }
 
-    private _handleAction(event: Event, actions: { tap?: TapAction; double_tap?: TapAction; hold?: TapAction }) {
+    private _handleAction(event: Event, actions: { tap?: TapAction; double_tap?: TapAction; hold?: TapAction }, isHausCard: boolean = false) {
+        // Check if we should toggle consumers instead of normal tap action
+        if (isHausCard && this.config.consumers?.show && (this.config.consumers?.items?.length ?? 0) > 0) {
+            if (event.type === 'click') {
+                this._consumersVisible = !this._consumersVisible;
+                this.requestUpdate();
+                return;
+            }
+        }
+
         const actionType = event.type === 'dblclick' ? 'double_tap' : event.type === 'contextmenu' ? 'hold' : 'tap';
         const action = actions[actionType];
 
@@ -88,8 +99,16 @@ export class PVMonitorCard extends LitElement {
         } else if (tapAction.action === 'call-service' && tapAction.service && this.hass) {
             const [domain, service] = tapAction.service.split('.');
 
+            // Merge service_data and target into serviceData
+            const serviceData: any = { ...(tapAction.service_data || {}) };
+
+            // If target is specified, merge it into serviceData
+            if (tapAction.target) {
+                Object.assign(serviceData, tapAction.target);
+            }
+
             if (this.hass.callService) {
-                this.hass.callService(domain, service, tapAction.service_data || {});
+                this.hass.callService(domain, service, serviceData);
             } else {
                 window.dispatchEvent(new CustomEvent('hass-call-service', {
                     bubbles: true,
@@ -97,7 +116,7 @@ export class PVMonitorCard extends LitElement {
                     detail: {
                         domain,
                         service,
-                        serviceData: tapAction.service_data || {}
+                        serviceData
                     }
                 }));
             }
@@ -146,6 +165,7 @@ export class PVMonitorCard extends LitElement {
         animStyle: { color: string; duration: number; show: boolean };
         iconColor?: string;
         customIconStyle?: string;
+        isHausCard?: boolean;
     }) {
         const s = this.config.style!;
         const cardStyle = config.cardConfig?.style;
@@ -161,13 +181,14 @@ export class PVMonitorCard extends LitElement {
 
         // Get animation style type from card config, default to 'rotating-dots'
         const animationType = config.cardConfig?.animation_style || 'rotating-dots';
+        const isHaus = config.isHausCard || false;
 
         return html`
             <div class="card"
                  style="${this._getCardStyle(cardStyle)}"
-                 @click=${(e: Event) => this._handleAction(e, { tap: config.cardConfig?.tap_action })}
-                 @dblclick=${(e: Event) => this._handleAction(e, { double_tap: config.cardConfig?.double_tap_action })}
-                 @contextmenu=${(e: Event) => this._handleAction(e, { hold: config.cardConfig?.hold_action })}>
+                 @click=${(e: Event) => this._handleAction(e, { tap: config.cardConfig?.tap_action }, isHaus)}
+                 @dblclick=${(e: Event) => this._handleAction(e, { double_tap: config.cardConfig?.double_tap_action }, isHaus)}
+                 @contextmenu=${(e: Event) => this._handleAction(e, { hold: config.cardConfig?.hold_action }, isHaus)}>
                 ${config.animStyle.show && config.animStyle.color ? html`
                     <div style="${getAnimationStyleByType(animationType, config.animStyle.color, config.animStyle.duration)}"></div>
                 ` : ''}
@@ -419,14 +440,230 @@ export class PVMonitorCard extends LitElement {
 
         const value = parseFloat(entity.state) || 0;
 
+        // Calculate total consumer consumption if enabled
+        let secondaryText = this._getTextFromEntityOrConfig(this.config.haus.secondary_entity, this.config.haus.secondary_text);
+
+        if (this.config.haus.show_consumer_total && this.config.consumers?.show && this.config.consumers.items) {
+            const totalConsumerPower = this._calculateTotalConsumerPower();
+            if (totalConsumerPower > 0) {
+                secondaryText = formatPower(totalConsumerPower);
+            }
+        }
+
         return this._renderCard({
             cardConfig: this.config.haus,
             icon: this.config.haus.icon || 'mdi:home',
             primaryValue: formatPower(value),
-            secondaryText: this._getTextFromEntityOrConfig(this.config.haus.secondary_entity, this.config.haus.secondary_text),
+            secondaryText,
             tertiaryText: this._getTextFromEntityOrConfig(this.config.haus.tertiary_entity, this.config.haus.tertiary_text),
-            animStyle: this.config.haus.animation ? getHausColor(value) : { color: '', duration: 0, show: false }
+            animStyle: this.config.haus.animation ? getHausColor(value) : { color: '', duration: 0, show: false },
+            isHausCard: true
         });
+    }
+
+    private _calculateTotalConsumerPower(): number {
+        if (!this.config.consumers?.items || !this.hass) return 0;
+
+        const items = this.config.consumers.items;
+        const globalThreshold = this.config.consumers.threshold ?? 0;
+
+        let total = 0;
+        for (const item of items) {
+            const entity = this.hass.states[item.entity];
+            if (!entity) continue;
+
+            const value = parseFloat(entity.state) || 0;
+            const threshold = item.threshold !== undefined ? item.threshold : globalThreshold;
+
+            if (value > threshold) {
+                total += value;
+            }
+        }
+
+        return total;
+    }
+
+    private _renderConsumers() {
+        if (!this.config.consumers?.show || !this.hass || !this._consumersVisible) return html``;
+
+        const items = this.config.consumers.items || [];
+        if (items.length === 0) return html``;
+
+        const globalThreshold = this.config.consumers.threshold ?? 0;
+        const globalStyle = this.config.consumers.style!;
+
+        // Prepare consumer data with values
+        const consumerData = items.map(item => {
+            const entity = this.hass!.states[item.entity];
+            if (!entity) return null;
+
+            const value = parseFloat(entity.state) || 0;
+            const threshold = item.threshold !== undefined ? item.threshold : globalThreshold;
+
+            // Skip if below threshold
+            if (value <= threshold) return null;
+
+            return {
+                item,
+                entity,
+                value,
+                label: item.label || entity.attributes.friendly_name || item.entity
+            };
+        }).filter(d => d !== null);
+
+        if (consumerData.length === 0) return html``;
+
+        // Sort consumers based on sort_mode
+        const sortMode = this.config.consumers.sort_mode || 'highest_first';
+        if (sortMode === 'highest_first') {
+            consumerData.sort((a, b) => b!.value - a!.value);
+        } else if (sortMode === 'lowest_first') {
+            consumerData.sort((a, b) => a!.value - b!.value);
+        } else if (sortMode === 'alpha_asc') {
+            consumerData.sort((a, b) => a!.label.localeCompare(b!.label));
+        } else if (sortMode === 'alpha_desc') {
+            consumerData.sort((a, b) => b!.label.localeCompare(a!.label));
+        }
+        // 'none' keeps the original order
+
+        return html`
+            <div class="consumers-bar" style="gap: ${globalStyle.gap};">
+                ${consumerData.map(data => this._renderConsumerItem(data!))}
+            </div>
+        `;
+    }
+
+    private _renderConsumerItem(data: { item: any; entity: any; value: number; label: string }) {
+        const { item, entity, value, label } = data;
+        const globalStyle = this.config.consumers!.style!;
+
+        // Determine styles - item-specific overrides global
+        const itemStyle = item.style || {};
+        const bgColor = itemStyle.background_color || globalStyle.item_background_color;
+        const borderColor = itemStyle.border_color || globalStyle.item_border_color;
+        const borderRadius = itemStyle.border_radius || globalStyle.item_border_radius;
+        const padding = itemStyle.padding || globalStyle.item_padding;
+        const margin = itemStyle.margin || globalStyle.item_margin;
+        const boxShadow = itemStyle.box_shadow || globalStyle.item_box_shadow;
+
+        const iconSize = itemStyle.icon_size || globalStyle.icon_size;
+        const iconOpacity = itemStyle.icon_opacity || globalStyle.icon_opacity;
+
+        const primarySize = itemStyle.primary_size || globalStyle.primary_size;
+        const primaryFontWeight = itemStyle.primary_font_weight || globalStyle.primary_font_weight;
+        const primaryOpacity = itemStyle.primary_opacity || globalStyle.primary_opacity;
+
+        const secondarySize = itemStyle.secondary_size || globalStyle.secondary_size;
+        const secondaryFontWeight = itemStyle.secondary_font_weight || globalStyle.secondary_font_weight;
+        const secondaryOpacity = itemStyle.secondary_opacity || globalStyle.secondary_opacity;
+
+        // Determine icon color
+        let iconColor = '';
+        if (item.auto_color !== false) {
+            iconColor = getConsumerColor(value);
+        } else {
+            iconColor = itemStyle.icon_color || '';
+        }
+
+        const primaryColor = itemStyle.primary_color || 'white';
+        const secondaryColor = itemStyle.secondary_color || 'white';
+
+        const containerStyle = `
+            background: ${bgColor};
+            border: 1px solid ${borderColor};
+            border-radius: ${borderRadius};
+            padding: ${padding};
+            margin: ${margin};
+            box-shadow: ${boxShadow};
+        `;
+
+        const iconStyle = `
+            font-size: ${iconSize};
+            opacity: ${iconOpacity};
+            ${iconColor ? `color: ${iconColor};` : ''}
+        `;
+
+        const primaryStyle = `
+            font-size: ${primarySize};
+            font-weight: ${primaryFontWeight};
+            opacity: ${primaryOpacity};
+            color: ${primaryColor};
+        `;
+
+        const secondaryStyle = `
+            font-size: ${secondarySize};
+            font-weight: ${secondaryFontWeight};
+            opacity: ${secondaryOpacity};
+            color: ${secondaryColor};
+        `;
+
+        const icon = item.icon || 'mdi:flash';
+
+        // Determine primary text (value line)
+        let primaryText = '';
+        const showPrimary = item.show_primary !== false;
+        if (showPrimary) {
+            if (item.primary_text) {
+                primaryText = item.primary_text;
+            } else if (item.primary_entity && this.hass) {
+                const primaryEntity = this.hass.states[item.primary_entity];
+                if (primaryEntity) {
+                    primaryText = `${primaryEntity.state} ${primaryEntity.attributes.unit_of_measurement || ''}`;
+                } else {
+                    primaryText = formatPower(value);
+                }
+            } else {
+                primaryText = formatPower(value);
+            }
+        }
+
+        // Determine secondary text (label line)
+        let secondaryText = '';
+        const showSecondary = item.show_secondary !== false;
+        if (showSecondary) {
+            if (item.secondary_text) {
+                secondaryText = item.secondary_text;
+            } else if (item.secondary_entity && this.hass) {
+                const secondaryEntity = this.hass.states[item.secondary_entity];
+                if (secondaryEntity) {
+                    secondaryText = `${secondaryEntity.state} ${secondaryEntity.attributes.unit_of_measurement || ''}`;
+                } else {
+                    secondaryText = label;
+                }
+            } else {
+                secondaryText = label;
+            }
+        }
+
+        // Prepare tap actions - if switch_entity is set, use toggle action by default
+        const hasSwitchEntity = !!item.switch_entity;
+        const tapAction = item.tap_action || (hasSwitchEntity ? { action: 'call-service', service: 'switch.toggle', target: { entity_id: item.switch_entity } } : { action: 'none' });
+        const doubleTapAction = item.double_tap_action || { action: 'none' };
+        const holdAction = item.hold_action || { action: 'none' };
+
+        return html`
+            <div class="consumer-item"
+                 style="${containerStyle}"
+                 @click=${(e: Event) => this._handleConsumerAction(e, tapAction)}
+                 @dblclick=${(e: Event) => this._handleConsumerAction(e, doubleTapAction)}
+                 @contextmenu=${(e: Event) => {
+                     e.preventDefault();
+                     this._handleConsumerAction(e, holdAction);
+                 }}>
+                <div class="icon" style="${iconStyle}">
+                    <ha-icon .icon=${icon} style="--mdc-icon-size: ${iconSize}; width: ${iconSize}; height: ${iconSize};"></ha-icon>
+                </div>
+                <div class="consumer-content">
+                    ${showPrimary ? html`<div class="primary" style="${primaryStyle}">${primaryText}</div>` : ''}
+                    ${showSecondary ? html`<div class="secondary" style="${secondaryStyle}">${secondaryText}</div>` : ''}
+                </div>
+            </div>
+        `;
+    }
+
+    private _handleConsumerAction(event: Event, action?: TapAction) {
+        if (!action || action.action === 'none') return;
+        this._handleTap(action);
     }
 
     render() {
@@ -491,6 +728,7 @@ export class PVMonitorCard extends LitElement {
                     ${this._renderInfoBar()}
                 </div>
             ` : ''}
+            ${this._renderConsumers()}
         `;
     }
 }

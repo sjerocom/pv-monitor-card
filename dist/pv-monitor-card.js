@@ -665,10 +665,58 @@ const pvMonitorCardStyles = i$3`
         margin-top: 2px;
     }
     .icon {
+        margin-top: -5px;
         margin-bottom: 4px;
         display: flex;
         align-items: center;
         justify-content: center;
+    }
+    .icon ha-icon {
+        transform-origin: center center;
+    }
+    .consumers-bar {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        margin-top: 6px;
+    }
+    .consumer-item {
+        display: inline-flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 12px;
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        cursor: pointer;
+        white-space: nowrap;
+    }
+    .consumer-item .icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        min-width: 1.2em;
+        min-height: 1.2em;
+    }
+    .consumer-item .consumer-content {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 2px;
+        line-height: 1;
+    }
+    .consumer-item .primary {
+        font-weight: bold;
+        margin: 0;
+        line-height: 1;
+    }
+    .consumer-item .secondary {
+        margin: 0;
+        opacity: 0.7;
+        font-size: 0.75em;
+        line-height: 1;
     }
     @keyframes spin {
         0%   { transform: rotate(0deg); }
@@ -947,7 +995,39 @@ const translations = {
       action_call_service: "Service aufrufen",
       theme: "Theme",
       theme_helper: "Wählen Sie ein vordefiniertes Farbthema",
-      select_theme: "Theme auswählen"
+      select_theme: "Theme auswählen",
+      tab_consumers: "Verbraucher",
+      consumers_settings: "Verbraucher-Einstellungen",
+      enable_consumers: "Verbraucher-Leiste aktivieren",
+      consumers_position: "Position",
+      consumers_sort_mode: "Sortierung",
+      sort_highest_first: "Höchster zuerst",
+      sort_lowest_first: "Niedrigster zuerst",
+      sort_none: "Keine Sortierung (Eingabe-Reihenfolge)",
+      sort_alpha_asc: "Alphabetisch aufsteigend",
+      sort_alpha_desc: "Alphabetisch absteigend",
+      consumers_threshold: "Globaler Schwellwert (W)",
+      consumers_threshold_helper: "Verbraucher unter diesem Wert werden nicht angezeigt",
+      add_consumer: "Verbraucher hinzufügen",
+      remove_consumer: "Verbraucher entfernen",
+      consumer_entity: "Nr:",
+      consumer_icon: "Icon",
+      consumer_label: "Bezeichnung",
+      consumer_threshold: "Individueller Schwellwert (W)",
+      consumer_auto_color: "Automatische Farbanpassung",
+      consumer_auto_color_helper: "Farbe basierend auf Verbrauch (grün bis purple)",
+      consumer_item_styling: "Verbraucher Styling",
+      consumer_primary_entity: "Primär Entity (für Wert)",
+      consumer_primary_text: "Primär Text (überschreibt Wert)",
+      consumer_show_primary: "Primär-Zeile anzeigen",
+      consumer_secondary_entity: "Sekundär Entity (für Label)",
+      consumer_secondary_text: "Sekundär Text (überschreibt Label)",
+      consumer_show_secondary: "Sekundär-Zeile anzeigen",
+      consumer_switch_entity: "Switch Entity (für Toggle)",
+      consumer_switch_entity_helper: "Optional: Switch zum Ein-/Ausschalten",
+      consumer_tap_actions: "Tap Actions",
+      show_consumer_total_in_house: "Gesamtverbrauch als Sekundär-Text",
+      show_consumer_total_helper: "Zeigt Summe aller Consumer unter Hausverbrauch"
     },
     status: {
       feed_in: "Einspeisung",
@@ -1130,7 +1210,39 @@ const translations = {
       action_call_service: "Call Service",
       theme: "Theme",
       theme_helper: "Select a predefined color theme",
-      select_theme: "Select Theme"
+      select_theme: "Select Theme",
+      tab_consumers: "Consumers",
+      consumers_settings: "Consumer Settings",
+      enable_consumers: "Enable Consumer Bar",
+      consumers_position: "Position",
+      consumers_sort_mode: "Sort Mode",
+      sort_highest_first: "Highest First",
+      sort_lowest_first: "Lowest First",
+      sort_none: "No Sorting (Input Order)",
+      sort_alpha_asc: "Alphabetical Ascending",
+      sort_alpha_desc: "Alphabetical Descending",
+      consumers_threshold: "Global Threshold (W)",
+      consumers_threshold_helper: "Consumers below this value won't be displayed",
+      add_consumer: "Add Consumer",
+      remove_consumer: "Remove Consumer",
+      consumer_entity: "Nr:",
+      consumer_icon: "Icon",
+      consumer_label: "Label",
+      consumer_threshold: "Individual Threshold (W)",
+      consumer_auto_color: "Automatic Color",
+      consumer_auto_color_helper: "Color based on consumption (green to purple)",
+      consumer_item_styling: "Consumer Styling",
+      consumer_primary_entity: "Primary Entity (for value)",
+      consumer_primary_text: "Primary Text (overrides value)",
+      consumer_show_primary: "Show Primary Line",
+      consumer_secondary_entity: "Secondary Entity (for label)",
+      consumer_secondary_text: "Secondary Text (overrides label)",
+      consumer_show_secondary: "Show Secondary Line",
+      consumer_switch_entity: "Switch Entity (for toggle)",
+      consumer_switch_entity_helper: "Optional: Switch to turn on/off",
+      consumer_tap_actions: "Tap Actions",
+      show_consumer_total_in_house: "Show Total as Secondary Text",
+      show_consumer_total_helper: "Shows sum of all consumers under house consumption"
     },
     status: {
       feed_in: "Feed-in",
@@ -1313,7 +1425,39 @@ const translations = {
       action_call_service: "Appeler Service",
       theme: "Thème",
       theme_helper: "Sélectionner un thème de couleur prédéfini",
-      select_theme: "Sélectionner Thème"
+      select_theme: "Sélectionner Thème",
+      tab_consumers: "Consommateurs",
+      consumers_settings: "Paramètres Consommateurs",
+      enable_consumers: "Activer Barre Consommateurs",
+      consumers_position: "Position",
+      consumers_sort_mode: "Mode de Tri",
+      sort_highest_first: "Plus Élevé en Premier",
+      sort_lowest_first: "Plus Faible en Premier",
+      sort_none: "Pas de Tri (Ordre de Saisie)",
+      sort_alpha_asc: "Alphabétique Croissant",
+      sort_alpha_desc: "Alphabétique Décroissant",
+      consumers_threshold: "Seuil Global (W)",
+      consumers_threshold_helper: "Les consommateurs en dessous ne seront pas affichés",
+      add_consumer: "Ajouter Consommateur",
+      remove_consumer: "Supprimer Consommateur",
+      consumer_entity: "Nr:",
+      consumer_icon: "Icône",
+      consumer_label: "Libellé",
+      consumer_threshold: "Seuil Individuel (W)",
+      consumer_auto_color: "Couleur Automatique",
+      consumer_auto_color_helper: "Couleur basée sur la consommation (vert à violet)",
+      consumer_item_styling: "Style Consommateur",
+      consumer_primary_entity: "Entité Primaire (pour valeur)",
+      consumer_primary_text: "Texte Primaire (remplace valeur)",
+      consumer_show_primary: "Afficher Ligne Primaire",
+      consumer_secondary_entity: "Entité Secondaire (pour libellé)",
+      consumer_secondary_text: "Texte Secondaire (remplace libellé)",
+      consumer_show_secondary: "Afficher Ligne Secondaire",
+      consumer_switch_entity: "Entité Switch (pour basculer)",
+      consumer_switch_entity_helper: "Optionnel: Switch pour activer/désactiver",
+      consumer_tap_actions: "Actions Tactiles",
+      show_consumer_total_in_house: "Afficher Total comme Texte Secondaire",
+      show_consumer_total_helper: "Affiche la somme de tous les consommateurs sous la consommation maison"
     },
     status: {
       feed_in: "Injection",
@@ -1496,7 +1640,39 @@ const translations = {
       action_call_service: "Chiama Servizio",
       theme: "Tema",
       theme_helper: "Seleziona un tema di colori predefinito",
-      select_theme: "Seleziona Tema"
+      select_theme: "Seleziona Tema",
+      tab_consumers: "Consumatori",
+      consumers_settings: "Impostazioni Consumatori",
+      enable_consumers: "Attiva Barra Consumatori",
+      consumers_position: "Posizione",
+      consumers_sort_mode: "Modalità Ordinamento",
+      sort_highest_first: "Più Alto per Primo",
+      sort_lowest_first: "Più Basso per Primo",
+      sort_none: "Nessun Ordinamento (Ordine di Inserimento)",
+      sort_alpha_asc: "Alfabetico Crescente",
+      sort_alpha_desc: "Alfabetico Decrescente",
+      consumers_threshold: "Soglia Globale (W)",
+      consumers_threshold_helper: "I consumatori sotto questo valore non verranno visualizzati",
+      add_consumer: "Aggiungi Consumatore",
+      remove_consumer: "Rimuovi Consumatore",
+      consumer_entity: "Nr:",
+      consumer_icon: "Icona",
+      consumer_label: "Etichetta",
+      consumer_threshold: "Soglia Individuale (W)",
+      consumer_auto_color: "Colore Automatico",
+      consumer_auto_color_helper: "Colore basato sul consumo (verde a viola)",
+      consumer_item_styling: "Stile Consumatore",
+      consumer_primary_entity: "Entità Primaria (per valore)",
+      consumer_primary_text: "Testo Primario (sostituisce valore)",
+      consumer_show_primary: "Mostra Riga Primaria",
+      consumer_secondary_entity: "Entità Secondaria (per etichetta)",
+      consumer_secondary_text: "Testo Secondario (sostituisce etichetta)",
+      consumer_show_secondary: "Mostra Riga Secondaria",
+      consumer_switch_entity: "Entità Switch (per commutare)",
+      consumer_switch_entity_helper: "Opzionale: Switch per accendere/spegnere",
+      consumer_tap_actions: "Azioni Tocco",
+      show_consumer_total_in_house: "Mostra Totale come Testo Secondario",
+      show_consumer_total_helper: "Mostra la somma di tutti i consumatori sotto il consumo casa"
     },
     status: {
       feed_in: "Immissione",
@@ -1679,7 +1855,39 @@ const translations = {
       action_call_service: "Llamar Servicio",
       theme: "Tema",
       theme_helper: "Seleccionar un tema de colores predefinido",
-      select_theme: "Seleccionar Tema"
+      select_theme: "Seleccionar Tema",
+      tab_consumers: "Consumidores",
+      consumers_settings: "Configuración Consumidores",
+      enable_consumers: "Activar Barra Consumidores",
+      consumers_position: "Posición",
+      consumers_sort_mode: "Modo de Ordenación",
+      sort_highest_first: "Más Alto Primero",
+      sort_lowest_first: "Más Bajo Primero",
+      sort_none: "Sin Ordenación (Orden de Entrada)",
+      sort_alpha_asc: "Alfabético Ascendente",
+      sort_alpha_desc: "Alfabético Descendente",
+      consumers_threshold: "Umbral Global (W)",
+      consumers_threshold_helper: "Los consumidores por debajo no se mostrarán",
+      add_consumer: "Añadir Consumidor",
+      remove_consumer: "Eliminar Consumidor",
+      consumer_entity: "Nr:",
+      consumer_icon: "Icono",
+      consumer_label: "Etiqueta",
+      consumer_threshold: "Umbral Individual (W)",
+      consumer_auto_color: "Color Automático",
+      consumer_auto_color_helper: "Color basado en consumo (verde a púrpura)",
+      consumer_item_styling: "Estilo Consumidor",
+      consumer_primary_entity: "Entidad Primaria (para valor)",
+      consumer_primary_text: "Texto Primario (sobrescribe valor)",
+      consumer_show_primary: "Mostrar Línea Primaria",
+      consumer_secondary_entity: "Entidad Secundaria (para etiqueta)",
+      consumer_secondary_text: "Texto Secundario (sobrescribe etiqueta)",
+      consumer_show_secondary: "Mostrar Línea Secundaria",
+      consumer_switch_entity: "Entidad Switch (para conmutar)",
+      consumer_switch_entity_helper: "Opcional: Switch para encender/apagar",
+      consumer_tap_actions: "Acciones Táctiles",
+      show_consumer_total_in_house: "Mostrar Total como Texto Secundario",
+      show_consumer_total_helper: "Muestra la suma de todos los consumidores bajo el consumo casa"
     },
     status: {
       feed_in: "Inyección",
@@ -1917,6 +2125,60 @@ const defaultThemes = {
       infobar_label_color: "rgba(148, 163, 184, 0.8)",
       infobar_value_color: "rgba(226, 232, 240, 1)"
     }
+  },
+  sunset: {
+    id: "sunset",
+    name: "Sunset",
+    colors: {
+      card_background_color: "rgba(30, 20, 40, 1)",
+      card_border_color: "rgba(255, 120, 80, 0.3)",
+      card_text_color: "rgba(255, 230, 200, 1)",
+      primary_color: "rgba(255, 170, 100, 1)",
+      secondary_color: "rgba(255, 200, 150, 0.8)",
+      title_color: "rgba(255, 140, 80, 1)",
+      subtitle_color: "rgba(255, 180, 120, 0.7)",
+      infobar_background_color: "rgba(40, 30, 50, 1)",
+      infobar_border_color: "rgba(255, 120, 80, 0.3)",
+      infobar_icon_color: "rgba(255, 170, 100, 1)",
+      infobar_label_color: "rgba(255, 180, 120, 0.7)",
+      infobar_value_color: "rgba(255, 230, 200, 1)"
+    }
+  },
+  ocean: {
+    id: "ocean",
+    name: "Ocean",
+    colors: {
+      card_background_color: "rgba(10, 25, 47, 1)",
+      card_border_color: "rgba(0, 180, 216, 0.3)",
+      card_text_color: "rgba(224, 242, 254, 1)",
+      primary_color: "rgba(56, 189, 248, 1)",
+      secondary_color: "rgba(125, 211, 252, 0.8)",
+      title_color: "rgba(14, 165, 233, 1)",
+      subtitle_color: "rgba(125, 211, 252, 0.7)",
+      infobar_background_color: "rgba(15, 35, 60, 1)",
+      infobar_border_color: "rgba(0, 180, 216, 0.3)",
+      infobar_icon_color: "rgba(56, 189, 248, 1)",
+      infobar_label_color: "rgba(125, 211, 252, 0.7)",
+      infobar_value_color: "rgba(224, 242, 254, 1)"
+    }
+  },
+  purple: {
+    id: "purple",
+    name: "Purple",
+    colors: {
+      card_background_color: "rgba(24, 24, 40, 1)",
+      card_border_color: "rgba(168, 85, 247, 0.3)",
+      card_text_color: "rgba(250, 245, 255, 1)",
+      primary_color: "rgba(192, 132, 252, 1)",
+      secondary_color: "rgba(216, 180, 254, 0.8)",
+      title_color: "rgba(168, 85, 247, 1)",
+      subtitle_color: "rgba(216, 180, 254, 0.7)",
+      infobar_background_color: "rgba(30, 30, 50, 1)",
+      infobar_border_color: "rgba(168, 85, 247, 0.3)",
+      infobar_icon_color: "rgba(192, 132, 252, 1)",
+      infobar_label_color: "rgba(216, 180, 254, 0.7)",
+      infobar_value_color: "rgba(250, 245, 255, 1)"
+    }
   }
 };
 const customThemes = {};
@@ -2085,6 +2347,31 @@ function getDefaultConfig(config) {
       animation: themedConfig.haus?.animation !== false,
       animation_style: themedConfig.haus?.animation_style || "rotating-dots",
       ...themedConfig.haus
+    },
+    consumers: {
+      show: themedConfig.consumers?.show === true,
+      position: themedConfig.consumers?.position || "bottom",
+      sort_mode: themedConfig.consumers?.sort_mode || "highest_first",
+      threshold: themedConfig.consumers?.threshold ?? 0,
+      style: {
+        gap: themedConfig.consumers?.style?.gap ?? "6px",
+        item_background_color: themedConfig.consumers?.style?.item_background_color ?? "rgba(21, 20, 27, 1)",
+        item_border_color: themedConfig.consumers?.style?.item_border_color ?? "rgba(255, 255, 255, 0.1)",
+        item_border_radius: themedConfig.consumers?.style?.item_border_radius ?? "18px",
+        item_padding: themedConfig.consumers?.style?.item_padding ?? "6px 12px",
+        item_margin: themedConfig.consumers?.style?.item_margin ?? "2px",
+        item_box_shadow: themedConfig.consumers?.style?.item_box_shadow ?? "0 2px 8px 0 rgba(0, 0, 0, 0.15)",
+        icon_size: themedConfig.consumers?.style?.icon_size ?? "1.2em",
+        icon_opacity: themedConfig.consumers?.style?.icon_opacity ?? "1",
+        primary_size: themedConfig.consumers?.style?.primary_size ?? "0.9em",
+        primary_font_weight: themedConfig.consumers?.style?.primary_font_weight ?? "bold",
+        primary_opacity: themedConfig.consumers?.style?.primary_opacity ?? "1",
+        secondary_size: themedConfig.consumers?.style?.secondary_size ?? "0.7em",
+        secondary_font_weight: themedConfig.consumers?.style?.secondary_font_weight ?? "normal",
+        secondary_opacity: themedConfig.consumers?.style?.secondary_opacity ?? "0.7",
+        ...themedConfig.consumers?.style
+      },
+      items: themedConfig.consumers?.items || []
     }
   };
 }
@@ -2480,6 +2767,22 @@ function calculateSelfConsumption(pvProductionW, gridFeedInW) {
   const clampedSelfConsumption = Math.max(0, Math.min(100, selfConsumption));
   return `${Math.round(clampedSelfConsumption)}%`;
 }
+function getConsumerColor(powerW) {
+  const w = Math.abs(powerW);
+  if (w <= 10) return "rgba(76,175,80,1)";
+  else if (w <= 25) return "rgba(139,195,74,1)";
+  else if (w <= 50) return "rgba(205,220,57,1)";
+  else if (w <= 100) return "rgba(255,235,59,1)";
+  else if (w <= 150) return "rgba(255,193,7,1)";
+  else if (w <= 200) return "rgba(255,152,0,1)";
+  else if (w <= 250) return "rgba(255,87,34,1)";
+  else if (w <= 300) return "rgba(244,67,54,1)";
+  else if (w <= 500) return "rgba(233,30,99,1)";
+  else if (w <= 1e3) return "rgba(156,39,176,1)";
+  else if (w <= 1500) return "rgba(103,58,183,1)";
+  else if (w <= 2500) return "rgba(63,81,181,1)";
+  else return "rgba(26,35,126,1)";
+}
 var __defProp$1 = Object.defineProperty;
 var __decorateClass$1 = (decorators, target, key, kind) => {
   var result = void 0;
@@ -2491,6 +2794,10 @@ var __decorateClass$1 = (decorators, target, key, kind) => {
 };
 const CARD_TAG = "pv-monitor-card";
 const _PVMonitorCard = class _PVMonitorCard extends i {
+  constructor() {
+    super(...arguments);
+    this._consumersVisible = true;
+  }
   static async getConfigElement() {
     await Promise.resolve().then(() => pvMonitorCardEditor);
     return document.createElement("pv-monitor-card-editor");
@@ -2524,7 +2831,14 @@ const _PVMonitorCard = class _PVMonitorCard extends i {
     if (!config) throw new Error("Fehlende Konfiguration");
     this.config = getDefaultConfig(config);
   }
-  _handleAction(event, actions) {
+  _handleAction(event, actions, isHausCard = false) {
+    if (isHausCard && this.config.consumers?.show && (this.config.consumers?.items?.length ?? 0) > 0) {
+      if (event.type === "click") {
+        this._consumersVisible = !this._consumersVisible;
+        this.requestUpdate();
+        return;
+      }
+    }
     const actionType = event.type === "dblclick" ? "double_tap" : event.type === "contextmenu" ? "hold" : "tap";
     const action = actions[actionType];
     if (event.type === "contextmenu") {
@@ -2541,8 +2855,12 @@ const _PVMonitorCard = class _PVMonitorCard extends i {
       window.open(tapAction.url_path, "_blank");
     } else if (tapAction.action === "call-service" && tapAction.service && this.hass) {
       const [domain, service] = tapAction.service.split(".");
+      const serviceData = { ...tapAction.service_data || {} };
+      if (tapAction.target) {
+        Object.assign(serviceData, tapAction.target);
+      }
       if (this.hass.callService) {
-        this.hass.callService(domain, service, tapAction.service_data || {});
+        this.hass.callService(domain, service, serviceData);
       } else {
         window.dispatchEvent(new CustomEvent("hass-call-service", {
           bubbles: true,
@@ -2550,7 +2868,7 @@ const _PVMonitorCard = class _PVMonitorCard extends i {
           detail: {
             domain,
             service,
-            serviceData: tapAction.service_data || {}
+            serviceData
           }
         }));
       }
@@ -2596,12 +2914,13 @@ const _PVMonitorCard = class _PVMonitorCard extends i {
     const secondaryStyle = `font-size: ${s2.secondary_size}; color: ${secondaryColor}; opacity: ${s2.secondary_font_opacity}; font-weight: ${s2.secondary_font_weight}; line-height: calc(${s2.secondary_size} + 2px);`;
     const tertiaryStyle = `font-size: ${s2.tertiary_size}; color: ${s2.tertiary_color}; opacity: ${s2.tertiary_font_opacity}; font-weight: ${s2.tertiary_font_weight}; line-height: calc(${s2.tertiary_size} + 2px);`;
     const animationType = config.cardConfig?.animation_style || "rotating-dots";
+    const isHaus = config.isHausCard || false;
     return x`
             <div class="card"
                  style="${this._getCardStyle(cardStyle)}"
-                 @click=${(e2) => this._handleAction(e2, { tap: config.cardConfig?.tap_action })}
-                 @dblclick=${(e2) => this._handleAction(e2, { double_tap: config.cardConfig?.double_tap_action })}
-                 @contextmenu=${(e2) => this._handleAction(e2, { hold: config.cardConfig?.hold_action })}>
+                 @click=${(e2) => this._handleAction(e2, { tap: config.cardConfig?.tap_action }, isHaus)}
+                 @dblclick=${(e2) => this._handleAction(e2, { double_tap: config.cardConfig?.double_tap_action }, isHaus)}
+                 @contextmenu=${(e2) => this._handleAction(e2, { hold: config.cardConfig?.hold_action }, isHaus)}>
                 ${config.animStyle.show && config.animStyle.color ? x`
                     <div style="${getAnimationStyleByType(animationType, config.animStyle.color, config.animStyle.duration)}"></div>
                 ` : ""}
@@ -2799,14 +3118,185 @@ const _PVMonitorCard = class _PVMonitorCard extends i {
     const t2 = getTranslations(this.config.language);
     if (!entity) return x`<div class="card">⚠️ ${entityId} ${t2.general.missing_entity}</div>`;
     const value = parseFloat(entity.state) || 0;
+    let secondaryText = this._getTextFromEntityOrConfig(this.config.haus.secondary_entity, this.config.haus.secondary_text);
+    if (this.config.haus.show_consumer_total && this.config.consumers?.show && this.config.consumers.items) {
+      const totalConsumerPower = this._calculateTotalConsumerPower();
+      if (totalConsumerPower > 0) {
+        secondaryText = formatPower(totalConsumerPower);
+      }
+    }
     return this._renderCard({
       cardConfig: this.config.haus,
       icon: this.config.haus.icon || "mdi:home",
       primaryValue: formatPower(value),
-      secondaryText: this._getTextFromEntityOrConfig(this.config.haus.secondary_entity, this.config.haus.secondary_text),
+      secondaryText,
       tertiaryText: this._getTextFromEntityOrConfig(this.config.haus.tertiary_entity, this.config.haus.tertiary_text),
-      animStyle: this.config.haus.animation ? getHausColor(value) : { color: "", duration: 0, show: false }
+      animStyle: this.config.haus.animation ? getHausColor(value) : { color: "", duration: 0, show: false },
+      isHausCard: true
     });
+  }
+  _calculateTotalConsumerPower() {
+    if (!this.config.consumers?.items || !this.hass) return 0;
+    const items = this.config.consumers.items;
+    const globalThreshold = this.config.consumers.threshold ?? 0;
+    let total = 0;
+    for (const item of items) {
+      const entity = this.hass.states[item.entity];
+      if (!entity) continue;
+      const value = parseFloat(entity.state) || 0;
+      const threshold = item.threshold !== void 0 ? item.threshold : globalThreshold;
+      if (value > threshold) {
+        total += value;
+      }
+    }
+    return total;
+  }
+  _renderConsumers() {
+    if (!this.config.consumers?.show || !this.hass || !this._consumersVisible) return x``;
+    const items = this.config.consumers.items || [];
+    if (items.length === 0) return x``;
+    const globalThreshold = this.config.consumers.threshold ?? 0;
+    const globalStyle = this.config.consumers.style;
+    const consumerData = items.map((item) => {
+      const entity = this.hass.states[item.entity];
+      if (!entity) return null;
+      const value = parseFloat(entity.state) || 0;
+      const threshold = item.threshold !== void 0 ? item.threshold : globalThreshold;
+      if (value <= threshold) return null;
+      return {
+        item,
+        entity,
+        value,
+        label: item.label || entity.attributes.friendly_name || item.entity
+      };
+    }).filter((d2) => d2 !== null);
+    if (consumerData.length === 0) return x``;
+    const sortMode = this.config.consumers.sort_mode || "highest_first";
+    if (sortMode === "highest_first") {
+      consumerData.sort((a2, b2) => b2.value - a2.value);
+    } else if (sortMode === "lowest_first") {
+      consumerData.sort((a2, b2) => a2.value - b2.value);
+    } else if (sortMode === "alpha_asc") {
+      consumerData.sort((a2, b2) => a2.label.localeCompare(b2.label));
+    } else if (sortMode === "alpha_desc") {
+      consumerData.sort((a2, b2) => b2.label.localeCompare(a2.label));
+    }
+    return x`
+            <div class="consumers-bar" style="gap: ${globalStyle.gap};">
+                ${consumerData.map((data) => this._renderConsumerItem(data))}
+            </div>
+        `;
+  }
+  _renderConsumerItem(data) {
+    const { item, entity, value, label } = data;
+    const globalStyle = this.config.consumers.style;
+    const itemStyle = item.style || {};
+    const bgColor = itemStyle.background_color || globalStyle.item_background_color;
+    const borderColor = itemStyle.border_color || globalStyle.item_border_color;
+    const borderRadius = itemStyle.border_radius || globalStyle.item_border_radius;
+    const padding = itemStyle.padding || globalStyle.item_padding;
+    const margin = itemStyle.margin || globalStyle.item_margin;
+    const boxShadow = itemStyle.box_shadow || globalStyle.item_box_shadow;
+    const iconSize = itemStyle.icon_size || globalStyle.icon_size;
+    const iconOpacity = itemStyle.icon_opacity || globalStyle.icon_opacity;
+    const primarySize = itemStyle.primary_size || globalStyle.primary_size;
+    const primaryFontWeight = itemStyle.primary_font_weight || globalStyle.primary_font_weight;
+    const primaryOpacity = itemStyle.primary_opacity || globalStyle.primary_opacity;
+    const secondarySize = itemStyle.secondary_size || globalStyle.secondary_size;
+    const secondaryFontWeight = itemStyle.secondary_font_weight || globalStyle.secondary_font_weight;
+    const secondaryOpacity = itemStyle.secondary_opacity || globalStyle.secondary_opacity;
+    let iconColor = "";
+    if (item.auto_color !== false) {
+      iconColor = getConsumerColor(value);
+    } else {
+      iconColor = itemStyle.icon_color || "";
+    }
+    const primaryColor = itemStyle.primary_color || "white";
+    const secondaryColor = itemStyle.secondary_color || "white";
+    const containerStyle = `
+            background: ${bgColor};
+            border: 1px solid ${borderColor};
+            border-radius: ${borderRadius};
+            padding: ${padding};
+            margin: ${margin};
+            box-shadow: ${boxShadow};
+        `;
+    const iconStyle = `
+            font-size: ${iconSize};
+            opacity: ${iconOpacity};
+            ${iconColor ? `color: ${iconColor};` : ""}
+        `;
+    const primaryStyle = `
+            font-size: ${primarySize};
+            font-weight: ${primaryFontWeight};
+            opacity: ${primaryOpacity};
+            color: ${primaryColor};
+        `;
+    const secondaryStyle = `
+            font-size: ${secondarySize};
+            font-weight: ${secondaryFontWeight};
+            opacity: ${secondaryOpacity};
+            color: ${secondaryColor};
+        `;
+    const icon = item.icon || "mdi:flash";
+    let primaryText = "";
+    const showPrimary = item.show_primary !== false;
+    if (showPrimary) {
+      if (item.primary_text) {
+        primaryText = item.primary_text;
+      } else if (item.primary_entity && this.hass) {
+        const primaryEntity = this.hass.states[item.primary_entity];
+        if (primaryEntity) {
+          primaryText = `${primaryEntity.state} ${primaryEntity.attributes.unit_of_measurement || ""}`;
+        } else {
+          primaryText = formatPower(value);
+        }
+      } else {
+        primaryText = formatPower(value);
+      }
+    }
+    let secondaryText = "";
+    const showSecondary = item.show_secondary !== false;
+    if (showSecondary) {
+      if (item.secondary_text) {
+        secondaryText = item.secondary_text;
+      } else if (item.secondary_entity && this.hass) {
+        const secondaryEntity = this.hass.states[item.secondary_entity];
+        if (secondaryEntity) {
+          secondaryText = `${secondaryEntity.state} ${secondaryEntity.attributes.unit_of_measurement || ""}`;
+        } else {
+          secondaryText = label;
+        }
+      } else {
+        secondaryText = label;
+      }
+    }
+    const hasSwitchEntity = !!item.switch_entity;
+    const tapAction = item.tap_action || (hasSwitchEntity ? { action: "call-service", service: "switch.toggle", target: { entity_id: item.switch_entity } } : { action: "none" });
+    const doubleTapAction = item.double_tap_action || { action: "none" };
+    const holdAction = item.hold_action || { action: "none" };
+    return x`
+            <div class="consumer-item"
+                 style="${containerStyle}"
+                 @click=${(e2) => this._handleConsumerAction(e2, tapAction)}
+                 @dblclick=${(e2) => this._handleConsumerAction(e2, doubleTapAction)}
+                 @contextmenu=${(e2) => {
+      e2.preventDefault();
+      this._handleConsumerAction(e2, holdAction);
+    }}>
+                <div class="icon" style="${iconStyle}">
+                    <ha-icon .icon=${icon} style="--mdc-icon-size: ${iconSize}; width: ${iconSize}; height: ${iconSize};"></ha-icon>
+                </div>
+                <div class="consumer-content">
+                    ${showPrimary ? x`<div class="primary" style="${primaryStyle}">${primaryText}</div>` : ""}
+                    ${showSecondary ? x`<div class="secondary" style="${secondaryStyle}">${secondaryText}</div>` : ""}
+                </div>
+            </div>
+        `;
+  }
+  _handleConsumerAction(event, action) {
+    if (!action || action.action === "none") return;
+    this._handleTap(action);
   }
   render() {
     const s2 = this.config.style;
@@ -2864,6 +3354,7 @@ const _PVMonitorCard = class _PVMonitorCard extends i {
                     ${this._renderInfoBar()}
                 </div>
             ` : ""}
+            ${this._renderConsumers()}
         `;
   }
 };
@@ -2875,6 +3366,9 @@ __decorateClass$1([
 __decorateClass$1([
   n2()
 ], PVMonitorCard.prototype, "config");
+__decorateClass$1([
+  n2()
+], PVMonitorCard.prototype, "_consumersVisible");
 if (!customElements.get(CARD_TAG)) {
   customElements.define(CARD_TAG, PVMonitorCard);
 }
@@ -2895,6 +3389,7 @@ const _PVMonitorCardEditor = class _PVMonitorCardEditor extends i {
     this._localValues = /* @__PURE__ */ new Map();
     this._autocompleteResults = /* @__PURE__ */ new Map();
     this._showAutocomplete = /* @__PURE__ */ new Map();
+    this._expandedConsumerIndex = null;
   }
   setConfig(config) {
     this._config = config;
@@ -3649,6 +4144,7 @@ const _PVMonitorCardEditor = class _PVMonitorCardEditor extends i {
                     <ha-icon icon="mdi:text"></ha-icon>
                     ${t2.editor.additional_texts}
                 </div>
+                ${this._renderSwitch(t2.editor.show_consumer_total_in_house, ["haus", "show_consumer_total"], this._config?.haus?.show_consumer_total, t2.editor.show_consumer_total_helper)}
                 ${this._renderEntityPicker(t2.editor.secondary_entity, ["haus", "secondary_entity"], this._config?.haus?.secondary_entity)}
                 ${this._renderTextfield(t2.editor.secondary_text, ["haus", "secondary_text"], this._config?.haus?.secondary_text)}
                 ${this._renderEntityPicker(t2.editor.tertiary_entity, ["haus", "tertiary_entity"], this._config?.haus?.tertiary_entity)}
@@ -3730,6 +4226,227 @@ const _PVMonitorCardEditor = class _PVMonitorCardEditor extends i {
                 ${this._renderTextfield(t2.editor.icon_color, ["netz", "style", "icon_color"], this._config?.netz?.style?.icon_color)}
             </div>
         `;
+  }
+  _renderConsumersTab() {
+    const t2 = this._getT();
+    return x`
+            <div class="section">
+                <div class="section-header">
+                    <ha-icon icon="mdi:flash"></ha-icon>
+                    ${t2.editor.consumers_settings}
+                </div>
+                ${this._renderSwitch(t2.editor.enable_consumers, ["consumers", "show"], this._config?.consumers?.show)}
+
+                ${this._config?.consumers?.show ? x`
+                    <div class="option">
+                        <div class="option-label">${t2.editor.consumers_position}</div>
+                        <div class="option-control">
+                            <ha-combo-box
+                                    .value=${this._config?.consumers?.position || "bottom"}
+                                    .items=${[
+      { value: "bottom", label: t2.editor.position_bottom }
+    ]}
+                                    item-value-path="value"
+                                    item-label-path="label"
+                                    @value-changed=${(ev) => {
+      if (!this._config) return;
+      const newValue = ev.detail?.value;
+      if (!newValue) return;
+      const newConfig = { ...this._config };
+      if (!newConfig.consumers) newConfig.consumers = {};
+      newConfig.consumers.position = newValue;
+      this._config = newConfig;
+      this._fireEvent();
+    }}
+                            ></ha-combo-box>
+                        </div>
+                    </div>
+
+                    <div class="option">
+                        <div class="option-label">${t2.editor.consumers_sort_mode}</div>
+                        <div class="option-control">
+                            <ha-combo-box
+                                    .value=${this._config?.consumers?.sort_mode || "highest_first"}
+                                    .items=${[
+      { value: "highest_first", label: t2.editor.sort_highest_first },
+      { value: "lowest_first", label: t2.editor.sort_lowest_first },
+      { value: "none", label: t2.editor.sort_none },
+      { value: "alpha_asc", label: t2.editor.sort_alpha_asc },
+      { value: "alpha_desc", label: t2.editor.sort_alpha_desc }
+    ]}
+                                    item-value-path="value"
+                                    item-label-path="label"
+                                    @value-changed=${(ev) => {
+      if (!this._config) return;
+      const newValue = ev.detail?.value;
+      if (!newValue) return;
+      const newConfig = { ...this._config };
+      if (!newConfig.consumers) newConfig.consumers = {};
+      newConfig.consumers.sort_mode = newValue;
+      this._config = newConfig;
+      this._fireEvent();
+    }}
+                            ></ha-combo-box>
+                        </div>
+                    </div>
+
+                    ${this._renderNumberfield(t2.editor.consumers_threshold, ["consumers", "threshold"], this._config?.consumers?.threshold, 0, 1e4, 1, t2.editor.consumers_threshold_helper)}
+                ` : ""}
+            </div>
+
+            ${this._config?.consumers?.show ? x`
+                <div class="divider"></div>
+
+                <div class="section">
+                    <div class="section-header">
+                        <ha-icon icon="mdi:format-list-bulleted"></ha-icon>
+                        ${t2.editor.add_consumer}
+                    </div>
+
+                    ${(this._config?.consumers?.items || []).map((item, index) => {
+      const isExpanded = this._expandedConsumerIndex === index;
+      const entityLabel = item.entity || t2.editor.consumer_entity;
+      return x`
+                            <div class="consumer-section">
+                                <div class="consumer-header" @click=${() => this._toggleConsumer(index)}>
+                                    <div class="consumer-title">
+                                        <ha-icon 
+                                            class="expand-icon ${isExpanded ? "expanded" : ""}" 
+                                            icon="mdi:chevron-down"
+                                        ></ha-icon>
+                                        ${t2.editor.consumer_entity} ${index + 1}
+                                        ${item.entity ? x`<span style="opacity: 0.6; font-weight: normal; font-size: 0.9em;">(${entityLabel})</span>` : ""}
+                                    </div>
+                                    <div class="consumer-header-actions" @click=${(e2) => e2.stopPropagation()}>
+                                        <ha-icon-button
+                                            .path=${"M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z"}
+                                            @click=${() => this._removeConsumer(index)}
+                                            style="color: rgba(244,67,54,1);"
+                                        ></ha-icon-button>
+                                    </div>
+                                </div>
+
+                                <div class="consumer-content ${isExpanded ? "" : "collapsed"}">
+                                    ${this._renderEntityPicker(t2.editor.consumer_entity, ["consumers", "items", index.toString(), "entity"], item.entity)}
+                                    ${this._renderIconPicker(t2.editor.consumer_icon, ["consumers", "items", index.toString(), "icon"], item.icon)}
+                                    ${this._renderTextfield(t2.editor.consumer_label, ["consumers", "items", index.toString(), "label"], item.label)}
+                                    ${this._renderNumberfield(t2.editor.consumer_threshold, ["consumers", "items", index.toString(), "threshold"], item.threshold, 0, 1e4, 1)}
+                                    ${this._renderSwitch(t2.editor.consumer_auto_color, ["consumers", "items", index.toString(), "auto_color"], item.auto_color !== false, t2.editor.consumer_auto_color_helper)}
+
+                                    <div class="divider"></div>
+
+                                    <div style="font-weight: 500; margin: 12px 0 8px 0;">
+                                        ${t2.editor.additional_texts}
+                                    </div>
+
+                                    ${this._renderSwitch(t2.editor.consumer_show_primary, ["consumers", "items", index.toString(), "show_primary"], item.show_primary !== false)}
+                                    ${this._renderEntityPicker(t2.editor.consumer_primary_entity, ["consumers", "items", index.toString(), "primary_entity"], item.primary_entity)}
+                                    ${this._renderTextfield(t2.editor.consumer_primary_text, ["consumers", "items", index.toString(), "primary_text"], item.primary_text)}
+                                    
+                                    ${this._renderSwitch(t2.editor.consumer_show_secondary, ["consumers", "items", index.toString(), "show_secondary"], item.show_secondary !== false)}
+                                    ${this._renderEntityPicker(t2.editor.consumer_secondary_entity, ["consumers", "items", index.toString(), "secondary_entity"], item.secondary_entity)}
+                                    ${this._renderTextfield(t2.editor.consumer_secondary_text, ["consumers", "items", index.toString(), "secondary_text"], item.secondary_text)}
+
+                                    <div class="divider"></div>
+
+                                    <div style="font-weight: 500; margin: 12px 0 8px 0;">
+                                        ${t2.editor.consumer_tap_actions}
+                                    </div>
+
+                                    ${this._renderEntityPicker(t2.editor.consumer_switch_entity, ["consumers", "items", index.toString(), "switch_entity"], item.switch_entity, t2.editor.consumer_switch_entity_helper)}
+                                    ${this._renderActionSelector("Tap Action", ["consumers", "items", index.toString(), "tap_action"], item.tap_action)}
+                                    ${this._renderActionSelector("Double Tap", ["consumers", "items", index.toString(), "double_tap_action"], item.double_tap_action)}
+                                    ${this._renderActionSelector("Hold Action", ["consumers", "items", index.toString(), "hold_action"], item.hold_action)}
+
+                                    <div class="divider"></div>
+
+                                    <div style="font-weight: 500; margin: 12px 0 8px 0;">
+                                        ${t2.editor.consumer_item_styling}
+                                    </div>
+
+                                    ${this._renderTextfield(t2.editor.icon_size, ["consumers", "items", index.toString(), "style", "icon_size"], item.style?.icon_size, "1.5em")}
+                                    ${this._renderTextfield(t2.editor.icon_color, ["consumers", "items", index.toString(), "style", "icon_color"], item.style?.icon_color)}
+                                    ${this._renderTextfield(t2.editor.icon_opacity, ["consumers", "items", index.toString(), "style", "icon_opacity"], item.style?.icon_opacity, "1")}
+                                    ${this._renderTextfield(t2.editor.primary_size, ["consumers", "items", index.toString(), "style", "primary_size"], item.style?.primary_size, "1em")}
+                                    ${this._renderTextfield(t2.editor.primary_color_label, ["consumers", "items", index.toString(), "style", "primary_color"], item.style?.primary_color, "white")}
+                                    ${this._renderTextfield(t2.editor.primary_opacity, ["consumers", "items", index.toString(), "style", "primary_opacity"], item.style?.primary_opacity, "1")}
+                                    ${this._renderTextfield(t2.editor.primary_font_weight, ["consumers", "items", index.toString(), "style", "primary_font_weight"], item.style?.primary_font_weight, "bold")}
+                                    ${this._renderTextfield(t2.editor.secondary_size, ["consumers", "items", index.toString(), "style", "secondary_size"], item.style?.secondary_size, "0.8em")}
+                                    ${this._renderTextfield(t2.editor.secondary_color_label, ["consumers", "items", index.toString(), "style", "secondary_color"], item.style?.secondary_color, "white")}
+                                    ${this._renderTextfield(t2.editor.secondary_opacity, ["consumers", "items", index.toString(), "style", "secondary_opacity"], item.style?.secondary_opacity, "0.7")}
+                                    ${this._renderTextfield(t2.editor.secondary_font_weight, ["consumers", "items", index.toString(), "style", "secondary_font_weight"], item.style?.secondary_font_weight, "normal")}
+                                    ${this._renderTextfield(t2.editor.background_color, ["consumers", "items", index.toString(), "style", "background_color"], item.style?.background_color)}
+                                    ${this._renderTextfield(t2.editor.border_color, ["consumers", "items", index.toString(), "style", "border_color"], item.style?.border_color)}
+                                    ${this._renderTextfield(t2.editor.border_radius, ["consumers", "items", index.toString(), "style", "border_radius"], item.style?.border_radius, "12px")}
+                                    ${this._renderTextfield(t2.editor.padding, ["consumers", "items", index.toString(), "style", "padding"], item.style?.padding, "8px")}
+                                </div>
+                            </div>
+                        `;
+    })}
+
+                    <ha-button @click=${this._addConsumer}>
+                        <ha-icon icon="mdi:plus"></ha-icon>
+                        ${t2.editor.add_consumer}
+                    </ha-button>
+                </div>
+
+                <div class="divider"></div>
+
+                <div class="section">
+                    <div class="section-header">
+                        <ha-icon icon="mdi:palette"></ha-icon>
+                        ${t2.editor.styling} (Global)
+                    </div>
+                    ${this._renderTextfield(t2.editor.grid_gap, ["consumers", "style", "gap"], this._config?.consumers?.style?.gap, "6px")}
+                    ${this._renderTextfield(t2.editor.background_color, ["consumers", "style", "item_background_color"], this._config?.consumers?.style?.item_background_color, "rgba(21, 20, 27, 1)")}
+                    ${this._renderTextfield(t2.editor.border_color, ["consumers", "style", "item_border_color"], this._config?.consumers?.style?.item_border_color, "rgba(255, 255, 255, 0.1)")}
+                    ${this._renderTextfield(t2.editor.border_radius, ["consumers", "style", "item_border_radius"], this._config?.consumers?.style?.item_border_radius, "12px")}
+                    ${this._renderTextfield(t2.editor.padding, ["consumers", "style", "item_padding"], this._config?.consumers?.style?.item_padding, "8px")}
+                    ${this._renderTextfield(t2.editor.icon_size, ["consumers", "style", "icon_size"], this._config?.consumers?.style?.icon_size, "1.5em")}
+                    ${this._renderTextfield(t2.editor.icon_opacity, ["consumers", "style", "icon_opacity"], this._config?.consumers?.style?.icon_opacity, "1")}
+                    ${this._renderTextfield(t2.editor.primary_size, ["consumers", "style", "primary_size"], this._config?.consumers?.style?.primary_size, "1em")}
+                    ${this._renderTextfield(t2.editor.primary_font_weight, ["consumers", "style", "primary_font_weight"], this._config?.consumers?.style?.primary_font_weight, "bold")}
+                    ${this._renderTextfield(t2.editor.primary_opacity, ["consumers", "style", "primary_opacity"], this._config?.consumers?.style?.primary_opacity, "1")}
+                    ${this._renderTextfield(t2.editor.secondary_size, ["consumers", "style", "secondary_size"], this._config?.consumers?.style?.secondary_size, "0.8em")}
+                    ${this._renderTextfield(t2.editor.secondary_font_weight, ["consumers", "style", "secondary_font_weight"], this._config?.consumers?.style?.secondary_font_weight, "normal")}
+                    ${this._renderTextfield(t2.editor.secondary_opacity, ["consumers", "style", "secondary_opacity"], this._config?.consumers?.style?.secondary_opacity, "0.7")}
+                </div>
+            ` : ""}
+        `;
+  }
+  _addConsumer() {
+    if (!this._config) return;
+    const newConfig = JSON.parse(JSON.stringify(this._config));
+    if (!newConfig.consumers) newConfig.consumers = { items: [] };
+    if (!newConfig.consumers.items) newConfig.consumers.items = [];
+    newConfig.consumers.items.push({
+      entity: "",
+      auto_color: true
+    });
+    this._config = newConfig;
+    this._expandedConsumerIndex = newConfig.consumers.items.length - 1;
+    this._fireEvent();
+  }
+  _removeConsumer(index) {
+    if (!this._config) return;
+    const newConfig = JSON.parse(JSON.stringify(this._config));
+    if (!newConfig.consumers?.items) return;
+    newConfig.consumers.items.splice(index, 1);
+    this._config = newConfig;
+    if (this._expandedConsumerIndex === index) {
+      this._expandedConsumerIndex = null;
+    } else if (this._expandedConsumerIndex !== null && this._expandedConsumerIndex > index) {
+      this._expandedConsumerIndex--;
+    }
+    this._fireEvent();
+  }
+  _toggleConsumer(index) {
+    if (this._expandedConsumerIndex === index) {
+      this._expandedConsumerIndex = null;
+    } else {
+      this._expandedConsumerIndex = index;
+    }
+    this.requestUpdate();
   }
   _renderStylingTab() {
     const t2 = this._getT();
@@ -3852,6 +4569,7 @@ const _PVMonitorCardEditor = class _PVMonitorCardEditor extends i {
                     ${this._renderTab("general", t2.editor.tab_general, "mdi:cog")}
                     ${this._renderTab("styling", t2.editor.tab_styling, "mdi:palette")}
                     ${this._renderTab("infobar", t2.editor.tab_infobar, "mdi:information")}
+                    ${this._renderTab("consumers", t2.editor.tab_consumers, "mdi:flash")}
                     ${this._renderTab("pv", t2.editor.tab_pv, "mdi:solar-panel")}
                     ${this._renderTab("battery", t2.editor.tab_battery, "mdi:battery")}
                     ${this._renderTab("house", t2.editor.tab_house, "mdi:home")}
@@ -3868,6 +4586,10 @@ const _PVMonitorCardEditor = class _PVMonitorCardEditor extends i {
 
                 <div class="tab-content ${this._activeTab === "infobar" ? "active" : ""}">
                     ${this._renderInfoBarTab()}
+                </div>
+
+                <div class="tab-content ${this._activeTab === "consumers" ? "active" : ""}">
+                    ${this._renderConsumersTab()}
                 </div>
 
                 <div class="tab-content ${this._activeTab === "pv" ? "active" : ""}">
@@ -4069,6 +4791,49 @@ _PVMonitorCardEditor.styles = i$3`
             grid-template-columns: 1fr 1fr;
             gap: 16px;
         }
+        .consumer-section {
+            position: relative;
+            margin-bottom: 16px;
+            border: 1px solid rgba(127, 127, 127, 0.3);
+            border-radius: 8px;
+            background: rgba(0, 0, 0, 0.1);
+        }
+        .consumer-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            padding: 8px 0;
+            user-select: none;
+        }
+        .consumer-header:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        .consumer-title {
+            font-weight: bold;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .consumer-header-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .consumer-content {
+            margin-top: 12px;
+            overflow: hidden;
+        }
+        .consumer-content.collapsed {
+            display: none;
+        }
+        .expand-icon {
+            transition: transform 0.2s;
+        }
+        .expand-icon.expanded {
+            transform: rotate(180deg);
+        }
     `;
 let PVMonitorCardEditor = _PVMonitorCardEditor;
 __decorateClass([
@@ -4089,6 +4854,9 @@ __decorateClass([
 __decorateClass([
   r()
 ], PVMonitorCardEditor.prototype, "_showAutocomplete");
+__decorateClass([
+  r()
+], PVMonitorCardEditor.prototype, "_expandedConsumerIndex");
 customElements.define("pv-monitor-card-editor", PVMonitorCardEditor);
 const pvMonitorCardEditor = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
