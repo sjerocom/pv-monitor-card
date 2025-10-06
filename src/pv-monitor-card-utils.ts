@@ -1,5 +1,3 @@
-// Utility-Funktionen für PV Monitor Card
-
 export function formatPower(value: number): string {
     const absValue = Math.abs(value);
     if (absValue >= 1000) {
@@ -96,32 +94,30 @@ export function getPVColor(power: number, maxPower: number = 10000): { color: st
 
     if (abs_w < 10) return { color: '', duration: dur_glow, show: false };
 
-    // Berechne Farbstufen basierend auf maxPower
-    const step1 = maxPower * 0.01;   // 1%
-    const step2 = maxPower * 0.05;   // 5%
-    const step3 = maxPower * 0.1;    // 10%
-    const step4 = maxPower * 0.2;    // 20%
-    const step5 = maxPower * 0.4;    // 40%
-    const step6 = maxPower * 0.6;    // 60%
-    const step7 = maxPower * 0.8;    // 80%
-    const step8 = maxPower * 1.0;    // 100%
-    const step9 = maxPower * 1.2;    // 120%
-    const step10 = maxPower * 1.4;   // 140%
+    const step1 = maxPower * 0.01;
+    const step2 = maxPower * 0.05;
+    const step3 = maxPower * 0.1;
+    const step4 = maxPower * 0.2;
+    const step5 = maxPower * 0.4;
+    const step6 = maxPower * 0.6;
+    const step7 = maxPower * 0.8;
+    const step8 = maxPower;
+    const step9 = maxPower * 1.2;
+    const step10 = maxPower * 1.4;
 
     let baseColor = '';
-    if (abs_w < step1) baseColor = 'rgba(156,39,176,';        // Lila (sehr niedrig)
-    else if (abs_w < step2) baseColor = 'rgba(244,67,54,';    // Rot (niedrig)
-    else if (abs_w < step3) baseColor = 'rgba(255,111,0,';    // Orange-Rot
-    else if (abs_w < step4) baseColor = 'rgba(255,152,0,';    // Orange
-    else if (abs_w < step5) baseColor = 'rgba(255,193,7,';    // Gelb-Orange
-    else if (abs_w < step6) baseColor = 'rgba(255,214,0,';    // Gelb
-    else if (abs_w < step7) baseColor = 'rgba(255,235,59,';   // Hellgelb
-    else if (abs_w < step8) baseColor = 'rgba(255,249,196,';  // Fast Weiß
-    else if (abs_w < step9) baseColor = 'rgba(255,255,224,';  // Sehr hell
-    else if (abs_w < step10) baseColor = 'rgba(255,255,240,'; // Extrem hell
-    else baseColor = 'rgba(255,255,255,';                      // Weiß (Maximum)
+    if (abs_w < step1) baseColor = 'rgba(156,39,176,';
+    else if (abs_w < step2) baseColor = 'rgba(244,67,54,';
+    else if (abs_w < step3) baseColor = 'rgba(255,111,0,';
+    else if (abs_w < step4) baseColor = 'rgba(255,152,0,';
+    else if (abs_w < step5) baseColor = 'rgba(255,193,7,';
+    else if (abs_w < step6) baseColor = 'rgba(255,214,0,';
+    else if (abs_w < step7) baseColor = 'rgba(255,235,59,';
+    else if (abs_w < step8) baseColor = 'rgba(255,249,196,';
+    else if (abs_w < step9) baseColor = 'rgba(255,255,224,';
+    else if (abs_w < step10) baseColor = 'rgba(255,255,240,';
+    else baseColor = 'rgba(255,255,255,';
 
-    // Alpha-Wert basierend auf Leistung (0.5 bis 1.0)
     const alpha = Math.min(1, 0.5 + (abs_w / (maxPower * 1.3)) * 0.8);
     const color = baseColor + alpha.toFixed(2) + ')';
 
@@ -133,33 +129,30 @@ export function getBatterieColor(charge: number, discharge: number, batteryCapac
     const abs_w = Math.abs(net_w);
     const threshold = 10;
 
-    // Dynamische Duration basierend auf Batteriekapazität
     const dur = Math.max(1, 15 - (abs_w / (batteryCapacity * 0.6) * 6));
 
     if (Math.abs(net_w) < threshold) return { color: '', duration: dur, show: false };
 
-    // Berechne Farbstufen basierend auf batteryCapacity (ähnlich wie bei PV)
-    const step1 = batteryCapacity * 0.025;   // 2.5%
-    const step2 = batteryCapacity * 0.03;    // 3%
-    const step3 = batteryCapacity * 0.035;   // 3.5%
-    const step4 = batteryCapacity * 0.04;    // 4%
-    const step5 = batteryCapacity * 0.045;   // 4.5%
-    const step6 = batteryCapacity * 0.05;    // 5%
-    const step7 = batteryCapacity * 0.055;   // 5.5%
-    const step8 = batteryCapacity * 0.06;    // 6%
-    const step9 = batteryCapacity * 0.065;   // 6.5%
-    const step10 = batteryCapacity * 0.075;  // 7.5%
-    const step11 = batteryCapacity * 0.1;    // 10%
-    const step12 = batteryCapacity * 0.125;  // 12.5%
-    const step13 = batteryCapacity * 0.15;   // 15%
-    const step14 = batteryCapacity * 0.175;  // 17.5%
-    const step15 = batteryCapacity * 0.2;    // 20%
-    const step16 = batteryCapacity * 0.25;   // 25%
-    const step17 = batteryCapacity * 0.3;    // 30%
+    const step1 = batteryCapacity * 0.025;
+    const step2 = batteryCapacity * 0.03;
+    const step3 = batteryCapacity * 0.035;
+    const step4 = batteryCapacity * 0.04;
+    const step5 = batteryCapacity * 0.045;
+    const step6 = batteryCapacity * 0.05;
+    const step7 = batteryCapacity * 0.055;
+    const step8 = batteryCapacity * 0.06;
+    const step9 = batteryCapacity * 0.065;
+    const step10 = batteryCapacity * 0.075;
+    const step11 = batteryCapacity * 0.1;
+    const step12 = batteryCapacity * 0.125;
+    const step13 = batteryCapacity * 0.15;
+    const step14 = batteryCapacity * 0.175;
+    const step15 = batteryCapacity * 0.2;
+    const step16 = batteryCapacity * 0.25;
+    const step17 = batteryCapacity * 0.3;
 
     let color = '';
     if (net_w > threshold) {
-        // Laden (Grüntöne)
         if (abs_w < step1) color = 'rgba(255,235,59,0.4)';
         else if (abs_w < step2) color = 'rgba(238,233,52,0.6)';
         else if (abs_w < step3) color = 'rgba(220,231,47,0.8)';
@@ -179,7 +172,6 @@ export function getBatterieColor(charge: number, discharge: number, batteryCapac
         else if (abs_w < step17) color = 'rgba(20,83,28,1)';
         else color = 'rgba(10,50,20,1)';
     } else {
-        // Entladen (Rot-/Lilatöne)
         if (abs_w < step1) color = 'rgba(255,235,59,0.5)';
         else if (abs_w < step2) color = 'rgba(255,202,40,0.6)';
         else if (abs_w < step3) color = 'rgba(255,167,38,0.7)';
@@ -280,7 +272,6 @@ export function calculateBatteryRuntime(
     const pNetKw = chKw - disKw;
     const thresholdKw = 0.03;
 
-    // Entladen (Restlaufzeit)
     if (eRestKwh > 0 && pNetKw < -thresholdKw) {
         const totalSeconds = (eRestKwh / Math.abs(pNetKw)) * 3600;
         return formatTime(totalSeconds);
@@ -314,7 +305,6 @@ export function calculateBatteryChargeTime(
     const pNetKw = chKw - disKw;
     const thresholdKw = 0.03;
 
-    // Laden (Restladezeit)
     if (eMissingKwh > 0 && pNetKw > thresholdKw) {
         const totalSeconds = (eMissingKwh / pNetKw) * 3600;
         return formatTime(totalSeconds);
@@ -325,9 +315,6 @@ export function calculateBatteryChargeTime(
     }
 }
 
-/**
- * Formatiert Sekunden in lesbare Zeit (Xt Xh Xm Xs)
- */
 function formatTime(totalSeconds: number): string {
     const days = Math.floor(totalSeconds / 86400);
     const hours = Math.floor((totalSeconds % 86400) / 3600);
@@ -344,9 +331,6 @@ function formatTime(totalSeconds: number): string {
 }
 
 /**
- * Berechnet die Autarkie (Selbstversorgungsgrad)
- * Autarkie = (PV-Produktion + Batterie-Entladung - Netzeinspeisung) / Hausverbrauch * 100
- *
  * @param pvProductionW PV-Produktion in W
  * @param batteryDischargeW Batterie-Entladung in W
  * @param gridFeedInW Netzeinspeisung in W (positiv bei Einspeisung)
@@ -359,31 +343,17 @@ export function calculateAutarky(
     gridFeedInW: number,
     houseConsumptionW: number
 ): string {
-    // Hausverbrauch muss positiv sein
     if (houseConsumptionW <= 0) return '—';
-
-    // Eigenproduktion = PV + Batterie-Entladung
     const selfProduction = pvProductionW + batteryDischargeW;
-
-    // Netzbezug berechnen (negativ bei Bezug, positiv bei Einspeisung)
     const gridConsumption = gridFeedInW < 0 ? Math.abs(gridFeedInW) : 0;
-
-    // Eigenverbrauch = Hausverbrauch - Netzbezug
     const selfConsumption = houseConsumptionW - gridConsumption;
-
-    // Autarkie = Eigenverbrauch / Hausverbrauch * 100
     const autarky = (selfConsumption / houseConsumptionW) * 100;
-
-    // Auf 0-100 begrenzen
     const clampedAutarky = Math.max(0, Math.min(100, autarky));
 
     return `${Math.round(clampedAutarky)}%`;
 }
 
 /**
- * Berechnet den Eigenverbrauch (Anteil der selbst genutzten PV-Produktion)
- * Eigenverbrauch = (PV-Produktion - Netzeinspeisung) / PV-Produktion * 100
- *
  * @param pvProductionW PV-Produktion in W
  * @param gridFeedInW Netzeinspeisung in W (positiv bei Einspeisung)
  * @returns Eigenverbrauch in Prozent (0-100) oder "—" wenn nicht berechenbar
@@ -392,19 +362,10 @@ export function calculateSelfConsumption(
     pvProductionW: number,
     gridFeedInW: number
 ): string {
-    // PV-Produktion muss positiv sein
     if (pvProductionW <= 10) return '—';
-
-    // Einspeisung (positiv wenn ins Netz eingespeist wird)
     const feedIn = gridFeedInW > 0 ? gridFeedInW : 0;
-
-    // Selbst verbrauchte PV-Energie = PV - Einspeisung
     const selfUsed = pvProductionW - feedIn;
-
-    // Eigenverbrauch = Selbst verbrauchte Energie / PV-Produktion * 100
     const selfConsumption = (selfUsed / pvProductionW) * 100;
-
-    // Auf 0-100 begrenzen
     const clampedSelfConsumption = Math.max(0, Math.min(100, selfConsumption));
 
     return `${Math.round(clampedSelfConsumption)}%`;

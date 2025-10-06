@@ -4,15 +4,12 @@
 export type SupportedLanguage = 'de' | 'en' | 'fr' | 'it' | 'es';
 
 export interface Translations {
-    // General
     general: {
         missing_entity: string;
         inactive: string;
     };
 
-    // Editor Labels
     editor: {
-        // Tabs
         tab_general: string;
         tab_styling: string;
         tab_infobar: string;
@@ -21,7 +18,6 @@ export interface Translations {
         tab_house: string;
         tab_grid: string;
 
-        // General Tab
         card_header: string;
         title: string;
         title_placeholder: string;
@@ -42,7 +38,6 @@ export interface Translations {
         language: string;
         language_helper: string;
 
-        // Central Entities
         central_entities: string;
         central_entities_helper: string;
         entity_pv_production: string;
@@ -58,7 +53,6 @@ export interface Translations {
         entity_grid_power: string;
         entity_grid_power_helper: string;
 
-        // Central Configuration
         central_config: string;
         central_config_helper: string;
         pv_max_power_label: string;
@@ -68,14 +62,12 @@ export interface Translations {
         grid_threshold_label: string;
         grid_threshold_helper: string;
 
-        // Show/Hide Cards
         card_visibility: string;
         show_pv_card: string;
         show_battery_card: string;
         show_house_card: string;
         show_grid_card: string;
 
-        // Info Bar Tab
         infobar_settings: string;
         enable_infobar: string;
         infobar_position: string;
@@ -93,12 +85,10 @@ export interface Translations {
         label: string;
         unit: string;
 
-        // Info Bar Default Labels
         default_autarky: string;
         default_runtime: string;
         default_chargetime: string;
 
-        // PV Tab
         pv_system: string;
         pv_entity: string;
         pv_entity_helper: string;
@@ -108,7 +98,6 @@ export interface Translations {
         max_power: string;
         max_power_helper: string;
 
-        // Battery Tab
         battery: string;
         battery_entity: string;
         battery_entity_helper: string;
@@ -122,12 +111,10 @@ export interface Translations {
         calculate_runtime_helper: string;
         icon_auto_helper: string;
 
-        // House Tab
         house_consumption: string;
         house_entity: string;
         house_entity_helper: string;
 
-        // Grid Tab
         grid: string;
         grid_entity: string;
         grid_entity_helper: string;
@@ -141,7 +128,6 @@ export interface Translations {
         text_consumption: string;
         text_consumption_placeholder: string;
 
-        // Common
         additional_texts: string;
         secondary_entity: string;
         secondary_entity_helper: string;
@@ -156,7 +142,6 @@ export interface Translations {
         secondary_color: string;
         icon_color: string;
 
-        // Styling Tab
         card_styling: string;
         border_radius: string;
         text_color: string;
@@ -192,24 +177,20 @@ export interface Translations {
         tertiary_opacity: string;
         tertiary_font_weight: string;
 
-        // Picker Labels
         select_entity: string;
         select_icon: string;
 
-        // Action Labels
         action_none: string;
         action_more_info: string;
         action_navigate: string;
         action_url: string;
         action_call_service: string;
 
-        // Theme
         theme: string;
         theme_helper: string;
         select_theme: string;
     };
 
-    // Runtime Status Texts
     status: {
         feed_in: string;
         neutral: string;
@@ -1190,9 +1171,6 @@ export const translations: Record<SupportedLanguage, Translations> = {
     },
 };
 
-/**
- * Detects the browser's language and returns a supported language code
- */
 export function detectLanguage(): SupportedLanguage {
     const browserLang = navigator.language.toLowerCase();
 
@@ -1201,20 +1179,14 @@ export function detectLanguage(): SupportedLanguage {
     if (browserLang.startsWith('it')) return 'it';
     if (browserLang.startsWith('es')) return 'es';
 
-    return 'en'; // Default to English
+    return 'en';
 }
 
-/**
- * Gets translations for a specific language
- */
 export function getTranslations(language?: SupportedLanguage): Translations {
     const lang = language || detectLanguage();
     return translations[lang] || translations.en;
 }
 
-/**
- * Language display names for the language selector
- */
 export const languageNames: Record<SupportedLanguage, string> = {
     de: 'Deutsch',
     en: 'English',

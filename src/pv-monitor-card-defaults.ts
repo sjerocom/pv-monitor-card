@@ -5,7 +5,6 @@ import { applyThemeToConfig } from "./pv-monitor-card-themes";
 export function getDefaultConfig(config: PVMonitorCardConfig): PVMonitorCardConfig {
     const t = getTranslations(config.language || detectLanguage());
 
-    // Apply theme first if specified
     let themedConfig = config;
     if (config.theme) {
         themedConfig = applyThemeToConfig(config, config.theme);
@@ -20,10 +19,8 @@ export function getDefaultConfig(config: PVMonitorCardConfig): PVMonitorCardConf
         show_icon: themedConfig.show_icon !== false,
         grid_gap: themedConfig.grid_gap ?? '6px',
 
-        // Central entities - keep as is if provided
         entities: themedConfig.entities,
 
-        // Central configuration values
         pv_max_power: themedConfig.pv_max_power ?? 10000,
         battery_capacity: themedConfig.battery_capacity ?? 10000,
         grid_threshold: themedConfig.grid_threshold ?? 10,

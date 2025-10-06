@@ -21,7 +21,6 @@ export class PVMonitorCardEditor extends LitElement {
             z-index: 1;
         }
 
-        /* Critical fix: Ensure entity picker dropdowns appear above everything */
         :host ::slotted(*),
         :host * {
             --ha-entity-picker-z-index: 9999;
@@ -104,7 +103,6 @@ export class PVMonitorCardEditor extends LitElement {
             position: relative;
         }
 
-        /* Fix entity picker autocomplete being covered by dropdown */
         ha-entity-picker,
         ha-selector-entity {
             position: relative;
@@ -116,7 +114,6 @@ export class PVMonitorCardEditor extends LitElement {
             z-index: 1000;
         }
 
-        /* Ensure combo-box dropdowns have proper z-index */
         ha-combo-box {
             position: relative;
         }
@@ -125,7 +122,6 @@ export class PVMonitorCardEditor extends LitElement {
             width: 100%;
         }
 
-        /* Fix dropdown text visibility - try different approach */
         ha-combo-box {
             color: #e1e1e1 !important;
         }
@@ -139,7 +135,6 @@ export class PVMonitorCardEditor extends LitElement {
             background-color: #2c2c2c !important;
         }
 
-        /* Custom autocomplete dropdown */
         .autocomplete-wrapper {
             position: relative;
             width: 100%;
@@ -249,12 +244,10 @@ export class PVMonitorCardEditor extends LitElement {
     }
 
     private _debouncedFireEvent(): void {
-        // Clear existing timer
         if (this._debounceTimer) {
             window.clearTimeout(this._debounceTimer);
         }
 
-        // Set new timer - fire event after 1000ms of inactivity
         this._debounceTimer = window.setTimeout(() => {
             this._fireEvent();
             this._debounceTimer = undefined;
@@ -476,7 +469,6 @@ export class PVMonitorCardEditor extends LitElement {
                                     const target = ev.target as any;
                                     const inputValue = target.value;
 
-                                    // Filter entities basierend auf Eingabe
                                     const filtered = inputValue
                                             ? entities.filter(e => e.toLowerCase().includes(inputValue.toLowerCase())).slice(0, 50)
                                             : [];
@@ -485,7 +477,6 @@ export class PVMonitorCardEditor extends LitElement {
                                     this._showAutocomplete.set(pathKey, filtered.length > 0);
                                     this.requestUpdate();
 
-                                    // Config Update
                                     if (!this._config) return;
                                     const newConfig = JSON.parse(JSON.stringify(this._config));
                                     let current: any = newConfig;
@@ -504,7 +495,6 @@ export class PVMonitorCardEditor extends LitElement {
                                     this._debouncedFireEvent();
                                 }}
                                 @focus=${() => {
-                                    // Zeige alle Entities beim Fokus wenn leer
                                     const currentValue = value || '';
                                     if (!currentValue) {
                                         this._autocompleteResults.set(pathKey, entities.slice(0, 50));
@@ -513,7 +503,6 @@ export class PVMonitorCardEditor extends LitElement {
                                     }
                                 }}
                                 @blur=${() => {
-                                    // Verzögert schließen, damit Klick auf Item noch funktioniert
                                     setTimeout(() => {
                                         this._showAutocomplete.set(pathKey, false);
                                         this.requestUpdate();
@@ -661,7 +650,6 @@ export class PVMonitorCardEditor extends LitElement {
                                 if (!this._config) return;
                                 const newValue = ev.detail?.value;
 
-                                // Update config
                                 const newConfig = { ...this._config };
                                 if (!newValue || newValue === '') {
                                     delete newConfig.theme;
@@ -670,7 +658,6 @@ export class PVMonitorCardEditor extends LitElement {
                                 }
                                 this._config = newConfig;
 
-                                // Fire event and re-render
                                 this._fireEvent();
                                 this.requestUpdate();
                             }}

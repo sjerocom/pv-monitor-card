@@ -180,14 +180,12 @@ export class PVMonitorCard extends LitElement {
         let value = '';
         let unit = '';
 
-        // Get central entity values with fallback
         const getCentralEntityValue = (entityKey: string): number => {
             const entityId = this.config.entities?.[entityKey as keyof typeof this.config.entities];
             if (!entityId) return 0;
             return parseFloat(this.hass!.states[entityId]?.state) || 0;
         };
 
-        // Item 1: Autarky or Self-Consumption based on calculation_mode
         if (itemType === 'calculation') {
             const mode = this.config.info_bar?.calculation_mode || 'autarky';
 
@@ -207,7 +205,6 @@ export class PVMonitorCard extends LitElement {
                 unit = '';
             }
         }
-        // Item 2: Battery Runtime (if calculate_battery_times enabled)
         else if (itemType === 'runtime' && this.config.info_bar?.calculate_battery_times) {
             const batteryCapacity = this.config.battery_capacity || 10000;
             const socPercent = getCentralEntityValue('battery_soc');
@@ -217,7 +214,6 @@ export class PVMonitorCard extends LitElement {
             value = calculateBatteryRuntime(batteryCapacity, socPercent, charge, discharge);
             unit = '';
         }
-        // Item 3: Battery Charge Time (if calculate_battery_times enabled)
         else if (itemType === 'chargetime' && this.config.info_bar?.calculate_battery_times) {
             const batteryCapacity = this.config.battery_capacity || 10000;
             const socPercent = getCentralEntityValue('battery_soc');
@@ -227,7 +223,6 @@ export class PVMonitorCard extends LitElement {
             value = calculateBatteryChargeTime(batteryCapacity, socPercent, charge, discharge);
             unit = '';
         }
-        // Manual entity override
         else if (item.entity) {
             const entity = this.hass.states[item.entity];
             if (!entity) return html``;
@@ -262,7 +257,6 @@ export class PVMonitorCard extends LitElement {
             ib.item1?.entity || ib.item2?.entity || ib.item3?.entity;
         if (!hasAnyContent) return html``;
 
-        // Check if any tap actions are defined
         const hasActions = ib.tap_action || ib.double_tap_action || ib.hold_action;
         const cursor = hasActions ? 'pointer' : 'default';
 
@@ -296,7 +290,6 @@ export class PVMonitorCard extends LitElement {
     }
 
     private _renderNetz() {
-        // Use card-specific entity or fall back to central entity
         const entityId = this.config.netz?.entity || this.config.entities?.grid_power;
         if (!entityId || !this.hass) return html``;
 
@@ -331,7 +324,6 @@ export class PVMonitorCard extends LitElement {
     }
 
     private _renderPV() {
-        // Use card-specific entity or fall back to central entity
         const entityId = this.config.pv?.entity || this.config.entities?.pv_production;
         if (!entityId || !this.hass) return html``;
 
@@ -365,7 +357,6 @@ export class PVMonitorCard extends LitElement {
     }
 
     private _renderBatterie() {
-        // Use card-specific entity or fall back to central entity
         const entityId = this.config.batterie?.entity || this.config.entities?.battery_soc;
         if (!entityId || !this.hass) return html``;
 
@@ -378,7 +369,6 @@ export class PVMonitorCard extends LitElement {
         const icon = this.config.batterie.icon || getBatteryIcon(percentage);
         const iconColor = getBatteryIconColor(percentage);
 
-        // Use card-specific or central entities for charge/discharge
         const chargeEntityId = this.config.batterie.ladung_entity || this.config.entities?.battery_charge;
         const dischargeEntityId = this.config.batterie.entladung_entity || this.config.entities?.battery_discharge;
 
@@ -415,7 +405,6 @@ export class PVMonitorCard extends LitElement {
     }
 
     private _renderHaus() {
-        // Use card-specific entity or fall back to central entity
         const entityId = this.config.haus?.entity || this.config.entities?.house_consumption;
         if (!entityId || !this.hass) return html``;
 
