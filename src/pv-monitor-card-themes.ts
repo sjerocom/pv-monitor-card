@@ -1,7 +1,7 @@
 // Theme System for PV Monitor Card
 // Supports predefined themes and custom theme files
 
-export type ThemeId = 'dark' | 'light' | 'blue' | 'green' | 'monochrome' | 'solarized' | 'nord' | 'dracula' | 'catppuccin' | 'material' | 'minimalist' | 'slate' | 'sunset' | 'ocean' | 'purple' | 'matrix' | 'bobs_burgers' | string;
+export type ThemeId = 'dark' | 'light' | 'blue' | 'green' | 'monochrome' | 'solarized' | 'nord' | 'dracula' | 'catppuccin' | 'material' | 'minimalist' | 'slate' | 'sunset' | 'ocean' | 'purple' | 'matrix' | 'bobs_burgers' | 'simpsons' | 'family_guy' | 'hal9000' | 'terminator' | 'dr_who' | 'rick_morty' | 'frankenstein' | 'mr_robot' | 'breaking_bad' | 'squid_game' | string;
 
 export interface Theme {
     id: ThemeId;
@@ -420,6 +420,236 @@ export const defaultThemes: Record<string, Theme> = {
             consumer_primary_color: 'rgba(206, 48, 45, 1)',
             consumer_secondary_color: 'rgba(42, 54, 59, 0.7)',
         }
+    },
+
+    simpsons: {
+        id: 'simpsons',
+        name: 'The Simpsons',
+        colors: {
+            card_background_color: '#FFD90F',
+            card_border_color: '#FED41D',
+            card_text_color: '#1A1A1A',
+            primary_color: '#00A8E1',
+            secondary_color: '#FF6B35',
+            title_color: '#1A1A1A',
+            subtitle_color: '#4A4A4A',
+            infobar_background_color: '#FED41D',
+            infobar_border_color: '#FFB300',
+            infobar_icon_color: '#00A8E1',
+            infobar_label_color: '#1A1A1A',
+            infobar_value_color: '#4A4A4A',
+            consumer_background_color: '#FFE55C',
+            consumer_border_color: '#FFB300',
+            consumer_primary_color: '#00A8E1',
+            consumer_secondary_color: '#FF6B35'
+        }
+    },
+
+    family_guy: {
+        id: 'family_guy',
+        name: 'Family Guy',
+        colors: {
+            card_background_color: '#FFFFFF',
+            card_border_color: '#1E3A8A',
+            card_text_color: '#1A1A1A',
+            primary_color: '#DC2626',
+            secondary_color: '#FBBF24',
+            title_color: '#1E3A8A',
+            subtitle_color: '#4A5568',
+            infobar_background_color: '#F0F4FF',
+            infobar_border_color: '#1E3A8A',
+            infobar_icon_color: '#DC2626',
+            infobar_label_color: '#1E3A8A',
+            infobar_value_color: '#4A5568',
+            consumer_background_color: '#E0E7FF',
+            consumer_border_color: '#1E3A8A',
+            consumer_primary_color: '#DC2626',
+            consumer_secondary_color: '#FBBF24'
+        }
+    },
+
+    hal9000: {
+        id: 'hal9000',
+        name: 'HAL 9000',
+        colors: {
+            card_background_color: '#0A0A0A',
+            card_border_color: '#CC0000',
+            card_text_color: '#E0E0E0',
+            primary_color: '#FF0000',
+            secondary_color: '#CC0000',
+            title_color: '#FF0000',
+            subtitle_color: '#CC0000',
+            infobar_background_color: '#1A1A1A',
+            infobar_border_color: '#CC0000',
+            infobar_icon_color: '#FF0000',
+            infobar_label_color: '#E0E0E0',
+            infobar_value_color: '#CC0000',
+            consumer_background_color: '#0F0F0F',
+            consumer_border_color: '#990000',
+            consumer_primary_color: '#FF0000',
+            consumer_secondary_color: '#CC0000'
+        }
+    },
+
+    terminator: {
+        id: 'terminator',
+        name: 'Terminator',
+        colors: {
+            card_background_color: '#1A1A1A',
+            card_border_color: '#B91C1C',
+            card_text_color: '#E0E0E0',
+            primary_color: '#DC2626',
+            secondary_color: '#7C3AED',
+            title_color: '#DC2626',
+            subtitle_color: '#9CA3AF',
+            infobar_background_color: '#262626',
+            infobar_border_color: '#991B1B',
+            infobar_icon_color: '#EF4444',
+            infobar_label_color: '#D1D5DB',
+            infobar_value_color: '#9CA3AF',
+            consumer_background_color: '#0F0F0F',
+            consumer_border_color: '#7C2D12',
+            consumer_primary_color: '#DC2626',
+            consumer_secondary_color: '#7C3AED'
+        }
+    },
+
+    dr_who: {
+        id: 'dr_who',
+        name: 'Doctor Who',
+        colors: {
+            card_background_color: '#003B6F',
+            card_border_color: '#1E40AF',
+            card_text_color: '#FFFFFF',
+            primary_color: '#0EA5E9',
+            secondary_color: '#F59E0B',
+            title_color: '#38BDF8',
+            subtitle_color: '#93C5FD',
+            infobar_background_color: '#002347',
+            infobar_border_color: '#1E3A8A',
+            infobar_icon_color: '#38BDF8',
+            infobar_label_color: '#DBEAFE',
+            infobar_value_color: '#93C5FD',
+            consumer_background_color: '#001529',
+            consumer_border_color: '#1E40AF',
+            consumer_primary_color: '#0EA5E9',
+            consumer_secondary_color: '#F59E0B'
+        }
+    },
+
+    rick_morty: {
+        id: 'rick_morty',
+        name: 'Rick & Morty',
+        colors: {
+            card_background_color: '#1A3A52',
+            card_border_color: '#22C55E',
+            card_text_color: '#F0F0F0',
+            primary_color: '#22C55E',
+            secondary_color: '#FACC15',
+            title_color: '#10B981',
+            subtitle_color: '#94A3B8',
+            infobar_background_color: '#0F2537',
+            infobar_border_color: '#16A34A',
+            infobar_icon_color: '#22C55E',
+            infobar_label_color: '#E0E0E0',
+            infobar_value_color: '#94A3B8',
+            consumer_background_color: '#0A1A28',
+            consumer_border_color: '#15803D',
+            consumer_primary_color: '#22C55E',
+            consumer_secondary_color: '#FACC15'
+        }
+    },
+
+    frankenstein: {
+        id: 'frankenstein',
+        name: 'Frankenstein',
+        colors: {
+            card_background_color: '#1C1C1C',
+            card_border_color: '#4A5D23',
+            card_text_color: '#D4D4D4',
+            primary_color: '#84CC16',
+            secondary_color: '#A78BFA',
+            title_color: '#84CC16',
+            subtitle_color: '#94A3B8',
+            infobar_background_color: '#262626',
+            infobar_border_color: '#3F5120',
+            infobar_icon_color: '#A3E635',
+            infobar_label_color: '#D4D4D4',
+            infobar_value_color: '#94A3B8',
+            consumer_background_color: '#0F0F0F',
+            consumer_border_color: '#365314',
+            consumer_primary_color: '#84CC16',
+            consumer_secondary_color: '#A78BFA'
+        }
+    },
+
+    mr_robot:  {
+        id: 'mr_robot',
+        name: 'Mr. Robot',
+        colors: {
+            card_background_color: '#0A0A0A',
+            card_border_color: '#1F1F1F',
+            card_text_color: '#00FF00',
+            primary_color: '#00FF00',
+            secondary_color: '#FF0000',
+            title_color: '#00FF00',
+            subtitle_color: '#00AA00',
+            infobar_background_color: '#000000',
+            infobar_border_color: '#1A1A1A',
+            infobar_icon_color: '#00FF00',
+            infobar_label_color: '#00DD00',
+            infobar_value_color: '#00AA00',
+            consumer_background_color: '#050505',
+            consumer_border_color: '#0F0F0F',
+            consumer_primary_color: '#00FF00',
+            consumer_secondary_color: '#FF0000'
+        }
+    },
+
+    breaking_bad: {
+        id: 'breaking_bad',
+        name: 'Breaking Bad',
+        colors: {
+            card_background_color: '#1A1A1A',
+            card_border_color: '#065F46',
+            card_text_color: '#E5E5E5',
+            primary_color: '#10B981',
+            secondary_color: '#EAB308',
+            title_color: '#10B981',
+            subtitle_color: '#9CA3AF',
+            infobar_background_color: '#0F0F0F',
+            infobar_border_color: '#047857',
+            infobar_icon_color: '#10B981',
+            infobar_label_color: '#D1D5DB',
+            infobar_value_color: '#9CA3AF',
+            consumer_background_color: '#050505',
+            consumer_border_color: '#065F46',
+            consumer_primary_color: '#10B981',
+            consumer_secondary_color: '#EAB308'
+        }
+    },
+
+    squid_game: {
+        id: 'squid_game',
+        name: 'Squid Game',
+        colors: {
+            card_background_color: '#1A1A1A',
+            card_border_color: '#DC2626',
+            card_text_color: '#F9FAFB',
+            primary_color: '#EF4444',
+            secondary_color: '#059669',
+            title_color: '#DC2626',
+            subtitle_color: '#F87171',
+            infobar_background_color: '#0F0F0F',
+            infobar_border_color: '#B91C1C',
+            infobar_icon_color: '#EF4444',
+            infobar_label_color: '#F3F4F6',
+            infobar_value_color: '#FCA5A5',
+            consumer_background_color: '#050505',
+            consumer_border_color: '#991B1B',
+            consumer_primary_color: '#DC2626',
+            consumer_secondary_color: '#059669'
+        }
     }
 };
 
@@ -513,5 +743,15 @@ export const themeNames: Record<string, string> = {
     slate: "Slate",
     ocean: "Ocean",
     matrix: "Matrix",
-    bobs_burgers: "Bob's Burgers"
+    bobs_burgers: "Bob's Burgers",
+    simpsons: "The Simpsons",
+    family_guy: "Family Guy",
+    hal9000: "HAL 9000",
+    terminator: "Terminator",
+    dr_who: "Doctor Who",
+    rick_morty: "Rick & Morty",
+    frankenstein: "Frankenstein",
+    mr_robot: "Mr. Robot",
+    breaking_bad: "Breaking Bad",
+    squid_game: "Squid Game"
 };
