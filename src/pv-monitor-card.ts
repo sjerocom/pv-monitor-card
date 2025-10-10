@@ -729,3 +729,18 @@ export class PVMonitorCard extends LitElement {
 if (!customElements.get(CARD_TAG)) {
     customElements.define(CARD_TAG, PVMonitorCard);
 }
+
+(window as any).customCards = (window as any).customCards || [];
+(window as any).customCards.push({
+    type: "pv-monitor-card",
+    name: "PV Monitor Card",
+    description: "Monitor your photovoltaic system with battery and grid status",
+    preview: true,
+    documentationURL: "https://github.com/sjerocom/pv-monitor-card"
+});
+
+console.info(
+    '%c PV-MONITOR-CARD %c Version: 0.0.103 ',
+    'color: orange; font-weight: bold; background: black',
+    'color: white; font-weight: bold; background: dimgray'
+);
