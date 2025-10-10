@@ -3699,6 +3699,19 @@ __decorateClass$1([
 if (!customElements.get(CARD_TAG)) {
   customElements.define(CARD_TAG, PVMonitorCard);
 }
+window.customCards = window.customCards || [];
+window.customCards.push({
+  type: "pv-monitor-card",
+  name: "PV Monitor Card",
+  description: "Monitor your photovoltaic system with battery and grid status",
+  preview: true,
+  documentationURL: "https://github.com/sjerocom/pv-monitor-card"
+});
+console.info(
+  "%c PV-MONITOR-CARD %c Version: 0.0.103 ",
+  "color: orange; font-weight: bold; background: black",
+  "color: white; font-weight: bold; background: dimgray"
+);
 var __defProp = Object.defineProperty;
 var __decorateClass = (decorators, target, key, kind) => {
   var result = void 0;
