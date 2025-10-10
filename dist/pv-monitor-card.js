@@ -3703,12 +3703,12 @@ window.customCards = window.customCards || [];
 window.customCards.push({
   type: "pv-monitor-card",
   name: "PV Monitor Card",
-  description: "Monitor your photovoltaic system with battery and grid status",
+  description: "Monitor your PV-System with Battery-Info, Calculations, Grid status and Devices Power Consumtion",
   preview: true,
   documentationURL: "https://github.com/sjerocom/pv-monitor-card"
 });
 console.info(
-  "%c PV-MONITOR-CARD %c Version: 0.0.103 ",
+  "%c PV-MONITOR-CARD %c Version: 0.0.104 ",
   "color: orange; font-weight: bold; background: black",
   "color: white; font-weight: bold; background: dimgray"
 );
