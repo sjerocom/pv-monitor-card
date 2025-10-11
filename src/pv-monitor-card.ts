@@ -688,9 +688,22 @@ export class PVMonitorCard extends LitElement {
             color: ${s.title_color};
         `;
 
-        const headerStyle = `
-            margin-bottom: ${s.header_margin_bottom || '12px'};
-        `;
+        const headerBackgroundEnabled = s.header_background_enabled ?? false;
+        const headerWidth = s.header_width ?? 'auto';
+
+        let headerStyle = `margin-bottom: ${s.header_margin_bottom || '12px'};`;
+
+        if (headerBackgroundEnabled) {
+            headerStyle += `
+                background: ${s.header_background_color};
+                border: 1px solid ${s.header_border_color};
+                border-radius: ${s.header_border_radius};
+                padding: ${s.header_padding};
+                box-shadow: ${s.header_box_shadow};
+                width: ${headerWidth === 'full' ? '100%' : 'fit-content'};
+                ${headerWidth === 'auto' ? 'margin-left: auto; margin-right: auto;' : ''}
+            `;
+        }
 
         return html`
             ${showTitle || showSubtitle ? html`

@@ -148,6 +148,18 @@ export interface Translations {
         icon_color: string;
 
         card_styling: string;
+        header_background: string;
+        enable_header_background: string;
+        enable_header_background_helper: string;
+        header_background_color: string;
+        header_border_color: string;
+        header_border_radius: string;
+        header_padding: string;
+        header_width: string;
+        header_width_helper: string;
+        header_width_auto: string;
+        header_width_full: string;
+        header_box_shadow: string;
         border_radius: string;
         text_color: string;
         padding: string;
@@ -382,6 +394,18 @@ export const translations: Record<SupportedLanguage, Translations> = {
             icon_color: 'Icon Farbe',
 
             card_styling: 'Karten-Styling',
+            header_background: 'Header-Hintergrund',
+            enable_header_background: 'Header-Hintergrund aktivieren',
+            enable_header_background_helper: 'Hintergrund für Titel/Untertitel-Bereich aktivieren',
+            header_background_color: 'Header Hintergrundfarbe',
+            header_border_color: 'Header Rahmenfarbe',
+            header_border_radius: 'Header Border Radius',
+            header_padding: 'Header Padding',
+            header_width: 'Header Breite',
+            header_width_helper: 'Auto = zentriert mit Inhaltsgröße, Full = volle Breite',
+            header_width_auto: 'Auto (Inhaltsgröße)',
+            header_width_full: 'Full (100% Breite)',
+            header_box_shadow: 'Header Box Shadow',
             border_radius: 'Border Radius',
             text_color: 'Textfarbe',
             padding: 'Padding',
@@ -614,6 +638,18 @@ export const translations: Record<SupportedLanguage, Translations> = {
             icon_color: 'Icon Color',
 
             card_styling: 'Card Styling',
+            header_background: 'Header Background',
+            enable_header_background: 'Enable Header Background',
+            enable_header_background_helper: 'Enable background for title/subtitle area',
+            header_background_color: 'Header Background Color',
+            header_border_color: 'Header Border Color',
+            header_border_radius: 'Header Border Radius',
+            header_padding: 'Header Padding',
+            header_width: 'Header Width',
+            header_width_helper: 'Auto = centered with content size, Full = full width',
+            header_width_auto: 'Auto (Content Size)',
+            header_width_full: 'Full (100% Width)',
+            header_box_shadow: 'Header Box Shadow',
             border_radius: 'Border Radius',
             text_color: 'Text Color',
             padding: 'Padding',
@@ -846,6 +882,18 @@ export const translations: Record<SupportedLanguage, Translations> = {
             icon_color: 'Couleur d\'Icône',
 
             card_styling: 'Style de Carte',
+            header_background: 'Arrière-plan En-tête',
+            enable_header_background: 'Activer Arrière-plan En-tête',
+            enable_header_background_helper: 'Activer l\'arrière-plan pour la zone titre/sous-titre',
+            header_background_color: 'Couleur Arrière-plan En-tête',
+            header_border_color: 'Couleur Bordure En-tête',
+            header_border_radius: 'Rayon Bordure En-tête',
+            header_padding: 'Espacement En-tête',
+            header_width: 'Largeur En-tête',
+            header_width_helper: 'Auto = centré avec taille du contenu, Full = pleine largeur',
+            header_width_auto: 'Auto (Taille Contenu)',
+            header_width_full: 'Full (100% Largeur)',
+            header_box_shadow: 'Ombre En-tête',
             border_radius: 'Rayon de Bordure',
             text_color: 'Couleur de Texte',
             padding: 'Espacement',
@@ -1078,6 +1126,18 @@ export const translations: Record<SupportedLanguage, Translations> = {
             icon_color: 'Colore Icona',
 
             card_styling: 'Stile Scheda',
+            header_background: 'Sfondo Intestazione',
+            enable_header_background: 'Attiva Sfondo Intestazione',
+            enable_header_background_helper: 'Attiva sfondo per l\'area titolo/sottotitolo',
+            header_background_color: 'Colore Sfondo Intestazione',
+            header_border_color: 'Colore Bordo Intestazione',
+            header_border_radius: 'Raggio Bordo Intestazione',
+            header_padding: 'Spaziatura Intestazione',
+            header_width: 'Larghezza Intestazione',
+            header_width_helper: 'Auto = centrato con dimensione contenuto, Full = larghezza completa',
+            header_width_auto: 'Auto (Dimensione Contenuto)',
+            header_width_full: 'Full (100% Larghezza)',
+            header_box_shadow: 'Ombra Intestazione',
             border_radius: 'Raggio Bordo',
             text_color: 'Colore Testo',
             padding: 'Spaziatura',
@@ -1310,6 +1370,18 @@ export const translations: Record<SupportedLanguage, Translations> = {
             icon_color: 'Color Icono',
 
             card_styling: 'Estilo de Tarjeta',
+            header_background: 'Fondo Encabezado',
+            enable_header_background: 'Activar Fondo Encabezado',
+            enable_header_background_helper: 'Activar fondo para el área título/subtítulo',
+            header_background_color: 'Color Fondo Encabezado',
+            header_border_color: 'Color Borde Encabezado',
+            header_border_radius: 'Radio Borde Encabezado',
+            header_padding: 'Espaciado Encabezado',
+            header_width: 'Ancho Encabezado',
+            header_width_helper: 'Auto = centrado con tamaño del contenido, Full = ancho completo',
+            header_width_auto: 'Auto (Tamaño Contenido)',
+            header_width_full: 'Full (100% Ancho)',
+            header_box_shadow: 'Sombra Encabezado',
             border_radius: 'Radio de Borde',
             text_color: 'Color de Texto',
             padding: 'Espaciado',

@@ -163,6 +163,13 @@ export interface PVMonitorCardConfig {
         card_padding?: string;
         header_margin_bottom?: string;
         infobar_gap?: string;
+        header_background_enabled?: boolean;
+        header_background_color?: string;
+        header_border_color?: string;
+        header_border_radius?: string;
+        header_padding?: string;
+        header_width?: 'auto' | 'full';
+        header_box_shadow?: string;
         title_align?: "left" | "center" | "right";
         title_size?: string;
         title_font_weight?: string;

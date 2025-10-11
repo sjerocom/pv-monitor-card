@@ -684,60 +684,60 @@ export class PVMonitorCardEditor extends LitElement {
                                 .value=${value || ''}
                                 .placeholder=${t.editor.select_entity}
                                 @input=${(ev: CustomEvent) => {
-            const target = ev.target as any;
-            const inputValue = target.value;
+                                    const target = ev.target as any;
+                                    const inputValue = target.value;
 
-            const filtered = inputValue
-                ? entities.filter(e => e.toLowerCase().includes(inputValue.toLowerCase())).slice(0, 50)
-                : [];
+                                    const filtered = inputValue
+                                            ? entities.filter(e => e.toLowerCase().includes(inputValue.toLowerCase())).slice(0, 50)
+                                            : [];
 
-            this._autocompleteResults.set(pathKey, filtered);
-            this._showAutocomplete.set(pathKey, filtered.length > 0);
-            this.requestUpdate();
+                                    this._autocompleteResults.set(pathKey, filtered);
+                                    this._showAutocomplete.set(pathKey, filtered.length > 0);
+                                    this.requestUpdate();
 
-            if (!this._config) return;
-            const newConfig = JSON.parse(JSON.stringify(this._config));
-            let current: any = newConfig;
-            for (let i = 0; i < path.length - 1; i++) {
-                if (!current[path[i]]) current[path[i]] = {};
-                current = current[path[i]];
-            }
+                                    if (!this._config) return;
+                                    const newConfig = JSON.parse(JSON.stringify(this._config));
+                                    let current: any = newConfig;
+                                    for (let i = 0; i < path.length - 1; i++) {
+                                        if (!current[path[i]]) current[path[i]] = {};
+                                        current = current[path[i]];
+                                    }
 
-            if (inputValue === '') {
-                delete current[path[path.length - 1]];
-            } else {
-                current[path[path.length - 1]] = inputValue;
-            }
+                                    if (inputValue === '') {
+                                        delete current[path[path.length - 1]];
+                                    } else {
+                                        current[path[path.length - 1]] = inputValue;
+                                    }
 
-            this._config = newConfig;
-            this._debouncedFireEvent();
-        }}
+                                    this._config = newConfig;
+                                    this._debouncedFireEvent();
+                                }}
                                 @focus=${(ev: Event) => {
-            const currentValue = value || '';
-            if (!currentValue) {
-                this._autocompleteResults.set(pathKey, entities.slice(0, 50));
-                this._showAutocomplete.set(pathKey, true);
-                this.requestUpdate();
-            }
+                                    const currentValue = value || '';
+                                    if (!currentValue) {
+                                        this._autocompleteResults.set(pathKey, entities.slice(0, 50));
+                                        this._showAutocomplete.set(pathKey, true);
+                                        this.requestUpdate();
+                                    }
 
-            // Position dropdown
-            setTimeout(() => {
-                const target = ev.target as HTMLElement;
-                const dropdown = target.parentElement?.querySelector('.autocomplete-dropdown') as HTMLElement;
-                if (dropdown) {
-                    const rect = target.getBoundingClientRect();
-                    dropdown.style.top = `${rect.bottom + 4}px`;
-                    dropdown.style.left = `${rect.left}px`;
-                    dropdown.style.width = `${Math.max(rect.width, 400)}px`;
-                }
-            }, 10);
-        }}
+                                    // Position dropdown
+                                    setTimeout(() => {
+                                        const target = ev.target as HTMLElement;
+                                        const dropdown = target.parentElement?.querySelector('.autocomplete-dropdown') as HTMLElement;
+                                        if (dropdown) {
+                                            const rect = target.getBoundingClientRect();
+                                            dropdown.style.top = `${rect.bottom + 4}px`;
+                                            dropdown.style.left = `${rect.left}px`;
+                                            dropdown.style.width = `${Math.max(rect.width, 400)}px`;
+                                        }
+                                    }, 10);
+                                }}
                                 @blur=${() => {
-            setTimeout(() => {
-                this._showAutocomplete.set(pathKey, false);
-                this.requestUpdate();
-            }, 200);
-        }}
+                                    setTimeout(() => {
+                                        this._showAutocomplete.set(pathKey, false);
+                                        this.requestUpdate();
+                                    }, 200);
+                                }}
                         ></ha-textfield>
 
                         ${showDropdown ? html`
@@ -746,21 +746,21 @@ export class PVMonitorCardEditor extends LitElement {
                                     <div
                                             class="autocomplete-item"
                                             @click=${() => {
-            if (!this._config) return;
+                                                if (!this._config) return;
 
-            const newConfig = JSON.parse(JSON.stringify(this._config));
-            let current: any = newConfig;
-            for (let i = 0; i < path.length - 1; i++) {
-                if (!current[path[i]]) current[path[i]] = {};
-                current = current[path[i]];
-            }
-            current[path[path.length - 1]] = entity;
+                                                const newConfig = JSON.parse(JSON.stringify(this._config));
+                                                let current: any = newConfig;
+                                                for (let i = 0; i < path.length - 1; i++) {
+                                                    if (!current[path[i]]) current[path[i]] = {};
+                                                    current = current[path[i]];
+                                                }
+                                                current[path[path.length - 1]] = entity;
 
-            this._config = newConfig;
-            this._showAutocomplete.set(pathKey, false);
-            this._fireEvent();
-            this.requestUpdate();
-        }}
+                                                this._config = newConfig;
+                                                this._showAutocomplete.set(pathKey, false);
+                                                this._fireEvent();
+                                                this.requestUpdate();
+                                            }}
                                     >
                                         ${entity}
                                     </div>
@@ -937,11 +937,11 @@ export class PVMonitorCardEditor extends LitElement {
                     'mdi:eye',
                     t.editor.card_visibility,
                     html`
-                    ${this._renderSwitch(t.editor.show_pv_card, ['pv', 'show'], this._config?.pv?.show !== false)}
-                    ${this._renderSwitch(t.editor.show_battery_card, ['batterie', 'show'], this._config?.batterie?.show !== false)}
-                    ${this._renderSwitch(t.editor.show_house_card, ['haus', 'show'], this._config?.haus?.show !== false)}
-                    ${this._renderSwitch(t.editor.show_grid_card, ['netz', 'show'], this._config?.netz?.show !== false)}
-                `
+                        ${this._renderSwitch(t.editor.show_pv_card, ['pv', 'show'], this._config?.pv?.show !== false)}
+                        ${this._renderSwitch(t.editor.show_battery_card, ['batterie', 'show'], this._config?.batterie?.show !== false)}
+                        ${this._renderSwitch(t.editor.show_house_card, ['haus', 'show'], this._config?.haus?.show !== false)}
+                        ${this._renderSwitch(t.editor.show_grid_card, ['netz', 'show'], this._config?.netz?.show !== false)}
+                    `
             )}
 
             <div class="divider"></div>
@@ -980,31 +980,31 @@ export class PVMonitorCardEditor extends LitElement {
                         ${this._renderSwitch(t.editor.enable_infobar, ['info_bar', 'show'], this._config?.info_bar?.show)}
 
                         ${this._config?.info_bar?.show ? html`
-                        <div class="option">
-                            <div class="option-label">${t.editor.infobar_position}</div>
-                            <div class="option-control">
-                                <ha-combo-box
-                                        .value=${this._config?.info_bar?.position || 'top'}
-                                        .items=${[
-                            { value: 'top', label: t.editor.position_top },
-                            { value: 'bottom', label: t.editor.position_bottom }
-                        ]}
-                                        item-value-path="value"
-                                        item-label-path="label"
-                                        @value-changed=${(ev: any) => {
-                            if (!this._config) return;
-                            const newValue = ev.detail?.value;
-                            if (!newValue) return;
-                            const newConfig = { ...this._config };
-                            if (!newConfig.info_bar) newConfig.info_bar = {};
-                            newConfig.info_bar.position = newValue;
-                            this._config = newConfig;
-                            this._fireEvent();
-                        }}
-                                ></ha-combo-box>
+                            <div class="option">
+                                <div class="option-label">${t.editor.infobar_position}</div>
+                                <div class="option-control">
+                                    <ha-combo-box
+                                            .value=${this._config?.info_bar?.position || 'top'}
+                                            .items=${[
+                                                { value: 'top', label: t.editor.position_top },
+                                                { value: 'bottom', label: t.editor.position_bottom }
+                                            ]}
+                                            item-value-path="value"
+                                            item-label-path="label"
+                                            @value-changed=${(ev: any) => {
+                                                if (!this._config) return;
+                                                const newValue = ev.detail?.value;
+                                                if (!newValue) return;
+                                                const newConfig = { ...this._config };
+                                                if (!newConfig.info_bar) newConfig.info_bar = {};
+                                                newConfig.info_bar.position = newValue;
+                                                this._config = newConfig;
+                                                this._fireEvent();
+                                            }}
+                                    ></ha-combo-box>
+                                </div>
                             </div>
-                        </div>
-                    ` : ''}
+                        ` : ''}
                     `
             )}
 
@@ -1016,81 +1016,81 @@ export class PVMonitorCardEditor extends LitElement {
                 <div class="divider"></div>
 
                 ${this._renderCollapsibleSection(
-                    'infobar_calculation',
-                    'mdi:calculator',
-                    t.editor.calculation_mode,
-                    html`
-                        <div class="option">
-                            <div class="option-label">${t.editor.calculation_mode}</div>
-                            <div class="option-control">
-                                <ha-combo-box
-                                        .value=${this._config?.info_bar?.calculation_mode || 'autarky'}
-                                        .items=${[
-                        { value: 'autarky', label: t.editor.mode_autarky },
-                        { value: 'self_consumption', label: t.editor.mode_self_consumption }
-                    ]}
-                                        item-value-path="value"
-                                        item-label-path="label"
-                                        @value-changed=${(ev: any) => {
-                        if (!this._config) return;
-                        const newValue = ev.detail?.value;
-                        if (!newValue) return;
-                        const newConfig = { ...this._config };
-                        if (!newConfig.info_bar) newConfig.info_bar = {};
-                        newConfig.info_bar.calculation_mode = newValue;
-                        this._config = newConfig;
-                        this._fireEvent();
-                    }}
-                                ></ha-combo-box>
+                        'infobar_calculation',
+                        'mdi:calculator',
+                        t.editor.calculation_mode,
+                        html`
+                            <div class="option">
+                                <div class="option-label">${t.editor.calculation_mode}</div>
+                                <div class="option-control">
+                                    <ha-combo-box
+                                            .value=${this._config?.info_bar?.calculation_mode || 'autarky'}
+                                            .items=${[
+                                                { value: 'autarky', label: t.editor.mode_autarky },
+                                                { value: 'self_consumption', label: t.editor.mode_self_consumption }
+                                            ]}
+                                            item-value-path="value"
+                                            item-label-path="label"
+                                            @value-changed=${(ev: any) => {
+                                                if (!this._config) return;
+                                                const newValue = ev.detail?.value;
+                                                if (!newValue) return;
+                                                const newConfig = { ...this._config };
+                                                if (!newConfig.info_bar) newConfig.info_bar = {};
+                                                newConfig.info_bar.calculation_mode = newValue;
+                                                this._config = newConfig;
+                                                this._fireEvent();
+                                            }}
+                                    ></ha-combo-box>
+                                </div>
                             </div>
-                        </div>
 
-                        ${this._renderSwitch(t.editor.calculate_battery_times, ['info_bar', 'calculate_battery_times'], this._config?.info_bar?.calculate_battery_times, t.editor.calculate_battery_times_helper)}
-                    `,
-                    t.editor.calculation_mode_helper
-            )}
-
-                <div class="divider"></div>
-
-                ${this._renderCollapsibleSection(
-                    'infobar_item1',
-                    'mdi:numeric-1-box',
-                    `${t.editor.item} 1`,
-                    html`
-                        ${this._renderEntityPicker(t.editor.entity, ['info_bar', 'item1', 'entity'], this._config?.info_bar?.item1?.entity)}
-                        ${this._renderIconPicker(t.editor.icon_label, ['info_bar', 'item1', 'icon'], this._config?.info_bar?.item1?.icon)}
-                        ${this._renderTextfield(t.editor.label, ['info_bar', 'item1', 'label'], this._config?.info_bar?.item1?.label, t.editor.default_autarky)}
-                        ${this._renderTextfield(t.editor.unit, ['info_bar', 'item1', 'unit'], this._config?.info_bar?.item1?.unit, '%')}
-                    `
-            )}
+                            ${this._renderSwitch(t.editor.calculate_battery_times, ['info_bar', 'calculate_battery_times'], this._config?.info_bar?.calculate_battery_times, t.editor.calculate_battery_times_helper)}
+                        `,
+                        t.editor.calculation_mode_helper
+                )}
 
                 <div class="divider"></div>
 
                 ${this._renderCollapsibleSection(
-                    'infobar_item2',
-                    'mdi:numeric-2-box',
-                    `${t.editor.item} 2`,
-                    html`
-                        ${this._renderEntityPicker(t.editor.entity, ['info_bar', 'item2', 'entity'], this._config?.info_bar?.item2?.entity)}
-                        ${this._renderIconPicker(t.editor.icon_label, ['info_bar', 'item2', 'icon'], this._config?.info_bar?.item2?.icon)}
-                        ${this._renderTextfield(t.editor.label, ['info_bar', 'item2', 'label'], this._config?.info_bar?.item2?.label, t.editor.default_runtime)}
-                        ${this._renderTextfield(t.editor.unit, ['info_bar', 'item2', 'unit'], this._config?.info_bar?.item2?.unit)}
-                    `
-            )}
+                        'infobar_item1',
+                        'mdi:numeric-1-box',
+                        `${t.editor.item} 1`,
+                        html`
+                            ${this._renderEntityPicker(t.editor.entity, ['info_bar', 'item1', 'entity'], this._config?.info_bar?.item1?.entity)}
+                            ${this._renderIconPicker(t.editor.icon_label, ['info_bar', 'item1', 'icon'], this._config?.info_bar?.item1?.icon)}
+                            ${this._renderTextfield(t.editor.label, ['info_bar', 'item1', 'label'], this._config?.info_bar?.item1?.label, t.editor.default_autarky)}
+                            ${this._renderTextfield(t.editor.unit, ['info_bar', 'item1', 'unit'], this._config?.info_bar?.item1?.unit, '%')}
+                        `
+                )}
 
                 <div class="divider"></div>
 
                 ${this._renderCollapsibleSection(
-                    'infobar_item3',
-                    'mdi:numeric-3-box',
-                    `${t.editor.item} 3`,
-                    html`
-                        ${this._renderEntityPicker(t.editor.entity, ['info_bar', 'item3', 'entity'], this._config?.info_bar?.item3?.entity)}
-                        ${this._renderIconPicker(t.editor.icon_label, ['info_bar', 'item3', 'icon'], this._config?.info_bar?.item3?.icon)}
-                        ${this._renderTextfield(t.editor.label, ['info_bar', 'item3', 'label'], this._config?.info_bar?.item3?.label, t.editor.default_chargetime)}
-                        ${this._renderTextfield(t.editor.unit, ['info_bar', 'item3', 'unit'], this._config?.info_bar?.item3?.unit)}
-                    `
-            )}
+                        'infobar_item2',
+                        'mdi:numeric-2-box',
+                        `${t.editor.item} 2`,
+                        html`
+                            ${this._renderEntityPicker(t.editor.entity, ['info_bar', 'item2', 'entity'], this._config?.info_bar?.item2?.entity)}
+                            ${this._renderIconPicker(t.editor.icon_label, ['info_bar', 'item2', 'icon'], this._config?.info_bar?.item2?.icon)}
+                            ${this._renderTextfield(t.editor.label, ['info_bar', 'item2', 'label'], this._config?.info_bar?.item2?.label, t.editor.default_runtime)}
+                            ${this._renderTextfield(t.editor.unit, ['info_bar', 'item2', 'unit'], this._config?.info_bar?.item2?.unit)}
+                        `
+                )}
+
+                <div class="divider"></div>
+
+                ${this._renderCollapsibleSection(
+                        'infobar_item3',
+                        'mdi:numeric-3-box',
+                        `${t.editor.item} 3`,
+                        html`
+                            ${this._renderEntityPicker(t.editor.entity, ['info_bar', 'item3', 'entity'], this._config?.info_bar?.item3?.entity)}
+                            ${this._renderIconPicker(t.editor.icon_label, ['info_bar', 'item3', 'icon'], this._config?.info_bar?.item3?.icon)}
+                            ${this._renderTextfield(t.editor.label, ['info_bar', 'item3', 'label'], this._config?.info_bar?.item3?.label, t.editor.default_chargetime)}
+                            ${this._renderTextfield(t.editor.unit, ['info_bar', 'item3', 'unit'], this._config?.info_bar?.item3?.unit)}
+                        `
+                )}
             ` : ''}
         `;
     }
@@ -1186,12 +1186,12 @@ export class PVMonitorCardEditor extends LitElement {
                     'mdi:palette',
                     t.editor.styling,
                     html`
-                    ${this._renderColorPicker(t.editor.background_color, ['batterie', 'style', 'background_color'], this._config?.batterie?.style?.background_color)}
-                    ${this._renderColorPicker(t.editor.border_color, ['batterie', 'style', 'border_color'], this._config?.batterie?.style?.border_color)}
-                    ${this._renderColorPicker(t.editor.primary_color, ['batterie', 'style', 'primary_color'], this._config?.batterie?.style?.primary_color)}
-                    ${this._renderColorPicker(t.editor.secondary_color, ['batterie', 'style', 'secondary_color'], this._config?.batterie?.style?.secondary_color)}
-                    ${this._renderColorPicker(t.editor.icon_color, ['batterie', 'style', 'icon_color'], this._config?.batterie?.style?.icon_color)}
-                `
+                        ${this._renderColorPicker(t.editor.background_color, ['batterie', 'style', 'background_color'], this._config?.batterie?.style?.background_color)}
+                        ${this._renderColorPicker(t.editor.border_color, ['batterie', 'style', 'border_color'], this._config?.batterie?.style?.border_color)}
+                        ${this._renderColorPicker(t.editor.primary_color, ['batterie', 'style', 'primary_color'], this._config?.batterie?.style?.primary_color)}
+                        ${this._renderColorPicker(t.editor.secondary_color, ['batterie', 'style', 'secondary_color'], this._config?.batterie?.style?.secondary_color)}
+                        ${this._renderColorPicker(t.editor.icon_color, ['batterie', 'style', 'icon_color'], this._config?.batterie?.style?.icon_color)}
+                    `
             )}
         `;
     }
@@ -1218,12 +1218,12 @@ export class PVMonitorCardEditor extends LitElement {
                     'mdi:text',
                     t.editor.additional_texts,
                     html`
-                    ${this._renderSwitch(t.editor.show_consumer_total_in_house, ['haus', 'show_consumer_total'], this._config?.haus?.show_consumer_total, t.editor.show_consumer_total_helper)}
-                    ${this._renderEntityPicker(t.editor.secondary_entity, ['haus', 'secondary_entity'], this._config?.haus?.secondary_entity)}
-                    ${this._renderTextfield(t.editor.secondary_text, ['haus', 'secondary_text'], this._config?.haus?.secondary_text)}
-                    ${this._renderEntityPicker(t.editor.tertiary_entity, ['haus', 'tertiary_entity'], this._config?.haus?.tertiary_entity)}
-                    ${this._renderTextfield(t.editor.tertiary_text, ['haus', 'tertiary_text'], this._config?.haus?.tertiary_text)}
-                `
+                        ${this._renderSwitch(t.editor.show_consumer_total_in_house, ['haus', 'show_consumer_total'], this._config?.haus?.show_consumer_total, t.editor.show_consumer_total_helper)}
+                        ${this._renderEntityPicker(t.editor.secondary_entity, ['haus', 'secondary_entity'], this._config?.haus?.secondary_entity)}
+                        ${this._renderTextfield(t.editor.secondary_text, ['haus', 'secondary_text'], this._config?.haus?.secondary_text)}
+                        ${this._renderEntityPicker(t.editor.tertiary_entity, ['haus', 'tertiary_entity'], this._config?.haus?.tertiary_entity)}
+                        ${this._renderTextfield(t.editor.tertiary_text, ['haus', 'tertiary_text'], this._config?.haus?.tertiary_text)}
+                    `
             )}
 
             <div class="divider"></div>
@@ -1237,12 +1237,12 @@ export class PVMonitorCardEditor extends LitElement {
                     'mdi:palette',
                     t.editor.styling,
                     html`
-                    ${this._renderColorPicker(t.editor.background_color, ['haus', 'style', 'background_color'], this._config?.haus?.style?.background_color)}
-                    ${this._renderColorPicker(t.editor.border_color, ['haus', 'style', 'border_color'], this._config?.haus?.style?.border_color)}
-                    ${this._renderColorPicker(t.editor.primary_color, ['haus', 'style', 'primary_color'], this._config?.haus?.style?.primary_color)}
-                    ${this._renderColorPicker(t.editor.secondary_color, ['haus', 'style', 'secondary_color'], this._config?.haus?.style?.secondary_color)}
-                    ${this._renderColorPicker(t.editor.icon_color, ['haus', 'style', 'icon_color'], this._config?.haus?.style?.icon_color)}
-                `
+                        ${this._renderColorPicker(t.editor.background_color, ['haus', 'style', 'background_color'], this._config?.haus?.style?.background_color)}
+                        ${this._renderColorPicker(t.editor.border_color, ['haus', 'style', 'border_color'], this._config?.haus?.style?.border_color)}
+                        ${this._renderColorPicker(t.editor.primary_color, ['haus', 'style', 'primary_color'], this._config?.haus?.style?.primary_color)}
+                        ${this._renderColorPicker(t.editor.secondary_color, ['haus', 'style', 'secondary_color'], this._config?.haus?.style?.secondary_color)}
+                        ${this._renderColorPicker(t.editor.icon_color, ['haus', 'style', 'icon_color'], this._config?.haus?.style?.icon_color)}
+                    `
             )}
         `;
     }
@@ -1252,42 +1252,42 @@ export class PVMonitorCardEditor extends LitElement {
 
         return html`
             ${this._renderCollapsibleSection(
-            'grid_main',
-            'mdi:transmission-tower',
-            t.editor.grid,
-            html`
-                    ${this._renderIconPicker(t.editor.icon_label, ['netz', 'icon'], this._config?.netz?.icon)}
-                    ${this._renderSwitch(t.editor.enable_animation, ['netz', 'animation'], this._config?.netz?.animation)}
-                    ${this._renderAnimationSelector('netz', this._config?.netz?.animation, this._config?.netz?.animation_style)}
-                `
-        )}
+                    'grid_main',
+                    'mdi:transmission-tower',
+                    t.editor.grid,
+                    html`
+                        ${this._renderIconPicker(t.editor.icon_label, ['netz', 'icon'], this._config?.netz?.icon)}
+                        ${this._renderSwitch(t.editor.enable_animation, ['netz', 'animation'], this._config?.netz?.animation)}
+                        ${this._renderAnimationSelector('netz', this._config?.netz?.animation, this._config?.netz?.animation_style)}
+                    `
+            )}
 
             <div class="divider"></div>
 
             ${this._renderCollapsibleSection(
-            'grid_status',
-            'mdi:text-box',
-            t.editor.status_texts,
-            html`
-                    ${this._renderTextfield(t.editor.text_feed_in, ['netz', 'text_einspeisen'], this._config?.netz?.text_einspeisen, t.editor.text_feed_in_placeholder)}
-                    ${this._renderTextfield(t.editor.text_neutral, ['netz', 'text_neutral'], this._config?.netz?.text_neutral, t.editor.text_neutral_placeholder)}
-                    ${this._renderTextfield(t.editor.text_consumption, ['netz', 'text_bezug'], this._config?.netz?.text_bezug, t.editor.text_consumption_placeholder)}
-                `
-        )}
+                    'grid_status',
+                    'mdi:text-box',
+                    t.editor.status_texts,
+                    html`
+                        ${this._renderTextfield(t.editor.text_feed_in, ['netz', 'text_einspeisen'], this._config?.netz?.text_einspeisen, t.editor.text_feed_in_placeholder)}
+                        ${this._renderTextfield(t.editor.text_neutral, ['netz', 'text_neutral'], this._config?.netz?.text_neutral, t.editor.text_neutral_placeholder)}
+                        ${this._renderTextfield(t.editor.text_consumption, ['netz', 'text_bezug'], this._config?.netz?.text_bezug, t.editor.text_consumption_placeholder)}
+                    `
+            )}
 
             <div class="divider"></div>
 
             ${this._renderCollapsibleSection(
-            'grid_texts',
-            'mdi:text',
-            t.editor.additional_texts,
-            html`
-                    ${this._renderEntityPicker(t.editor.secondary_entity, ['netz', 'secondary_entity'], this._config?.netz?.secondary_entity)}
-                    ${this._renderTextfield(t.editor.secondary_text, ['netz', 'secondary_text'], this._config?.netz?.secondary_text)}
-                    ${this._renderEntityPicker(t.editor.tertiary_entity, ['netz', 'tertiary_entity'], this._config?.netz?.tertiary_entity)}
-                    ${this._renderTextfield(t.editor.tertiary_text, ['netz', 'tertiary_text'], this._config?.netz?.tertiary_text)}
-                `
-        )}
+                    'grid_texts',
+                    'mdi:text',
+                    t.editor.additional_texts,
+                    html`
+                        ${this._renderEntityPicker(t.editor.secondary_entity, ['netz', 'secondary_entity'], this._config?.netz?.secondary_entity)}
+                        ${this._renderTextfield(t.editor.secondary_text, ['netz', 'secondary_text'], this._config?.netz?.secondary_text)}
+                        ${this._renderEntityPicker(t.editor.tertiary_entity, ['netz', 'tertiary_entity'], this._config?.netz?.tertiary_entity)}
+                        ${this._renderTextfield(t.editor.tertiary_text, ['netz', 'tertiary_text'], this._config?.netz?.tertiary_text)}
+                    `
+            )}
 
             <div class="divider"></div>
 
@@ -1296,17 +1296,17 @@ export class PVMonitorCardEditor extends LitElement {
             <div class="divider"></div>
 
             ${this._renderCollapsibleSection(
-            'grid_styling',
-            'mdi:palette',
-            t.editor.styling,
-            html`
-                    ${this._renderColorPicker(t.editor.background_color, ['netz', 'style', 'background_color'], this._config?.netz?.style?.background_color)}
-                    ${this._renderColorPicker(t.editor.border_color, ['netz', 'style', 'border_color'], this._config?.netz?.style?.border_color)}
-                    ${this._renderColorPicker(t.editor.primary_color, ['netz', 'style', 'primary_color'], this._config?.netz?.style?.primary_color)}
-                    ${this._renderColorPicker(t.editor.secondary_color, ['netz', 'style', 'secondary_color'], this._config?.netz?.style?.secondary_color)}
-                    ${this._renderColorPicker(t.editor.icon_color, ['netz', 'style', 'icon_color'], this._config?.netz?.style?.icon_color)}
-                `
-        )}
+                    'grid_styling',
+                    'mdi:palette',
+                    t.editor.styling,
+                    html`
+                        ${this._renderColorPicker(t.editor.background_color, ['netz', 'style', 'background_color'], this._config?.netz?.style?.background_color)}
+                        ${this._renderColorPicker(t.editor.border_color, ['netz', 'style', 'border_color'], this._config?.netz?.style?.border_color)}
+                        ${this._renderColorPicker(t.editor.primary_color, ['netz', 'style', 'primary_color'], this._config?.netz?.style?.primary_color)}
+                        ${this._renderColorPicker(t.editor.secondary_color, ['netz', 'style', 'secondary_color'], this._config?.netz?.style?.secondary_color)}
+                        ${this._renderColorPicker(t.editor.icon_color, ['netz', 'style', 'icon_color'], this._config?.netz?.style?.icon_color)}
+                    `
+            )}
         `;
     }
 
@@ -1315,236 +1315,236 @@ export class PVMonitorCardEditor extends LitElement {
 
         return html`
             ${this._renderCollapsibleSection(
-            'consumers_main',
-            'mdi:flash',
-            t.editor.consumers_settings,
-            html`
-                    ${this._renderSwitch(t.editor.enable_consumers, ['consumers', 'show'], this._config?.consumers?.show)}
+                    'consumers_main',
+                    'mdi:flash',
+                    t.editor.consumers_settings,
+                    html`
+                        ${this._renderSwitch(t.editor.enable_consumers, ['consumers', 'show'], this._config?.consumers?.show)}
 
-                    ${this._config?.consumers?.show ? html`
-                        <div class="option">
-                            <div class="option-label">${t.editor.consumers_position}</div>
-                            <div class="option-control">
-                                <ha-combo-box
-                                        .value=${this._config?.consumers?.position || 'bottom'}
-                                        .items=${[
-                { value: 'bottom', label: t.editor.position_bottom }
-            ]}
-                                        item-value-path="value"
-                                        item-label-path="label"
-                                        @value-changed=${(ev: any) => {
-                if (!this._config) return;
-                const newValue = ev.detail?.value;
-                if (!newValue) return;
-                const newConfig = { ...this._config };
-                if (!newConfig.consumers) newConfig.consumers = {};
-                newConfig.consumers.position = newValue;
-                this._config = newConfig;
-                this._fireEvent();
-            }}
-                                ></ha-combo-box>
+                        ${this._config?.consumers?.show ? html`
+                            <div class="option">
+                                <div class="option-label">${t.editor.consumers_position}</div>
+                                <div class="option-control">
+                                    <ha-combo-box
+                                            .value=${this._config?.consumers?.position || 'bottom'}
+                                            .items=${[
+                                                { value: 'bottom', label: t.editor.position_bottom }
+                                            ]}
+                                            item-value-path="value"
+                                            item-label-path="label"
+                                            @value-changed=${(ev: any) => {
+                                                if (!this._config) return;
+                                                const newValue = ev.detail?.value;
+                                                if (!newValue) return;
+                                                const newConfig = { ...this._config };
+                                                if (!newConfig.consumers) newConfig.consumers = {};
+                                                newConfig.consumers.position = newValue;
+                                                this._config = newConfig;
+                                                this._fireEvent();
+                                            }}
+                                    ></ha-combo-box>
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="option">
-                            <div class="option-label">${t.editor.consumers_sort_mode}</div>
-                            <div class="option-control">
-                                <ha-combo-box
-                                        .value=${this._config?.consumers?.sort_mode || 'highest_first'}
-                                        .items=${[
-                { value: 'highest_first', label: t.editor.sort_highest_first },
-                { value: 'lowest_first', label: t.editor.sort_lowest_first },
-                { value: 'none', label: t.editor.sort_none },
-                { value: 'alpha_asc', label: t.editor.sort_alpha_asc },
-                { value: 'alpha_desc', label: t.editor.sort_alpha_desc }
-            ]}
-                                        item-value-path="value"
-                                        item-label-path="label"
-                                        @value-changed=${(ev: any) => {
-                if (!this._config) return;
-                const newValue = ev.detail?.value;
-                if (!newValue) return;
-                const newConfig = { ...this._config };
-                if (!newConfig.consumers) newConfig.consumers = {};
-                newConfig.consumers.sort_mode = newValue;
-                this._config = newConfig;
-                this._fireEvent();
-            }}
-                                ></ha-combo-box>
+                            <div class="option">
+                                <div class="option-label">${t.editor.consumers_sort_mode}</div>
+                                <div class="option-control">
+                                    <ha-combo-box
+                                            .value=${this._config?.consumers?.sort_mode || 'highest_first'}
+                                            .items=${[
+                                                { value: 'highest_first', label: t.editor.sort_highest_first },
+                                                { value: 'lowest_first', label: t.editor.sort_lowest_first },
+                                                { value: 'none', label: t.editor.sort_none },
+                                                { value: 'alpha_asc', label: t.editor.sort_alpha_asc },
+                                                { value: 'alpha_desc', label: t.editor.sort_alpha_desc }
+                                            ]}
+                                            item-value-path="value"
+                                            item-label-path="label"
+                                            @value-changed=${(ev: any) => {
+                                                if (!this._config) return;
+                                                const newValue = ev.detail?.value;
+                                                if (!newValue) return;
+                                                const newConfig = { ...this._config };
+                                                if (!newConfig.consumers) newConfig.consumers = {};
+                                                newConfig.consumers.sort_mode = newValue;
+                                                this._config = newConfig;
+                                                this._fireEvent();
+                                            }}
+                                    ></ha-combo-box>
+                                </div>
                             </div>
-                        </div>
 
-                        ${this._renderNumberfield(t.editor.consumers_threshold, ['consumers', 'threshold'], this._config?.consumers?.threshold, 0, 10000, 1, t.editor.consumers_threshold_helper)}
-                    ` : ''}
-                `
-        )}
+                            ${this._renderNumberfield(t.editor.consumers_threshold, ['consumers', 'threshold'], this._config?.consumers?.threshold, 0, 10000, 1, t.editor.consumers_threshold_helper)}
+                        ` : ''}
+                    `
+            )}
 
             ${this._config?.consumers?.show ? html`
                 <div class="divider"></div>
 
                 ${this._renderCollapsibleSection(
-            'consumers_items',
-            'mdi:format-list-bulleted',
-            t.editor.add_consumer,
-            html`
-                        ${(this._config?.consumers?.items || []).map((item, index) => {
-                const isExpanded = this._expandedConsumerIndex === index;
-                const entityLabel = item.entity || t.editor.consumer_entity;
+                        'consumers_items',
+                        'mdi:format-list-bulleted',
+                        t.editor.add_consumer,
+                        html`
+                            ${(this._config?.consumers?.items || []).map((item, index) => {
+                                const isExpanded = this._expandedConsumerIndex === index;
+                                const entityLabel = item.entity || t.editor.consumer_entity;
 
-                return html`
-                                <div class="consumer-section">
-                                    <div class="consumer-header" @click=${() => this._toggleConsumer(index)}>
-                                        <div class="consumer-title">
-                                            <ha-icon 
-                                                class="expand-icon ${isExpanded ? 'expanded' : ''}" 
-                                                icon="mdi:chevron-down"
-                                            ></ha-icon>
-                                            <span class="consumer-title-text">
+                                return html`
+                                    <div class="consumer-section">
+                                        <div class="consumer-header" @click=${() => this._toggleConsumer(index)}>
+                                            <div class="consumer-title">
+                                                <ha-icon
+                                                        class="expand-icon ${isExpanded ? 'expanded' : ''}"
+                                                        icon="mdi:chevron-down"
+                                                ></ha-icon>
+                                                <span class="consumer-title-text">
                                                 ${t.editor.consumer_entity} ${index + 1}
                                                 ${item.entity ? html` <span style="opacity: 0.6; font-weight: normal; font-size: 0.9em;">(${entityLabel})</span>` : ''}
                                             </span>
+                                            </div>
+                                            <div class="consumer-header-actions" @click=${(e: Event) => e.stopPropagation()}>
+                                                ${index > 0 ? html`
+                                                    <ha-icon-button
+                                                            .path=${'M7.41,15.41L12,10.83L16.59,15.41L18,14L12,8L6,14L7.41,15.41Z'}
+                                                            @click=${() => this._moveConsumerUp(index)}
+                                                            title="Nach oben"
+                                                    ></ha-icon-button>
+                                                ` : ''}
+                                                ${index < (this._config?.consumers?.items?.length || 0) - 1 ? html`
+                                                    <ha-icon-button
+                                                            .path=${'M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z'}
+                                                            @click=${() => this._moveConsumerDown(index)}
+                                                            title="Nach unten"
+                                                    ></ha-icon-button>
+                                                ` : ''}
+                                                <ha-icon-button
+                                                        .path=${'M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z'}
+                                                        @click=${() => this._duplicateConsumer(index)}
+                                                        title="Duplizieren"
+                                                        style="color: rgba(33, 150, 243, 1);"
+                                                ></ha-icon-button>
+                                                <ha-icon-button
+                                                        .path=${'M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z'}
+                                                        @click=${() => this._removeConsumer(index)}
+                                                        title="Löschen"
+                                                        style="color: rgba(244,67,54,1);"
+                                                ></ha-icon-button>
+                                            </div>
                                         </div>
-                                        <div class="consumer-header-actions" @click=${(e: Event) => e.stopPropagation()}>
-                                            ${index > 0 ? html`
-                                                <ha-icon-button
-                                                    .path=${'M7.41,15.41L12,10.83L16.59,15.41L18,14L12,8L6,14L7.41,15.41Z'}
-                                                    @click=${() => this._moveConsumerUp(index)}
-                                                    title="Nach oben"
-                                                ></ha-icon-button>
-                                            ` : ''}
-                                            ${index < (this._config?.consumers?.items?.length || 0) - 1 ? html`
-                                                <ha-icon-button
-                                                    .path=${'M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z'}
-                                                    @click=${() => this._moveConsumerDown(index)}
-                                                    title="Nach unten"
-                                                ></ha-icon-button>
-                                            ` : ''}
-                                            <ha-icon-button
-                                                .path=${'M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z'}
-                                                @click=${() => this._duplicateConsumer(index)}
-                                                title="Duplizieren"
-                                                style="color: rgba(33, 150, 243, 1);"
-                                            ></ha-icon-button>
-                                            <ha-icon-button
-                                                .path=${'M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z'}
-                                                @click=${() => this._removeConsumer(index)}
-                                                title="Löschen"
-                                                style="color: rgba(244,67,54,1);"
-                                            ></ha-icon-button>
+
+                                        <div class="consumer-content ${isExpanded ? '' : 'collapsed'}">
+                                            ${this._renderEntityPicker(t.editor.consumer_entity, ['consumers', 'items', index.toString(), 'entity'], item.entity, undefined, true)}
+                                            ${this._renderIconPicker(t.editor.consumer_icon, ['consumers', 'items', index.toString(), 'icon'], item.icon)}
+                                            ${this._renderTextfield(t.editor.consumer_label, ['consumers', 'items', index.toString(), 'label'], item.label)}
+                                            ${this._renderNumberfield(t.editor.consumer_threshold, ['consumers', 'items', index.toString(), 'threshold'], item.threshold, 0, 10000, 1)}
+                                            ${this._renderSwitch(t.editor.consumer_auto_color, ['consumers', 'items', index.toString(), 'auto_color'], item.auto_color !== false, t.editor.consumer_auto_color_helper)}
+
+                                            <!-- Additional Texts Subsection -->
+                                            <div class="consumer-subsection">
+                                                <div class="consumer-subsection-header" @click=${() => this._toggleConsumerSubsection(index, 'texts')}>
+                                                    <ha-icon icon="mdi:text"></ha-icon>
+                                                    ${t.editor.additional_texts}
+                                                    <ha-icon
+                                                            class="expand-icon ${this._isConsumerSubsectionExpanded(index, 'texts') ? 'expanded' : ''}"
+                                                            icon="mdi:chevron-down"
+                                                            style="margin-left: auto;"
+                                                    ></ha-icon>
+                                                </div>
+                                                <div class="consumer-subsection-content ${this._isConsumerSubsectionExpanded(index, 'texts') ? '' : 'collapsed'}">
+                                                    ${this._renderSwitch(t.editor.consumer_show_primary, ['consumers', 'items', index.toString(), 'show_primary'], item.show_primary !== false)}
+                                                    ${this._renderEntityPicker(t.editor.consumer_primary_entity, ['consumers', 'items', index.toString(), 'primary_entity'], item.primary_entity)}
+                                                    ${this._renderTextfield(t.editor.consumer_primary_text, ['consumers', 'items', index.toString(), 'primary_text'], item.primary_text)}
+
+                                                    ${this._renderSwitch(t.editor.consumer_show_secondary, ['consumers', 'items', index.toString(), 'show_secondary'], item.show_secondary !== false)}
+                                                    ${this._renderEntityPicker(t.editor.consumer_secondary_entity, ['consumers', 'items', index.toString(), 'secondary_entity'], item.secondary_entity)}
+                                                    ${this._renderTextfield(t.editor.consumer_secondary_text, ['consumers', 'items', index.toString(), 'secondary_text'], item.secondary_text)}
+                                                </div>
+                                            </div>
+
+                                            <!-- Tap Actions Subsection -->
+                                            <div class="consumer-subsection">
+                                                <div class="consumer-subsection-header" @click=${() => this._toggleConsumerSubsection(index, 'actions')}>
+                                                    <ha-icon icon="mdi:gesture-tap"></ha-icon>
+                                                    ${t.editor.consumer_tap_actions}
+                                                    <ha-icon
+                                                            class="expand-icon ${this._isConsumerSubsectionExpanded(index, 'actions') ? 'expanded' : ''}"
+                                                            icon="mdi:chevron-down"
+                                                            style="margin-left: auto;"
+                                                    ></ha-icon>
+                                                </div>
+                                                <div class="consumer-subsection-content ${this._isConsumerSubsectionExpanded(index, 'actions') ? '' : 'collapsed'}">
+                                                    ${this._renderEntityPicker(t.editor.consumer_switch_entity, ['consumers', 'items', index.toString(), 'switch_entity'], item.switch_entity, t.editor.consumer_switch_entity_helper)}
+                                                    ${this._renderActionSelector('Tap Action', ['consumers', 'items', index.toString(), 'tap_action'], item.tap_action)}
+                                                    ${this._renderActionSelector('Double Tap', ['consumers', 'items', index.toString(), 'double_tap_action'], item.double_tap_action)}
+                                                    ${this._renderActionSelector('Hold Action', ['consumers', 'items', index.toString(), 'hold_action'], item.hold_action)}
+                                                </div>
+                                            </div>
+
+                                            <!-- Styling Subsection -->
+                                            <div class="consumer-subsection">
+                                                <div class="consumer-subsection-header" @click=${() => this._toggleConsumerSubsection(index, 'styling')}>
+                                                    <ha-icon icon="mdi:palette"></ha-icon>
+                                                    ${t.editor.consumer_item_styling}
+                                                    <ha-icon
+                                                            class="expand-icon ${this._isConsumerSubsectionExpanded(index, 'styling') ? 'expanded' : ''}"
+                                                            icon="mdi:chevron-down"
+                                                            style="margin-left: auto;"
+                                                    ></ha-icon>
+                                                </div>
+                                                <div class="consumer-subsection-content ${this._isConsumerSubsectionExpanded(index, 'styling') ? '' : 'collapsed'}">
+                                                    ${this._renderTextfield(t.editor.icon_size, ['consumers', 'items', index.toString(), 'style', 'icon_size'], item.style?.icon_size, '1.5em')}
+                                                    ${this._renderColorPicker(t.editor.icon_color, ['consumers', 'items', index.toString(), 'style', 'icon_color'], item.style?.icon_color)}
+                                                    ${this._renderTextfield(t.editor.icon_opacity, ['consumers', 'items', index.toString(), 'style', 'icon_opacity'], item.style?.icon_opacity, '1')}
+                                                    ${this._renderTextfield(t.editor.primary_size, ['consumers', 'items', index.toString(), 'style', 'primary_size'], item.style?.primary_size, '1em')}
+                                                    ${this._renderColorPicker(t.editor.primary_color_label, ['consumers', 'items', index.toString(), 'style', 'primary_color'], item.style?.primary_color, 'white')}
+                                                    ${this._renderTextfield(t.editor.primary_opacity, ['consumers', 'items', index.toString(), 'style', 'primary_opacity'], item.style?.primary_opacity, '1')}
+                                                    ${this._renderTextfield(t.editor.primary_font_weight, ['consumers', 'items', index.toString(), 'style', 'primary_font_weight'], item.style?.primary_font_weight, 'bold')}
+                                                    ${this._renderTextfield(t.editor.secondary_size, ['consumers', 'items', index.toString(), 'style', 'secondary_size'], item.style?.secondary_size, '0.8em')}
+                                                    ${this._renderColorPicker(t.editor.secondary_color_label, ['consumers', 'items', index.toString(), 'style', 'secondary_color'], item.style?.secondary_color, 'white')}
+                                                    ${this._renderTextfield(t.editor.secondary_opacity, ['consumers', 'items', index.toString(), 'style', 'secondary_opacity'], item.style?.secondary_opacity, '0.7')}
+                                                    ${this._renderTextfield(t.editor.secondary_font_weight, ['consumers', 'items', index.toString(), 'style', 'secondary_font_weight'], item.style?.secondary_font_weight, 'normal')}
+                                                    ${this._renderColorPicker(t.editor.background_color, ['consumers', 'items', index.toString(), 'style', 'background_color'], item.style?.background_color)}
+                                                    ${this._renderColorPicker(t.editor.border_color, ['consumers', 'items', index.toString(), 'style', 'border_color'], item.style?.border_color)}
+                                                    ${this._renderTextfield(t.editor.border_radius, ['consumers', 'items', index.toString(), 'style', 'border_radius'], item.style?.border_radius, '12px')}
+                                                    ${this._renderTextfield(t.editor.padding, ['consumers', 'items', index.toString(), 'style', 'padding'], item.style?.padding, '8px')}
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
+                                `;
+                            })}
 
-                                    <div class="consumer-content ${isExpanded ? '' : 'collapsed'}">
-                                        ${this._renderEntityPicker(t.editor.consumer_entity, ['consumers', 'items', index.toString(), 'entity'], item.entity, undefined, true)}
-                                        ${this._renderIconPicker(t.editor.consumer_icon, ['consumers', 'items', index.toString(), 'icon'], item.icon)}
-                                        ${this._renderTextfield(t.editor.consumer_label, ['consumers', 'items', index.toString(), 'label'], item.label)}
-                                        ${this._renderNumberfield(t.editor.consumer_threshold, ['consumers', 'items', index.toString(), 'threshold'], item.threshold, 0, 10000, 1)}
-                                        ${this._renderSwitch(t.editor.consumer_auto_color, ['consumers', 'items', index.toString(), 'auto_color'], item.auto_color !== false, t.editor.consumer_auto_color_helper)}
-
-                                        <!-- Additional Texts Subsection -->
-                                        <div class="consumer-subsection">
-                                            <div class="consumer-subsection-header" @click=${() => this._toggleConsumerSubsection(index, 'texts')}>
-                                                <ha-icon icon="mdi:text"></ha-icon>
-                                                ${t.editor.additional_texts}
-                                                <ha-icon 
-                                                    class="expand-icon ${this._isConsumerSubsectionExpanded(index, 'texts') ? 'expanded' : ''}" 
-                                                    icon="mdi:chevron-down"
-                                                    style="margin-left: auto;"
-                                                ></ha-icon>
-                                            </div>
-                                            <div class="consumer-subsection-content ${this._isConsumerSubsectionExpanded(index, 'texts') ? '' : 'collapsed'}">
-                                                ${this._renderSwitch(t.editor.consumer_show_primary, ['consumers', 'items', index.toString(), 'show_primary'], item.show_primary !== false)}
-                                                ${this._renderEntityPicker(t.editor.consumer_primary_entity, ['consumers', 'items', index.toString(), 'primary_entity'], item.primary_entity)}
-                                                ${this._renderTextfield(t.editor.consumer_primary_text, ['consumers', 'items', index.toString(), 'primary_text'], item.primary_text)}
-                                                
-                                                ${this._renderSwitch(t.editor.consumer_show_secondary, ['consumers', 'items', index.toString(), 'show_secondary'], item.show_secondary !== false)}
-                                                ${this._renderEntityPicker(t.editor.consumer_secondary_entity, ['consumers', 'items', index.toString(), 'secondary_entity'], item.secondary_entity)}
-                                                ${this._renderTextfield(t.editor.consumer_secondary_text, ['consumers', 'items', index.toString(), 'secondary_text'], item.secondary_text)}
-                                            </div>
-                                        </div>
-
-                                        <!-- Tap Actions Subsection -->
-                                        <div class="consumer-subsection">
-                                            <div class="consumer-subsection-header" @click=${() => this._toggleConsumerSubsection(index, 'actions')}>
-                                                <ha-icon icon="mdi:gesture-tap"></ha-icon>
-                                                ${t.editor.consumer_tap_actions}
-                                                <ha-icon 
-                                                    class="expand-icon ${this._isConsumerSubsectionExpanded(index, 'actions') ? 'expanded' : ''}" 
-                                                    icon="mdi:chevron-down"
-                                                    style="margin-left: auto;"
-                                                ></ha-icon>
-                                            </div>
-                                            <div class="consumer-subsection-content ${this._isConsumerSubsectionExpanded(index, 'actions') ? '' : 'collapsed'}">
-                                                ${this._renderEntityPicker(t.editor.consumer_switch_entity, ['consumers', 'items', index.toString(), 'switch_entity'], item.switch_entity, t.editor.consumer_switch_entity_helper)}
-                                                ${this._renderActionSelector('Tap Action', ['consumers', 'items', index.toString(), 'tap_action'], item.tap_action)}
-                                                ${this._renderActionSelector('Double Tap', ['consumers', 'items', index.toString(), 'double_tap_action'], item.double_tap_action)}
-                                                ${this._renderActionSelector('Hold Action', ['consumers', 'items', index.toString(), 'hold_action'], item.hold_action)}
-                                            </div>
-                                        </div>
-
-                                        <!-- Styling Subsection -->
-                                        <div class="consumer-subsection">
-                                            <div class="consumer-subsection-header" @click=${() => this._toggleConsumerSubsection(index, 'styling')}>
-                                                <ha-icon icon="mdi:palette"></ha-icon>
-                                                ${t.editor.consumer_item_styling}
-                                                <ha-icon 
-                                                    class="expand-icon ${this._isConsumerSubsectionExpanded(index, 'styling') ? 'expanded' : ''}" 
-                                                    icon="mdi:chevron-down"
-                                                    style="margin-left: auto;"
-                                                ></ha-icon>
-                                            </div>
-                                            <div class="consumer-subsection-content ${this._isConsumerSubsectionExpanded(index, 'styling') ? '' : 'collapsed'}">
-                                                ${this._renderTextfield(t.editor.icon_size, ['consumers', 'items', index.toString(), 'style', 'icon_size'], item.style?.icon_size, '1.5em')}
-                                                ${this._renderColorPicker(t.editor.icon_color, ['consumers', 'items', index.toString(), 'style', 'icon_color'], item.style?.icon_color)}
-                                                ${this._renderTextfield(t.editor.icon_opacity, ['consumers', 'items', index.toString(), 'style', 'icon_opacity'], item.style?.icon_opacity, '1')}
-                                                ${this._renderTextfield(t.editor.primary_size, ['consumers', 'items', index.toString(), 'style', 'primary_size'], item.style?.primary_size, '1em')}
-                                                ${this._renderColorPicker(t.editor.primary_color_label, ['consumers', 'items', index.toString(), 'style', 'primary_color'], item.style?.primary_color, 'white')}
-                                                ${this._renderTextfield(t.editor.primary_opacity, ['consumers', 'items', index.toString(), 'style', 'primary_opacity'], item.style?.primary_opacity, '1')}
-                                                ${this._renderTextfield(t.editor.primary_font_weight, ['consumers', 'items', index.toString(), 'style', 'primary_font_weight'], item.style?.primary_font_weight, 'bold')}
-                                                ${this._renderTextfield(t.editor.secondary_size, ['consumers', 'items', index.toString(), 'style', 'secondary_size'], item.style?.secondary_size, '0.8em')}
-                                                ${this._renderColorPicker(t.editor.secondary_color_label, ['consumers', 'items', index.toString(), 'style', 'secondary_color'], item.style?.secondary_color, 'white')}
-                                                ${this._renderTextfield(t.editor.secondary_opacity, ['consumers', 'items', index.toString(), 'style', 'secondary_opacity'], item.style?.secondary_opacity, '0.7')}
-                                                ${this._renderTextfield(t.editor.secondary_font_weight, ['consumers', 'items', index.toString(), 'style', 'secondary_font_weight'], item.style?.secondary_font_weight, 'normal')}
-                                                ${this._renderColorPicker(t.editor.background_color, ['consumers', 'items', index.toString(), 'style', 'background_color'], item.style?.background_color)}
-                                                ${this._renderColorPicker(t.editor.border_color, ['consumers', 'items', index.toString(), 'style', 'border_color'], item.style?.border_color)}
-                                                ${this._renderTextfield(t.editor.border_radius, ['consumers', 'items', index.toString(), 'style', 'border_radius'], item.style?.border_radius, '12px')}
-                                                ${this._renderTextfield(t.editor.padding, ['consumers', 'items', index.toString(), 'style', 'padding'], item.style?.padding, '8px')}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            `;
-            })}
-
-                        <ha-button @click=${this._addConsumer}>
-                            <ha-icon icon="mdi:plus"></ha-icon>
-                            ${t.editor.add_consumer}
-                        </ha-button>
-                    `
-        )}
+                            <ha-button @click=${this._addConsumer}>
+                                <ha-icon icon="mdi:plus"></ha-icon>
+                                ${t.editor.add_consumer}
+                            </ha-button>
+                        `
+                )}
 
                 <div class="divider"></div>
 
                 ${this._renderCollapsibleSection(
-            'consumers_styling',
-            'mdi:palette',
-            `${t.editor.styling} (Global)`,
-            html`
-                        ${this._renderTextfield(t.editor.grid_gap, ['consumers', 'style', 'gap'], this._config?.consumers?.style?.gap, '6px')}
-                        ${this._renderColorPicker(t.editor.background_color, ['consumers', 'style', 'item_background_color'], this._config?.consumers?.style?.item_background_color, 'rgba(21, 20, 27, 1)')}
-                        ${this._renderColorPicker(t.editor.border_color, ['consumers', 'style', 'item_border_color'], this._config?.consumers?.style?.item_border_color, 'rgba(255, 255, 255, 0.1)')}
-                        ${this._renderTextfield(t.editor.border_radius, ['consumers', 'style', 'item_border_radius'], this._config?.consumers?.style?.item_border_radius, '12px')}
-                        ${this._renderTextfield(t.editor.padding, ['consumers', 'style', 'item_padding'], this._config?.consumers?.style?.item_padding, '8px')}
-                        ${this._renderTextfield(t.editor.icon_size, ['consumers', 'style', 'icon_size'], this._config?.consumers?.style?.icon_size, '1.5em')}
-                        ${this._renderTextfield(t.editor.icon_opacity, ['consumers', 'style', 'icon_opacity'], this._config?.consumers?.style?.icon_opacity, '1')}
-                        ${this._renderTextfield(t.editor.primary_size, ['consumers', 'style', 'primary_size'], this._config?.consumers?.style?.primary_size, '1em')}
-                        ${this._renderTextfield(t.editor.primary_font_weight, ['consumers', 'style', 'primary_font_weight'], this._config?.consumers?.style?.primary_font_weight, 'bold')}
-                        ${this._renderTextfield(t.editor.primary_opacity, ['consumers', 'style', 'primary_opacity'], this._config?.consumers?.style?.primary_opacity, '1')}
-                        ${this._renderTextfield(t.editor.secondary_size, ['consumers', 'style', 'secondary_size'], this._config?.consumers?.style?.secondary_size, '0.8em')}
-                        ${this._renderTextfield(t.editor.secondary_font_weight, ['consumers', 'style', 'secondary_font_weight'], this._config?.consumers?.style?.secondary_font_weight, 'normal')}
-                        ${this._renderTextfield(t.editor.secondary_opacity, ['consumers', 'style', 'secondary_opacity'], this._config?.consumers?.style?.secondary_opacity, '0.7')}
-                    `
-        )}
+                        'consumers_styling',
+                        'mdi:palette',
+                        `${t.editor.styling} (Global)`,
+                        html`
+                            ${this._renderTextfield(t.editor.grid_gap, ['consumers', 'style', 'gap'], this._config?.consumers?.style?.gap, '6px')}
+                            ${this._renderColorPicker(t.editor.background_color, ['consumers', 'style', 'item_background_color'], this._config?.consumers?.style?.item_background_color, 'rgba(21, 20, 27, 1)')}
+                            ${this._renderColorPicker(t.editor.border_color, ['consumers', 'style', 'item_border_color'], this._config?.consumers?.style?.item_border_color, 'rgba(255, 255, 255, 0.1)')}
+                            ${this._renderTextfield(t.editor.border_radius, ['consumers', 'style', 'item_border_radius'], this._config?.consumers?.style?.item_border_radius, '12px')}
+                            ${this._renderTextfield(t.editor.padding, ['consumers', 'style', 'item_padding'], this._config?.consumers?.style?.item_padding, '8px')}
+                            ${this._renderTextfield(t.editor.icon_size, ['consumers', 'style', 'icon_size'], this._config?.consumers?.style?.icon_size, '1.5em')}
+                            ${this._renderTextfield(t.editor.icon_opacity, ['consumers', 'style', 'icon_opacity'], this._config?.consumers?.style?.icon_opacity, '1')}
+                            ${this._renderTextfield(t.editor.primary_size, ['consumers', 'style', 'primary_size'], this._config?.consumers?.style?.primary_size, '1em')}
+                            ${this._renderTextfield(t.editor.primary_font_weight, ['consumers', 'style', 'primary_font_weight'], this._config?.consumers?.style?.primary_font_weight, 'bold')}
+                            ${this._renderTextfield(t.editor.primary_opacity, ['consumers', 'style', 'primary_opacity'], this._config?.consumers?.style?.primary_opacity, '1')}
+                            ${this._renderTextfield(t.editor.secondary_size, ['consumers', 'style', 'secondary_size'], this._config?.consumers?.style?.secondary_size, '0.8em')}
+                            ${this._renderTextfield(t.editor.secondary_font_weight, ['consumers', 'style', 'secondary_font_weight'], this._config?.consumers?.style?.secondary_font_weight, 'normal')}
+                            ${this._renderTextfield(t.editor.secondary_opacity, ['consumers', 'style', 'secondary_opacity'], this._config?.consumers?.style?.secondary_opacity, '0.7')}
+                        `
+                )}
             ` : ''}
         `;
     }
@@ -1690,9 +1690,9 @@ export class PVMonitorCardEditor extends LitElement {
                 <div class="section-header" @click=${() => this._toggleSection(sectionId)}>
                     <ha-icon icon="${icon}"></ha-icon>
                     ${title}
-                    <ha-icon 
-                        class="expand-icon ${isExpanded ? 'expanded' : ''}" 
-                        icon="mdi:chevron-down"
+                    <ha-icon
+                            class="expand-icon ${isExpanded ? 'expanded' : ''}"
+                            icon="mdi:chevron-down"
                     ></ha-icon>
                 </div>
                 <div class="section-content ${isExpanded ? '' : 'collapsed'}">
@@ -1708,71 +1708,115 @@ export class PVMonitorCardEditor extends LitElement {
 
         return html`
             ${this._renderCollapsibleSection(
-            'styling_theme',
-            'mdi:palette',
-            t.editor.theme,
-            html`
-                    ${this._renderThemeSelector()}
-                    
-                    <div class="divider" style="margin: 16px 0;"></div>
-                    
-                    <div style="font-weight: 500; margin-bottom: 8px;">Theme Editor</div>
-                    <div class="info-text" style="margin-bottom: 12px;">Passe alle Farben des Themes an. Ändert nicht die Karten-spezifischen Styles.</div>
-                    
-                    ${this._renderColorPicker(t.editor.background_color, ['style', 'card_background_color'], this._config?.style?.card_background_color, 'rgba(21, 20, 27, 1)')}
-                    ${this._renderColorPicker(t.editor.border_color, ['style', 'card_border_color'], this._config?.style?.card_border_color, 'rgba(255, 255, 255, 0.1)')}
-                    ${this._renderColorPicker(t.editor.text_color, ['style', 'card_text_color'], this._config?.style?.card_text_color, 'white')}
-                    ${this._renderTextfield(t.editor.border_radius, ['style', 'card_border_radius'], this._config?.style?.card_border_radius, '16px')}
-                    ${this._renderTextfield(t.editor.padding, ['style', 'card_padding'], this._config?.style?.card_padding, '12px')}
-                    
-                    <div class="divider" style="margin: 16px 0;"></div>
-                    
-                    ${this._renderColorPicker(t.editor.title_color, ['style', 'title_color'], this._config?.style?.title_color, 'white')}
-                    ${this._renderTextfield(t.editor.title_size, ['style', 'title_size'], this._config?.style?.title_size, '1.5em')}
-                    ${this._renderTextfield(t.editor.title_font_weight, ['style', 'title_font_weight'], this._config?.style?.title_font_weight, 'bold')}
-                    
-                    <div class="divider" style="margin: 16px 0;"></div>
-                    
-                    ${this._renderColorPicker(t.editor.subtitle_color, ['style', 'subtitle_color'], this._config?.style?.subtitle_color)}
-                    ${this._renderTextfield(t.editor.subtitle_size, ['style', 'subtitle_size'], this._config?.style?.subtitle_size, '1em')}
-                    ${this._renderTextfield(t.editor.subtitle_font_weight, ['style', 'subtitle_font_weight'], this._config?.style?.subtitle_font_weight, 'normal')}
-                    
-                    <div class="divider" style="margin: 16px 0;"></div>
-                    
-                    ${this._renderTextfield(t.editor.icon_size, ['style', 'icon_size'], this._config?.style?.icon_size, '2em')}
-                    ${this._renderTextfield(t.editor.icon_opacity, ['style', 'icon_opacity'], this._config?.style?.icon_opacity, '1')}
-                    ${this._renderTextfield(t.editor.icon_margin, ['style', 'icon_margin'], this._config?.style?.icon_margin, '6px')}
-                    
-                    <div class="divider" style="margin: 16px 0;"></div>
-                    
-                    ${this._renderColorPicker(t.editor.primary_color_label, ['style', 'primary_color'], this._config?.style?.primary_color, 'white')}
-                    ${this._renderTextfield(t.editor.primary_size, ['style', 'primary_size'], this._config?.style?.primary_size, '1.2em')}
-                    ${this._renderTextfield(t.editor.primary_opacity, ['style', 'primary_font_opacity'], this._config?.style?.primary_font_opacity, '1')}
-                    ${this._renderTextfield(t.editor.primary_font_weight, ['style', 'primary_font_weight'], this._config?.style?.primary_font_weight, 'normal')}
-                    
-                    <div class="divider" style="margin: 16px 0;"></div>
-                    
-                    ${this._renderColorPicker(t.editor.secondary_color_label, ['style', 'secondary_color'], this._config?.style?.secondary_color, 'white')}
-                    ${this._renderTextfield(t.editor.secondary_size, ['style', 'secondary_size'], this._config?.style?.secondary_size, '0.9em')}
-                    ${this._renderTextfield(t.editor.secondary_opacity, ['style', 'secondary_font_opacity'], this._config?.style?.secondary_font_opacity, '0.7')}
-                    ${this._renderTextfield(t.editor.secondary_font_weight, ['style', 'secondary_font_weight'], this._config?.style?.secondary_font_weight, 'normal')}
-                    
-                    <div class="divider" style="margin: 16px 0;"></div>
-                    
-                    ${this._renderColorPicker(t.editor.tertiary_color_label, ['style', 'tertiary_color'], this._config?.style?.tertiary_color, 'white')}
-                    ${this._renderTextfield(t.editor.tertiary_size, ['style', 'tertiary_size'], this._config?.style?.tertiary_size, '0.9em')}
-                    ${this._renderTextfield(t.editor.tertiary_opacity, ['style', 'tertiary_font_opacity'], this._config?.style?.tertiary_font_opacity, '0.7')}
-                    ${this._renderTextfield(t.editor.tertiary_font_weight, ['style', 'tertiary_font_weight'], this._config?.style?.tertiary_font_weight, 'normal')}
-                `
-        )}
+                    'styling_theme',
+                    'mdi:palette',
+                    t.editor.theme,
+                    html`
+                        ${this._renderThemeSelector()}
+
+                        <div class="divider" style="margin: 16px 0;"></div>
+
+                        <div style="font-weight: 500; margin-bottom: 8px;">Theme Editor</div>
+                        <div class="info-text" style="margin-bottom: 12px;">Passe alle Farben des Themes an. Ändert nicht die Karten-spezifischen Styles.</div>
+
+                        ${this._renderColorPicker(t.editor.background_color, ['style', 'card_background_color'], this._config?.style?.card_background_color, 'rgba(21, 20, 27, 1)')}
+                        ${this._renderColorPicker(t.editor.border_color, ['style', 'card_border_color'], this._config?.style?.card_border_color, 'rgba(255, 255, 255, 0.1)')}
+                        ${this._renderColorPicker(t.editor.text_color, ['style', 'card_text_color'], this._config?.style?.card_text_color, 'white')}
+                        ${this._renderTextfield(t.editor.border_radius, ['style', 'card_border_radius'], this._config?.style?.card_border_radius, '16px')}
+                        ${this._renderTextfield(t.editor.padding, ['style', 'card_padding'], this._config?.style?.card_padding, '12px')}
+
+                        <div class="divider" style="margin: 16px 0;"></div>
+
+                        ${this._renderColorPicker(t.editor.title_color, ['style', 'title_color'], this._config?.style?.title_color, 'white')}
+                        ${this._renderTextfield(t.editor.title_size, ['style', 'title_size'], this._config?.style?.title_size, '1.5em')}
+                        ${this._renderTextfield(t.editor.title_font_weight, ['style', 'title_font_weight'], this._config?.style?.title_font_weight, 'bold')}
+
+                        <div class="divider" style="margin: 16px 0;"></div>
+
+                        ${this._renderColorPicker(t.editor.subtitle_color, ['style', 'subtitle_color'], this._config?.style?.subtitle_color)}
+                        ${this._renderTextfield(t.editor.subtitle_size, ['style', 'subtitle_size'], this._config?.style?.subtitle_size, '1em')}
+                        ${this._renderTextfield(t.editor.subtitle_font_weight, ['style', 'subtitle_font_weight'], this._config?.style?.subtitle_font_weight, 'normal')}
+
+                        <div class="divider" style="margin: 16px 0;"></div>
+
+                        ${this._renderTextfield(t.editor.icon_size, ['style', 'icon_size'], this._config?.style?.icon_size, '2em')}
+                        ${this._renderTextfield(t.editor.icon_opacity, ['style', 'icon_opacity'], this._config?.style?.icon_opacity, '1')}
+                        ${this._renderTextfield(t.editor.icon_margin, ['style', 'icon_margin'], this._config?.style?.icon_margin, '6px')}
+
+                        <div class="divider" style="margin: 16px 0;"></div>
+
+                        ${this._renderColorPicker(t.editor.primary_color_label, ['style', 'primary_color'], this._config?.style?.primary_color, 'white')}
+                        ${this._renderTextfield(t.editor.primary_size, ['style', 'primary_size'], this._config?.style?.primary_size, '1.2em')}
+                        ${this._renderTextfield(t.editor.primary_opacity, ['style', 'primary_font_opacity'], this._config?.style?.primary_font_opacity, '1')}
+                        ${this._renderTextfield(t.editor.primary_font_weight, ['style', 'primary_font_weight'], this._config?.style?.primary_font_weight, 'normal')}
+
+                        <div class="divider" style="margin: 16px 0;"></div>
+
+                        ${this._renderColorPicker(t.editor.secondary_color_label, ['style', 'secondary_color'], this._config?.style?.secondary_color, 'white')}
+                        ${this._renderTextfield(t.editor.secondary_size, ['style', 'secondary_size'], this._config?.style?.secondary_size, '0.9em')}
+                        ${this._renderTextfield(t.editor.secondary_opacity, ['style', 'secondary_font_opacity'], this._config?.style?.secondary_font_opacity, '0.7')}
+                        ${this._renderTextfield(t.editor.secondary_font_weight, ['style', 'secondary_font_weight'], this._config?.style?.secondary_font_weight, 'normal')}
+
+                        <div class="divider" style="margin: 16px 0;"></div>
+
+                        ${this._renderColorPicker(t.editor.tertiary_color_label, ['style', 'tertiary_color'], this._config?.style?.tertiary_color, 'white')}
+                        ${this._renderTextfield(t.editor.tertiary_size, ['style', 'tertiary_size'], this._config?.style?.tertiary_size, '0.9em')}
+                        ${this._renderTextfield(t.editor.tertiary_opacity, ['style', 'tertiary_font_opacity'], this._config?.style?.tertiary_font_opacity, '0.7')}
+                        ${this._renderTextfield(t.editor.tertiary_font_weight, ['style', 'tertiary_font_weight'], this._config?.style?.tertiary_font_weight, 'normal')}
+                    `
+            )}
 
             <div class="divider"></div>
 
             ${this._renderCollapsibleSection(
-            'styling_layout',
-            'mdi:grid',
-            t.editor.layout,
-            html`
+                    'styling_header_background',
+                    'mdi:rectangle',
+                    t.editor.header_background,
+                    html`
+                        ${this._renderSwitch(t.editor.enable_header_background, ['style', 'header_background_enabled'], this._config?.style?.header_background_enabled, t.editor.enable_header_background_helper)}
+
+                        ${this._config?.style?.header_background_enabled ? html`
+                        <div class="option">
+                            <div class="option-label">${t.editor.header_width}</div>
+                            <div class="option-control">
+                                <ha-combo-box
+                                        .value=${this._config?.style?.header_width || 'auto'}
+                                        .items=${[
+                            { value: 'auto', label: t.editor.header_width_auto },
+                            { value: 'full', label: t.editor.header_width_full }
+                        ]}
+                                        item-value-path="value"
+                                        item-label-path="label"
+                                        @value-changed=${(ev: any) => {
+                            if (!this._config) return;
+                            const newValue = ev.detail?.value;
+                            if (!newValue) return;
+                            const newConfig = { ...this._config };
+                            if (!newConfig.style) newConfig.style = {};
+                            newConfig.style.header_width = newValue;
+                            this._config = newConfig;
+                            this._fireEvent();
+                        }}
+                                ></ha-combo-box>
+                            </div>
+                        </div>
+                        
+                        ${this._renderColorPicker(t.editor.header_background_color, ['style', 'header_background_color'], this._config?.style?.header_background_color, 'rgba(21, 20, 27, 1)')}
+                        ${this._renderColorPicker(t.editor.header_border_color, ['style', 'header_border_color'], this._config?.style?.header_border_color, 'rgba(255, 255, 255, 0.1)')}
+                        ${this._renderTextfield(t.editor.header_border_radius, ['style', 'header_border_radius'], this._config?.style?.header_border_radius, '16px')}
+                        ${this._renderTextfield(t.editor.header_padding, ['style', 'header_padding'], this._config?.style?.header_padding, '12px')}
+                        ${this._renderTextfield(t.editor.header_box_shadow, ['style', 'header_box_shadow'], this._config?.style?.header_box_shadow, '0 2px 8px 0 rgba(0, 0, 0, 0.15)')}
+                    ` : ''}
+                    `
+            )}
+
+            <div class="divider"></div>
+
+            ${this._renderCollapsibleSection(
+                    'styling_layout',
+                    'mdi:grid',
+                    t.editor.layout,
+                    html`
                     ${this._renderTextfield(t.editor.grid_gap, ['grid_gap'], this._config?.grid_gap, t.editor.grid_gap_placeholder, t.editor.grid_gap_helper)}
                     ${this._renderTextfield(t.editor.header_margin_bottom, ['style', 'header_margin_bottom'], this._config?.style?.header_margin_bottom, '12px', t.editor.header_margin_bottom_helper)}
                     ${this._renderTextfield(t.editor.infobar_gap, ['style', 'infobar_gap'], this._config?.style?.infobar_gap, '6px', t.editor.infobar_gap_helper)}
@@ -1780,7 +1824,7 @@ export class PVMonitorCardEditor extends LitElement {
                     ${this._renderTextfield(t.editor.subtitle_alignment, ['style', 'subtitle_align'], this._config?.style?.subtitle_align, 'center')}
                     ${this._renderTextfield(t.editor.cursor, ['style', 'card_cursor'], this._config?.style?.card_cursor, 'pointer')}
                 `
-        )}
+            )}
         `;
     }
 

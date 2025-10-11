@@ -953,6 +953,18 @@ const translations = {
       secondary_color: "Sekundärfarbe",
       icon_color: "Icon Farbe",
       card_styling: "Karten-Styling",
+      header_background: "Header-Hintergrund",
+      enable_header_background: "Header-Hintergrund aktivieren",
+      enable_header_background_helper: "Hintergrund für Titel/Untertitel-Bereich aktivieren",
+      header_background_color: "Header Hintergrundfarbe",
+      header_border_color: "Header Rahmenfarbe",
+      header_border_radius: "Header Border Radius",
+      header_padding: "Header Padding",
+      header_width: "Header Breite",
+      header_width_helper: "Auto = zentriert mit Inhaltsgröße, Full = volle Breite",
+      header_width_auto: "Auto (Inhaltsgröße)",
+      header_width_full: "Full (100% Breite)",
+      header_box_shadow: "Header Box Shadow",
       border_radius: "Border Radius",
       text_color: "Textfarbe",
       padding: "Padding",
@@ -1168,6 +1180,18 @@ const translations = {
       secondary_color: "Secondary Color",
       icon_color: "Icon Color",
       card_styling: "Card Styling",
+      header_background: "Header Background",
+      enable_header_background: "Enable Header Background",
+      enable_header_background_helper: "Enable background for title/subtitle area",
+      header_background_color: "Header Background Color",
+      header_border_color: "Header Border Color",
+      header_border_radius: "Header Border Radius",
+      header_padding: "Header Padding",
+      header_width: "Header Width",
+      header_width_helper: "Auto = centered with content size, Full = full width",
+      header_width_auto: "Auto (Content Size)",
+      header_width_full: "Full (100% Width)",
+      header_box_shadow: "Header Box Shadow",
       border_radius: "Border Radius",
       text_color: "Text Color",
       padding: "Padding",
@@ -1383,6 +1407,18 @@ const translations = {
       secondary_color: "Couleur Secondaire",
       icon_color: "Couleur d'Icône",
       card_styling: "Style de Carte",
+      header_background: "Arrière-plan En-tête",
+      enable_header_background: "Activer Arrière-plan En-tête",
+      enable_header_background_helper: "Activer l'arrière-plan pour la zone titre/sous-titre",
+      header_background_color: "Couleur Arrière-plan En-tête",
+      header_border_color: "Couleur Bordure En-tête",
+      header_border_radius: "Rayon Bordure En-tête",
+      header_padding: "Espacement En-tête",
+      header_width: "Largeur En-tête",
+      header_width_helper: "Auto = centré avec taille du contenu, Full = pleine largeur",
+      header_width_auto: "Auto (Taille Contenu)",
+      header_width_full: "Full (100% Largeur)",
+      header_box_shadow: "Ombre En-tête",
       border_radius: "Rayon de Bordure",
       text_color: "Couleur de Texte",
       padding: "Espacement",
@@ -1598,6 +1634,18 @@ const translations = {
       secondary_color: "Colore Secondario",
       icon_color: "Colore Icona",
       card_styling: "Stile Scheda",
+      header_background: "Sfondo Intestazione",
+      enable_header_background: "Attiva Sfondo Intestazione",
+      enable_header_background_helper: "Attiva sfondo per l'area titolo/sottotitolo",
+      header_background_color: "Colore Sfondo Intestazione",
+      header_border_color: "Colore Bordo Intestazione",
+      header_border_radius: "Raggio Bordo Intestazione",
+      header_padding: "Spaziatura Intestazione",
+      header_width: "Larghezza Intestazione",
+      header_width_helper: "Auto = centrato con dimensione contenuto, Full = larghezza completa",
+      header_width_auto: "Auto (Dimensione Contenuto)",
+      header_width_full: "Full (100% Larghezza)",
+      header_box_shadow: "Ombra Intestazione",
       border_radius: "Raggio Bordo",
       text_color: "Colore Testo",
       padding: "Spaziatura",
@@ -1813,6 +1861,18 @@ const translations = {
       secondary_color: "Color Secundario",
       icon_color: "Color Icono",
       card_styling: "Estilo de Tarjeta",
+      header_background: "Fondo Encabezado",
+      enable_header_background: "Activar Fondo Encabezado",
+      enable_header_background_helper: "Activar fondo para el área título/subtítulo",
+      header_background_color: "Color Fondo Encabezado",
+      header_border_color: "Color Borde Encabezado",
+      header_border_radius: "Radio Borde Encabezado",
+      header_padding: "Espaciado Encabezado",
+      header_width: "Ancho Encabezado",
+      header_width_helper: "Auto = centrado con tamaño del contenido, Full = ancho completo",
+      header_width_auto: "Auto (Tamaño Contenido)",
+      header_width_full: "Full (100% Ancho)",
+      header_box_shadow: "Sombra Encabezado",
       border_radius: "Radio de Borde",
       text_color: "Color de Texto",
       padding: "Espaciado",
@@ -2623,6 +2683,13 @@ function getDefaultConfig(config) {
       card_padding: themedConfig.style?.card_padding ?? "12px",
       header_margin_bottom: themedConfig.style?.header_margin_bottom ?? "12px",
       infobar_gap: themedConfig.style?.infobar_gap ?? "6px",
+      header_background_enabled: themedConfig.style?.header_background_enabled ?? false,
+      header_background_color: themedConfig.style?.header_background_color ?? "rgba(21, 20, 27, 1)",
+      header_border_color: themedConfig.style?.header_border_color ?? "rgba(255, 255, 255, 0.1)",
+      header_border_radius: themedConfig.style?.header_border_radius ?? "16px",
+      header_padding: themedConfig.style?.header_padding ?? "12px",
+      header_width: themedConfig.style?.header_width ?? "auto",
+      header_box_shadow: themedConfig.style?.header_box_shadow ?? "0 2px 8px 0 rgba(0, 0, 0, 0.15)",
       title_align: themedConfig.style?.title_align ?? "center",
       title_size: themedConfig.style?.title_size ?? "1.5em",
       title_font_weight: themedConfig.style?.title_font_weight ?? "bold",
@@ -3649,9 +3716,20 @@ const _PVMonitorCard = class _PVMonitorCard extends i {
             font-size: ${s2.title_size};
             color: ${s2.title_color};
         `;
-    const headerStyle = `
-            margin-bottom: ${s2.header_margin_bottom || "12px"};
-        `;
+    const headerBackgroundEnabled = s2.header_background_enabled ?? false;
+    const headerWidth = s2.header_width ?? "auto";
+    let headerStyle = `margin-bottom: ${s2.header_margin_bottom || "12px"};`;
+    if (headerBackgroundEnabled) {
+      headerStyle += `
+                background: ${s2.header_background_color};
+                border: 1px solid ${s2.header_border_color};
+                border-radius: ${s2.header_border_radius};
+                padding: ${s2.header_padding};
+                box-shadow: ${s2.header_box_shadow};
+                width: ${headerWidth === "full" ? "100%" : "fit-content"};
+                ${headerWidth === "auto" ? "margin-left: auto; margin-right: auto;" : ""}
+            `;
+    }
     return x`
             ${showTitle || showSubtitle ? x`
                 <div class="card-header" style="${headerStyle}">
@@ -4291,11 +4369,11 @@ const _PVMonitorCardEditor = class _PVMonitorCardEditor extends i {
       "mdi:eye",
       t2.editor.card_visibility,
       x`
-                    ${this._renderSwitch(t2.editor.show_pv_card, ["pv", "show"], this._config?.pv?.show !== false)}
-                    ${this._renderSwitch(t2.editor.show_battery_card, ["batterie", "show"], this._config?.batterie?.show !== false)}
-                    ${this._renderSwitch(t2.editor.show_house_card, ["haus", "show"], this._config?.haus?.show !== false)}
-                    ${this._renderSwitch(t2.editor.show_grid_card, ["netz", "show"], this._config?.netz?.show !== false)}
-                `
+                        ${this._renderSwitch(t2.editor.show_pv_card, ["pv", "show"], this._config?.pv?.show !== false)}
+                        ${this._renderSwitch(t2.editor.show_battery_card, ["batterie", "show"], this._config?.batterie?.show !== false)}
+                        ${this._renderSwitch(t2.editor.show_house_card, ["haus", "show"], this._config?.haus?.show !== false)}
+                        ${this._renderSwitch(t2.editor.show_grid_card, ["netz", "show"], this._config?.netz?.show !== false)}
+                    `
     )}
 
             <div class="divider"></div>
@@ -4332,18 +4410,18 @@ const _PVMonitorCardEditor = class _PVMonitorCardEditor extends i {
                         ${this._renderSwitch(t2.editor.enable_infobar, ["info_bar", "show"], this._config?.info_bar?.show)}
 
                         ${this._config?.info_bar?.show ? x`
-                        <div class="option">
-                            <div class="option-label">${t2.editor.infobar_position}</div>
-                            <div class="option-control">
-                                <ha-combo-box
-                                        .value=${this._config?.info_bar?.position || "top"}
-                                        .items=${[
+                            <div class="option">
+                                <div class="option-label">${t2.editor.infobar_position}</div>
+                                <div class="option-control">
+                                    <ha-combo-box
+                                            .value=${this._config?.info_bar?.position || "top"}
+                                            .items=${[
         { value: "top", label: t2.editor.position_top },
         { value: "bottom", label: t2.editor.position_bottom }
       ]}
-                                        item-value-path="value"
-                                        item-label-path="label"
-                                        @value-changed=${(ev) => {
+                                            item-value-path="value"
+                                            item-label-path="label"
+                                            @value-changed=${(ev) => {
         if (!this._config) return;
         const newValue = ev.detail?.value;
         if (!newValue) return;
@@ -4353,10 +4431,10 @@ const _PVMonitorCardEditor = class _PVMonitorCardEditor extends i {
         this._config = newConfig;
         this._fireEvent();
       }}
-                                ></ha-combo-box>
+                                    ></ha-combo-box>
+                                </div>
                             </div>
-                        </div>
-                    ` : ""}
+                        ` : ""}
                     `
     )}
 
@@ -4372,18 +4450,18 @@ const _PVMonitorCardEditor = class _PVMonitorCardEditor extends i {
       "mdi:calculator",
       t2.editor.calculation_mode,
       x`
-                        <div class="option">
-                            <div class="option-label">${t2.editor.calculation_mode}</div>
-                            <div class="option-control">
-                                <ha-combo-box
-                                        .value=${this._config?.info_bar?.calculation_mode || "autarky"}
-                                        .items=${[
+                            <div class="option">
+                                <div class="option-label">${t2.editor.calculation_mode}</div>
+                                <div class="option-control">
+                                    <ha-combo-box
+                                            .value=${this._config?.info_bar?.calculation_mode || "autarky"}
+                                            .items=${[
         { value: "autarky", label: t2.editor.mode_autarky },
         { value: "self_consumption", label: t2.editor.mode_self_consumption }
       ]}
-                                        item-value-path="value"
-                                        item-label-path="label"
-                                        @value-changed=${(ev) => {
+                                            item-value-path="value"
+                                            item-label-path="label"
+                                            @value-changed=${(ev) => {
         if (!this._config) return;
         const newValue = ev.detail?.value;
         if (!newValue) return;
@@ -4393,12 +4471,12 @@ const _PVMonitorCardEditor = class _PVMonitorCardEditor extends i {
         this._config = newConfig;
         this._fireEvent();
       }}
-                                ></ha-combo-box>
+                                    ></ha-combo-box>
+                                </div>
                             </div>
-                        </div>
 
-                        ${this._renderSwitch(t2.editor.calculate_battery_times, ["info_bar", "calculate_battery_times"], this._config?.info_bar?.calculate_battery_times, t2.editor.calculate_battery_times_helper)}
-                    `,
+                            ${this._renderSwitch(t2.editor.calculate_battery_times, ["info_bar", "calculate_battery_times"], this._config?.info_bar?.calculate_battery_times, t2.editor.calculate_battery_times_helper)}
+                        `,
       t2.editor.calculation_mode_helper
     )}
 
@@ -4409,11 +4487,11 @@ const _PVMonitorCardEditor = class _PVMonitorCardEditor extends i {
       "mdi:numeric-1-box",
       `${t2.editor.item} 1`,
       x`
-                        ${this._renderEntityPicker(t2.editor.entity, ["info_bar", "item1", "entity"], this._config?.info_bar?.item1?.entity)}
-                        ${this._renderIconPicker(t2.editor.icon_label, ["info_bar", "item1", "icon"], this._config?.info_bar?.item1?.icon)}
-                        ${this._renderTextfield(t2.editor.label, ["info_bar", "item1", "label"], this._config?.info_bar?.item1?.label, t2.editor.default_autarky)}
-                        ${this._renderTextfield(t2.editor.unit, ["info_bar", "item1", "unit"], this._config?.info_bar?.item1?.unit, "%")}
-                    `
+                            ${this._renderEntityPicker(t2.editor.entity, ["info_bar", "item1", "entity"], this._config?.info_bar?.item1?.entity)}
+                            ${this._renderIconPicker(t2.editor.icon_label, ["info_bar", "item1", "icon"], this._config?.info_bar?.item1?.icon)}
+                            ${this._renderTextfield(t2.editor.label, ["info_bar", "item1", "label"], this._config?.info_bar?.item1?.label, t2.editor.default_autarky)}
+                            ${this._renderTextfield(t2.editor.unit, ["info_bar", "item1", "unit"], this._config?.info_bar?.item1?.unit, "%")}
+                        `
     )}
 
                 <div class="divider"></div>
@@ -4423,11 +4501,11 @@ const _PVMonitorCardEditor = class _PVMonitorCardEditor extends i {
       "mdi:numeric-2-box",
       `${t2.editor.item} 2`,
       x`
-                        ${this._renderEntityPicker(t2.editor.entity, ["info_bar", "item2", "entity"], this._config?.info_bar?.item2?.entity)}
-                        ${this._renderIconPicker(t2.editor.icon_label, ["info_bar", "item2", "icon"], this._config?.info_bar?.item2?.icon)}
-                        ${this._renderTextfield(t2.editor.label, ["info_bar", "item2", "label"], this._config?.info_bar?.item2?.label, t2.editor.default_runtime)}
-                        ${this._renderTextfield(t2.editor.unit, ["info_bar", "item2", "unit"], this._config?.info_bar?.item2?.unit)}
-                    `
+                            ${this._renderEntityPicker(t2.editor.entity, ["info_bar", "item2", "entity"], this._config?.info_bar?.item2?.entity)}
+                            ${this._renderIconPicker(t2.editor.icon_label, ["info_bar", "item2", "icon"], this._config?.info_bar?.item2?.icon)}
+                            ${this._renderTextfield(t2.editor.label, ["info_bar", "item2", "label"], this._config?.info_bar?.item2?.label, t2.editor.default_runtime)}
+                            ${this._renderTextfield(t2.editor.unit, ["info_bar", "item2", "unit"], this._config?.info_bar?.item2?.unit)}
+                        `
     )}
 
                 <div class="divider"></div>
@@ -4437,11 +4515,11 @@ const _PVMonitorCardEditor = class _PVMonitorCardEditor extends i {
       "mdi:numeric-3-box",
       `${t2.editor.item} 3`,
       x`
-                        ${this._renderEntityPicker(t2.editor.entity, ["info_bar", "item3", "entity"], this._config?.info_bar?.item3?.entity)}
-                        ${this._renderIconPicker(t2.editor.icon_label, ["info_bar", "item3", "icon"], this._config?.info_bar?.item3?.icon)}
-                        ${this._renderTextfield(t2.editor.label, ["info_bar", "item3", "label"], this._config?.info_bar?.item3?.label, t2.editor.default_chargetime)}
-                        ${this._renderTextfield(t2.editor.unit, ["info_bar", "item3", "unit"], this._config?.info_bar?.item3?.unit)}
-                    `
+                            ${this._renderEntityPicker(t2.editor.entity, ["info_bar", "item3", "entity"], this._config?.info_bar?.item3?.entity)}
+                            ${this._renderIconPicker(t2.editor.icon_label, ["info_bar", "item3", "icon"], this._config?.info_bar?.item3?.icon)}
+                            ${this._renderTextfield(t2.editor.label, ["info_bar", "item3", "label"], this._config?.info_bar?.item3?.label, t2.editor.default_chargetime)}
+                            ${this._renderTextfield(t2.editor.unit, ["info_bar", "item3", "unit"], this._config?.info_bar?.item3?.unit)}
+                        `
     )}
             ` : ""}
         `;
@@ -4534,12 +4612,12 @@ const _PVMonitorCardEditor = class _PVMonitorCardEditor extends i {
       "mdi:palette",
       t2.editor.styling,
       x`
-                    ${this._renderColorPicker(t2.editor.background_color, ["batterie", "style", "background_color"], this._config?.batterie?.style?.background_color)}
-                    ${this._renderColorPicker(t2.editor.border_color, ["batterie", "style", "border_color"], this._config?.batterie?.style?.border_color)}
-                    ${this._renderColorPicker(t2.editor.primary_color, ["batterie", "style", "primary_color"], this._config?.batterie?.style?.primary_color)}
-                    ${this._renderColorPicker(t2.editor.secondary_color, ["batterie", "style", "secondary_color"], this._config?.batterie?.style?.secondary_color)}
-                    ${this._renderColorPicker(t2.editor.icon_color, ["batterie", "style", "icon_color"], this._config?.batterie?.style?.icon_color)}
-                `
+                        ${this._renderColorPicker(t2.editor.background_color, ["batterie", "style", "background_color"], this._config?.batterie?.style?.background_color)}
+                        ${this._renderColorPicker(t2.editor.border_color, ["batterie", "style", "border_color"], this._config?.batterie?.style?.border_color)}
+                        ${this._renderColorPicker(t2.editor.primary_color, ["batterie", "style", "primary_color"], this._config?.batterie?.style?.primary_color)}
+                        ${this._renderColorPicker(t2.editor.secondary_color, ["batterie", "style", "secondary_color"], this._config?.batterie?.style?.secondary_color)}
+                        ${this._renderColorPicker(t2.editor.icon_color, ["batterie", "style", "icon_color"], this._config?.batterie?.style?.icon_color)}
+                    `
     )}
         `;
   }
@@ -4564,12 +4642,12 @@ const _PVMonitorCardEditor = class _PVMonitorCardEditor extends i {
       "mdi:text",
       t2.editor.additional_texts,
       x`
-                    ${this._renderSwitch(t2.editor.show_consumer_total_in_house, ["haus", "show_consumer_total"], this._config?.haus?.show_consumer_total, t2.editor.show_consumer_total_helper)}
-                    ${this._renderEntityPicker(t2.editor.secondary_entity, ["haus", "secondary_entity"], this._config?.haus?.secondary_entity)}
-                    ${this._renderTextfield(t2.editor.secondary_text, ["haus", "secondary_text"], this._config?.haus?.secondary_text)}
-                    ${this._renderEntityPicker(t2.editor.tertiary_entity, ["haus", "tertiary_entity"], this._config?.haus?.tertiary_entity)}
-                    ${this._renderTextfield(t2.editor.tertiary_text, ["haus", "tertiary_text"], this._config?.haus?.tertiary_text)}
-                `
+                        ${this._renderSwitch(t2.editor.show_consumer_total_in_house, ["haus", "show_consumer_total"], this._config?.haus?.show_consumer_total, t2.editor.show_consumer_total_helper)}
+                        ${this._renderEntityPicker(t2.editor.secondary_entity, ["haus", "secondary_entity"], this._config?.haus?.secondary_entity)}
+                        ${this._renderTextfield(t2.editor.secondary_text, ["haus", "secondary_text"], this._config?.haus?.secondary_text)}
+                        ${this._renderEntityPicker(t2.editor.tertiary_entity, ["haus", "tertiary_entity"], this._config?.haus?.tertiary_entity)}
+                        ${this._renderTextfield(t2.editor.tertiary_text, ["haus", "tertiary_text"], this._config?.haus?.tertiary_text)}
+                    `
     )}
 
             <div class="divider"></div>
@@ -4583,12 +4661,12 @@ const _PVMonitorCardEditor = class _PVMonitorCardEditor extends i {
       "mdi:palette",
       t2.editor.styling,
       x`
-                    ${this._renderColorPicker(t2.editor.background_color, ["haus", "style", "background_color"], this._config?.haus?.style?.background_color)}
-                    ${this._renderColorPicker(t2.editor.border_color, ["haus", "style", "border_color"], this._config?.haus?.style?.border_color)}
-                    ${this._renderColorPicker(t2.editor.primary_color, ["haus", "style", "primary_color"], this._config?.haus?.style?.primary_color)}
-                    ${this._renderColorPicker(t2.editor.secondary_color, ["haus", "style", "secondary_color"], this._config?.haus?.style?.secondary_color)}
-                    ${this._renderColorPicker(t2.editor.icon_color, ["haus", "style", "icon_color"], this._config?.haus?.style?.icon_color)}
-                `
+                        ${this._renderColorPicker(t2.editor.background_color, ["haus", "style", "background_color"], this._config?.haus?.style?.background_color)}
+                        ${this._renderColorPicker(t2.editor.border_color, ["haus", "style", "border_color"], this._config?.haus?.style?.border_color)}
+                        ${this._renderColorPicker(t2.editor.primary_color, ["haus", "style", "primary_color"], this._config?.haus?.style?.primary_color)}
+                        ${this._renderColorPicker(t2.editor.secondary_color, ["haus", "style", "secondary_color"], this._config?.haus?.style?.secondary_color)}
+                        ${this._renderColorPicker(t2.editor.icon_color, ["haus", "style", "icon_color"], this._config?.haus?.style?.icon_color)}
+                    `
     )}
         `;
   }
@@ -4600,10 +4678,10 @@ const _PVMonitorCardEditor = class _PVMonitorCardEditor extends i {
       "mdi:transmission-tower",
       t2.editor.grid,
       x`
-                    ${this._renderIconPicker(t2.editor.icon_label, ["netz", "icon"], this._config?.netz?.icon)}
-                    ${this._renderSwitch(t2.editor.enable_animation, ["netz", "animation"], this._config?.netz?.animation)}
-                    ${this._renderAnimationSelector("netz", this._config?.netz?.animation, this._config?.netz?.animation_style)}
-                `
+                        ${this._renderIconPicker(t2.editor.icon_label, ["netz", "icon"], this._config?.netz?.icon)}
+                        ${this._renderSwitch(t2.editor.enable_animation, ["netz", "animation"], this._config?.netz?.animation)}
+                        ${this._renderAnimationSelector("netz", this._config?.netz?.animation, this._config?.netz?.animation_style)}
+                    `
     )}
 
             <div class="divider"></div>
@@ -4613,10 +4691,10 @@ const _PVMonitorCardEditor = class _PVMonitorCardEditor extends i {
       "mdi:text-box",
       t2.editor.status_texts,
       x`
-                    ${this._renderTextfield(t2.editor.text_feed_in, ["netz", "text_einspeisen"], this._config?.netz?.text_einspeisen, t2.editor.text_feed_in_placeholder)}
-                    ${this._renderTextfield(t2.editor.text_neutral, ["netz", "text_neutral"], this._config?.netz?.text_neutral, t2.editor.text_neutral_placeholder)}
-                    ${this._renderTextfield(t2.editor.text_consumption, ["netz", "text_bezug"], this._config?.netz?.text_bezug, t2.editor.text_consumption_placeholder)}
-                `
+                        ${this._renderTextfield(t2.editor.text_feed_in, ["netz", "text_einspeisen"], this._config?.netz?.text_einspeisen, t2.editor.text_feed_in_placeholder)}
+                        ${this._renderTextfield(t2.editor.text_neutral, ["netz", "text_neutral"], this._config?.netz?.text_neutral, t2.editor.text_neutral_placeholder)}
+                        ${this._renderTextfield(t2.editor.text_consumption, ["netz", "text_bezug"], this._config?.netz?.text_bezug, t2.editor.text_consumption_placeholder)}
+                    `
     )}
 
             <div class="divider"></div>
@@ -4626,11 +4704,11 @@ const _PVMonitorCardEditor = class _PVMonitorCardEditor extends i {
       "mdi:text",
       t2.editor.additional_texts,
       x`
-                    ${this._renderEntityPicker(t2.editor.secondary_entity, ["netz", "secondary_entity"], this._config?.netz?.secondary_entity)}
-                    ${this._renderTextfield(t2.editor.secondary_text, ["netz", "secondary_text"], this._config?.netz?.secondary_text)}
-                    ${this._renderEntityPicker(t2.editor.tertiary_entity, ["netz", "tertiary_entity"], this._config?.netz?.tertiary_entity)}
-                    ${this._renderTextfield(t2.editor.tertiary_text, ["netz", "tertiary_text"], this._config?.netz?.tertiary_text)}
-                `
+                        ${this._renderEntityPicker(t2.editor.secondary_entity, ["netz", "secondary_entity"], this._config?.netz?.secondary_entity)}
+                        ${this._renderTextfield(t2.editor.secondary_text, ["netz", "secondary_text"], this._config?.netz?.secondary_text)}
+                        ${this._renderEntityPicker(t2.editor.tertiary_entity, ["netz", "tertiary_entity"], this._config?.netz?.tertiary_entity)}
+                        ${this._renderTextfield(t2.editor.tertiary_text, ["netz", "tertiary_text"], this._config?.netz?.tertiary_text)}
+                    `
     )}
 
             <div class="divider"></div>
@@ -4644,12 +4722,12 @@ const _PVMonitorCardEditor = class _PVMonitorCardEditor extends i {
       "mdi:palette",
       t2.editor.styling,
       x`
-                    ${this._renderColorPicker(t2.editor.background_color, ["netz", "style", "background_color"], this._config?.netz?.style?.background_color)}
-                    ${this._renderColorPicker(t2.editor.border_color, ["netz", "style", "border_color"], this._config?.netz?.style?.border_color)}
-                    ${this._renderColorPicker(t2.editor.primary_color, ["netz", "style", "primary_color"], this._config?.netz?.style?.primary_color)}
-                    ${this._renderColorPicker(t2.editor.secondary_color, ["netz", "style", "secondary_color"], this._config?.netz?.style?.secondary_color)}
-                    ${this._renderColorPicker(t2.editor.icon_color, ["netz", "style", "icon_color"], this._config?.netz?.style?.icon_color)}
-                `
+                        ${this._renderColorPicker(t2.editor.background_color, ["netz", "style", "background_color"], this._config?.netz?.style?.background_color)}
+                        ${this._renderColorPicker(t2.editor.border_color, ["netz", "style", "border_color"], this._config?.netz?.style?.border_color)}
+                        ${this._renderColorPicker(t2.editor.primary_color, ["netz", "style", "primary_color"], this._config?.netz?.style?.primary_color)}
+                        ${this._renderColorPicker(t2.editor.secondary_color, ["netz", "style", "secondary_color"], this._config?.netz?.style?.secondary_color)}
+                        ${this._renderColorPicker(t2.editor.icon_color, ["netz", "style", "icon_color"], this._config?.netz?.style?.icon_color)}
+                    `
     )}
         `;
   }
@@ -4661,20 +4739,20 @@ const _PVMonitorCardEditor = class _PVMonitorCardEditor extends i {
       "mdi:flash",
       t2.editor.consumers_settings,
       x`
-                    ${this._renderSwitch(t2.editor.enable_consumers, ["consumers", "show"], this._config?.consumers?.show)}
+                        ${this._renderSwitch(t2.editor.enable_consumers, ["consumers", "show"], this._config?.consumers?.show)}
 
-                    ${this._config?.consumers?.show ? x`
-                        <div class="option">
-                            <div class="option-label">${t2.editor.consumers_position}</div>
-                            <div class="option-control">
-                                <ha-combo-box
-                                        .value=${this._config?.consumers?.position || "bottom"}
-                                        .items=${[
+                        ${this._config?.consumers?.show ? x`
+                            <div class="option">
+                                <div class="option-label">${t2.editor.consumers_position}</div>
+                                <div class="option-control">
+                                    <ha-combo-box
+                                            .value=${this._config?.consumers?.position || "bottom"}
+                                            .items=${[
         { value: "bottom", label: t2.editor.position_bottom }
       ]}
-                                        item-value-path="value"
-                                        item-label-path="label"
-                                        @value-changed=${(ev) => {
+                                            item-value-path="value"
+                                            item-label-path="label"
+                                            @value-changed=${(ev) => {
         if (!this._config) return;
         const newValue = ev.detail?.value;
         if (!newValue) return;
@@ -4684,25 +4762,25 @@ const _PVMonitorCardEditor = class _PVMonitorCardEditor extends i {
         this._config = newConfig;
         this._fireEvent();
       }}
-                                ></ha-combo-box>
+                                    ></ha-combo-box>
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="option">
-                            <div class="option-label">${t2.editor.consumers_sort_mode}</div>
-                            <div class="option-control">
-                                <ha-combo-box
-                                        .value=${this._config?.consumers?.sort_mode || "highest_first"}
-                                        .items=${[
+                            <div class="option">
+                                <div class="option-label">${t2.editor.consumers_sort_mode}</div>
+                                <div class="option-control">
+                                    <ha-combo-box
+                                            .value=${this._config?.consumers?.sort_mode || "highest_first"}
+                                            .items=${[
         { value: "highest_first", label: t2.editor.sort_highest_first },
         { value: "lowest_first", label: t2.editor.sort_lowest_first },
         { value: "none", label: t2.editor.sort_none },
         { value: "alpha_asc", label: t2.editor.sort_alpha_asc },
         { value: "alpha_desc", label: t2.editor.sort_alpha_desc }
       ]}
-                                        item-value-path="value"
-                                        item-label-path="label"
-                                        @value-changed=${(ev) => {
+                                            item-value-path="value"
+                                            item-label-path="label"
+                                            @value-changed=${(ev) => {
         if (!this._config) return;
         const newValue = ev.detail?.value;
         if (!newValue) return;
@@ -4712,13 +4790,13 @@ const _PVMonitorCardEditor = class _PVMonitorCardEditor extends i {
         this._config = newConfig;
         this._fireEvent();
       }}
-                                ></ha-combo-box>
+                                    ></ha-combo-box>
+                                </div>
                             </div>
-                        </div>
 
-                        ${this._renderNumberfield(t2.editor.consumers_threshold, ["consumers", "threshold"], this._config?.consumers?.threshold, 0, 1e4, 1, t2.editor.consumers_threshold_helper)}
-                    ` : ""}
-                `
+                            ${this._renderNumberfield(t2.editor.consumers_threshold, ["consumers", "threshold"], this._config?.consumers?.threshold, 0, 1e4, 1, t2.editor.consumers_threshold_helper)}
+                        ` : ""}
+                    `
     )}
 
             ${this._config?.consumers?.show ? x`
@@ -4729,139 +4807,139 @@ const _PVMonitorCardEditor = class _PVMonitorCardEditor extends i {
       "mdi:format-list-bulleted",
       t2.editor.add_consumer,
       x`
-                        ${(this._config?.consumers?.items || []).map((item, index) => {
+                            ${(this._config?.consumers?.items || []).map((item, index) => {
         const isExpanded = this._expandedConsumerIndex === index;
         const entityLabel = item.entity || t2.editor.consumer_entity;
         return x`
-                                <div class="consumer-section">
-                                    <div class="consumer-header" @click=${() => this._toggleConsumer(index)}>
-                                        <div class="consumer-title">
-                                            <ha-icon 
-                                                class="expand-icon ${isExpanded ? "expanded" : ""}" 
-                                                icon="mdi:chevron-down"
-                                            ></ha-icon>
-                                            <span class="consumer-title-text">
+                                    <div class="consumer-section">
+                                        <div class="consumer-header" @click=${() => this._toggleConsumer(index)}>
+                                            <div class="consumer-title">
+                                                <ha-icon
+                                                        class="expand-icon ${isExpanded ? "expanded" : ""}"
+                                                        icon="mdi:chevron-down"
+                                                ></ha-icon>
+                                                <span class="consumer-title-text">
                                                 ${t2.editor.consumer_entity} ${index + 1}
                                                 ${item.entity ? x` <span style="opacity: 0.6; font-weight: normal; font-size: 0.9em;">(${entityLabel})</span>` : ""}
                                             </span>
+                                            </div>
+                                            <div class="consumer-header-actions" @click=${(e2) => e2.stopPropagation()}>
+                                                ${index > 0 ? x`
+                                                    <ha-icon-button
+                                                            .path=${"M7.41,15.41L12,10.83L16.59,15.41L18,14L12,8L6,14L7.41,15.41Z"}
+                                                            @click=${() => this._moveConsumerUp(index)}
+                                                            title="Nach oben"
+                                                    ></ha-icon-button>
+                                                ` : ""}
+                                                ${index < (this._config?.consumers?.items?.length || 0) - 1 ? x`
+                                                    <ha-icon-button
+                                                            .path=${"M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z"}
+                                                            @click=${() => this._moveConsumerDown(index)}
+                                                            title="Nach unten"
+                                                    ></ha-icon-button>
+                                                ` : ""}
+                                                <ha-icon-button
+                                                        .path=${"M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z"}
+                                                        @click=${() => this._duplicateConsumer(index)}
+                                                        title="Duplizieren"
+                                                        style="color: rgba(33, 150, 243, 1);"
+                                                ></ha-icon-button>
+                                                <ha-icon-button
+                                                        .path=${"M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z"}
+                                                        @click=${() => this._removeConsumer(index)}
+                                                        title="Löschen"
+                                                        style="color: rgba(244,67,54,1);"
+                                                ></ha-icon-button>
+                                            </div>
                                         </div>
-                                        <div class="consumer-header-actions" @click=${(e2) => e2.stopPropagation()}>
-                                            ${index > 0 ? x`
-                                                <ha-icon-button
-                                                    .path=${"M7.41,15.41L12,10.83L16.59,15.41L18,14L12,8L6,14L7.41,15.41Z"}
-                                                    @click=${() => this._moveConsumerUp(index)}
-                                                    title="Nach oben"
-                                                ></ha-icon-button>
-                                            ` : ""}
-                                            ${index < (this._config?.consumers?.items?.length || 0) - 1 ? x`
-                                                <ha-icon-button
-                                                    .path=${"M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z"}
-                                                    @click=${() => this._moveConsumerDown(index)}
-                                                    title="Nach unten"
-                                                ></ha-icon-button>
-                                            ` : ""}
-                                            <ha-icon-button
-                                                .path=${"M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z"}
-                                                @click=${() => this._duplicateConsumer(index)}
-                                                title="Duplizieren"
-                                                style="color: rgba(33, 150, 243, 1);"
-                                            ></ha-icon-button>
-                                            <ha-icon-button
-                                                .path=${"M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z"}
-                                                @click=${() => this._removeConsumer(index)}
-                                                title="Löschen"
-                                                style="color: rgba(244,67,54,1);"
-                                            ></ha-icon-button>
+
+                                        <div class="consumer-content ${isExpanded ? "" : "collapsed"}">
+                                            ${this._renderEntityPicker(t2.editor.consumer_entity, ["consumers", "items", index.toString(), "entity"], item.entity, void 0, true)}
+                                            ${this._renderIconPicker(t2.editor.consumer_icon, ["consumers", "items", index.toString(), "icon"], item.icon)}
+                                            ${this._renderTextfield(t2.editor.consumer_label, ["consumers", "items", index.toString(), "label"], item.label)}
+                                            ${this._renderNumberfield(t2.editor.consumer_threshold, ["consumers", "items", index.toString(), "threshold"], item.threshold, 0, 1e4, 1)}
+                                            ${this._renderSwitch(t2.editor.consumer_auto_color, ["consumers", "items", index.toString(), "auto_color"], item.auto_color !== false, t2.editor.consumer_auto_color_helper)}
+
+                                            <!-- Additional Texts Subsection -->
+                                            <div class="consumer-subsection">
+                                                <div class="consumer-subsection-header" @click=${() => this._toggleConsumerSubsection(index, "texts")}>
+                                                    <ha-icon icon="mdi:text"></ha-icon>
+                                                    ${t2.editor.additional_texts}
+                                                    <ha-icon
+                                                            class="expand-icon ${this._isConsumerSubsectionExpanded(index, "texts") ? "expanded" : ""}"
+                                                            icon="mdi:chevron-down"
+                                                            style="margin-left: auto;"
+                                                    ></ha-icon>
+                                                </div>
+                                                <div class="consumer-subsection-content ${this._isConsumerSubsectionExpanded(index, "texts") ? "" : "collapsed"}">
+                                                    ${this._renderSwitch(t2.editor.consumer_show_primary, ["consumers", "items", index.toString(), "show_primary"], item.show_primary !== false)}
+                                                    ${this._renderEntityPicker(t2.editor.consumer_primary_entity, ["consumers", "items", index.toString(), "primary_entity"], item.primary_entity)}
+                                                    ${this._renderTextfield(t2.editor.consumer_primary_text, ["consumers", "items", index.toString(), "primary_text"], item.primary_text)}
+
+                                                    ${this._renderSwitch(t2.editor.consumer_show_secondary, ["consumers", "items", index.toString(), "show_secondary"], item.show_secondary !== false)}
+                                                    ${this._renderEntityPicker(t2.editor.consumer_secondary_entity, ["consumers", "items", index.toString(), "secondary_entity"], item.secondary_entity)}
+                                                    ${this._renderTextfield(t2.editor.consumer_secondary_text, ["consumers", "items", index.toString(), "secondary_text"], item.secondary_text)}
+                                                </div>
+                                            </div>
+
+                                            <!-- Tap Actions Subsection -->
+                                            <div class="consumer-subsection">
+                                                <div class="consumer-subsection-header" @click=${() => this._toggleConsumerSubsection(index, "actions")}>
+                                                    <ha-icon icon="mdi:gesture-tap"></ha-icon>
+                                                    ${t2.editor.consumer_tap_actions}
+                                                    <ha-icon
+                                                            class="expand-icon ${this._isConsumerSubsectionExpanded(index, "actions") ? "expanded" : ""}"
+                                                            icon="mdi:chevron-down"
+                                                            style="margin-left: auto;"
+                                                    ></ha-icon>
+                                                </div>
+                                                <div class="consumer-subsection-content ${this._isConsumerSubsectionExpanded(index, "actions") ? "" : "collapsed"}">
+                                                    ${this._renderEntityPicker(t2.editor.consumer_switch_entity, ["consumers", "items", index.toString(), "switch_entity"], item.switch_entity, t2.editor.consumer_switch_entity_helper)}
+                                                    ${this._renderActionSelector("Tap Action", ["consumers", "items", index.toString(), "tap_action"], item.tap_action)}
+                                                    ${this._renderActionSelector("Double Tap", ["consumers", "items", index.toString(), "double_tap_action"], item.double_tap_action)}
+                                                    ${this._renderActionSelector("Hold Action", ["consumers", "items", index.toString(), "hold_action"], item.hold_action)}
+                                                </div>
+                                            </div>
+
+                                            <!-- Styling Subsection -->
+                                            <div class="consumer-subsection">
+                                                <div class="consumer-subsection-header" @click=${() => this._toggleConsumerSubsection(index, "styling")}>
+                                                    <ha-icon icon="mdi:palette"></ha-icon>
+                                                    ${t2.editor.consumer_item_styling}
+                                                    <ha-icon
+                                                            class="expand-icon ${this._isConsumerSubsectionExpanded(index, "styling") ? "expanded" : ""}"
+                                                            icon="mdi:chevron-down"
+                                                            style="margin-left: auto;"
+                                                    ></ha-icon>
+                                                </div>
+                                                <div class="consumer-subsection-content ${this._isConsumerSubsectionExpanded(index, "styling") ? "" : "collapsed"}">
+                                                    ${this._renderTextfield(t2.editor.icon_size, ["consumers", "items", index.toString(), "style", "icon_size"], item.style?.icon_size, "1.5em")}
+                                                    ${this._renderColorPicker(t2.editor.icon_color, ["consumers", "items", index.toString(), "style", "icon_color"], item.style?.icon_color)}
+                                                    ${this._renderTextfield(t2.editor.icon_opacity, ["consumers", "items", index.toString(), "style", "icon_opacity"], item.style?.icon_opacity, "1")}
+                                                    ${this._renderTextfield(t2.editor.primary_size, ["consumers", "items", index.toString(), "style", "primary_size"], item.style?.primary_size, "1em")}
+                                                    ${this._renderColorPicker(t2.editor.primary_color_label, ["consumers", "items", index.toString(), "style", "primary_color"], item.style?.primary_color, "white")}
+                                                    ${this._renderTextfield(t2.editor.primary_opacity, ["consumers", "items", index.toString(), "style", "primary_opacity"], item.style?.primary_opacity, "1")}
+                                                    ${this._renderTextfield(t2.editor.primary_font_weight, ["consumers", "items", index.toString(), "style", "primary_font_weight"], item.style?.primary_font_weight, "bold")}
+                                                    ${this._renderTextfield(t2.editor.secondary_size, ["consumers", "items", index.toString(), "style", "secondary_size"], item.style?.secondary_size, "0.8em")}
+                                                    ${this._renderColorPicker(t2.editor.secondary_color_label, ["consumers", "items", index.toString(), "style", "secondary_color"], item.style?.secondary_color, "white")}
+                                                    ${this._renderTextfield(t2.editor.secondary_opacity, ["consumers", "items", index.toString(), "style", "secondary_opacity"], item.style?.secondary_opacity, "0.7")}
+                                                    ${this._renderTextfield(t2.editor.secondary_font_weight, ["consumers", "items", index.toString(), "style", "secondary_font_weight"], item.style?.secondary_font_weight, "normal")}
+                                                    ${this._renderColorPicker(t2.editor.background_color, ["consumers", "items", index.toString(), "style", "background_color"], item.style?.background_color)}
+                                                    ${this._renderColorPicker(t2.editor.border_color, ["consumers", "items", index.toString(), "style", "border_color"], item.style?.border_color)}
+                                                    ${this._renderTextfield(t2.editor.border_radius, ["consumers", "items", index.toString(), "style", "border_radius"], item.style?.border_radius, "12px")}
+                                                    ${this._renderTextfield(t2.editor.padding, ["consumers", "items", index.toString(), "style", "padding"], item.style?.padding, "8px")}
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-
-                                    <div class="consumer-content ${isExpanded ? "" : "collapsed"}">
-                                        ${this._renderEntityPicker(t2.editor.consumer_entity, ["consumers", "items", index.toString(), "entity"], item.entity, void 0, true)}
-                                        ${this._renderIconPicker(t2.editor.consumer_icon, ["consumers", "items", index.toString(), "icon"], item.icon)}
-                                        ${this._renderTextfield(t2.editor.consumer_label, ["consumers", "items", index.toString(), "label"], item.label)}
-                                        ${this._renderNumberfield(t2.editor.consumer_threshold, ["consumers", "items", index.toString(), "threshold"], item.threshold, 0, 1e4, 1)}
-                                        ${this._renderSwitch(t2.editor.consumer_auto_color, ["consumers", "items", index.toString(), "auto_color"], item.auto_color !== false, t2.editor.consumer_auto_color_helper)}
-
-                                        <!-- Additional Texts Subsection -->
-                                        <div class="consumer-subsection">
-                                            <div class="consumer-subsection-header" @click=${() => this._toggleConsumerSubsection(index, "texts")}>
-                                                <ha-icon icon="mdi:text"></ha-icon>
-                                                ${t2.editor.additional_texts}
-                                                <ha-icon 
-                                                    class="expand-icon ${this._isConsumerSubsectionExpanded(index, "texts") ? "expanded" : ""}" 
-                                                    icon="mdi:chevron-down"
-                                                    style="margin-left: auto;"
-                                                ></ha-icon>
-                                            </div>
-                                            <div class="consumer-subsection-content ${this._isConsumerSubsectionExpanded(index, "texts") ? "" : "collapsed"}">
-                                                ${this._renderSwitch(t2.editor.consumer_show_primary, ["consumers", "items", index.toString(), "show_primary"], item.show_primary !== false)}
-                                                ${this._renderEntityPicker(t2.editor.consumer_primary_entity, ["consumers", "items", index.toString(), "primary_entity"], item.primary_entity)}
-                                                ${this._renderTextfield(t2.editor.consumer_primary_text, ["consumers", "items", index.toString(), "primary_text"], item.primary_text)}
-                                                
-                                                ${this._renderSwitch(t2.editor.consumer_show_secondary, ["consumers", "items", index.toString(), "show_secondary"], item.show_secondary !== false)}
-                                                ${this._renderEntityPicker(t2.editor.consumer_secondary_entity, ["consumers", "items", index.toString(), "secondary_entity"], item.secondary_entity)}
-                                                ${this._renderTextfield(t2.editor.consumer_secondary_text, ["consumers", "items", index.toString(), "secondary_text"], item.secondary_text)}
-                                            </div>
-                                        </div>
-
-                                        <!-- Tap Actions Subsection -->
-                                        <div class="consumer-subsection">
-                                            <div class="consumer-subsection-header" @click=${() => this._toggleConsumerSubsection(index, "actions")}>
-                                                <ha-icon icon="mdi:gesture-tap"></ha-icon>
-                                                ${t2.editor.consumer_tap_actions}
-                                                <ha-icon 
-                                                    class="expand-icon ${this._isConsumerSubsectionExpanded(index, "actions") ? "expanded" : ""}" 
-                                                    icon="mdi:chevron-down"
-                                                    style="margin-left: auto;"
-                                                ></ha-icon>
-                                            </div>
-                                            <div class="consumer-subsection-content ${this._isConsumerSubsectionExpanded(index, "actions") ? "" : "collapsed"}">
-                                                ${this._renderEntityPicker(t2.editor.consumer_switch_entity, ["consumers", "items", index.toString(), "switch_entity"], item.switch_entity, t2.editor.consumer_switch_entity_helper)}
-                                                ${this._renderActionSelector("Tap Action", ["consumers", "items", index.toString(), "tap_action"], item.tap_action)}
-                                                ${this._renderActionSelector("Double Tap", ["consumers", "items", index.toString(), "double_tap_action"], item.double_tap_action)}
-                                                ${this._renderActionSelector("Hold Action", ["consumers", "items", index.toString(), "hold_action"], item.hold_action)}
-                                            </div>
-                                        </div>
-
-                                        <!-- Styling Subsection -->
-                                        <div class="consumer-subsection">
-                                            <div class="consumer-subsection-header" @click=${() => this._toggleConsumerSubsection(index, "styling")}>
-                                                <ha-icon icon="mdi:palette"></ha-icon>
-                                                ${t2.editor.consumer_item_styling}
-                                                <ha-icon 
-                                                    class="expand-icon ${this._isConsumerSubsectionExpanded(index, "styling") ? "expanded" : ""}" 
-                                                    icon="mdi:chevron-down"
-                                                    style="margin-left: auto;"
-                                                ></ha-icon>
-                                            </div>
-                                            <div class="consumer-subsection-content ${this._isConsumerSubsectionExpanded(index, "styling") ? "" : "collapsed"}">
-                                                ${this._renderTextfield(t2.editor.icon_size, ["consumers", "items", index.toString(), "style", "icon_size"], item.style?.icon_size, "1.5em")}
-                                                ${this._renderColorPicker(t2.editor.icon_color, ["consumers", "items", index.toString(), "style", "icon_color"], item.style?.icon_color)}
-                                                ${this._renderTextfield(t2.editor.icon_opacity, ["consumers", "items", index.toString(), "style", "icon_opacity"], item.style?.icon_opacity, "1")}
-                                                ${this._renderTextfield(t2.editor.primary_size, ["consumers", "items", index.toString(), "style", "primary_size"], item.style?.primary_size, "1em")}
-                                                ${this._renderColorPicker(t2.editor.primary_color_label, ["consumers", "items", index.toString(), "style", "primary_color"], item.style?.primary_color, "white")}
-                                                ${this._renderTextfield(t2.editor.primary_opacity, ["consumers", "items", index.toString(), "style", "primary_opacity"], item.style?.primary_opacity, "1")}
-                                                ${this._renderTextfield(t2.editor.primary_font_weight, ["consumers", "items", index.toString(), "style", "primary_font_weight"], item.style?.primary_font_weight, "bold")}
-                                                ${this._renderTextfield(t2.editor.secondary_size, ["consumers", "items", index.toString(), "style", "secondary_size"], item.style?.secondary_size, "0.8em")}
-                                                ${this._renderColorPicker(t2.editor.secondary_color_label, ["consumers", "items", index.toString(), "style", "secondary_color"], item.style?.secondary_color, "white")}
-                                                ${this._renderTextfield(t2.editor.secondary_opacity, ["consumers", "items", index.toString(), "style", "secondary_opacity"], item.style?.secondary_opacity, "0.7")}
-                                                ${this._renderTextfield(t2.editor.secondary_font_weight, ["consumers", "items", index.toString(), "style", "secondary_font_weight"], item.style?.secondary_font_weight, "normal")}
-                                                ${this._renderColorPicker(t2.editor.background_color, ["consumers", "items", index.toString(), "style", "background_color"], item.style?.background_color)}
-                                                ${this._renderColorPicker(t2.editor.border_color, ["consumers", "items", index.toString(), "style", "border_color"], item.style?.border_color)}
-                                                ${this._renderTextfield(t2.editor.border_radius, ["consumers", "items", index.toString(), "style", "border_radius"], item.style?.border_radius, "12px")}
-                                                ${this._renderTextfield(t2.editor.padding, ["consumers", "items", index.toString(), "style", "padding"], item.style?.padding, "8px")}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            `;
+                                `;
       })}
 
-                        <ha-button @click=${this._addConsumer}>
-                            <ha-icon icon="mdi:plus"></ha-icon>
-                            ${t2.editor.add_consumer}
-                        </ha-button>
-                    `
+                            <ha-button @click=${this._addConsumer}>
+                                <ha-icon icon="mdi:plus"></ha-icon>
+                                ${t2.editor.add_consumer}
+                            </ha-button>
+                        `
     )}
 
                 <div class="divider"></div>
@@ -4871,20 +4949,20 @@ const _PVMonitorCardEditor = class _PVMonitorCardEditor extends i {
       "mdi:palette",
       `${t2.editor.styling} (Global)`,
       x`
-                        ${this._renderTextfield(t2.editor.grid_gap, ["consumers", "style", "gap"], this._config?.consumers?.style?.gap, "6px")}
-                        ${this._renderColorPicker(t2.editor.background_color, ["consumers", "style", "item_background_color"], this._config?.consumers?.style?.item_background_color, "rgba(21, 20, 27, 1)")}
-                        ${this._renderColorPicker(t2.editor.border_color, ["consumers", "style", "item_border_color"], this._config?.consumers?.style?.item_border_color, "rgba(255, 255, 255, 0.1)")}
-                        ${this._renderTextfield(t2.editor.border_radius, ["consumers", "style", "item_border_radius"], this._config?.consumers?.style?.item_border_radius, "12px")}
-                        ${this._renderTextfield(t2.editor.padding, ["consumers", "style", "item_padding"], this._config?.consumers?.style?.item_padding, "8px")}
-                        ${this._renderTextfield(t2.editor.icon_size, ["consumers", "style", "icon_size"], this._config?.consumers?.style?.icon_size, "1.5em")}
-                        ${this._renderTextfield(t2.editor.icon_opacity, ["consumers", "style", "icon_opacity"], this._config?.consumers?.style?.icon_opacity, "1")}
-                        ${this._renderTextfield(t2.editor.primary_size, ["consumers", "style", "primary_size"], this._config?.consumers?.style?.primary_size, "1em")}
-                        ${this._renderTextfield(t2.editor.primary_font_weight, ["consumers", "style", "primary_font_weight"], this._config?.consumers?.style?.primary_font_weight, "bold")}
-                        ${this._renderTextfield(t2.editor.primary_opacity, ["consumers", "style", "primary_opacity"], this._config?.consumers?.style?.primary_opacity, "1")}
-                        ${this._renderTextfield(t2.editor.secondary_size, ["consumers", "style", "secondary_size"], this._config?.consumers?.style?.secondary_size, "0.8em")}
-                        ${this._renderTextfield(t2.editor.secondary_font_weight, ["consumers", "style", "secondary_font_weight"], this._config?.consumers?.style?.secondary_font_weight, "normal")}
-                        ${this._renderTextfield(t2.editor.secondary_opacity, ["consumers", "style", "secondary_opacity"], this._config?.consumers?.style?.secondary_opacity, "0.7")}
-                    `
+                            ${this._renderTextfield(t2.editor.grid_gap, ["consumers", "style", "gap"], this._config?.consumers?.style?.gap, "6px")}
+                            ${this._renderColorPicker(t2.editor.background_color, ["consumers", "style", "item_background_color"], this._config?.consumers?.style?.item_background_color, "rgba(21, 20, 27, 1)")}
+                            ${this._renderColorPicker(t2.editor.border_color, ["consumers", "style", "item_border_color"], this._config?.consumers?.style?.item_border_color, "rgba(255, 255, 255, 0.1)")}
+                            ${this._renderTextfield(t2.editor.border_radius, ["consumers", "style", "item_border_radius"], this._config?.consumers?.style?.item_border_radius, "12px")}
+                            ${this._renderTextfield(t2.editor.padding, ["consumers", "style", "item_padding"], this._config?.consumers?.style?.item_padding, "8px")}
+                            ${this._renderTextfield(t2.editor.icon_size, ["consumers", "style", "icon_size"], this._config?.consumers?.style?.icon_size, "1.5em")}
+                            ${this._renderTextfield(t2.editor.icon_opacity, ["consumers", "style", "icon_opacity"], this._config?.consumers?.style?.icon_opacity, "1")}
+                            ${this._renderTextfield(t2.editor.primary_size, ["consumers", "style", "primary_size"], this._config?.consumers?.style?.primary_size, "1em")}
+                            ${this._renderTextfield(t2.editor.primary_font_weight, ["consumers", "style", "primary_font_weight"], this._config?.consumers?.style?.primary_font_weight, "bold")}
+                            ${this._renderTextfield(t2.editor.primary_opacity, ["consumers", "style", "primary_opacity"], this._config?.consumers?.style?.primary_opacity, "1")}
+                            ${this._renderTextfield(t2.editor.secondary_size, ["consumers", "style", "secondary_size"], this._config?.consumers?.style?.secondary_size, "0.8em")}
+                            ${this._renderTextfield(t2.editor.secondary_font_weight, ["consumers", "style", "secondary_font_weight"], this._config?.consumers?.style?.secondary_font_weight, "normal")}
+                            ${this._renderTextfield(t2.editor.secondary_opacity, ["consumers", "style", "secondary_opacity"], this._config?.consumers?.style?.secondary_opacity, "0.7")}
+                        `
     )}
             ` : ""}
         `;
@@ -4990,9 +5068,9 @@ const _PVMonitorCardEditor = class _PVMonitorCardEditor extends i {
                 <div class="section-header" @click=${() => this._toggleSection(sectionId)}>
                     <ha-icon icon="${icon}"></ha-icon>
                     ${title}
-                    <ha-icon 
-                        class="expand-icon ${isExpanded ? "expanded" : ""}" 
-                        icon="mdi:chevron-down"
+                    <ha-icon
+                            class="expand-icon ${isExpanded ? "expanded" : ""}"
+                            icon="mdi:chevron-down"
                     ></ha-icon>
                 </div>
                 <div class="section-content ${isExpanded ? "" : "collapsed"}">
@@ -5010,58 +5088,102 @@ const _PVMonitorCardEditor = class _PVMonitorCardEditor extends i {
       "mdi:palette",
       t2.editor.theme,
       x`
-                    ${this._renderThemeSelector()}
-                    
-                    <div class="divider" style="margin: 16px 0;"></div>
-                    
-                    <div style="font-weight: 500; margin-bottom: 8px;">Theme Editor</div>
-                    <div class="info-text" style="margin-bottom: 12px;">Passe alle Farben des Themes an. Ändert nicht die Karten-spezifischen Styles.</div>
-                    
-                    ${this._renderColorPicker(t2.editor.background_color, ["style", "card_background_color"], this._config?.style?.card_background_color, "rgba(21, 20, 27, 1)")}
-                    ${this._renderColorPicker(t2.editor.border_color, ["style", "card_border_color"], this._config?.style?.card_border_color, "rgba(255, 255, 255, 0.1)")}
-                    ${this._renderColorPicker(t2.editor.text_color, ["style", "card_text_color"], this._config?.style?.card_text_color, "white")}
-                    ${this._renderTextfield(t2.editor.border_radius, ["style", "card_border_radius"], this._config?.style?.card_border_radius, "16px")}
-                    ${this._renderTextfield(t2.editor.padding, ["style", "card_padding"], this._config?.style?.card_padding, "12px")}
-                    
-                    <div class="divider" style="margin: 16px 0;"></div>
-                    
-                    ${this._renderColorPicker(t2.editor.title_color, ["style", "title_color"], this._config?.style?.title_color, "white")}
-                    ${this._renderTextfield(t2.editor.title_size, ["style", "title_size"], this._config?.style?.title_size, "1.5em")}
-                    ${this._renderTextfield(t2.editor.title_font_weight, ["style", "title_font_weight"], this._config?.style?.title_font_weight, "bold")}
-                    
-                    <div class="divider" style="margin: 16px 0;"></div>
-                    
-                    ${this._renderColorPicker(t2.editor.subtitle_color, ["style", "subtitle_color"], this._config?.style?.subtitle_color)}
-                    ${this._renderTextfield(t2.editor.subtitle_size, ["style", "subtitle_size"], this._config?.style?.subtitle_size, "1em")}
-                    ${this._renderTextfield(t2.editor.subtitle_font_weight, ["style", "subtitle_font_weight"], this._config?.style?.subtitle_font_weight, "normal")}
-                    
-                    <div class="divider" style="margin: 16px 0;"></div>
-                    
-                    ${this._renderTextfield(t2.editor.icon_size, ["style", "icon_size"], this._config?.style?.icon_size, "2em")}
-                    ${this._renderTextfield(t2.editor.icon_opacity, ["style", "icon_opacity"], this._config?.style?.icon_opacity, "1")}
-                    ${this._renderTextfield(t2.editor.icon_margin, ["style", "icon_margin"], this._config?.style?.icon_margin, "6px")}
-                    
-                    <div class="divider" style="margin: 16px 0;"></div>
-                    
-                    ${this._renderColorPicker(t2.editor.primary_color_label, ["style", "primary_color"], this._config?.style?.primary_color, "white")}
-                    ${this._renderTextfield(t2.editor.primary_size, ["style", "primary_size"], this._config?.style?.primary_size, "1.2em")}
-                    ${this._renderTextfield(t2.editor.primary_opacity, ["style", "primary_font_opacity"], this._config?.style?.primary_font_opacity, "1")}
-                    ${this._renderTextfield(t2.editor.primary_font_weight, ["style", "primary_font_weight"], this._config?.style?.primary_font_weight, "normal")}
-                    
-                    <div class="divider" style="margin: 16px 0;"></div>
-                    
-                    ${this._renderColorPicker(t2.editor.secondary_color_label, ["style", "secondary_color"], this._config?.style?.secondary_color, "white")}
-                    ${this._renderTextfield(t2.editor.secondary_size, ["style", "secondary_size"], this._config?.style?.secondary_size, "0.9em")}
-                    ${this._renderTextfield(t2.editor.secondary_opacity, ["style", "secondary_font_opacity"], this._config?.style?.secondary_font_opacity, "0.7")}
-                    ${this._renderTextfield(t2.editor.secondary_font_weight, ["style", "secondary_font_weight"], this._config?.style?.secondary_font_weight, "normal")}
-                    
-                    <div class="divider" style="margin: 16px 0;"></div>
-                    
-                    ${this._renderColorPicker(t2.editor.tertiary_color_label, ["style", "tertiary_color"], this._config?.style?.tertiary_color, "white")}
-                    ${this._renderTextfield(t2.editor.tertiary_size, ["style", "tertiary_size"], this._config?.style?.tertiary_size, "0.9em")}
-                    ${this._renderTextfield(t2.editor.tertiary_opacity, ["style", "tertiary_font_opacity"], this._config?.style?.tertiary_font_opacity, "0.7")}
-                    ${this._renderTextfield(t2.editor.tertiary_font_weight, ["style", "tertiary_font_weight"], this._config?.style?.tertiary_font_weight, "normal")}
-                `
+                        ${this._renderThemeSelector()}
+
+                        <div class="divider" style="margin: 16px 0;"></div>
+
+                        <div style="font-weight: 500; margin-bottom: 8px;">Theme Editor</div>
+                        <div class="info-text" style="margin-bottom: 12px;">Passe alle Farben des Themes an. Ändert nicht die Karten-spezifischen Styles.</div>
+
+                        ${this._renderColorPicker(t2.editor.background_color, ["style", "card_background_color"], this._config?.style?.card_background_color, "rgba(21, 20, 27, 1)")}
+                        ${this._renderColorPicker(t2.editor.border_color, ["style", "card_border_color"], this._config?.style?.card_border_color, "rgba(255, 255, 255, 0.1)")}
+                        ${this._renderColorPicker(t2.editor.text_color, ["style", "card_text_color"], this._config?.style?.card_text_color, "white")}
+                        ${this._renderTextfield(t2.editor.border_radius, ["style", "card_border_radius"], this._config?.style?.card_border_radius, "16px")}
+                        ${this._renderTextfield(t2.editor.padding, ["style", "card_padding"], this._config?.style?.card_padding, "12px")}
+
+                        <div class="divider" style="margin: 16px 0;"></div>
+
+                        ${this._renderColorPicker(t2.editor.title_color, ["style", "title_color"], this._config?.style?.title_color, "white")}
+                        ${this._renderTextfield(t2.editor.title_size, ["style", "title_size"], this._config?.style?.title_size, "1.5em")}
+                        ${this._renderTextfield(t2.editor.title_font_weight, ["style", "title_font_weight"], this._config?.style?.title_font_weight, "bold")}
+
+                        <div class="divider" style="margin: 16px 0;"></div>
+
+                        ${this._renderColorPicker(t2.editor.subtitle_color, ["style", "subtitle_color"], this._config?.style?.subtitle_color)}
+                        ${this._renderTextfield(t2.editor.subtitle_size, ["style", "subtitle_size"], this._config?.style?.subtitle_size, "1em")}
+                        ${this._renderTextfield(t2.editor.subtitle_font_weight, ["style", "subtitle_font_weight"], this._config?.style?.subtitle_font_weight, "normal")}
+
+                        <div class="divider" style="margin: 16px 0;"></div>
+
+                        ${this._renderTextfield(t2.editor.icon_size, ["style", "icon_size"], this._config?.style?.icon_size, "2em")}
+                        ${this._renderTextfield(t2.editor.icon_opacity, ["style", "icon_opacity"], this._config?.style?.icon_opacity, "1")}
+                        ${this._renderTextfield(t2.editor.icon_margin, ["style", "icon_margin"], this._config?.style?.icon_margin, "6px")}
+
+                        <div class="divider" style="margin: 16px 0;"></div>
+
+                        ${this._renderColorPicker(t2.editor.primary_color_label, ["style", "primary_color"], this._config?.style?.primary_color, "white")}
+                        ${this._renderTextfield(t2.editor.primary_size, ["style", "primary_size"], this._config?.style?.primary_size, "1.2em")}
+                        ${this._renderTextfield(t2.editor.primary_opacity, ["style", "primary_font_opacity"], this._config?.style?.primary_font_opacity, "1")}
+                        ${this._renderTextfield(t2.editor.primary_font_weight, ["style", "primary_font_weight"], this._config?.style?.primary_font_weight, "normal")}
+
+                        <div class="divider" style="margin: 16px 0;"></div>
+
+                        ${this._renderColorPicker(t2.editor.secondary_color_label, ["style", "secondary_color"], this._config?.style?.secondary_color, "white")}
+                        ${this._renderTextfield(t2.editor.secondary_size, ["style", "secondary_size"], this._config?.style?.secondary_size, "0.9em")}
+                        ${this._renderTextfield(t2.editor.secondary_opacity, ["style", "secondary_font_opacity"], this._config?.style?.secondary_font_opacity, "0.7")}
+                        ${this._renderTextfield(t2.editor.secondary_font_weight, ["style", "secondary_font_weight"], this._config?.style?.secondary_font_weight, "normal")}
+
+                        <div class="divider" style="margin: 16px 0;"></div>
+
+                        ${this._renderColorPicker(t2.editor.tertiary_color_label, ["style", "tertiary_color"], this._config?.style?.tertiary_color, "white")}
+                        ${this._renderTextfield(t2.editor.tertiary_size, ["style", "tertiary_size"], this._config?.style?.tertiary_size, "0.9em")}
+                        ${this._renderTextfield(t2.editor.tertiary_opacity, ["style", "tertiary_font_opacity"], this._config?.style?.tertiary_font_opacity, "0.7")}
+                        ${this._renderTextfield(t2.editor.tertiary_font_weight, ["style", "tertiary_font_weight"], this._config?.style?.tertiary_font_weight, "normal")}
+                    `
+    )}
+
+            <div class="divider"></div>
+
+            ${this._renderCollapsibleSection(
+      "styling_header_background",
+      "mdi:rectangle",
+      t2.editor.header_background,
+      x`
+                        ${this._renderSwitch(t2.editor.enable_header_background, ["style", "header_background_enabled"], this._config?.style?.header_background_enabled, t2.editor.enable_header_background_helper)}
+
+                        ${this._config?.style?.header_background_enabled ? x`
+                        <div class="option">
+                            <div class="option-label">${t2.editor.header_width}</div>
+                            <div class="option-control">
+                                <ha-combo-box
+                                        .value=${this._config?.style?.header_width || "auto"}
+                                        .items=${[
+        { value: "auto", label: t2.editor.header_width_auto },
+        { value: "full", label: t2.editor.header_width_full }
+      ]}
+                                        item-value-path="value"
+                                        item-label-path="label"
+                                        @value-changed=${(ev) => {
+        if (!this._config) return;
+        const newValue = ev.detail?.value;
+        if (!newValue) return;
+        const newConfig = { ...this._config };
+        if (!newConfig.style) newConfig.style = {};
+        newConfig.style.header_width = newValue;
+        this._config = newConfig;
+        this._fireEvent();
+      }}
+                                ></ha-combo-box>
+                            </div>
+                        </div>
+                        
+                        ${this._renderColorPicker(t2.editor.header_background_color, ["style", "header_background_color"], this._config?.style?.header_background_color, "rgba(21, 20, 27, 1)")}
+                        ${this._renderColorPicker(t2.editor.header_border_color, ["style", "header_border_color"], this._config?.style?.header_border_color, "rgba(255, 255, 255, 0.1)")}
+                        ${this._renderTextfield(t2.editor.header_border_radius, ["style", "header_border_radius"], this._config?.style?.header_border_radius, "16px")}
+                        ${this._renderTextfield(t2.editor.header_padding, ["style", "header_padding"], this._config?.style?.header_padding, "12px")}
+                        ${this._renderTextfield(t2.editor.header_box_shadow, ["style", "header_box_shadow"], this._config?.style?.header_box_shadow, "0 2px 8px 0 rgba(0, 0, 0, 0.15)")}
+                    ` : ""}
+                    `
     )}
 
             <div class="divider"></div>
