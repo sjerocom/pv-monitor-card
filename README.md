@@ -1,11 +1,23 @@
 # PV Monitor Card
 
-A modern, fully customizable Home Assistant Lovelace Card for monitoring PV systems, battery storage, energy flows, and consumers.
+A modern, fully customizable Home Assistan
+t Lovelace Card for monitoring PV systems, battery storage, energy flows, and consumers.
 
 ![Version](https://img.shields.io/github/v/release/sjerocom/pv-monitor-card)
 ![License](https://img.shields.io/github/license/sjerocom/pv-monitor-card)
 ![HACS](https://img.shields.io/badge/HACS-Custom-orange.svg)
 
+---
+
+## 📸 Screenshots
+
+![Preview - Dark Theme.png](img/Preview%20-%20Dark%20Theme.png)
+![Preview - Light Theme.png](img/Preview%20-%20Light%20Theme.png)
+![Preview - DrWho Theme.png](img/Preview%20-%20DrWho%20Theme.png)
+![Preview - Matrix Theme.png](img/Preview%20-%20Matrix%20Theme.png)
+![Customizable - Infobar.png](img/Customizable%20-%20Infobar.png)
+![Customizable - Devices.png](img/Customizable%20-%20Devices.png)
+![Customizable - Styles.png](img/Customizable%20-%20Styles.png)
 ---
 
 ## 📖 Table of Contents
@@ -125,12 +137,6 @@ Since I wanted to learn more about custom card development anyway, I decided to 
 
 ---
 
-## 📸 Screenshots
-
-_Screenshots of the card in various configurations can be inserted here_
-
----
-
 ## 📦 Installation
 
 ### HACS (Recommended)
@@ -140,11 +146,11 @@ _Screenshots of the card in various configurations can be inserted here_
 3. Click the **three dots** in the top right
 4. Select **"Custom repositories"**
 5. Add this URL: `https://github.com/sjerocom/pv-monitor-card`
-6. Category: **"Lovelace"**
+6. Category: **"Dashboard"**
 7. Click **"Add"**
 8. Search for **"PV Monitor Card"**
 9. Click **"Download"**
-10. **Restart Home Assistant**
+10. **Refresh Home Assistant**
 
 ### Manual Installation
 
@@ -155,7 +161,7 @@ _Screenshots of the card in various configurations can be inserted here_
     - Click **"+ Add Resource"**
     - URL: `/local/community/pv-monitor-card/pv-monitor-card.js`
     - Type: **JavaScript Module**
-4. **Restart Home Assistant**
+4. **Refresh Home Assistant**
 
 ### Verification
 
@@ -253,6 +259,8 @@ info_bar:
 
 These settings are configured in the **"General"** tab → **"Central Entities"**:
 
+![General Settings.png](img/General%20Settings.png)
+
 ```yaml
 entities:
   pv_production: sensor.pv_power              # Required
@@ -265,6 +273,8 @@ entities:
 
 **Central Configuration** (Tab "General" → "Central Configuration"):
 
+![General Settings - Zentrale Konfiguration.png](img/General%20Settings%20-%20Zentrale%20Konfiguration.png)
+
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `pv_max_power` | number | `10000` | Maximum PV power in Watts (for animations and icon rotation) |
@@ -272,6 +282,8 @@ entities:
 | `grid_threshold` | number | `10` | Threshold in Watts for "Neutral" status (±X Watts) |
 
 **Card Visibility** (Tab "General" → "Card Visibility"):
+
+![General Settings - Karten Sichtbarkeit.png](img/General%20Settings%20-%20Karten%20Sichtbarkeit.png)
 
 ```yaml
 pv:
@@ -286,6 +298,8 @@ netz:
 
 **Header** (Tab "General" → "Card Header"):
 
+![General Settings - Karten Header.png](img/General%20Settings%20-%20Karten%20Header.png)
+
 ```yaml
 title: Energy Monitor       # Main title
 subtitle: Live Overview     # Subtitle
@@ -297,6 +311,8 @@ icon: mdi:solar-power       # Icon next to title
 ### PV System
 
 The PV card displays the current solar production.
+
+![PV-System.png](img/PV-System.png)
 
 #### Basic Configuration
 
@@ -361,6 +377,8 @@ pv:
 
 The battery card shows the charge level and charge/discharge power.
 
+![Batterie.png](img/Batterie.png)
+
 #### Basic Configuration
 
 ```yaml
@@ -405,6 +423,8 @@ batterie:
 
 The house card displays the current total consumption.
 
+![Haus.png](img/Haus.png)
+
 #### Basic Configuration
 
 ```yaml
@@ -436,6 +456,8 @@ haus:
 ### Grid
 
 The grid card shows feed-in, grid consumption, or neutral status.
+
+![Netz.png](img/Netz.png)
 
 #### Basic Configuration
 
@@ -477,6 +499,8 @@ netz:
 ### Info Bar
 
 The info bar displays up to 3 configurable values.
+
+![Infobar.png](img/Infobar.png)
 
 #### Basic Configuration
 
@@ -577,6 +601,8 @@ info_bar:
 
 The consumers section shows individual power consumers with their current power.
 
+![Verbraucher.png](img/Verbraucher.png)
+
 #### Activation
 
 ```yaml
@@ -665,6 +691,8 @@ consumers:
 
 Each consumer can be styled individually:
 
+![Verbraucher - Einzelansicht.png](img/Verbraucher%20-%20Einzelansicht.png)
+
 ```yaml
 consumers:
   items:
@@ -698,6 +726,8 @@ Sum = Σ(all consumers with power > threshold)
 
 The card offers pre-built themes for quick setup.
 
+
+
 #### Available Themes
 
 1. **Modern Dark** (Default)
@@ -724,6 +754,8 @@ The card offers pre-built themes for quick setup.
     - High contrasts for better readability
     - Accessible design
 
+And many many more....
+
 #### Applying a Theme
 
 ```yaml
@@ -732,26 +764,13 @@ theme: modern-dark    # or blue-energy, minimalist, etc.
 
 Themes can be selected in the visual editor in the **"Styling"** tab → **"Theme"**.
 
-#### Customizing a Theme
-
-After selecting a theme, all colors can be customized in the **Theme Editor**:
-
-```yaml
-theme: modern-dark
-style:
-  card_background_color: 'rgba(21, 20, 27, 1)'
-  card_border_color: 'rgba(255, 255, 255, 0.1)'
-  card_text_color: 'white'
-  # ... all other theme colors
-```
-
-**Important:** Theme styles do **not** override card-specific styles (PV, Battery, House, Grid). These must be adjusted separately in the respective card tabs.
-
----
-
 ### Styling & Layout
 
+![Styling.png](img/Styling.png)
+
 #### Global Layout
+
+![Styling - Layout.png](img/Styling%20-%20Layout.png)
 
 ```yaml
 grid_gap: '6px'                 # Spacing between main cards
@@ -767,6 +786,8 @@ style:
 ```
 
 #### Header Styling
+
+![Styling - Options 1.png](img/Styling%20-%20Options%201.png)
 
 ```yaml
 style:
@@ -792,6 +813,9 @@ style:
 
 #### Global Text Styling
 
+![Styling - Options 2.png](img/Styling%20-%20Options%202.png)
+![Styling - Options 3.png](img/Styling%20-%20Options%203.png)
+
 ```yaml
 style:
   # Primary text (main value)
@@ -814,6 +838,8 @@ style:
 ```
 
 #### Card Styling
+
+![Styling - Layout.png](img/Styling%20-%20Layout.png)
 
 ```yaml
 style:
