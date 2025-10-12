@@ -264,7 +264,7 @@ export const translations: Record<SupportedLanguage, Translations> = {
             tab_house: 'Haus',
             tab_grid: 'Netz',
 
-            card_header: 'Karten-Header',
+            card_header: 'Karten Header',
             title: 'Titel',
             title_placeholder: 'PV Monitor',
             title_helper: 'Leer lassen um auszublenden.',
