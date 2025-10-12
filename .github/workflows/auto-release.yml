@@ -60,10 +60,15 @@ jobs:
       - name: Verify build artifact
         run: test -f dist/pv-monitor-card.js
 
-      - name: Create Git tag
+      - name: Create Git tag (if not exists)
         run: |
-          git tag v${{ steps.package-version.outputs.version }}
-          git push origin v${{ steps.package-version.outputs.version }}
+          VERSION="v${{ steps.package-version.outputs.version }}"
+          if git rev-parse "$VERSION" >/dev/null 2>&1; then
+            echo "Tag $VERSION already exists, skipping."
+          else
+            git tag "$VERSION"
+            git push origin "$VERSION"
+          fi
 
       - name: Create Release
         uses: softprops/action-gh-release@v1
