@@ -60,7 +60,7 @@ jobs:
 
       - name: Create Git tag (if not exists)
         run: |
-          VERSION="v${{ steps.package-version.outputs.version }}"
+          VERSION="${{ steps.package-version.outputs.version }}"
           if git rev-parse "$VERSION" >/dev/null 2>&1; then
             echo "Tag $VERSION already exists, skipping."
           else
@@ -70,7 +70,7 @@ jobs:
 
       - name: Delete existing tag and release if exists
         run: |
-          VERSION="v${{ steps.package-version.outputs.version }}"
+          VERSION="${{ steps.package-version.outputs.version }}"
           gh release delete "$VERSION" -y || true
           git tag -d "$VERSION" 2>/dev/null || true
           git push origin :refs/tags/"$VERSION" 2>/dev/null || true
@@ -80,12 +80,12 @@ jobs:
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: v${{ steps.package-version.outputs.version }}
+          tag_name: ${{ steps.package-version.outputs.version }}
           name: Release v${{ steps.package-version.outputs.version }}
           draft: true
           files: dist/pv-monitor-card.js
           body: |
-            ## ✏️ Release Notes v${{ steps.package-version.outputs.version }}
+            ## ✏️ Release Notes ${{ steps.package-version.outputs.version }}
 
             <Hier beschreiben, was sich geändert hat …>
 
