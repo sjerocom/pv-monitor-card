@@ -10,6 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      id-token: write
+      packages: write
     steps:
       - uses: actions/checkout@v4
         with:
@@ -33,6 +35,19 @@ jobs:
         id: package-version
         run: echo "version=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
 
+      - name: Generate commit changelog
+        id: changelog
+        run: |
+          echo "commits=$(git log $(git describe --tags --abbrev=0)..HEAD --pretty=format:'- %s (%h)' --no-merges)" >> $GITHUB_OUTPUT
+
+      - name: Verify build artifact
+        run: test -f dist/pv-monitor-card.js
+
+      - name: Create Git tag
+        run: |
+          git tag v${{ steps.package-version.outputs.version }}
+          git push origin v${{ steps.package-version.outputs.version }}
+
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
@@ -40,5 +55,16 @@ jobs:
           name: Release v${{ steps.package-version.outputs.version }}
           draft: true
           files: dist/pv-monitor-card.js
+          body: |
+            ## ✏️ Release Notes v${{ steps.package-version.outputs.version }}
+
+            <Hier beschreiben, was sich geändert hat …>
+
+            ### 🧩 Änderungen
+            ${{ steps.changelog.outputs.commits }}
+
+            ---
+
+            📦 Automatisch erstellt am: ${{ github.event.head_commit.timestamp }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
