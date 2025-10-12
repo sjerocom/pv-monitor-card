@@ -72,6 +72,7 @@ jobs:
           name: Release v${{ steps.package-version.outputs.version }}
           draft: true
           files: dist/pv-monitor-card.js
+          update_existing: true
           body: |
             ## ✏️ Release Notes v${{ steps.package-version.outputs.version }}
 
