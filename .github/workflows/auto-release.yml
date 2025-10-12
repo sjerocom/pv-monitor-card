@@ -38,7 +38,18 @@ jobs:
       - name: Generate commit changelog
         id: changelog
         run: |
-          echo "commits=$(git log $(git describe --tags --abbrev=0)..HEAD --pretty=format:'- %s (%h)' --no-merges)" >> $GITHUB_OUTPUT
+          LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+          RANGE=""
+          if [ -n "$LAST_TAG" ]; then
+            RANGE="$LAST_TAG..HEAD"
+          else
+            RANGE="HEAD"
+          fi
+          {
+            echo "commits<<EOF"
+            git log $RANGE --pretty=format:'- %s (%h)' --no-merges
+            echo "EOF"
+          } >> $GITHUB_OUTPUT
 
       - name: Verify build artifact
         run: test -f dist/pv-monitor-card.js
