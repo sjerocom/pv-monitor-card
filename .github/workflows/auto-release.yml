@@ -40,7 +40,6 @@ jobs:
         shell: bash
         run: |
           LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
-          RANGE=""
           if [ -n "$LAST_TAG" ]; then
             RANGE="$LAST_TAG..HEAD"
           else
@@ -51,7 +50,7 @@ jobs:
             echo "commits<<EOF"
             git log $RANGE --pretty=format:'- %s (%h)' --no-merges
             echo "EOF"
-          } | tr -d '\r' >> $GITHUB_OUTPUT
+          } >> "$GITHUB_OUTPUT"
 
       - name: Verify build artifact
         run: test -f dist/pv-monitor-card.js
