@@ -1,5 +1,7 @@
 {
   "name": "PV Monitor Card",
   "render_readme": true,
-  "filename": "pv-monitor-card.js"
+  "filename": "pv-monitor-card.js",
+  "homeassistant": "2023.5.0",
+  "country": "AT"
 }
