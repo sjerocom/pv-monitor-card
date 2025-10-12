@@ -39,16 +39,21 @@ jobs:
         id: changelog
         shell: bash
         run: |
-          LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+          set -eo pipefail
+          LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || true)
           if [ -n "$LAST_TAG" ]; then
             RANGE="$LAST_TAG..HEAD"
           else
             RANGE="HEAD"
           fi
 
+          # git log kann stderr ausgeben – wir filtern das raus, um GitHub Output nicht zu beschädigen
+          COMMITS=$(git log $RANGE --pretty=format:'- %s (%h)' --no-merges 2>/dev/null || echo "Keine neuen Commits seit letztem Tag.")
+
+          # Multiline-Output sicher in GITHUB_OUTPUT schreiben
           {
             echo "commits<<EOF"
-            git log $RANGE --pretty=format:'- %s (%h)' --no-merges
+            echo "$COMMITS"
             echo "EOF"
           } >> "$GITHUB_OUTPUT"
 
