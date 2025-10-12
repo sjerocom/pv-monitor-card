@@ -1776,37 +1776,37 @@ export class PVMonitorCardEditor extends LitElement {
                         ${this._renderSwitch(t.editor.enable_header_background, ['style', 'header_background_enabled'], this._config?.style?.header_background_enabled, t.editor.enable_header_background_helper)}
 
                         ${this._config?.style?.header_background_enabled ? html`
-                        <div class="option">
-                            <div class="option-label">${t.editor.header_width}</div>
-                            <div class="option-control">
-                                <ha-combo-box
-                                        .value=${this._config?.style?.header_width || 'auto'}
-                                        .items=${[
-                            { value: 'auto', label: t.editor.header_width_auto },
-                            { value: 'full', label: t.editor.header_width_full }
-                        ]}
-                                        item-value-path="value"
-                                        item-label-path="label"
-                                        @value-changed=${(ev: any) => {
-                            if (!this._config) return;
-                            const newValue = ev.detail?.value;
-                            if (!newValue) return;
-                            const newConfig = { ...this._config };
-                            if (!newConfig.style) newConfig.style = {};
-                            newConfig.style.header_width = newValue;
-                            this._config = newConfig;
-                            this._fireEvent();
-                        }}
-                                ></ha-combo-box>
+                            <div class="option">
+                                <div class="option-label">${t.editor.header_width}</div>
+                                <div class="option-control">
+                                    <ha-combo-box
+                                            .value=${this._config?.style?.header_width || 'auto'}
+                                            .items=${[
+                                                { value: 'auto', label: t.editor.header_width_auto },
+                                                { value: 'full', label: t.editor.header_width_full }
+                                            ]}
+                                            item-value-path="value"
+                                            item-label-path="label"
+                                            @value-changed=${(ev: any) => {
+                                                if (!this._config) return;
+                                                const newValue = ev.detail?.value;
+                                                if (!newValue) return;
+                                                const newConfig = { ...this._config };
+                                                if (!newConfig.style) newConfig.style = {};
+                                                newConfig.style.header_width = newValue;
+                                                this._config = newConfig;
+                                                this._fireEvent();
+                                            }}
+                                    ></ha-combo-box>
+                                </div>
                             </div>
-                        </div>
-                        
-                        ${this._renderColorPicker(t.editor.header_background_color, ['style', 'header_background_color'], this._config?.style?.header_background_color, 'rgba(21, 20, 27, 1)')}
-                        ${this._renderColorPicker(t.editor.header_border_color, ['style', 'header_border_color'], this._config?.style?.header_border_color, 'rgba(255, 255, 255, 0.1)')}
-                        ${this._renderTextfield(t.editor.header_border_radius, ['style', 'header_border_radius'], this._config?.style?.header_border_radius, '16px')}
-                        ${this._renderTextfield(t.editor.header_padding, ['style', 'header_padding'], this._config?.style?.header_padding, '12px')}
-                        ${this._renderTextfield(t.editor.header_box_shadow, ['style', 'header_box_shadow'], this._config?.style?.header_box_shadow, '0 2px 8px 0 rgba(0, 0, 0, 0.15)')}
-                    ` : ''}
+
+                            ${this._renderColorPicker(t.editor.header_background_color, ['style', 'header_background_color'], this._config?.style?.header_background_color, 'rgba(21, 20, 27, 1)')}
+                            ${this._renderColorPicker(t.editor.header_border_color, ['style', 'header_border_color'], this._config?.style?.header_border_color, 'rgba(255, 255, 255, 0.1)')}
+                            ${this._renderTextfield(t.editor.header_border_radius, ['style', 'header_border_radius'], this._config?.style?.header_border_radius, '16px')}
+                            ${this._renderTextfield(t.editor.header_padding, ['style', 'header_padding'], this._config?.style?.header_padding, '12px')}
+                            ${this._renderTextfield(t.editor.header_box_shadow, ['style', 'header_box_shadow'], this._config?.style?.header_box_shadow, '0 2px 8px 0 rgba(0, 0, 0, 0.15)')}
+                        ` : ''}
                     `
             )}
 
@@ -1817,13 +1817,13 @@ export class PVMonitorCardEditor extends LitElement {
                     'mdi:grid',
                     t.editor.layout,
                     html`
-                    ${this._renderTextfield(t.editor.grid_gap, ['grid_gap'], this._config?.grid_gap, t.editor.grid_gap_placeholder, t.editor.grid_gap_helper)}
-                    ${this._renderTextfield(t.editor.header_margin_bottom, ['style', 'header_margin_bottom'], this._config?.style?.header_margin_bottom, '12px', t.editor.header_margin_bottom_helper)}
-                    ${this._renderTextfield(t.editor.infobar_gap, ['style', 'infobar_gap'], this._config?.style?.infobar_gap, '6px', t.editor.infobar_gap_helper)}
-                    ${this._renderTextfield(t.editor.title_alignment, ['style', 'title_align'], this._config?.style?.title_align, 'center', t.editor.title_alignment_helper)}
-                    ${this._renderTextfield(t.editor.subtitle_alignment, ['style', 'subtitle_align'], this._config?.style?.subtitle_align, 'center')}
-                    ${this._renderTextfield(t.editor.cursor, ['style', 'card_cursor'], this._config?.style?.card_cursor, 'pointer')}
-                `
+                        ${this._renderTextfield(t.editor.grid_gap, ['grid_gap'], this._config?.grid_gap, t.editor.grid_gap_placeholder, t.editor.grid_gap_helper)}
+                        ${this._renderTextfield(t.editor.header_margin_bottom, ['style', 'header_margin_bottom'], this._config?.style?.header_margin_bottom, '12px', t.editor.header_margin_bottom_helper)}
+                        ${this._renderTextfield(t.editor.infobar_gap, ['style', 'infobar_gap'], this._config?.style?.infobar_gap, '6px', t.editor.infobar_gap_helper)}
+                        ${this._renderTextfield(t.editor.title_alignment, ['style', 'title_align'], this._config?.style?.title_align, 'center', t.editor.title_alignment_helper)}
+                        ${this._renderTextfield(t.editor.subtitle_alignment, ['style', 'subtitle_align'], this._config?.style?.subtitle_align, 'center')}
+                        ${this._renderTextfield(t.editor.cursor, ['style', 'card_cursor'], this._config?.style?.card_cursor, 'pointer')}
+                    `
             )}
         `;
     }
@@ -1884,4 +1884,10 @@ export class PVMonitorCardEditor extends LitElement {
     }
 }
 
-customElements.define('pv-monitor-card-editor', PVMonitorCardEditor);
+declare const __CARD_NAME__: string;
+
+const EDITOR_TAG = typeof __CARD_NAME__ !== 'undefined' ? `${__CARD_NAME__}-editor` : 'pv-monitor-card-editor';
+
+if (!customElements.get(EDITOR_TAG)) {
+    customElements.define(EDITOR_TAG, PVMonitorCardEditor);
+}

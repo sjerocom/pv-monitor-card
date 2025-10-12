@@ -1,25 +1,33 @@
 import { defineConfig } from 'vite';
 
-export default defineConfig({
-    build: {
-        lib: {
-            entry: 'src/pv-monitor-card.ts',
-            formats: ['es'],
-            fileName: () => 'pv-monitor-card.js'
+export default defineConfig(({ mode }) => {
+    const isDev = mode === 'development';
+
+    return {
+        build: {
+            lib: {
+                entry: 'src/pv-monitor-card.ts',
+                formats: ['es'],
+                fileName: () => (isDev ? 'pv-monitor-card-dev.js' : 'pv-monitor-card.js'),
+            },
+            outDir: 'dist',
+            rollupOptions: {
+                output: {
+                    entryFileNames: isDev ? 'pv-monitor-card-dev.js' : 'pv-monitor-card.js',
+                    inlineDynamicImports: true,
+                },
+            },
+            target: 'es2020',
+            minify: isDev ? false : 'terser',
+            sourcemap: false,
         },
-        outDir: 'dist',
-        rollupOptions: {
-            external: [],
-            output: {
-                globals: {},
-                entryFileNames: 'pv-monitor-card.js',
-                chunkFileNames: 'pv-monitor-card.js',
-                assetFileNames: 'pv-monitor-card[extname]',
-                inlineDynamicImports: true  // ← Wichtig: Alles in eine Datei packen
+        define: isDev
+            ? {
+                __BUILD_TIMESTAMP__: JSON.stringify(new Date().toISOString()),
+                __CARD_NAME__: JSON.stringify('pv-monitor-card-dev'),
             }
-        },
-        target: 'es2020',
-        minify: 'terser',
-        sourcemap: false
-    }
+            : {
+                __CARD_NAME__: JSON.stringify('pv-monitor-card'),
+            },
+    };
 });

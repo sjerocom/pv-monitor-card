@@ -22,7 +22,10 @@ import {
     getConsumerColor
 } from "./pv-monitor-card-utils";
 
-const CARD_TAG = "pv-monitor-card";
+declare const __BUILD_TIMESTAMP__: string;
+declare const __CARD_NAME__: string;
+
+const CARD_TAG = typeof __CARD_NAME__ !== 'undefined' ? __CARD_NAME__ : 'pv-monitor-card';
 
 export class PVMonitorCard extends LitElement {
     @property({ attribute: false }) public hass?: Hass;
@@ -32,13 +35,13 @@ export class PVMonitorCard extends LitElement {
     static styles = pvMonitorCardStyles;
 
     public static async getConfigElement() {
-        await import("./pv-monitor-card-editor");
-        return document.createElement("pv-monitor-card-editor");
+        await import('./pv-monitor-card-editor');
+        return document.createElement(`${CARD_TAG}-editor`);
     }
 
     public static getStubConfig() {
         return {
-            type: 'custom:pv-monitor-card',
+            type: `custom:${CARD_TAG}`,
             title: 'PV Monitor',
             show_title: true,
             pv: {
@@ -745,15 +748,19 @@ if (!customElements.get(CARD_TAG)) {
 
 (window as any).customCards = (window as any).customCards || [];
 (window as any).customCards.push({
-    type: "pv-monitor-card",
+    type: `custom:${CARD_TAG}`,
     name: "PV Monitor Card",
     description: "Monitor your PV-System with Battery-Info, Calculations, Grid status and Devices Power Consumtion",
     preview: true,
     documentationURL: "https://github.com/sjerocom/pv-monitor-card"
 });
 
+const buildInfo = typeof __BUILD_TIMESTAMP__ !== 'undefined'
+    ? ` [DEV: ${__BUILD_TIMESTAMP__}]`
+    : ' Version: 0.0.107';
+
 console.info(
-    '%c PV-MONITOR-CARD %c Version: 0.0.104 ',
+    '%c PV-MONITOR-CARD %c' + buildInfo,
     'color: orange; font-weight: bold; background: black',
     'color: white; font-weight: bold; background: dimgray'
 );
