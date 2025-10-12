@@ -685,10 +685,23 @@ export class PVMonitorCard extends LitElement {
             color: ${s.subtitle_color};
             margin: 4px 0 0 0;
         `;
+        let visibleCards = 0;
+        if (this.config.pv?.show !== false) visibleCards++;
+        if (this.config.batterie?.show !== false) visibleCards++;
+        if (this.config.haus?.show !== false) visibleCards++;
+        if (this.config.netz?.show !== false) visibleCards++;
 
+// Definiere Grid-Template-Columns
+        let gridTemplateColumns = 'repeat(4, 1fr)';
+        if (visibleCards === 3) gridTemplateColumns = 'repeat(3, 1fr)';
+        else if (visibleCards === 2) gridTemplateColumns = 'repeat(2, 1fr)';
+        else if (visibleCards === 1) gridTemplateColumns = '1fr';
+
+// Header Icon Styling
         const headerIconStyle = `
-            font-size: ${s.title_size};
-            color: ${s.title_color};
+            font-size: ${s.header_icon_size};
+            color: ${s.header_icon_color};
+            margin-right: ${s.header_icon_margin};
         `;
 
         const headerBackgroundEnabled = s.header_background_enabled ?? false;
@@ -722,12 +735,12 @@ export class PVMonitorCard extends LitElement {
                         </div>
                     ` : html`
                         ${showTitle ? html`<h2 style="${titleStyle}">${this.config.title}</h2>` : ''}
-                        ${showSubtitle ? html`<p style="${subtitleStyle}">${this.config.subtitle}</p>` : ''}
+                        ${showSubtitle ? html`<p style="${subtitleStyle}; margin-top: ${s.title_subtitle_gap};">...</p>` : ''}
                     `}
                 </div>
             ` : ''}
             ${infoBarPosition === 'top' ? this._renderInfoBar() : ''}
-            <div class="grid" style="gap: ${this.config.grid_gap}; ${infoBarPosition === 'top' && this.config.info_bar?.show ? `margin-top: ${s.infobar_gap || '6px'};` : ''}">
+            <div class="grid" style="gap: ${this.config.grid_gap}; grid-template-columns: ${gridTemplateColumns}; ...">
                 ${this.config.pv?.show !== false ? this._renderPV() : ''}
                 ${this.config.batterie?.show !== false ? this._renderBatterie() : ''}
                 ${this.config.haus?.show !== false ? this._renderHaus() : ''}

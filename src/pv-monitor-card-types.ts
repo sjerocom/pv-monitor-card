@@ -174,10 +174,14 @@ export interface PVMonitorCardConfig {
         title_size?: string;
         title_font_weight?: string;
         title_color?: string;
+        title_subtitle_gap?: string;
         subtitle_align?: "left" | "center" | "right";
         subtitle_size?: string;
         subtitle_font_weight?: string;
         subtitle_color?: string;
+        header_icon_size?: string;
+        header_icon_color?: string;
+        header_icon_margin?: string;
         icon_size?: string;
         icon_opacity?: string;
         icon_margin?: string;

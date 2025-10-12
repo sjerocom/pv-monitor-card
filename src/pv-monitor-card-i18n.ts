@@ -25,8 +25,14 @@ export interface Translations {
         subtitle: string;
         subtitle_placeholder: string;
         subtitle_helper: string;
+        title_subtitle_gap: string;
+        title_subtitle_gap_helper: string;
         icon: string;
         icon_helper: string;
+        header_icon_size: string;
+        header_icon_size_helper: string;
+        header_icon_color: string;
+        header_icon_margin: string;
         layout: string;
         grid_gap: string;
         grid_gap_placeholder: string;
@@ -271,6 +277,12 @@ export const translations: Record<SupportedLanguage, Translations> = {
             subtitle: 'Untertitel',
             subtitle_placeholder: 'Energieübersicht',
             subtitle_helper: 'Leer lassen um auszublenden.',
+            title_subtitle_gap: 'Abstand Titel-Untertitel',
+            title_subtitle_gap_helper: 'Abstand zwischen Titel und Untertitel',
+            header_icon_size: 'Header Icon Größe',
+            header_icon_size_helper: 'Größe des Icons neben dem Titel',
+            header_icon_color: 'Header Icon Farbe',
+            header_icon_margin: 'Header Icon Abstand',
             icon: 'Icon',
             icon_helper: 'Wird nur angezeigt, wenn auch ein Titel vorhanden ist, leer lassen um auszublenden.',
             layout: 'Layout',
@@ -515,6 +527,12 @@ export const translations: Record<SupportedLanguage, Translations> = {
             subtitle: 'Subtitle',
             subtitle_placeholder: 'Energy Overview',
             subtitle_helper: 'Leave empty to hide.',
+            title_subtitle_gap: 'Title-Subtitle Gap',
+            title_subtitle_gap_helper: 'Space between title and subtitle',
+            header_icon_size: 'Header Icon Size',
+            header_icon_size_helper: 'Size of the icon next to title',
+            header_icon_color: 'Header Icon Color',
+            header_icon_margin: 'Header Icon Margin',
             icon: 'Icon',
             icon_helper: 'Only shown when a title is present, leave empty to hide.',
             layout: 'Layout',
@@ -759,6 +777,12 @@ export const translations: Record<SupportedLanguage, Translations> = {
             subtitle: 'Sous-titre',
             subtitle_placeholder: 'Aperçu Énergétique',
             subtitle_helper: 'Laisser vide pour masquer.',
+            title_subtitle_gap: 'Écart Titre-Sous-titre',
+            title_subtitle_gap_helper: 'Espace entre le titre et le sous-titre',
+            header_icon_size: 'Taille de l\'icône d\'en-tête',
+            header_icon_size_helper: 'Taille de l\'icône à côté du titre',
+            header_icon_color: 'Couleur de l\'icône d\'en-tête',
+            header_icon_margin: 'Marge de l\'icône d\'en-tête',
             icon: 'Icône',
             icon_helper: 'Affiché uniquement si un titre est présent, laisser vide pour masquer.',
             layout: 'Disposition',
@@ -1003,6 +1027,12 @@ export const translations: Record<SupportedLanguage, Translations> = {
             subtitle: 'Sottotitolo',
             subtitle_placeholder: 'Panoramica Energia',
             subtitle_helper: 'Lasciare vuoto per nascondere.',
+            title_subtitle_gap: 'Distanza Titolo-Sottotitolo',
+            title_subtitle_gap_helper: 'Spazio tra titolo e sottotitolo',
+            header_icon_size: 'Dimensione icona intestazione',
+            header_icon_size_helper: 'Dimensione dell\'icona accanto al titolo',
+            header_icon_color: 'Colore icona intestazione',
+            header_icon_margin: 'Margine icona intestazione',
             icon: 'Icona',
             icon_helper: 'Mostrato solo se è presente un titolo, lasciare vuoto per nascondere.',
             layout: 'Layout',
@@ -1247,6 +1277,12 @@ export const translations: Record<SupportedLanguage, Translations> = {
             subtitle: 'Subtítulo',
             subtitle_placeholder: 'Resumen de Energía',
             subtitle_helper: 'Dejar vacío para ocultar.',
+            title_subtitle_gap: 'Espacio Título-Subtítulo',
+            title_subtitle_gap_helper: 'Espacio entre título y subtítulo',
+            header_icon_size: 'Tamaño del icono de encabezado',
+            header_icon_size_helper: 'Tamaño del icono junto al título',
+            header_icon_color: 'Color del icono de encabezado',
+            header_icon_margin: 'Margen del icono de encabezado',
             icon: 'Icono',
             icon_helper: 'Solo se muestra cuando hay un título, dejar vacío para ocultar.',
             layout: 'Diseño',

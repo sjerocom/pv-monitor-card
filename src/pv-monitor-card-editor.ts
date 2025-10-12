@@ -1727,9 +1727,21 @@ export class PVMonitorCardEditor extends LitElement {
 
                         <div class="divider" style="margin: 16px 0;"></div>
 
+                        <div style="font-weight: 500; margin-bottom: 8px;">Header Icon (Title-Icon)</div>
+                        ${this._renderTextfield(t.editor.header_icon_size, ['style', 'header_icon_size'],
+                                this._config?.style?.header_icon_size, '1.5em', t.editor.header_icon_size_helper)}
+                        ${this._renderColorPicker(t.editor.header_icon_color, ['style', 'header_icon_color'],
+                                this._config?.style?.header_icon_color, 'white')}
+                        ${this._renderTextfield(t.editor.header_icon_margin, ['style', 'header_icon_margin'],
+                                this._config?.style?.header_icon_margin, '8px')}
+
+                        <div class="divider" style="margin: 16px 0;"></div>
+
                         ${this._renderColorPicker(t.editor.title_color, ['style', 'title_color'], this._config?.style?.title_color, 'white')}
                         ${this._renderTextfield(t.editor.title_size, ['style', 'title_size'], this._config?.style?.title_size, '1.5em')}
                         ${this._renderTextfield(t.editor.title_font_weight, ['style', 'title_font_weight'], this._config?.style?.title_font_weight, 'bold')}
+                        ${this._renderTextfield(t.editor.title_subtitle_gap, ['style', 'title_subtitle_gap'],
+                                this._config?.style?.title_subtitle_gap, '4px', t.editor.title_subtitle_gap_helper)}
 
                         <div class="divider" style="margin: 16px 0;"></div>
 

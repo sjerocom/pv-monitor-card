@@ -28,7 +28,6 @@ export const pvMonitorCardStyles = css`
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 4px;
     }
     .info-bar {
         display: flex;
@@ -72,7 +71,7 @@ export const pvMonitorCardStyles = css`
     }
     .grid {
         display: grid;
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
     }
     .card {
         text-align: center;
