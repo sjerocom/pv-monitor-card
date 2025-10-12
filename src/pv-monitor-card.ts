@@ -703,8 +703,9 @@ export class PVMonitorCard extends LitElement {
                 border-radius: ${s.header_border_radius};
                 padding: ${s.header_padding};
                 box-shadow: ${s.header_box_shadow};
-                width: ${headerWidth === 'full' ? '100%' : 'fit-content'};
+                width: ${headerWidth === 'full' ? 'calc(100% - 2 * var(--ha-card-border-width, 1px))' : 'fit-content'};
                 ${headerWidth === 'auto' ? 'margin-left: auto; margin-right: auto;' : ''}
+                box-sizing: border-box;
             `;
         }
 
