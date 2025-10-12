@@ -47,10 +47,8 @@ jobs:
             RANGE="HEAD"
           fi
 
-          # git log kann stderr ausgeben – wir filtern das raus, um GitHub Output nicht zu beschädigen
           COMMITS=$(git log $RANGE --pretty=format:'- %s (%h)' --no-merges 2>/dev/null || echo "Keine neuen Commits seit letztem Tag.")
 
-          # Multiline-Output sicher in GITHUB_OUTPUT schreiben
           {
             echo "commits<<EOF"
             echo "$COMMITS"
@@ -70,6 +68,15 @@ jobs:
             git push origin "$VERSION"
           fi
 
+      - name: Delete existing tag and release if exists
+        run: |
+          VERSION="v${{ steps.package-version.outputs.version }}"
+          gh release delete "$VERSION" -y || true
+          git tag -d "$VERSION" 2>/dev/null || true
+          git push origin :refs/tags/"$VERSION" 2>/dev/null || true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
@@ -77,7 +84,6 @@ jobs:
           name: Release v${{ steps.package-version.outputs.version }}
           draft: true
           files: dist/pv-monitor-card.js
-          update_existing: true
           body: |
             ## ✏️ Release Notes v${{ steps.package-version.outputs.version }}
 
