@@ -1,11 +1,24 @@
 # PV Monitor Card
 
-A modern, fully customizable Home Assistan
-t Lovelace Card for monitoring PV systems, battery storage, energy flows, and consumers.
+> 🧩 This is a **custom Lovelace card** for [Home Assistant](https://www.home-assistant.io/) and can be installed via [HACS](https://hacs.xyz) (Home Assistant Community Store).
+>
+> It provides an advanced, fully customizable visualization of your solar energy system directly within Home Assistant dashboards.
+> 
+[![release](https://img.shields.io/github/v/release/sjerocom/pv-monitor-card?color=blue&label=release)](https://github.com/sjerocom/pv-monitor-card/releases)
+[![release@dev](https://img.shields.io/github/v/tag/sjerocom/pv-monitor-card?include_prereleases&label=release%40dev&color=orange)](https://github.com/sjerocom/pv-monitor-card/releases)
+[![HACS](https://img.shields.io/badge/HACS-Default-blue)](https://github.com/hacs/default)
+[![maintained](https://img.shields.io/badge/maintained-yes-brightgreen)](https://github.com/sjerocom/pv-monitor-card/commits/main)
+[![downloads](https://img.shields.io/github/downloads/sjerocom/pv-monitor-card/total?color=brightgreen)](https://github.com/sjerocom/pv-monitor-card/releases)
+[![commit activity](https://img.shields.io/github/commit-activity/y/sjerocom/pv-monitor-card?color=blue)](https://github.com/sjerocom/pv-monitor-card/commits/main)
+[![license](https://img.shields.io/github/license/sjerocom/pv-monitor-card?color=green)](https://github.com/sjerocom/pv-monitor-card/blob/main/LICENSE)
+[![community](https://img.shields.io/badge/community-forum-brightgreen)](https://community.home-assistant.io/)
 
-![Version](https://img.shields.io/github/v/release/sjerocom/pv-monitor-card)
-![License](https://img.shields.io/github/license/sjerocom/pv-monitor-card)
-![HACS](https://img.shields.io/badge/HACS-Custom-orange.svg)
+---
+
+[![Add to HACS](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=sjerocom&repository=pv-monitor-card)
+[![Manual Installation](https://img.shields.io/badge/Manual%20Install-Download-blue?style=for-the-badge&logo=github)](https://github.com/sjerocom/pv-monitor-card/releases/latest)
+
+[![Add Card to Dashboard](https://my.home-assistant.io/badges/lovelace_add_card.svg)](https://my.home-assistant.io/redirect/lovelace_add_card/?type=custom:pv-monitor-card)
 
 ---
 
@@ -162,6 +175,9 @@ Since I wanted to learn more about custom card development anyway, I decided to 
     - URL: `/local/community/pv-monitor-card/pv-monitor-card.js`
     - Type: **JavaScript Module**
 4. **Refresh Home Assistant**
+
+> 🗂️ The repository includes a `hacs.json` file for HACS compatibility.
+> This ensures correct categorization as a **Lovelace Dashboard plugin**.
 
 ### Verification
 
