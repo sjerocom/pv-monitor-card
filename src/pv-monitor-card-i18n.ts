@@ -245,6 +245,25 @@ export interface Translations {
         consumer_tap_actions: string;
         show_consumer_total_in_house: string;
         show_consumer_total_helper: string;
+
+        show_title: string;
+        show_subtitle: string;
+        show_icon: string;
+
+        title_line_height: string;
+        subtitle_line_height: string;
+        primary_line_height: string;
+        secondary_line_height: string;
+        tertiary_line_height: string;
+        label_line_height: string;
+        value_line_height: string;
+
+        item_calc_type: string;
+        calc_type_entity: string;
+        calc_type_autarky: string;
+        calc_type_self_consumption: string;
+        calc_type_runtime: string;
+        calc_type_chargetime: string;
     };
 
     status: {
@@ -497,6 +516,25 @@ export const translations: Record<SupportedLanguage, Translations> = {
             consumer_tap_actions: 'Tap Actions',
             show_consumer_total_in_house: 'Gesamtverbrauch als Sekundär-Text',
             show_consumer_total_helper: 'Zeigt Summe aller Consumer unter Hausverbrauch',
+
+            show_title: 'Titel anzeigen',
+            show_subtitle: 'Untertitel anzeigen',
+            show_icon: 'Icon anzeigen',
+
+            title_line_height: 'Titel Line-Height',
+            subtitle_line_height: 'Untertitel Line-Height',
+            primary_line_height: 'Primär Line-Height',
+            secondary_line_height: 'Sekundär Line-Height',
+            tertiary_line_height: 'Tertiär Line-Height',
+            label_line_height: 'Label Line-Height',
+            value_line_height: 'Value Line-Height',
+
+            item_calc_type: 'Berechnung wählen',
+            calc_type_entity: 'Manuelle Entity',
+            calc_type_autarky: 'Autarkie',
+            calc_type_self_consumption: 'Eigenverbrauch',
+            calc_type_runtime: 'Restlaufzeit',
+            calc_type_chargetime: 'Restladezeit',
         },
         status: {
             feed_in: 'Einspeisung',
@@ -747,6 +785,25 @@ export const translations: Record<SupportedLanguage, Translations> = {
             consumer_tap_actions: 'Tap Actions',
             show_consumer_total_in_house: 'Show Total as Secondary Text',
             show_consumer_total_helper: 'Shows sum of all consumers under house consumption',
+
+            show_title: 'Show Title',
+            show_subtitle: 'Show Subtitle',
+            show_icon: 'Show Icon',
+
+            title_line_height: 'Title Line-Height',
+            subtitle_line_height: 'Subtitle Line-Height',
+            primary_line_height: 'Primary Line-Height',
+            secondary_line_height: 'Secondary Line-Height',
+            tertiary_line_height: 'Tertiary Line-Height',
+            label_line_height: 'Label Line-Height',
+            value_line_height: 'Value Line-Height',
+
+            item_calc_type: 'Select Calculation',
+            calc_type_entity: 'Manual Entity',
+            calc_type_autarky: 'Autarky',
+            calc_type_self_consumption: 'Self-Consumption',
+            calc_type_runtime: 'Runtime',
+            calc_type_chargetime: 'Charge Time',
         },
         status: {
             feed_in: 'Feed-in',
@@ -997,6 +1054,25 @@ export const translations: Record<SupportedLanguage, Translations> = {
             consumer_tap_actions: 'Actions Tactiles',
             show_consumer_total_in_house: 'Afficher Total comme Texte Secondaire',
             show_consumer_total_helper: 'Affiche la somme de tous les consommateurs sous la consommation maison',
+
+            show_title: 'Afficher Titre',
+            show_subtitle: 'Afficher Sous-titre',
+            show_icon: 'Afficher Icône',
+
+            title_line_height: 'Line-Height Titre',
+            subtitle_line_height: 'Line-Height Sous-titre',
+            primary_line_height: 'Line-Height Primaire',
+            secondary_line_height: 'Line-Height Secondaire',
+            tertiary_line_height: 'Line-Height Tertiaire',
+            label_line_height: 'Line-Height Label',
+            value_line_height: 'Line-Height Valeur',
+
+            item_calc_type: 'Sélectionner Calcul',
+            calc_type_entity: 'Entité Manuelle',
+            calc_type_autarky: 'Autosuffisance',
+            calc_type_self_consumption: 'Autoconsommation',
+            calc_type_runtime: 'Autonomie',
+            calc_type_chargetime: 'Temps de Charge',
         },
         status: {
             feed_in: 'Injection',
@@ -1247,6 +1323,25 @@ export const translations: Record<SupportedLanguage, Translations> = {
             consumer_tap_actions: 'Azioni Tocco',
             show_consumer_total_in_house: 'Mostra Totale come Testo Secondario',
             show_consumer_total_helper: 'Mostra la somma di tutti i consumatori sotto il consumo casa',
+
+            show_title: 'Mostra Titolo',
+            show_subtitle: 'Mostra Sottotitolo',
+            show_icon: 'Mostra Icona',
+
+            title_line_height: 'Line-Height Titolo',
+            subtitle_line_height: 'Line-Height Sottotitolo',
+            primary_line_height: 'Line-Height Primario',
+            secondary_line_height: 'Line-Height Secondario',
+            tertiary_line_height: 'Line-Height Terziario',
+            label_line_height: 'Line-Height Etichetta',
+            value_line_height: 'Line-Height Valore',
+
+            item_calc_type: 'Seleziona Calcolo',
+            calc_type_entity: 'Entità Manuale',
+            calc_type_autarky: 'Autosufficienza',
+            calc_type_self_consumption: 'Autoconsumo',
+            calc_type_runtime: 'Autonomia',
+            calc_type_chargetime: 'Tempo di Ricarica',
         },
         status: {
             feed_in: 'Immissione',
@@ -1497,6 +1592,25 @@ export const translations: Record<SupportedLanguage, Translations> = {
             consumer_tap_actions: 'Acciones Táctiles',
             show_consumer_total_in_house: 'Mostrar Total como Texto Secundario',
             show_consumer_total_helper: 'Muestra la suma de todos los consumidores bajo el consumo casa',
+
+            show_title: 'Mostrar Título',
+            show_subtitle: 'Mostrar Subtítulo',
+            show_icon: 'Mostrar Icono',
+
+            title_line_height: 'Line-Height Título',
+            subtitle_line_height: 'Line-Height Subtítulo',
+            primary_line_height: 'Line-Height Primario',
+            secondary_line_height: 'Line-Height Secundario',
+            tertiary_line_height: 'Line-Height Terciario',
+            label_line_height: 'Line-Height Etiqueta',
+            value_line_height: 'Line-Height Valor',
+
+            item_calc_type: 'Seleccionar Cálculo',
+            calc_type_entity: 'Entidad Manual',
+            calc_type_autarky: 'Autosuficiencia',
+            calc_type_self_consumption: 'Autoconsumo',
+            calc_type_runtime: 'Autonomía',
+            calc_type_chargetime: 'Tiempo de Carga',
         },
         status: {
             feed_in: 'Inyección',

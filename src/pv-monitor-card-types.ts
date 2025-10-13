@@ -131,6 +131,9 @@ export interface PVMonitorCardConfig {
         position?: 'top' | 'bottom';
         calculation_mode?: 'autarky' | 'self_consumption';
         calculate_battery_times?: boolean;
+        item1_calc_type?: 'autarky' | 'self_consumption' | 'runtime' | 'chargetime' | 'entity';
+        item2_calc_type?: 'autarky' | 'self_consumption' | 'runtime' | 'chargetime' | 'entity';
+        item3_calc_type?: 'autarky' | 'self_consumption' | 'runtime' | 'chargetime' | 'entity';
         tap_action?: TapAction;
         double_tap_action?: TapAction;
         hold_action?: TapAction;
@@ -148,9 +151,11 @@ export interface PVMonitorCardConfig {
             label_size?: string;
             label_color?: string;
             label_font_weight?: string;
+            label_line_height?: string;
             value_size?: string;
             value_color?: string;
             value_font_weight?: string;
+            value_line_height?: string;
         };
     };
     style?: {
@@ -174,11 +179,13 @@ export interface PVMonitorCardConfig {
         title_size?: string;
         title_font_weight?: string;
         title_color?: string;
+        title_line_height?: string;
         title_subtitle_gap?: string;
         subtitle_align?: "left" | "center" | "right";
         subtitle_size?: string;
         subtitle_font_weight?: string;
         subtitle_color?: string;
+        subtitle_line_height?: string;
         header_icon_size?: string;
         header_icon_color?: string;
         header_icon_margin?: string;
@@ -189,14 +196,17 @@ export interface PVMonitorCardConfig {
         primary_color?: string;
         primary_font_opacity?: string;
         primary_font_weight?: string;
+        primary_line_height?: string;
         secondary_size?: string;
         secondary_color?: string;
         secondary_font_weight?: string;
         secondary_font_opacity?: string;
+        secondary_line_height?: string;
         tertiary_size?: string;
         tertiary_color?: string;
         tertiary_font_weight?: string;
         tertiary_font_opacity?: string;
+        tertiary_line_height?: string;
     };
     netz?: {
         show?: boolean;

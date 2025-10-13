@@ -2,7 +2,7 @@ import { LitElement, html, css } from "lit";
 import { property, state } from "lit/decorators.js";
 import { PVMonitorCardConfig } from "./pv-monitor-card-types";
 import { getTranslations, SupportedLanguage, detectLanguage } from "./pv-monitor-card-i18n";
-import { getAllThemes, getTheme } from "./pv-monitor-card-themes";
+import { getAllThemes, getTheme, applyThemeToConfig } from "./pv-monitor-card-themes";
 
 export class PVMonitorCardEditor extends LitElement {
     @property({ attribute: false }) public hass?: any;
@@ -123,8 +123,8 @@ export class PVMonitorCardEditor extends LitElement {
             font-size: 14px;
             color: inherit;
         }
-        .option-label.required::after {
-            content: " *";
+        .option-label.required::before {
+            content: "* ";
             color: #ff5252;
             font-weight: bold;
         }
@@ -498,7 +498,6 @@ export class PVMonitorCardEditor extends LitElement {
 
         for (let i = 0; i < path.length; i++) {
             if (i === path.length - 1) {
-                // Last element is the action object (tap_action, double_tap_action, etc)
                 if (!current[path[i]]) current[path[i]] = {};
                 current[path[i]][key] = value;
             } else {
@@ -527,10 +526,10 @@ export class PVMonitorCardEditor extends LitElement {
         `;
     }
 
-    private _renderTextfield(label: string, path: string[], value?: string, placeholder?: string, helper?: string) {
+    private _renderTextfield(label: string, path: string[], value?: string, placeholder?: string, helper?: string, required?: boolean) {
         return html`
             <div class="option">
-                <div class="option-label">
+                <div class="option-label ${required ? 'required' : ''}">
                     ${label}
                     ${helper ? html`<div class="info-text">${helper}</div>` : ''}
                 </div>
@@ -589,12 +588,10 @@ export class PVMonitorCardEditor extends LitElement {
     private _convertToHex(color: string): string {
         if (!color) return '#ffffff';
 
-        // If already hex, return it
         if (color.startsWith('#')) {
             return color.length === 7 ? color : '#ffffff';
         }
 
-        // If rgba/rgb, try to convert
         if (color.startsWith('rgba') || color.startsWith('rgb')) {
             const match = color.match(/\d+/g);
             if (match && match.length >= 3) {
@@ -720,7 +717,6 @@ export class PVMonitorCardEditor extends LitElement {
                                         this.requestUpdate();
                                     }
 
-                                    // Position dropdown
                                     setTimeout(() => {
                                         const target = ev.target as HTMLElement;
                                         const dropdown = target.parentElement?.querySelector('.autocomplete-dropdown') as HTMLElement;
@@ -837,15 +833,12 @@ export class PVMonitorCardEditor extends LitElement {
                                 if (!this._config) return;
                                 const newValue = ev.detail?.value;
 
-                                // Ignore if no value or same value
                                 if (!newValue || newValue === this._config.language) return;
 
-                                // Update config
                                 const newConfig = { ...this._config };
                                 newConfig.language = newValue as SupportedLanguage;
                                 this._config = newConfig;
 
-                                // Fire event and re-render
                                 this._fireEvent();
                                 this.requestUpdate();
                             }}
@@ -885,6 +878,12 @@ export class PVMonitorCardEditor extends LitElement {
                                     delete newConfig.theme;
                                 } else {
                                     newConfig.theme = newValue;
+
+                                    const themedConfig = applyThemeToConfig(newConfig, newValue);
+                                    this._config = themedConfig;
+                                    this._fireEvent();
+                                    this.requestUpdate();
+                                    return;
                                 }
                                 this._config = newConfig;
 
@@ -949,10 +948,13 @@ export class PVMonitorCardEditor extends LitElement {
             ${this._renderCollapsibleSection(
                     'header',
                     'mdi:card-text',
-                    t.editor.card_header,
+                    'Titelbereich',
                     html`
+                        ${this._renderSwitch(t.editor.show_title, ['show_title'], this._config?.show_title !== false)}
                         ${this._renderTextfield(t.editor.title, ['title'], this._config?.title, t.editor.title_placeholder, t.editor.title_helper)}
+                        ${this._renderSwitch(t.editor.show_subtitle, ['show_subtitle'], this._config?.show_subtitle !== false)}
                         ${this._renderTextfield(t.editor.subtitle, ['subtitle'], this._config?.subtitle, t.editor.subtitle_placeholder, t.editor.subtitle_helper)}
+                        ${this._renderSwitch(t.editor.show_icon, ['show_icon'], this._config?.show_icon !== false)}
                         ${this._renderIconPicker(t.editor.icon, ['icon'], this._config?.icon, t.editor.icon_helper)}
                     `
             )}
@@ -1018,16 +1020,21 @@ export class PVMonitorCardEditor extends LitElement {
                 ${this._renderCollapsibleSection(
                         'infobar_calculation',
                         'mdi:calculator',
-                        t.editor.calculation_mode,
+                        'Automatische Berechnungen',
                         html`
+                            ${this._renderSwitch(t.editor.calculate_battery_times, ['info_bar', 'calculate_battery_times'], this._config?.info_bar?.calculate_battery_times, t.editor.calculate_battery_times_helper)}
+
+                            <div style="margin-top: 16px; font-weight: 500;">Item 1</div>
                             <div class="option">
-                                <div class="option-label">${t.editor.calculation_mode}</div>
+                                <div class="option-label">Berechnung wählen</div>
                                 <div class="option-control">
                                     <ha-combo-box
                                             .value=${this._config?.info_bar?.calculation_mode || 'autarky'}
                                             .items=${[
                                                 { value: 'autarky', label: t.editor.mode_autarky },
-                                                { value: 'self_consumption', label: t.editor.mode_self_consumption }
+                                                { value: 'self_consumption', label: t.editor.mode_self_consumption },
+                                                { value: 'runtime', label: 'Restlaufzeit' },
+                                                { value: 'chargetime', label: 'Restladezeit' }
                                             ]}
                                             item-value-path="value"
                                             item-label-path="label"
@@ -1044,8 +1051,6 @@ export class PVMonitorCardEditor extends LitElement {
                                     ></ha-combo-box>
                                 </div>
                             </div>
-
-                            ${this._renderSwitch(t.editor.calculate_battery_times, ['info_bar', 'calculate_battery_times'], this._config?.info_bar?.calculate_battery_times, t.editor.calculate_battery_times_helper)}
                         `,
                         t.editor.calculation_mode_helper
                 )}
@@ -1057,6 +1062,33 @@ export class PVMonitorCardEditor extends LitElement {
                         'mdi:numeric-1-box',
                         `${t.editor.item} 1`,
                         html`
+                            <div class="option">
+                                <div class="option-label">${t.editor.item_calc_type}</div>
+                                <div class="option-control">
+                                    <ha-combo-box
+                                            .value=${this._config?.info_bar?.item1_calc_type || this._config?.info_bar?.calculation_mode || 'autarky'}
+                                            .items=${[
+                                                { value: 'entity', label: t.editor.calc_type_entity },
+                                                { value: 'autarky', label: t.editor.calc_type_autarky },
+                                                { value: 'self_consumption', label: t.editor.calc_type_self_consumption },
+                                                { value: 'runtime', label: t.editor.calc_type_runtime },
+                                                { value: 'chargetime', label: t.editor.calc_type_chargetime }
+                                            ]}
+                                            item-value-path="value"
+                                            item-label-path="label"
+                                            @value-changed=${(ev: any) => {
+                                                if (!this._config) return;
+                                                const newValue = ev.detail?.value;
+                                                if (!newValue) return;
+                                                const newConfig = { ...this._config };
+                                                if (!newConfig.info_bar) newConfig.info_bar = {};
+                                                newConfig.info_bar.item1_calc_type = newValue;
+                                                this._config = newConfig;
+                                                this._fireEvent();
+                                            }}
+                                    ></ha-combo-box>
+                                </div>
+                            </div>
                             ${this._renderEntityPicker(t.editor.entity, ['info_bar', 'item1', 'entity'], this._config?.info_bar?.item1?.entity)}
                             ${this._renderIconPicker(t.editor.icon_label, ['info_bar', 'item1', 'icon'], this._config?.info_bar?.item1?.icon)}
                             ${this._renderTextfield(t.editor.label, ['info_bar', 'item1', 'label'], this._config?.info_bar?.item1?.label, t.editor.default_autarky)}
@@ -1071,6 +1103,33 @@ export class PVMonitorCardEditor extends LitElement {
                         'mdi:numeric-2-box',
                         `${t.editor.item} 2`,
                         html`
+                            <div class="option">
+                                <div class="option-label">${t.editor.item_calc_type}</div>
+                                <div class="option-control">
+                                    <ha-combo-box
+                                            .value=${this._config?.info_bar?.item2_calc_type || 'runtime'}
+                                            .items=${[
+                                                { value: 'entity', label: t.editor.calc_type_entity },
+                                                { value: 'autarky', label: t.editor.calc_type_autarky },
+                                                { value: 'self_consumption', label: t.editor.calc_type_self_consumption },
+                                                { value: 'runtime', label: t.editor.calc_type_runtime },
+                                                { value: 'chargetime', label: t.editor.calc_type_chargetime }
+                                            ]}
+                                            item-value-path="value"
+                                            item-label-path="label"
+                                            @value-changed=${(ev: any) => {
+                                                if (!this._config) return;
+                                                const newValue = ev.detail?.value;
+                                                if (!newValue) return;
+                                                const newConfig = { ...this._config };
+                                                if (!newConfig.info_bar) newConfig.info_bar = {};
+                                                newConfig.info_bar.item2_calc_type = newValue;
+                                                this._config = newConfig;
+                                                this._fireEvent();
+                                            }}
+                                    ></ha-combo-box>
+                                </div>
+                            </div>
                             ${this._renderEntityPicker(t.editor.entity, ['info_bar', 'item2', 'entity'], this._config?.info_bar?.item2?.entity)}
                             ${this._renderIconPicker(t.editor.icon_label, ['info_bar', 'item2', 'icon'], this._config?.info_bar?.item2?.icon)}
                             ${this._renderTextfield(t.editor.label, ['info_bar', 'item2', 'label'], this._config?.info_bar?.item2?.label, t.editor.default_runtime)}
@@ -1085,10 +1144,62 @@ export class PVMonitorCardEditor extends LitElement {
                         'mdi:numeric-3-box',
                         `${t.editor.item} 3`,
                         html`
+                            <div class="option">
+                                <div class="option-label">${t.editor.item_calc_type}</div>
+                                <div class="option-control">
+                                    <ha-combo-box
+                                            .value=${this._config?.info_bar?.item3_calc_type || 'chargetime'}
+                                            .items=${[
+                                                { value: 'entity', label: t.editor.calc_type_entity },
+                                                { value: 'autarky', label: t.editor.calc_type_autarky },
+                                                { value: 'self_consumption', label: t.editor.calc_type_self_consumption },
+                                                { value: 'runtime', label: t.editor.calc_type_runtime },
+                                                { value: 'chargetime', label: t.editor.calc_type_chargetime }
+                                            ]}
+                                            item-value-path="value"
+                                            item-label-path="label"
+                                            @value-changed=${(ev: any) => {
+                                                if (!this._config) return;
+                                                const newValue = ev.detail?.value;
+                                                if (!newValue) return;
+                                                const newConfig = { ...this._config };
+                                                if (!newConfig.info_bar) newConfig.info_bar = {};
+                                                newConfig.info_bar.item3_calc_type = newValue;
+                                                this._config = newConfig;
+                                                this._fireEvent();
+                                            }}
+                                    ></ha-combo-box>
+                                </div>
+                            </div>
                             ${this._renderEntityPicker(t.editor.entity, ['info_bar', 'item3', 'entity'], this._config?.info_bar?.item3?.entity)}
                             ${this._renderIconPicker(t.editor.icon_label, ['info_bar', 'item3', 'icon'], this._config?.info_bar?.item3?.icon)}
                             ${this._renderTextfield(t.editor.label, ['info_bar', 'item3', 'label'], this._config?.info_bar?.item3?.label, t.editor.default_chargetime)}
                             ${this._renderTextfield(t.editor.unit, ['info_bar', 'item3', 'unit'], this._config?.info_bar?.item3?.unit)}
+                        `
+                )}
+
+                <div class="divider"></div>
+
+                ${this._renderCollapsibleSection(
+                        'infobar_styling',
+                        'mdi:palette',
+                        'Info Bar Styling',
+                        html`
+                            ${this._renderColorPicker(t.editor.background_color, ['info_bar', 'style', 'background_color'], this._config?.info_bar?.style?.background_color)}
+                            ${this._renderColorPicker(t.editor.border_color, ['info_bar', 'style', 'border_color'], this._config?.info_bar?.style?.border_color)}
+                            ${this._renderTextfield(t.editor.border_radius, ['info_bar', 'style', 'border_radius'], this._config?.info_bar?.style?.border_radius, '16px')}
+                            ${this._renderTextfield(t.editor.padding, ['info_bar', 'style', 'padding'], this._config?.info_bar?.style?.padding, '12px')}
+                            ${this._renderTextfield('Gap', ['info_bar', 'style', 'gap'], this._config?.info_bar?.style?.gap, '8px')}
+                            ${this._renderTextfield('Icon Size', ['info_bar', 'style', 'icon_size'], this._config?.info_bar?.style?.icon_size, '1.5em')}
+                            ${this._renderColorPicker('Icon Color', ['info_bar', 'style', 'icon_color'], this._config?.info_bar?.style?.icon_color)}
+                            ${this._renderTextfield('Label Size', ['info_bar', 'style', 'label_size'], this._config?.info_bar?.style?.label_size, '0.8em')}
+                            ${this._renderTextfield(t.editor.label_line_height, ['info_bar', 'style', 'label_line_height'], this._config?.info_bar?.style?.label_line_height, '1.2')}
+                            ${this._renderColorPicker('Label Color', ['info_bar', 'style', 'label_color'], this._config?.info_bar?.style?.label_color)}
+                            ${this._renderTextfield('Label Font Weight', ['info_bar', 'style', 'label_font_weight'], this._config?.info_bar?.style?.label_font_weight, 'normal')}
+                            ${this._renderTextfield('Value Size', ['info_bar', 'style', 'value_size'], this._config?.info_bar?.style?.value_size, '1em')}
+                            ${this._renderTextfield(t.editor.value_line_height, ['info_bar', 'style', 'value_line_height'], this._config?.info_bar?.style?.value_line_height, '1.4')}
+                            ${this._renderColorPicker('Value Color', ['info_bar', 'style', 'value_color'], this._config?.info_bar?.style?.value_color)}
+                            ${this._renderTextfield('Value Font Weight', ['info_bar', 'style', 'value_font_weight'], this._config?.info_bar?.style?.value_font_weight, 'bold')}
                         `
                 )}
             ` : ''}
@@ -1441,7 +1552,6 @@ export class PVMonitorCardEditor extends LitElement {
                                             ${this._renderNumberfield(t.editor.consumer_threshold, ['consumers', 'items', index.toString(), 'threshold'], item.threshold, 0, 10000, 1)}
                                             ${this._renderSwitch(t.editor.consumer_auto_color, ['consumers', 'items', index.toString(), 'auto_color'], item.auto_color !== false, t.editor.consumer_auto_color_helper)}
 
-                                            <!-- Additional Texts Subsection -->
                                             <div class="consumer-subsection">
                                                 <div class="consumer-subsection-header" @click=${() => this._toggleConsumerSubsection(index, 'texts')}>
                                                     <ha-icon icon="mdi:text"></ha-icon>
@@ -1463,7 +1573,6 @@ export class PVMonitorCardEditor extends LitElement {
                                                 </div>
                                             </div>
 
-                                            <!-- Tap Actions Subsection -->
                                             <div class="consumer-subsection">
                                                 <div class="consumer-subsection-header" @click=${() => this._toggleConsumerSubsection(index, 'actions')}>
                                                     <ha-icon icon="mdi:gesture-tap"></ha-icon>
@@ -1482,7 +1591,6 @@ export class PVMonitorCardEditor extends LitElement {
                                                 </div>
                                             </div>
 
-                                            <!-- Styling Subsection -->
                                             <div class="consumer-subsection">
                                                 <div class="consumer-subsection-header" @click=${() => this._toggleConsumerSubsection(index, 'styling')}>
                                                     <ha-icon icon="mdi:palette"></ha-icon>
@@ -1572,7 +1680,6 @@ export class PVMonitorCardEditor extends LitElement {
         const newConfig = JSON.parse(JSON.stringify(this._config));
         const itemToDuplicate = JSON.parse(JSON.stringify(newConfig.consumers.items[index]));
 
-        // Insert duplicate right after the original
         newConfig.consumers.items.splice(index + 1, 0, itemToDuplicate);
 
         this._config = newConfig;
@@ -1586,12 +1693,10 @@ export class PVMonitorCardEditor extends LitElement {
         const newConfig = JSON.parse(JSON.stringify(this._config));
         const items = newConfig.consumers.items;
 
-        // Swap with previous item
         [items[index - 1], items[index]] = [items[index], items[index - 1]];
 
         this._config = newConfig;
 
-        // Update expanded index if needed
         if (this._expandedConsumerIndex === index) {
             this._expandedConsumerIndex = index - 1;
         } else if (this._expandedConsumerIndex === index - 1) {
@@ -1607,12 +1712,10 @@ export class PVMonitorCardEditor extends LitElement {
         const newConfig = JSON.parse(JSON.stringify(this._config));
         const items = newConfig.consumers.items;
 
-        // Swap with next item
         [items[index], items[index + 1]] = [items[index + 1], items[index]];
 
         this._config = newConfig;
 
-        // Update expanded index if needed
         if (this._expandedConsumerIndex === index) {
             this._expandedConsumerIndex = index + 1;
         } else if (this._expandedConsumerIndex === index + 1) {
@@ -1716,109 +1819,128 @@ export class PVMonitorCardEditor extends LitElement {
 
                         <div class="divider" style="margin: 16px 0;"></div>
 
-                        <div style="font-weight: 500; margin-bottom: 8px;">Theme Editor</div>
-                        <div class="info-text" style="margin-bottom: 12px;">Passe alle Farben des Themes an. Ändert nicht die Karten-spezifischen Styles.</div>
+                        <div style="font-weight: 500; margin-bottom: 8px;">Theme Editor (Karten)</div>
+                        <div class="info-text" style="margin-bottom: 12px;">Ändert nur die Karten-Farben, nicht den Titelbereich.</div>
 
                         ${this._renderColorPicker(t.editor.background_color, ['style', 'card_background_color'], this._config?.style?.card_background_color, 'rgba(21, 20, 27, 1)')}
                         ${this._renderColorPicker(t.editor.border_color, ['style', 'card_border_color'], this._config?.style?.card_border_color, 'rgba(255, 255, 255, 0.1)')}
                         ${this._renderColorPicker(t.editor.text_color, ['style', 'card_text_color'], this._config?.style?.card_text_color, 'white')}
                         ${this._renderTextfield(t.editor.border_radius, ['style', 'card_border_radius'], this._config?.style?.card_border_radius, '16px')}
                         ${this._renderTextfield(t.editor.padding, ['style', 'card_padding'], this._config?.style?.card_padding, '12px')}
-
-                        <div class="divider" style="margin: 16px 0;"></div>
-
-                        <div style="font-weight: 500; margin-bottom: 8px;">Header Icon (Title-Icon)</div>
-                        ${this._renderTextfield(t.editor.header_icon_size, ['style', 'header_icon_size'],
-                                this._config?.style?.header_icon_size, '1.5em', t.editor.header_icon_size_helper)}
-                        ${this._renderColorPicker(t.editor.header_icon_color, ['style', 'header_icon_color'],
-                                this._config?.style?.header_icon_color, 'white')}
-                        ${this._renderTextfield(t.editor.header_icon_margin, ['style', 'header_icon_margin'],
-                                this._config?.style?.header_icon_margin, '8px')}
-
-                        <div class="divider" style="margin: 16px 0;"></div>
-
-                        ${this._renderColorPicker(t.editor.title_color, ['style', 'title_color'], this._config?.style?.title_color, 'white')}
-                        ${this._renderTextfield(t.editor.title_size, ['style', 'title_size'], this._config?.style?.title_size, '1.5em')}
-                        ${this._renderTextfield(t.editor.title_font_weight, ['style', 'title_font_weight'], this._config?.style?.title_font_weight, 'bold')}
-                        ${this._renderTextfield(t.editor.title_subtitle_gap, ['style', 'title_subtitle_gap'],
-                                this._config?.style?.title_subtitle_gap, '4px', t.editor.title_subtitle_gap_helper)}
-
-                        <div class="divider" style="margin: 16px 0;"></div>
-
-                        ${this._renderColorPicker(t.editor.subtitle_color, ['style', 'subtitle_color'], this._config?.style?.subtitle_color)}
-                        ${this._renderTextfield(t.editor.subtitle_size, ['style', 'subtitle_size'], this._config?.style?.subtitle_size, '1em')}
-                        ${this._renderTextfield(t.editor.subtitle_font_weight, ['style', 'subtitle_font_weight'], this._config?.style?.subtitle_font_weight, 'normal')}
-
-                        <div class="divider" style="margin: 16px 0;"></div>
-
-                        ${this._renderTextfield(t.editor.icon_size, ['style', 'icon_size'], this._config?.style?.icon_size, '2em')}
-                        ${this._renderTextfield(t.editor.icon_opacity, ['style', 'icon_opacity'], this._config?.style?.icon_opacity, '1')}
-                        ${this._renderTextfield(t.editor.icon_margin, ['style', 'icon_margin'], this._config?.style?.icon_margin, '6px')}
-
-                        <div class="divider" style="margin: 16px 0;"></div>
-
-                        ${this._renderColorPicker(t.editor.primary_color_label, ['style', 'primary_color'], this._config?.style?.primary_color, 'white')}
-                        ${this._renderTextfield(t.editor.primary_size, ['style', 'primary_size'], this._config?.style?.primary_size, '1.2em')}
-                        ${this._renderTextfield(t.editor.primary_opacity, ['style', 'primary_font_opacity'], this._config?.style?.primary_font_opacity, '1')}
-                        ${this._renderTextfield(t.editor.primary_font_weight, ['style', 'primary_font_weight'], this._config?.style?.primary_font_weight, 'normal')}
-
-                        <div class="divider" style="margin: 16px 0;"></div>
-
-                        ${this._renderColorPicker(t.editor.secondary_color_label, ['style', 'secondary_color'], this._config?.style?.secondary_color, 'white')}
-                        ${this._renderTextfield(t.editor.secondary_size, ['style', 'secondary_size'], this._config?.style?.secondary_size, '0.9em')}
-                        ${this._renderTextfield(t.editor.secondary_opacity, ['style', 'secondary_font_opacity'], this._config?.style?.secondary_font_opacity, '0.7')}
-                        ${this._renderTextfield(t.editor.secondary_font_weight, ['style', 'secondary_font_weight'], this._config?.style?.secondary_font_weight, 'normal')}
-
-                        <div class="divider" style="margin: 16px 0;"></div>
-
-                        ${this._renderColorPicker(t.editor.tertiary_color_label, ['style', 'tertiary_color'], this._config?.style?.tertiary_color, 'white')}
-                        ${this._renderTextfield(t.editor.tertiary_size, ['style', 'tertiary_size'], this._config?.style?.tertiary_size, '0.9em')}
-                        ${this._renderTextfield(t.editor.tertiary_opacity, ['style', 'tertiary_font_opacity'], this._config?.style?.tertiary_font_opacity, '0.7')}
-                        ${this._renderTextfield(t.editor.tertiary_font_weight, ['style', 'tertiary_font_weight'], this._config?.style?.tertiary_font_weight, 'normal')}
                     `
             )}
 
             <div class="divider"></div>
 
             ${this._renderCollapsibleSection(
-                    'styling_header_background',
-                    'mdi:rectangle',
-                    t.editor.header_background,
+                    'styling_titelbereich',
+                    'mdi:format-title',
+                    'Titelbereich',
                     html`
-                        ${this._renderSwitch(t.editor.enable_header_background, ['style', 'header_background_enabled'], this._config?.style?.header_background_enabled, t.editor.enable_header_background_helper)}
+                        ${this._renderTextfield('Titel Größe', ['style', 'title_size'], this._config?.style?.title_size, '1.5em')}
+                        ${this._renderTextfield('Titel Line-Height', ['style', 'title_line_height'], this._config?.style?.title_line_height, '1.2')}
+                        ${this._renderColorPicker('Titel Farbe', ['style', 'title_color'], this._config?.style?.title_color, 'white')}
+                        ${this._renderTextfield('Titel Font-Weight', ['style', 'title_font_weight'], this._config?.style?.title_font_weight, 'bold')}
+                        ${this._renderTextfield('Titel Ausrichtung', ['style', 'title_align'], this._config?.style?.title_align, 'center', 'left, center, right')}
 
-                        ${this._config?.style?.header_background_enabled ? html`
-                            <div class="option">
-                                <div class="option-label">${t.editor.header_width}</div>
-                                <div class="option-control">
-                                    <ha-combo-box
-                                            .value=${this._config?.style?.header_width || 'auto'}
-                                            .items=${[
-                                                { value: 'auto', label: t.editor.header_width_auto },
-                                                { value: 'full', label: t.editor.header_width_full }
-                                            ]}
-                                            item-value-path="value"
-                                            item-label-path="label"
-                                            @value-changed=${(ev: any) => {
-                                                if (!this._config) return;
-                                                const newValue = ev.detail?.value;
-                                                if (!newValue) return;
-                                                const newConfig = { ...this._config };
-                                                if (!newConfig.style) newConfig.style = {};
-                                                newConfig.style.header_width = newValue;
-                                                this._config = newConfig;
-                                                this._fireEvent();
-                                            }}
-                                    ></ha-combo-box>
+                        <div class="divider" style="margin: 16px 0;"></div>
+
+                        ${this._renderTextfield('Untertitel Größe', ['style', 'subtitle_size'], this._config?.style?.subtitle_size, '1em')}
+                        ${this._renderTextfield('Untertitel Line-Height', ['style', 'subtitle_line_height'], this._config?.style?.subtitle_line_height, '1.4')}
+                        ${this._renderColorPicker('Untertitel Farbe', ['style', 'subtitle_color'], this._config?.style?.subtitle_color, 'rgba(255,255,255,0.7)')}
+                        ${this._renderTextfield('Untertitel Font-Weight', ['style', 'subtitle_font_weight'], this._config?.style?.subtitle_font_weight, 'normal')}
+                        ${this._renderTextfield('Untertitel Ausrichtung', ['style', 'subtitle_align'], this._config?.style?.subtitle_align, 'center')}
+
+                        <div class="divider" style="margin: 16px 0;"></div>
+
+                        ${this._renderTextfield('Titel-Untertitel Abstand', ['style', 'title_subtitle_gap'], this._config?.style?.title_subtitle_gap, '4px')}
+
+                        <div class="divider" style="margin: 16px 0;"></div>
+
+                        ${this._renderTextfield('Header Icon Größe', ['style', 'header_icon_size'], this._config?.style?.header_icon_size, '1.5em')}
+                        ${this._renderColorPicker('Header Icon Farbe', ['style', 'header_icon_color'], this._config?.style?.header_icon_color, 'white')}
+                        ${this._renderTextfield('Header Icon Margin', ['style', 'header_icon_margin'], this._config?.style?.header_icon_margin, '8px')}
+
+                        <div class="divider" style="margin: 16px 0;"></div>
+
+                        <div class="subsection">
+                            <div style="font-weight: 500; margin-bottom: 12px;">Header-Hintergrund</div>
+                            ${this._renderSwitch('Hintergrund aktivieren', ['style', 'header_background_enabled'], this._config?.style?.header_background_enabled)}
+
+                            ${this._config?.style?.header_background_enabled ? html`
+                                <div class="option">
+                                    <div class="option-label">Header Breite</div>
+                                    <div class="option-control">
+                                        <ha-combo-box
+                                                .value=${this._config?.style?.header_width || 'auto'}
+                                                .items=${[
+                                                    { value: 'auto', label: 'Auto (Inhaltsgröße)' },
+                                                    { value: 'full', label: 'Full (100% Breite)' }
+                                                ]}
+                                                item-value-path="value"
+                                                item-label-path="label"
+                                                @value-changed=${(ev: any) => {
+                                                    if (!this._config) return;
+                                                    const newValue = ev.detail?.value;
+                                                    if (!newValue) return;
+                                                    const newConfig = { ...this._config };
+                                                    if (!newConfig.style) newConfig.style = {};
+                                                    newConfig.style.header_width = newValue;
+                                                    this._config = newConfig;
+                                                    this._fireEvent();
+                                                }}
+                                        ></ha-combo-box>
+                                    </div>
                                 </div>
-                            </div>
 
-                            ${this._renderColorPicker(t.editor.header_background_color, ['style', 'header_background_color'], this._config?.style?.header_background_color, 'rgba(21, 20, 27, 1)')}
-                            ${this._renderColorPicker(t.editor.header_border_color, ['style', 'header_border_color'], this._config?.style?.header_border_color, 'rgba(255, 255, 255, 0.1)')}
-                            ${this._renderTextfield(t.editor.header_border_radius, ['style', 'header_border_radius'], this._config?.style?.header_border_radius, '16px')}
-                            ${this._renderTextfield(t.editor.header_padding, ['style', 'header_padding'], this._config?.style?.header_padding, '12px')}
-                            ${this._renderTextfield(t.editor.header_box_shadow, ['style', 'header_box_shadow'], this._config?.style?.header_box_shadow, '0 2px 8px 0 rgba(0, 0, 0, 0.15)')}
-                        ` : ''}
+                                ${this._renderColorPicker('Header Hintergrundfarbe', ['style', 'header_background_color'], this._config?.style?.header_background_color, 'rgba(21, 20, 27, 1)')}
+                                ${this._renderColorPicker('Header Rahmenfarbe', ['style', 'header_border_color'], this._config?.style?.header_border_color, 'rgba(255, 255, 255, 0.1)')}
+                                ${this._renderTextfield('Header Border Radius', ['style', 'header_border_radius'], this._config?.style?.header_border_radius, '16px')}
+                                ${this._renderTextfield('Header Padding', ['style', 'header_padding'], this._config?.style?.header_padding, '12px')}
+                                ${this._renderTextfield('Header Box Shadow', ['style', 'header_box_shadow'], this._config?.style?.header_box_shadow, '0 2px 8px 0 rgba(0, 0, 0, 0.15)')}
+                            ` : ''}
+                        </div>
+                    `
+            )}
+
+            <div class="divider"></div>
+
+            ${this._renderCollapsibleSection(
+                    'styling_karten',
+                    'mdi:card-multiple',
+                    'Karten Styling',
+                    html`
+                        <div style="font-weight: 500; margin-bottom: 8px;">Icon</div>
+                        ${this._renderTextfield('Icon Größe', ['style', 'icon_size'], this._config?.style?.icon_size, '2em')}
+                        ${this._renderTextfield('Icon Opacity', ['style', 'icon_opacity'], this._config?.style?.icon_opacity, '1')}
+                        ${this._renderTextfield('Icon Margin', ['style', 'icon_margin'], this._config?.style?.icon_margin, '6px')}
+
+                        <div class="divider" style="margin: 16px 0;"></div>
+
+                        <div style="font-weight: 500; margin-bottom: 8px;">Primär-Text (Hauptwert)</div>
+                        ${this._renderTextfield('Primär Größe', ['style', 'primary_size'], this._config?.style?.primary_size, '1.2em')}
+                        ${this._renderTextfield('Primär Line-Height', ['style', 'primary_line_height'], this._config?.style?.primary_line_height, '1.2')}
+                        ${this._renderColorPicker('Primär Farbe', ['style', 'primary_color'], this._config?.style?.primary_color, 'white')}
+                        ${this._renderTextfield('Primär Opacity', ['style', 'primary_font_opacity'], this._config?.style?.primary_font_opacity, '1')}
+                        ${this._renderTextfield('Primär Font-Weight', ['style', 'primary_font_weight'], this._config?.style?.primary_font_weight, 'normal')}
+
+                        <div class="divider" style="margin: 16px 0;"></div>
+
+                        <div style="font-weight: 500; margin-bottom: 8px;">Sekundär-Text (2. Zeile)</div>
+                        ${this._renderTextfield('Sekundär Größe', ['style', 'secondary_size'], this._config?.style?.secondary_size, '0.9em')}
+                        ${this._renderTextfield('Sekundär Line-Height', ['style', 'secondary_line_height'], this._config?.style?.secondary_line_height, '1.4')}
+                        ${this._renderColorPicker('Sekundär Farbe', ['style', 'secondary_color'], this._config?.style?.secondary_color, 'white')}
+                        ${this._renderTextfield('Sekundär Opacity', ['style', 'secondary_font_opacity'], this._config?.style?.secondary_font_opacity, '0.7')}
+                        ${this._renderTextfield('Sekundär Font-Weight', ['style', 'secondary_font_weight'], this._config?.style?.secondary_font_weight, 'normal')}
+
+                        <div class="divider" style="margin: 16px 0;"></div>
+
+                        <div style="font-weight: 500; margin-bottom: 8px;">Tertiär-Text (3. Zeile)</div>
+                        ${this._renderTextfield('Tertiär Größe', ['style', 'tertiary_size'], this._config?.style?.tertiary_size, '0.9em')}
+                        ${this._renderTextfield('Tertiär Line-Height', ['style', 'tertiary_line_height'], this._config?.style?.tertiary_line_height, '1.4')}
+                        ${this._renderColorPicker('Tertiär Farbe', ['style', 'tertiary_color'], this._config?.style?.tertiary_color, 'white')}
+                        ${this._renderTextfield('Tertiär Opacity', ['style', 'tertiary_font_opacity'], this._config?.style?.tertiary_font_opacity, '0.7')}
+                        ${this._renderTextfield('Tertiär Font-Weight', ['style', 'tertiary_font_weight'], this._config?.style?.tertiary_font_weight, 'normal')}
                     `
             )}
 
@@ -1832,8 +1954,6 @@ export class PVMonitorCardEditor extends LitElement {
                         ${this._renderTextfield(t.editor.grid_gap, ['grid_gap'], this._config?.grid_gap, t.editor.grid_gap_placeholder, t.editor.grid_gap_helper)}
                         ${this._renderTextfield(t.editor.header_margin_bottom, ['style', 'header_margin_bottom'], this._config?.style?.header_margin_bottom, '12px', t.editor.header_margin_bottom_helper)}
                         ${this._renderTextfield(t.editor.infobar_gap, ['style', 'infobar_gap'], this._config?.style?.infobar_gap, '6px', t.editor.infobar_gap_helper)}
-                        ${this._renderTextfield(t.editor.title_alignment, ['style', 'title_align'], this._config?.style?.title_align, 'center', t.editor.title_alignment_helper)}
-                        ${this._renderTextfield(t.editor.subtitle_alignment, ['style', 'subtitle_align'], this._config?.style?.subtitle_align, 'center')}
                         ${this._renderTextfield(t.editor.cursor, ['style', 'card_cursor'], this._config?.style?.card_cursor, 'pointer')}
                     `
             )}
