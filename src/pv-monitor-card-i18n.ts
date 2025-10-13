@@ -25,8 +25,14 @@ export interface Translations {
         subtitle: string;
         subtitle_placeholder: string;
         subtitle_helper: string;
+        title_subtitle_gap: string;
+        title_subtitle_gap_helper: string;
         icon: string;
         icon_helper: string;
+        header_icon_size: string;
+        header_icon_size_helper: string;
+        header_icon_color: string;
+        header_icon_margin: string;
         layout: string;
         grid_gap: string;
         grid_gap_placeholder: string;
@@ -239,6 +245,25 @@ export interface Translations {
         consumer_tap_actions: string;
         show_consumer_total_in_house: string;
         show_consumer_total_helper: string;
+
+        show_title: string;
+        show_subtitle: string;
+        show_icon: string;
+
+        title_line_height: string;
+        subtitle_line_height: string;
+        primary_line_height: string;
+        secondary_line_height: string;
+        tertiary_line_height: string;
+        label_line_height: string;
+        value_line_height: string;
+
+        item_calc_type: string;
+        calc_type_entity: string;
+        calc_type_autarky: string;
+        calc_type_self_consumption: string;
+        calc_type_runtime: string;
+        calc_type_chargetime: string;
     };
 
     status: {
@@ -271,6 +296,12 @@ export const translations: Record<SupportedLanguage, Translations> = {
             subtitle: 'Untertitel',
             subtitle_placeholder: 'Energieübersicht',
             subtitle_helper: 'Leer lassen um auszublenden.',
+            title_subtitle_gap: 'Abstand Titel-Untertitel',
+            title_subtitle_gap_helper: 'Abstand zwischen Titel und Untertitel',
+            header_icon_size: 'Header Icon Größe',
+            header_icon_size_helper: 'Größe des Icons neben dem Titel',
+            header_icon_color: 'Header Icon Farbe',
+            header_icon_margin: 'Header Icon Abstand',
             icon: 'Icon',
             icon_helper: 'Wird nur angezeigt, wenn auch ein Titel vorhanden ist, leer lassen um auszublenden.',
             layout: 'Layout',
@@ -485,6 +516,25 @@ export const translations: Record<SupportedLanguage, Translations> = {
             consumer_tap_actions: 'Tap Actions',
             show_consumer_total_in_house: 'Gesamtverbrauch als Sekundär-Text',
             show_consumer_total_helper: 'Zeigt Summe aller Consumer unter Hausverbrauch',
+
+            show_title: 'Titel anzeigen',
+            show_subtitle: 'Untertitel anzeigen',
+            show_icon: 'Icon anzeigen',
+
+            title_line_height: 'Titel Line-Height',
+            subtitle_line_height: 'Untertitel Line-Height',
+            primary_line_height: 'Primär Line-Height',
+            secondary_line_height: 'Sekundär Line-Height',
+            tertiary_line_height: 'Tertiär Line-Height',
+            label_line_height: 'Label Line-Height',
+            value_line_height: 'Value Line-Height',
+
+            item_calc_type: 'Berechnung wählen',
+            calc_type_entity: 'Manuelle Entity',
+            calc_type_autarky: 'Autarkie',
+            calc_type_self_consumption: 'Eigenverbrauch',
+            calc_type_runtime: 'Restlaufzeit',
+            calc_type_chargetime: 'Restladezeit',
         },
         status: {
             feed_in: 'Einspeisung',
@@ -515,6 +565,12 @@ export const translations: Record<SupportedLanguage, Translations> = {
             subtitle: 'Subtitle',
             subtitle_placeholder: 'Energy Overview',
             subtitle_helper: 'Leave empty to hide.',
+            title_subtitle_gap: 'Title-Subtitle Gap',
+            title_subtitle_gap_helper: 'Space between title and subtitle',
+            header_icon_size: 'Header Icon Size',
+            header_icon_size_helper: 'Size of the icon next to title',
+            header_icon_color: 'Header Icon Color',
+            header_icon_margin: 'Header Icon Margin',
             icon: 'Icon',
             icon_helper: 'Only shown when a title is present, leave empty to hide.',
             layout: 'Layout',
@@ -729,6 +785,25 @@ export const translations: Record<SupportedLanguage, Translations> = {
             consumer_tap_actions: 'Tap Actions',
             show_consumer_total_in_house: 'Show Total as Secondary Text',
             show_consumer_total_helper: 'Shows sum of all consumers under house consumption',
+
+            show_title: 'Show Title',
+            show_subtitle: 'Show Subtitle',
+            show_icon: 'Show Icon',
+
+            title_line_height: 'Title Line-Height',
+            subtitle_line_height: 'Subtitle Line-Height',
+            primary_line_height: 'Primary Line-Height',
+            secondary_line_height: 'Secondary Line-Height',
+            tertiary_line_height: 'Tertiary Line-Height',
+            label_line_height: 'Label Line-Height',
+            value_line_height: 'Value Line-Height',
+
+            item_calc_type: 'Select Calculation',
+            calc_type_entity: 'Manual Entity',
+            calc_type_autarky: 'Autarky',
+            calc_type_self_consumption: 'Self-Consumption',
+            calc_type_runtime: 'Runtime',
+            calc_type_chargetime: 'Charge Time',
         },
         status: {
             feed_in: 'Feed-in',
@@ -759,6 +834,12 @@ export const translations: Record<SupportedLanguage, Translations> = {
             subtitle: 'Sous-titre',
             subtitle_placeholder: 'Aperçu Énergétique',
             subtitle_helper: 'Laisser vide pour masquer.',
+            title_subtitle_gap: 'Écart Titre-Sous-titre',
+            title_subtitle_gap_helper: 'Espace entre le titre et le sous-titre',
+            header_icon_size: 'Taille de l\'icône d\'en-tête',
+            header_icon_size_helper: 'Taille de l\'icône à côté du titre',
+            header_icon_color: 'Couleur de l\'icône d\'en-tête',
+            header_icon_margin: 'Marge de l\'icône d\'en-tête',
             icon: 'Icône',
             icon_helper: 'Affiché uniquement si un titre est présent, laisser vide pour masquer.',
             layout: 'Disposition',
@@ -973,6 +1054,25 @@ export const translations: Record<SupportedLanguage, Translations> = {
             consumer_tap_actions: 'Actions Tactiles',
             show_consumer_total_in_house: 'Afficher Total comme Texte Secondaire',
             show_consumer_total_helper: 'Affiche la somme de tous les consommateurs sous la consommation maison',
+
+            show_title: 'Afficher Titre',
+            show_subtitle: 'Afficher Sous-titre',
+            show_icon: 'Afficher Icône',
+
+            title_line_height: 'Line-Height Titre',
+            subtitle_line_height: 'Line-Height Sous-titre',
+            primary_line_height: 'Line-Height Primaire',
+            secondary_line_height: 'Line-Height Secondaire',
+            tertiary_line_height: 'Line-Height Tertiaire',
+            label_line_height: 'Line-Height Label',
+            value_line_height: 'Line-Height Valeur',
+
+            item_calc_type: 'Sélectionner Calcul',
+            calc_type_entity: 'Entité Manuelle',
+            calc_type_autarky: 'Autosuffisance',
+            calc_type_self_consumption: 'Autoconsommation',
+            calc_type_runtime: 'Autonomie',
+            calc_type_chargetime: 'Temps de Charge',
         },
         status: {
             feed_in: 'Injection',
@@ -1003,6 +1103,12 @@ export const translations: Record<SupportedLanguage, Translations> = {
             subtitle: 'Sottotitolo',
             subtitle_placeholder: 'Panoramica Energia',
             subtitle_helper: 'Lasciare vuoto per nascondere.',
+            title_subtitle_gap: 'Distanza Titolo-Sottotitolo',
+            title_subtitle_gap_helper: 'Spazio tra titolo e sottotitolo',
+            header_icon_size: 'Dimensione icona intestazione',
+            header_icon_size_helper: 'Dimensione dell\'icona accanto al titolo',
+            header_icon_color: 'Colore icona intestazione',
+            header_icon_margin: 'Margine icona intestazione',
             icon: 'Icona',
             icon_helper: 'Mostrato solo se è presente un titolo, lasciare vuoto per nascondere.',
             layout: 'Layout',
@@ -1217,6 +1323,25 @@ export const translations: Record<SupportedLanguage, Translations> = {
             consumer_tap_actions: 'Azioni Tocco',
             show_consumer_total_in_house: 'Mostra Totale come Testo Secondario',
             show_consumer_total_helper: 'Mostra la somma di tutti i consumatori sotto il consumo casa',
+
+            show_title: 'Mostra Titolo',
+            show_subtitle: 'Mostra Sottotitolo',
+            show_icon: 'Mostra Icona',
+
+            title_line_height: 'Line-Height Titolo',
+            subtitle_line_height: 'Line-Height Sottotitolo',
+            primary_line_height: 'Line-Height Primario',
+            secondary_line_height: 'Line-Height Secondario',
+            tertiary_line_height: 'Line-Height Terziario',
+            label_line_height: 'Line-Height Etichetta',
+            value_line_height: 'Line-Height Valore',
+
+            item_calc_type: 'Seleziona Calcolo',
+            calc_type_entity: 'Entità Manuale',
+            calc_type_autarky: 'Autosufficienza',
+            calc_type_self_consumption: 'Autoconsumo',
+            calc_type_runtime: 'Autonomia',
+            calc_type_chargetime: 'Tempo di Ricarica',
         },
         status: {
             feed_in: 'Immissione',
@@ -1247,6 +1372,12 @@ export const translations: Record<SupportedLanguage, Translations> = {
             subtitle: 'Subtítulo',
             subtitle_placeholder: 'Resumen de Energía',
             subtitle_helper: 'Dejar vacío para ocultar.',
+            title_subtitle_gap: 'Espacio Título-Subtítulo',
+            title_subtitle_gap_helper: 'Espacio entre título y subtítulo',
+            header_icon_size: 'Tamaño del icono de encabezado',
+            header_icon_size_helper: 'Tamaño del icono junto al título',
+            header_icon_color: 'Color del icono de encabezado',
+            header_icon_margin: 'Margen del icono de encabezado',
             icon: 'Icono',
             icon_helper: 'Solo se muestra cuando hay un título, dejar vacío para ocultar.',
             layout: 'Diseño',
@@ -1461,6 +1592,25 @@ export const translations: Record<SupportedLanguage, Translations> = {
             consumer_tap_actions: 'Acciones Táctiles',
             show_consumer_total_in_house: 'Mostrar Total como Texto Secundario',
             show_consumer_total_helper: 'Muestra la suma de todos los consumidores bajo el consumo casa',
+
+            show_title: 'Mostrar Título',
+            show_subtitle: 'Mostrar Subtítulo',
+            show_icon: 'Mostrar Icono',
+
+            title_line_height: 'Line-Height Título',
+            subtitle_line_height: 'Line-Height Subtítulo',
+            primary_line_height: 'Line-Height Primario',
+            secondary_line_height: 'Line-Height Secundario',
+            tertiary_line_height: 'Line-Height Terciario',
+            label_line_height: 'Line-Height Etiqueta',
+            value_line_height: 'Line-Height Valor',
+
+            item_calc_type: 'Seleccionar Cálculo',
+            calc_type_entity: 'Entidad Manual',
+            calc_type_autarky: 'Autosuficiencia',
+            calc_type_self_consumption: 'Autoconsumo',
+            calc_type_runtime: 'Autonomía',
+            calc_type_chargetime: 'Tiempo de Carga',
         },
         status: {
             feed_in: 'Inyección',

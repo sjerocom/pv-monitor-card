@@ -684,9 +684,10 @@ export function applyThemeToConfig(config: any, themeId?: ThemeId): any {
     const theme = getTheme(themeId);
     if (!theme) return config;
 
-    return {
+    const newConfig = {
         ...config,
         style: {
+            ...config.style,
             card_background_color: theme.colors.card_background_color,
             card_border_color: theme.colors.card_border_color,
             card_text_color: theme.colors.card_text_color,
@@ -694,31 +695,30 @@ export function applyThemeToConfig(config: any, themeId?: ThemeId): any {
             secondary_color: theme.colors.secondary_color,
             title_color: theme.colors.title_color,
             subtitle_color: theme.colors.subtitle_color,
-
-            ...config.style,
+            header_icon_color: theme.colors.title_color,
         },
         info_bar: {
             ...config.info_bar,
             style: {
+                ...config.info_bar?.style,
                 background_color: theme.colors.infobar_background_color,
                 border_color: theme.colors.infobar_border_color,
                 icon_color: theme.colors.infobar_icon_color,
                 label_color: theme.colors.infobar_label_color,
                 value_color: theme.colors.infobar_value_color,
-
-                ...config.info_bar?.style,
             }
         },
         consumers: {
             ...config.consumers,
             style: {
+                ...config.consumers?.style,
                 item_background_color: theme.colors.consumer_background_color,
                 item_border_color: theme.colors.consumer_border_color,
-
-                ...config.consumers?.style,
             }
         }
     };
+
+    return newConfig;
 }
 
 export function getThemeDisplayName(themeId: ThemeId): string {

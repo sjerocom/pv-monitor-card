@@ -171,9 +171,9 @@ export class PVMonitorCard extends LitElement {
         const secondaryColor = cardStyle?.secondary_color || s.secondary_color;
 
         const iconStyle = `font-size: ${s.icon_size}; opacity: ${s.icon_opacity}; ${config.customIconStyle || ''} ${iconColor ? `color: ${iconColor};` : ''}`;
-        const primaryStyle = `font-size: ${s.primary_size}; color: ${primaryColor}; opacity: ${s.primary_font_opacity}; font-weight: ${s.primary_font_weight}; line-height: calc(${s.primary_size} + 2px);`;
-        const secondaryStyle = `font-size: ${s.secondary_size}; color: ${secondaryColor}; opacity: ${s.secondary_font_opacity}; font-weight: ${s.secondary_font_weight}; line-height: calc(${s.secondary_size} + 2px);`;
-        const tertiaryStyle = `font-size: ${s.tertiary_size}; color: ${s.tertiary_color}; opacity: ${s.tertiary_font_opacity}; font-weight: ${s.tertiary_font_weight}; line-height: calc(${s.tertiary_size} + 2px);`;
+        const primaryStyle = `font-size: ${s.primary_size}; color: ${primaryColor}; opacity: ${s.primary_font_opacity}; font-weight: ${s.primary_font_weight}; line-height: ${s.primary_line_height};`;
+        const secondaryStyle = `font-size: ${s.secondary_size}; color: ${secondaryColor}; opacity: ${s.secondary_font_opacity}; font-weight: ${s.secondary_font_weight}; line-height: ${s.secondary_line_height};`;
+        const tertiaryStyle = `font-size: ${s.tertiary_size}; color: ${s.tertiary_color}; opacity: ${s.tertiary_font_opacity}; font-weight: ${s.tertiary_font_weight}; line-height: ${s.tertiary_line_height};`;
 
         // Get animation style type from card config, default to 'rotating-dots'
         const animationType = config.cardConfig?.animation_style || 'rotating-dots';
@@ -196,7 +196,7 @@ export class PVMonitorCard extends LitElement {
         `;
     }
 
-    private _renderInfoBarItem(item?: InfoBarItem, s?: any, itemType?: string): any {
+    private _renderInfoBarItem(item?: InfoBarItem, s?: any, itemCalcType?: string): any {
         if (!item || !this.hass) return html``;
 
         let value = '';
@@ -208,44 +208,33 @@ export class PVMonitorCard extends LitElement {
             return parseFloat(this.hass!.states[entityId]?.state) || 0;
         };
 
-        if (itemType === 'calculation') {
-            const mode = this.config.info_bar?.calculation_mode || 'autarky';
-
-            if (mode === 'autarky') {
-                const pvProd = getCentralEntityValue('pv_production');
-                const batteryDischarge = getCentralEntityValue('battery_discharge');
-                const gridPower = getCentralEntityValue('grid_power');
-                const houseConsumption = getCentralEntityValue('house_consumption');
-
-                value = calculateAutarky(pvProd, batteryDischarge, gridPower, houseConsumption);
-                unit = '';
-            } else {
-                const pvProd = getCentralEntityValue('pv_production');
-                const gridPower = getCentralEntityValue('grid_power');
-
-                value = calculateSelfConsumption(pvProd, gridPower);
-                unit = '';
-            }
-        }
-        else if (itemType === 'runtime' && this.config.info_bar?.calculate_battery_times) {
+        if (itemCalcType === 'autarky') {
+            const pvProd = getCentralEntityValue('pv_production');
+            const batteryDischarge = getCentralEntityValue('battery_discharge');
+            const gridPower = getCentralEntityValue('grid_power');
+            const houseConsumption = getCentralEntityValue('house_consumption');
+            value = calculateAutarky(pvProd, batteryDischarge, gridPower, houseConsumption);
+            unit = '';
+        } else if (itemCalcType === 'self_consumption') {
+            const pvProd = getCentralEntityValue('pv_production');
+            const gridPower = getCentralEntityValue('grid_power');
+            value = calculateSelfConsumption(pvProd, gridPower);
+            unit = '';
+        } else if (itemCalcType === 'runtime') {
             const batteryCapacity = this.config.battery_capacity || 10000;
             const socPercent = getCentralEntityValue('battery_soc');
             const charge = getCentralEntityValue('battery_charge');
             const discharge = getCentralEntityValue('battery_discharge');
-
             value = calculateBatteryRuntime(batteryCapacity, socPercent, charge, discharge);
             unit = '';
-        }
-        else if (itemType === 'chargetime' && this.config.info_bar?.calculate_battery_times) {
+        } else if (itemCalcType === 'chargetime') {
             const batteryCapacity = this.config.battery_capacity || 10000;
             const socPercent = getCentralEntityValue('battery_soc');
             const charge = getCentralEntityValue('battery_charge');
             const discharge = getCentralEntityValue('battery_discharge');
-
             value = calculateBatteryChargeTime(batteryCapacity, socPercent, charge, discharge);
             unit = '';
-        }
-        else if (item.entity) {
+        } else if (item.entity) {
             const entity = this.hass.states[item.entity];
             if (!entity) return html``;
             value = entity.state;
@@ -262,8 +251,8 @@ export class PVMonitorCard extends LitElement {
                     </div>
                 ` : ''}
                 <div class="info-bar-content">
-                    ${item.label ? html`<div class="info-bar-label" style="font-size: ${s.label_size}; color: ${s.label_color}; font-weight: ${s.label_font_weight};">${item.label}</div>` : ''}
-                    <div class="info-bar-value" style="font-size: ${s.value_size}; color: ${s.value_color}; font-weight: ${s.value_font_weight};">${value}${unit ? ' ' + unit : ''}</div>
+                    ${item.label ? html`<div class="info-bar-label" style="font-size: ${s.label_size}; color: ${s.label_color}; font-weight: ${s.label_font_weight}; line-height: ${s.label_line_height};">${item.label}</div>` : ''}
+                    <div class="info-bar-value" style="font-size: ${s.value_size}; color: ${s.value_color}; font-weight: ${s.value_font_weight}; line-height: ${s.value_line_height};">${value}${unit ? ' ' + unit : ''}</div>
                 </div>
             </div>
         `;
@@ -304,9 +293,9 @@ export class PVMonitorCard extends LitElement {
                      }
                  }}
             >
-                ${this._renderInfoBarItem(ib.item1, s, 'calculation')}
-                ${this._renderInfoBarItem(ib.item2, s, 'runtime')}
-                ${this._renderInfoBarItem(ib.item3, s, 'chargetime')}
+                ${this._renderInfoBarItem(ib.item1, s, ib.item1_calc_type || ib.calculation_mode)}
+                ${this._renderInfoBarItem(ib.item2, s, ib.item2_calc_type)}
+                ${this._renderInfoBarItem(ib.item3, s, ib.item3_calc_type)}
             </div>
         `;
     }
@@ -673,6 +662,7 @@ export class PVMonitorCard extends LitElement {
         const titleStyle = `
             text-align: ${s.title_align};
             font-size: ${s.title_size};
+            line-height: ${s.title_line_height};
             font-weight: ${s.title_font_weight};
             color: ${s.title_color};
             margin: 0;
@@ -681,14 +671,28 @@ export class PVMonitorCard extends LitElement {
         const subtitleStyle = `
             text-align: ${s.subtitle_align};
             font-size: ${s.subtitle_size};
+            line-height: ${s.subtitle_line_height};
             font-weight: ${s.subtitle_font_weight};
             color: ${s.subtitle_color};
-            margin: 4px 0 0 0;
+            margin: ${s.title_subtitle_gap || '4px'} 0 0 0;
         `;
+        let visibleCards = 0;
+        if (this.config.pv?.show !== false) visibleCards++;
+        if (this.config.batterie?.show !== false) visibleCards++;
+        if (this.config.haus?.show !== false) visibleCards++;
+        if (this.config.netz?.show !== false) visibleCards++;
 
+// Definiere Grid-Template-Columns
+        let gridTemplateColumns = 'repeat(4, 1fr)';
+        if (visibleCards === 3) gridTemplateColumns = 'repeat(3, 1fr)';
+        else if (visibleCards === 2) gridTemplateColumns = 'repeat(2, 1fr)';
+        else if (visibleCards === 1) gridTemplateColumns = '1fr';
+
+// Header Icon Styling
         const headerIconStyle = `
-            font-size: ${s.title_size};
-            color: ${s.title_color};
+            font-size: ${s.header_icon_size};
+            color: ${s.header_icon_color};
+            margin-right: ${s.header_icon_margin};
         `;
 
         const headerBackgroundEnabled = s.header_background_enabled ?? false;
@@ -714,7 +718,7 @@ export class PVMonitorCard extends LitElement {
                 <div class="card-header" style="${headerStyle}">
                     ${showIcon ? html`
                         <div class="card-header-with-icon">
-                            <ha-icon .icon=${this.config.icon} style="${headerIconStyle}"></ha-icon>
+                            <ha-icon .icon=${this.config.icon} style="${headerIconStyle} --mdc-icon-size: ${s.header_icon_size}; width: ${s.header_icon_size}; height: ${s.header_icon_size};"></ha-icon>
                             <div class="card-header-text">
                                 ${showTitle ? html`<h2 style="${titleStyle}">${this.config.title}</h2>` : ''}
                                 ${showSubtitle ? html`<p style="${subtitleStyle}">${this.config.subtitle}</p>` : ''}
@@ -727,7 +731,7 @@ export class PVMonitorCard extends LitElement {
                 </div>
             ` : ''}
             ${infoBarPosition === 'top' ? this._renderInfoBar() : ''}
-            <div class="grid" style="gap: ${this.config.grid_gap}; ${infoBarPosition === 'top' && this.config.info_bar?.show ? `margin-top: ${s.infobar_gap || '6px'};` : ''}">
+            <div class="grid" style="gap: ${this.config.grid_gap}; grid-template-columns: ${gridTemplateColumns}; ...">
                 ${this.config.pv?.show !== false ? this._renderPV() : ''}
                 ${this.config.batterie?.show !== false ? this._renderBatterie() : ''}
                 ${this.config.haus?.show !== false ? this._renderHaus() : ''}
