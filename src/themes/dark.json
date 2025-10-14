@@ -1,0 +1,24 @@
+{
+  "id": "dark",
+  "name": "Dark",
+  "colors": {
+    "card_background_color": "rgba(21, 20, 27, 1)",
+    "card_border_color": "rgba(255, 255, 255, 0.1)",
+    "card_text_color": "white",
+    "primary_color": "white",
+    "secondary_color": "white",
+    "title_color": "white",
+    "subtitle_color": "rgba(255, 255, 255, 0.7)",
+    "header_background_color": "rgba(21, 20, 27, 1)",
+    "header_border_color": "rgba(255, 255, 255, 0.1)",
+    "infobar_background_color": "rgba(21, 20, 27, 1)",
+    "infobar_border_color": "rgba(255, 255, 255, 0.1)",
+    "infobar_icon_color": "white",
+    "infobar_label_color": "rgba(255, 255, 255, 0.7)",
+    "infobar_value_color": "white",
+    "consumer_background_color": "rgba(21, 20, 27, 1)",
+    "consumer_border_color": "rgba(255, 255, 255, 0.1)",
+    "consumer_primary_color": "white",
+    "consumer_secondary_color": "rgba(255, 255, 255, 0.7)"
+  }
+}

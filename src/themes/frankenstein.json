@@ -1,0 +1,24 @@
+{
+  "id": "frankenstein",
+  "name": "Frankenstein",
+  "colors": {
+    "card_background_color": "#1C1C1C",
+    "card_border_color": "#4A5D23",
+    "card_text_color": "#D4D4D4",
+    "primary_color": "#84CC16",
+    "secondary_color": "#A78BFA",
+    "title_color": "#84CC16",
+    "subtitle_color": "#94A3B8",
+    "header_background_color": "#262626",
+    "header_border_color": "#3F5120",
+    "infobar_background_color": "#262626",
+    "infobar_border_color": "#3F5120",
+    "infobar_icon_color": "#A3E635",
+    "infobar_label_color": "#D4D4D4",
+    "infobar_value_color": "#94A3B8",
+    "consumer_background_color": "#0F0F0F",
+    "consumer_border_color": "#365314",
+    "consumer_primary_color": "#84CC16",
+    "consumer_secondary_color": "#A78BFA"
+  }
+}

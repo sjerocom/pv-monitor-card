@@ -1,0 +1,24 @@
+{
+  "id": "dr_who",
+  "name": "Doctor Who",
+  "colors": {
+    "card_background_color": "#003B6F",
+    "card_border_color": "#1E40AF",
+    "card_text_color": "#FFFFFF",
+    "primary_color": "#0EA5E9",
+    "secondary_color": "#F59E0B",
+    "title_color": "#38BDF8",
+    "subtitle_color": "#93C5FD",
+    "header_background_color": "#002347",
+    "header_border_color": "#1E3A8A",
+    "infobar_background_color": "#002347",
+    "infobar_border_color": "#1E3A8A",
+    "infobar_icon_color": "#38BDF8",
+    "infobar_label_color": "#DBEAFE",
+    "infobar_value_color": "#93C5FD",
+    "consumer_background_color": "#001529",
+    "consumer_border_color": "#1E40AF",
+    "consumer_primary_color": "#0EA5E9",
+    "consumer_secondary_color": "#F59E0B"
+  }
+}

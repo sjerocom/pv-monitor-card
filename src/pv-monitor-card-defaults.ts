@@ -1,13 +1,13 @@
 import { PVMonitorCardConfig } from "./pv-monitor-card-types";
 import { getTranslations, detectLanguage } from "./pv-monitor-card-i18n";
-import { applyThemeToConfig } from "./pv-monitor-card-themes";
+import { applyThemeToConfigSync } from "./pv-monitor-card-themes";
 
 export function getDefaultConfig(config: PVMonitorCardConfig): PVMonitorCardConfig {
     const t = getTranslations(config.language || detectLanguage());
 
     let themedConfig = config;
     if (config.theme) {
-        themedConfig = applyThemeToConfig(config, config.theme);
+        themedConfig = applyThemeToConfigSync(config, config.theme);
     }
 
     return {

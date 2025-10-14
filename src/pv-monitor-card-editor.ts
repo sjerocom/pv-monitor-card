@@ -869,7 +869,7 @@ export class PVMonitorCardEditor extends LitElement {
                             item-value-path="value"
                             item-label-path="label"
                             allow-custom-value
-                            @value-changed=${(ev: any) => {
+                            @value-changed=${async (ev: any) => {
                                 if (!this._config) return;
                                 const newValue = ev.detail?.value;
 
@@ -879,7 +879,7 @@ export class PVMonitorCardEditor extends LitElement {
                                 } else {
                                     newConfig.theme = newValue;
 
-                                    const themedConfig = applyThemeToConfig(newConfig, newValue);
+                                    const themedConfig = await applyThemeToConfig(newConfig, newValue);
                                     this._config = themedConfig;
                                     this._fireEvent();
                                     this.requestUpdate();
@@ -1014,46 +1014,6 @@ export class PVMonitorCardEditor extends LitElement {
                 <div class="divider"></div>
 
                 ${this._renderTapActions('info_bar')}
-
-                <div class="divider"></div>
-
-                ${this._renderCollapsibleSection(
-                        'infobar_calculation',
-                        'mdi:calculator',
-                        'Automatische Berechnungen',
-                        html`
-                            ${this._renderSwitch(t.editor.calculate_battery_times, ['info_bar', 'calculate_battery_times'], this._config?.info_bar?.calculate_battery_times, t.editor.calculate_battery_times_helper)}
-
-                            <div style="margin-top: 16px; font-weight: 500;">Item 1</div>
-                            <div class="option">
-                                <div class="option-label">Berechnung wählen</div>
-                                <div class="option-control">
-                                    <ha-combo-box
-                                            .value=${this._config?.info_bar?.calculation_mode || 'autarky'}
-                                            .items=${[
-                                                { value: 'autarky', label: t.editor.mode_autarky },
-                                                { value: 'self_consumption', label: t.editor.mode_self_consumption },
-                                                { value: 'runtime', label: 'Restlaufzeit' },
-                                                { value: 'chargetime', label: 'Restladezeit' }
-                                            ]}
-                                            item-value-path="value"
-                                            item-label-path="label"
-                                            @value-changed=${(ev: any) => {
-                                                if (!this._config) return;
-                                                const newValue = ev.detail?.value;
-                                                if (!newValue) return;
-                                                const newConfig = { ...this._config };
-                                                if (!newConfig.info_bar) newConfig.info_bar = {};
-                                                newConfig.info_bar.calculation_mode = newValue;
-                                                this._config = newConfig;
-                                                this._fireEvent();
-                                            }}
-                                    ></ha-combo-box>
-                                </div>
-                            </div>
-                        `,
-                        t.editor.calculation_mode_helper
-                )}
 
                 <div class="divider"></div>
 

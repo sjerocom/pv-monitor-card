@@ -1,0 +1,24 @@
+{
+  "id": "mr_robot",
+  "name": "Mr. Robot",
+  "colors": {
+    "card_background_color": "#0A0A0A",
+    "card_border_color": "#1F1F1F",
+    "card_text_color": "#00FF00",
+    "primary_color": "#00FF00",
+    "secondary_color": "#FF0000",
+    "title_color": "#00FF00",
+    "subtitle_color": "#00AA00",
+    "header_background_color": "#000000",
+    "header_border_color": "#1A1A1A",
+    "infobar_background_color": "#000000",
+    "infobar_border_color": "#1A1A1A",
+    "infobar_icon_color": "#00FF00",
+    "infobar_label_color": "#00DD00",
+    "infobar_value_color": "#00AA00",
+    "consumer_background_color": "#050505",
+    "consumer_border_color": "#0F0F0F",
+    "consumer_primary_color": "#00FF00",
+    "consumer_secondary_color": "#FF0000"
+  }
+}

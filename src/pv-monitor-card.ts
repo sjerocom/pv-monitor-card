@@ -698,10 +698,10 @@ export class PVMonitorCard extends LitElement {
         const headerBackgroundEnabled = s.header_background_enabled ?? false;
         const headerWidth = s.header_width ?? 'auto';
 
-        let headerStyle = `margin-bottom: ${s.header_margin_bottom || '12px'};`;
+        let headerStyle = '';
 
         if (headerBackgroundEnabled) {
-            headerStyle += `
+            headerStyle = `
                 background: ${s.header_background_color};
                 border: 1px solid ${s.header_border_color};
                 border-radius: ${s.header_border_radius};
@@ -710,7 +710,10 @@ export class PVMonitorCard extends LitElement {
                 width: ${headerWidth === 'full' ? 'calc(100% - 2 * var(--ha-card-border-width, 1px))' : 'fit-content'};
                 ${headerWidth === 'auto' ? 'margin-left: auto; margin-right: auto;' : ''}
                 box-sizing: border-box;
+                margin-bottom: ${s.header_margin_bottom || '12px'};
             `;
+        } else {
+            headerStyle = `margin-bottom: ${s.header_margin_bottom || '12px'};`;
         }
 
         return html`
