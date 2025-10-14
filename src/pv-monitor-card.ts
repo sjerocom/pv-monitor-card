@@ -35,7 +35,7 @@ export class PVMonitorCard extends LitElement {
     static styles = pvMonitorCardStyles;
 
     public static async getConfigElement() {
-        await import('./pv-monitor-card-editor');
+        await import('./editor/editor');
         return document.createElement(`${CARD_TAG}-editor`);
     }
 
