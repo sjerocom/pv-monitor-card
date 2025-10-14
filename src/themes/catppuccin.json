@@ -1,0 +1,24 @@
+{
+  "id": "catppuccin",
+  "name": "Catppuccin Mocha",
+  "colors": {
+    "card_background_color": "rgba(30, 30, 46, 1)",
+    "card_border_color": "rgba(137, 180, 250, 0.3)",
+    "card_text_color": "rgba(205, 214, 244, 1)",
+    "primary_color": "rgba(137, 180, 250, 1)",
+    "secondary_color": "rgba(205, 214, 244, 0.8)",
+    "title_color": "rgba(203, 166, 247, 1)",
+    "subtitle_color": "rgba(186, 194, 222, 1)",
+    "header_background_color": "rgba(49, 50, 68, 1)",
+    "header_border_color": "rgba(137, 180, 250, 0.3)",
+    "infobar_background_color": "rgba(49, 50, 68, 1)",
+    "infobar_border_color": "rgba(137, 180, 250, 0.3)",
+    "infobar_icon_color": "rgba(148, 226, 213, 1)",
+    "infobar_label_color": "rgba(186, 194, 222, 1)",
+    "infobar_value_color": "rgba(205, 214, 244, 1)",
+    "consumer_background_color": "rgba(49, 50, 68, 1)",
+    "consumer_border_color": "rgba(137, 180, 250, 0.3)",
+    "consumer_primary_color": "rgba(137, 180, 250, 1)",
+    "consumer_secondary_color": "rgba(186, 194, 222, 1)"
+  }
+}

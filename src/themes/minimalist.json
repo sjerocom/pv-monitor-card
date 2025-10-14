@@ -1,0 +1,24 @@
+{
+  "id": "minimalist",
+  "name": "Minimalist",
+  "colors": {
+    "card_background_color": "rgba(242, 242, 242, 1)",
+    "card_border_color": "rgba(0, 0, 0, 0.1)",
+    "card_text_color": "rgba(33, 33, 33, 1)",
+    "primary_color": "rgba(33, 33, 33, 1)",
+    "secondary_color": "rgba(117, 117, 117, 1)",
+    "title_color": "rgba(33, 33, 33, 1)",
+    "subtitle_color": "rgba(117, 117, 117, 1)",
+    "header_background_color": "rgba(255, 255, 255, 1)",
+    "header_border_color": "rgba(0, 0, 0, 0.1)",
+    "infobar_background_color": "rgba(255, 255, 255, 1)",
+    "infobar_border_color": "rgba(0, 0, 0, 0.1)",
+    "infobar_icon_color": "rgba(66, 66, 66, 1)",
+    "infobar_label_color": "rgba(117, 117, 117, 1)",
+    "infobar_value_color": "rgba(33, 33, 33, 1)",
+    "consumer_background_color": "rgba(255, 255, 255, 1)",
+    "consumer_border_color": "rgba(0, 0, 0, 0.1)",
+    "consumer_primary_color": "rgba(33, 33, 33, 1)",
+    "consumer_secondary_color": "rgba(117, 117, 117, 1)"
+  }
+}

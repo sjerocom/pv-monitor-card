@@ -1,0 +1,24 @@
+{
+  "id": "blue",
+  "name": "Blue",
+  "colors": {
+    "card_background_color": "rgba(15, 23, 42, 1)",
+    "card_border_color": "rgba(59, 130, 246, 0.3)",
+    "card_text_color": "rgba(226, 232, 240, 1)",
+    "primary_color": "rgba(96, 165, 250, 1)",
+    "secondary_color": "rgba(147, 197, 253, 0.8)",
+    "title_color": "rgba(96, 165, 250, 1)",
+    "subtitle_color": "rgba(148, 163, 184, 1)",
+    "header_background_color": "rgba(30, 41, 59, 1)",
+    "header_border_color": "rgba(59, 130, 246, 0.3)",
+    "infobar_background_color": "rgba(30, 41, 59, 1)",
+    "infobar_border_color": "rgba(59, 130, 246, 0.3)",
+    "infobar_icon_color": "rgba(96, 165, 250, 1)",
+    "infobar_label_color": "rgba(148, 163, 184, 1)",
+    "infobar_value_color": "rgba(226, 232, 240, 1)",
+    "consumer_background_color": "rgba(30, 41, 59, 1)",
+    "consumer_border_color": "rgba(59, 130, 246, 0.3)",
+    "consumer_primary_color": "rgba(96, 165, 250, 1)",
+    "consumer_secondary_color": "rgba(148, 163, 184, 1)"
+  }
+}

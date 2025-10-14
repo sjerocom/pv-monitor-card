@@ -1,0 +1,24 @@
+{
+  "id": "material",
+  "name": "Material Design",
+  "colors": {
+    "card_background_color": "rgba(18, 18, 18, 1)",
+    "card_border_color": "rgba(3, 218, 198, 0.3)",
+    "card_text_color": "rgba(255, 255, 255, 0.87)",
+    "primary_color": "rgba(3, 218, 198, 1)",
+    "secondary_color": "rgba(255, 255, 255, 0.6)",
+    "title_color": "rgba(3, 218, 198, 1)",
+    "subtitle_color": "rgba(255, 255, 255, 0.6)",
+    "header_background_color": "rgba(33, 33, 33, 1)",
+    "header_border_color": "rgba(3, 218, 198, 0.3)",
+    "infobar_background_color": "rgba(33, 33, 33, 1)",
+    "infobar_border_color": "rgba(3, 218, 198, 0.3)",
+    "infobar_icon_color": "rgba(3, 218, 198, 1)",
+    "infobar_label_color": "rgba(255, 255, 255, 0.6)",
+    "infobar_value_color": "rgba(255, 255, 255, 0.87)",
+    "consumer_background_color": "rgba(33, 33, 33, 1)",
+    "consumer_border_color": "rgba(3, 218, 198, 0.3)",
+    "consumer_primary_color": "rgba(3, 218, 198, 1)",
+    "consumer_secondary_color": "rgba(255, 255, 255, 0.6)"
+  }
+}

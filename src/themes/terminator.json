@@ -1,0 +1,24 @@
+{
+  "id": "terminator",
+  "name": "Terminator",
+  "colors": {
+    "card_background_color": "#1A1A1A",
+    "card_border_color": "#B91C1C",
+    "card_text_color": "#E0E0E0",
+    "primary_color": "#DC2626",
+    "secondary_color": "#7C3AED",
+    "title_color": "#DC2626",
+    "subtitle_color": "#9CA3AF",
+    "header_background_color": "#262626",
+    "header_border_color": "#991B1B",
+    "infobar_background_color": "#262626",
+    "infobar_border_color": "#991B1B",
+    "infobar_icon_color": "#EF4444",
+    "infobar_label_color": "#D1D5DB",
+    "infobar_value_color": "#9CA3AF",
+    "consumer_background_color": "#0F0F0F",
+    "consumer_border_color": "#7C2D12",
+    "consumer_primary_color": "#DC2626",
+    "consumer_secondary_color": "#7C3AED"
+  }
+}

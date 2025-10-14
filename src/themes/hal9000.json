@@ -1,0 +1,24 @@
+{
+  "id": "hal9000",
+  "name": "HAL 9000",
+  "colors": {
+    "card_background_color": "#0A0A0A",
+    "card_border_color": "#CC0000",
+    "card_text_color": "#E0E0E0",
+    "primary_color": "#FF0000",
+    "secondary_color": "#CC0000",
+    "title_color": "#FF0000",
+    "subtitle_color": "#CC0000",
+    "header_background_color": "#1A1A1A",
+    "header_border_color": "#CC0000",
+    "infobar_background_color": "#1A1A1A",
+    "infobar_border_color": "#CC0000",
+    "infobar_icon_color": "#FF0000",
+    "infobar_label_color": "#E0E0E0",
+    "infobar_value_color": "#CC0000",
+    "consumer_background_color": "#0F0F0F",
+    "consumer_border_color": "#990000",
+    "consumer_primary_color": "#FF0000",
+    "consumer_secondary_color": "#CC0000"
+  }
+}

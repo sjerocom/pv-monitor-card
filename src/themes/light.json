@@ -1,0 +1,24 @@
+{
+  "id": "light",
+  "name": "Light",
+  "colors": {
+    "card_background_color": "rgba(255, 255, 255, 1)",
+    "card_border_color": "rgba(0, 0, 0, 0.1)",
+    "card_text_color": "rgba(0, 0, 0, 0.87)",
+    "primary_color": "rgba(0, 0, 0, 0.87)",
+    "secondary_color": "rgba(0, 0, 0, 0.6)",
+    "title_color": "rgba(0, 0, 0, 0.87)",
+    "subtitle_color": "rgba(0, 0, 0, 0.6)",
+    "header_background_color": "rgba(250, 250, 250, 1)",
+    "header_border_color": "rgba(0, 0, 0, 0.1)",
+    "infobar_background_color": "rgba(250, 250, 250, 1)",
+    "infobar_border_color": "rgba(0, 0, 0, 0.1)",
+    "infobar_icon_color": "rgba(0, 0, 0, 0.6)",
+    "infobar_label_color": "rgba(0, 0, 0, 0.6)",
+    "infobar_value_color": "rgba(0, 0, 0, 0.87)",
+    "consumer_background_color": "rgba(250, 250, 250, 1)",
+    "consumer_border_color": "rgba(0, 0, 0, 0.1)",
+    "consumer_primary_color": "rgba(0, 0, 0, 0.87)",
+    "consumer_secondary_color": "rgba(0, 0, 0, 0.6)"
+  }
+}

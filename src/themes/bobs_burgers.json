@@ -1,0 +1,24 @@
+{
+  "id": "bobs_burgers",
+  "name": "Bob's Burgers",
+  "colors": {
+    "card_background_color": "rgba(235, 231, 213, 1)",
+    "card_border_color": "rgba(206, 48, 45, 0.4)",
+    "card_text_color": "rgba(42, 54, 59, 1)",
+    "primary_color": "rgba(206, 48, 45, 1)",
+    "secondary_color": "rgba(42, 54, 59, 0.8)",
+    "title_color": "rgba(206, 48, 45, 1)",
+    "subtitle_color": "rgba(249, 176, 58, 1)",
+    "header_background_color": "rgba(249, 241, 230, 1)",
+    "header_border_color": "rgba(206, 48, 45, 0.3)",
+    "infobar_background_color": "rgba(249, 241, 230, 1)",
+    "infobar_border_color": "rgba(206, 48, 45, 0.3)",
+    "infobar_icon_color": "rgba(206, 48, 45, 1)",
+    "infobar_label_color": "rgba(42, 54, 59, 0.7)",
+    "infobar_value_color": "rgba(42, 54, 59, 1)",
+    "consumer_background_color": "rgba(249, 241, 230, 1)",
+    "consumer_border_color": "rgba(206, 48, 45, 0.3)",
+    "consumer_primary_color": "rgba(206, 48, 45, 1)",
+    "consumer_secondary_color": "rgba(42, 54, 59, 0.7)"
+  }
+}
