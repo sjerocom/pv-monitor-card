@@ -1,0 +1,36 @@
+name: Notify HACS on Release
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  notify-hacs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger HACS update check
+        run: |
+          echo "Release ${{ github.event.release.tag_name }} published!"
+          echo "HACS will automatically detect this within 24 hours."
+          echo "Users can manually reload HACS to get the update immediately:"
+          echo "Configuration → Integrations → HACS → ⋮ → Reload"
+
+      - name: Verify release asset
+        run: |
+          ASSET_URL="${{ github.event.release.assets[0].browser_download_url }}"
+          if [ -z "$ASSET_URL" ]; then
+            echo "❌ ERROR: No asset found in release!"
+            exit 1
+          fi
+          echo "✅ Release asset found: $ASSET_URL"
+
+      - name: Repository dispatch to HACS (optional)
+        run: |
+          # Optional: Einige Custom Repositories unterstützen repository_dispatch
+          # Dies beschleunigt die Erkennung durch HACS
+          curl -X POST \
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            https://api.github.com/repos/${{ github.repository }}/dispatches \
+            -d '{"event_type":"hacs_update","client_payload":{"version":"${{ github.event.release.tag_name }}"}}'
+          echo "✅ Repository dispatch sent"
