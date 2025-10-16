@@ -1,105 +1,7 @@
-export type AnimationStyle = 'none' | 'rotating-dots' | 'particle-field' | 'electric-arc';
-
-export interface HassEntity {
-    state: string;
-    attributes: Record<string, any>;
-}
-
-export interface Hass {
-    states: Record<string, HassEntity>;
-    callService?: (domain: string, service: string, data?: any) => Promise<any>;
-}
-
-export interface TapAction {
-    action: string;
-    navigation_path?: string;
-    url_path?: string;
-    service?: string;
-    service_data?: any;
-    target?: any;
-    data?: any;
-}
-
-export interface CardStyle {
-    background_color?: string;
-    border_color?: string;
-    primary_color?: string;
-    secondary_color?: string;
-    icon_color?: string;
-}
-
-export interface InfoBarItem {
-    entity?: string;
-    icon?: string;
-    label?: string;
-    unit?: string;
-}
-
-export interface ConsumerItemStyle {
-    icon_size?: string;
-    icon_color?: string;
-    icon_opacity?: string;
-    primary_size?: string;
-    primary_color?: string;
-    primary_opacity?: string;
-    primary_font_weight?: string;
-    secondary_size?: string;
-    secondary_color?: string;
-    secondary_opacity?: string;
-    secondary_font_weight?: string;
-    background_color?: string;
-    border_color?: string;
-    border_radius?: string;
-    padding?: string;
-    margin?: string;
-    box_shadow?: string;
-}
-
-export interface ConsumerItem {
-    entity: string;
-    icon?: string;
-    label?: string;
-    threshold?: number;
-    auto_color?: boolean;
-    primary_entity?: string;
-    primary_text?: string;
-    show_primary?: boolean;
-    secondary_entity?: string;
-    secondary_text?: string;
-    show_secondary?: boolean;
-    switch_entity?: string;
-    tap_action?: TapAction;
-    double_tap_action?: TapAction;
-    hold_action?: TapAction;
-    style?: ConsumerItemStyle;
-}
-
-export type ConsumerSortMode = 'highest_first' | 'lowest_first' | 'none' | 'alpha_asc' | 'alpha_desc';
-
-export interface ConsumersConfig {
-    show?: boolean;
-    position?: 'bottom';
-    sort_mode?: ConsumerSortMode;
-    threshold?: number;
-    style?: {
-        gap?: string;
-        item_background_color?: string;
-        item_border_color?: string;
-        item_border_radius?: string;
-        item_padding?: string;
-        item_margin?: string;
-        item_box_shadow?: string;
-        icon_size?: string;
-        icon_opacity?: string;
-        primary_size?: string;
-        primary_font_weight?: string;
-        primary_opacity?: string;
-        secondary_size?: string;
-        secondary_font_weight?: string;
-        secondary_opacity?: string;
-    };
-    items?: ConsumerItem[];
-}
+import { AnimationStyle, CardStyle } from './base';
+import { TapAction } from './actions';
+import { InfoBarConfig } from './info-bar';
+import { ConsumersConfig } from './consumers';
 
 export interface PVMonitorCardConfig {
     type: string;
@@ -126,38 +28,8 @@ export interface PVMonitorCardConfig {
     battery_capacity?: number;
     grid_threshold?: number;
 
-    info_bar?: {
-        show?: boolean;
-        position?: 'top' | 'bottom';
-        calculation_mode?: 'autarky' | 'self_consumption';
-        calculate_battery_times?: boolean;
-        item1_calc_type?: 'autarky' | 'self_consumption' | 'runtime' | 'chargetime' | 'entity';
-        item2_calc_type?: 'autarky' | 'self_consumption' | 'runtime' | 'chargetime' | 'entity';
-        item3_calc_type?: 'autarky' | 'self_consumption' | 'runtime' | 'chargetime' | 'entity';
-        tap_action?: TapAction;
-        double_tap_action?: TapAction;
-        hold_action?: TapAction;
-        item1?: InfoBarItem;
-        item2?: InfoBarItem;
-        item3?: InfoBarItem;
-        style?: {
-            background_color?: string;
-            border_color?: string;
-            border_radius?: string;
-            padding?: string;
-            gap?: string;
-            icon_size?: string;
-            icon_color?: string;
-            label_size?: string;
-            label_color?: string;
-            label_font_weight?: string;
-            label_line_height?: string;
-            value_size?: string;
-            value_color?: string;
-            value_font_weight?: string;
-            value_line_height?: string;
-        };
-    };
+    info_bar?: InfoBarConfig;
+
     style?: {
         card_background_color?: string;
         card_border_color?: string;
@@ -208,6 +80,7 @@ export interface PVMonitorCardConfig {
         tertiary_font_opacity?: string;
         tertiary_line_height?: string;
     };
+
     netz?: {
         show?: boolean;
         entity?: string;
@@ -227,6 +100,7 @@ export interface PVMonitorCardConfig {
         tertiary_text?: string;
         style?: CardStyle;
     };
+
     pv?: {
         show?: boolean;
         entity?: string;
@@ -244,6 +118,7 @@ export interface PVMonitorCardConfig {
         tertiary_text?: string;
         style?: CardStyle;
     };
+
     batterie?: {
         show?: boolean;
         entity?: string;
@@ -264,6 +139,7 @@ export interface PVMonitorCardConfig {
         tertiary_text?: string;
         style?: CardStyle;
     };
+
     haus?: {
         show?: boolean;
         entity?: string;
@@ -280,5 +156,6 @@ export interface PVMonitorCardConfig {
         tertiary_text?: string;
         style?: CardStyle;
     };
+
     consumers?: ConsumersConfig;
 }
