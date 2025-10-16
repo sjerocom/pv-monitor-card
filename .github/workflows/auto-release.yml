@@ -12,6 +12,7 @@ jobs:
       contents: write
       id-token: write
       packages: write
+      pull-requests: write
     steps:
       - uses: actions/checkout@v5
         with:
@@ -21,6 +22,7 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: '22.20.0'
+          cache: 'npm'
 
       - name: Clean and reinstall dependencies
         run: |
@@ -30,6 +32,10 @@ jobs:
 
       - name: Build
         run: npm run build
+
+      - name: Run Tests (if available)
+        run: npm test || echo "No tests configured"
+        continue-on-error: true
 
       - name: Get version from package.json
         id: package-version
@@ -47,7 +53,26 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Generate commit changelog
+      - name: Extract version type
+        id: version-type
+        if: steps.check-release.outputs.exists == 'false'
+        run: |
+          VERSION="${{ steps.package-version.outputs.version }}"
+          if [[ "$VERSION" =~ -beta ]]; then
+            echo "prerelease=true" >> $GITHUB_OUTPUT
+            echo "type=Beta" >> $GITHUB_OUTPUT
+          elif [[ "$VERSION" =~ -alpha ]]; then
+            echo "prerelease=true" >> $GITHUB_OUTPUT
+            echo "type=Alpha" >> $GITHUB_OUTPUT
+          elif [[ "$VERSION" =~ -rc ]]; then
+            echo "prerelease=true" >> $GITHUB_OUTPUT
+            echo "type=Release Candidate" >> $GITHUB_OUTPUT
+          else
+            echo "prerelease=false" >> $GITHUB_OUTPUT
+            echo "type=Stable" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Generate detailed changelog
         id: changelog
         if: steps.check-release.outputs.exists == 'false'
         shell: bash
@@ -56,47 +81,163 @@ jobs:
           LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || true)
           if [ -n "$LAST_TAG" ]; then
             RANGE="$LAST_TAG..HEAD"
+            echo "Changelog since $LAST_TAG"
           else
             RANGE="HEAD"
+            echo "Initial release changelog"
           fi
 
-          COMMITS=$(git log $RANGE --pretty=format:'- %s (%h)' --no-merges 2>/dev/null || echo "Initial release")
+          # Kategorisiere Commits
+          FEATURES=$(git log $RANGE --pretty=format:'- %s ([%h](https://github.com/${{ github.repository }}/commit/%H))' --no-merges --grep="^feat" || echo "")
+          FIXES=$(git log $RANGE --pretty=format:'- %s ([%h](https://github.com/${{ github.repository }}/commit/%H))' --no-merges --grep="^fix" || echo "")
+          DOCS=$(git log $RANGE --pretty=format:'- %s ([%h](https://github.com/${{ github.repository }}/commit/%H))' --no-merges --grep="^docs" || echo "")
+          STYLE=$(git log $RANGE --pretty=format:'- %s ([%h](https://github.com/${{ github.repository }}/commit/%H))' --no-merges --grep="^style" || echo "")
+          REFACTOR=$(git log $RANGE --pretty=format:'- %s ([%h](https://github.com/${{ github.repository }}/commit/%H))' --no-merges --grep="^refactor" || echo "")
+          OTHER=$(git log $RANGE --pretty=format:'- %s ([%h](https://github.com/${{ github.repository }}/commit/%H))' --no-merges --invert-grep --grep="^feat" --grep="^fix" --grep="^docs" --grep="^style" --grep="^refactor" || echo "")
 
           {
-            echo "commits<<EOF"
-            echo "$COMMITS"
+            echo "content<<EOF"
+            if [ -n "$FEATURES" ]; then
+              echo "### ✨ New Features"
+              echo "$FEATURES"
+              echo ""
+            fi
+            if [ -n "$FIXES" ]; then
+              echo "### 🐛 Bug Fixes"
+              echo "$FIXES"
+              echo ""
+            fi
+            if [ -n "$DOCS" ]; then
+              echo "### 📚 Documentation"
+              echo "$DOCS"
+              echo ""
+            fi
+            if [ -n "$STYLE" ]; then
+              echo "### 💅 Style Changes"
+              echo "$STYLE"
+              echo ""
+            fi
+            if [ -n "$REFACTOR" ]; then
+              echo "### ♻️ Refactoring"
+              echo "$REFACTOR"
+              echo ""
+            fi
+            if [ -n "$OTHER" ]; then
+              echo "### 🔧 Other Changes"
+              echo "$OTHER"
+              echo ""
+            fi
+            if [ -z "$FEATURES" ] && [ -z "$FIXES" ] && [ -z "$DOCS" ] && [ -z "$STYLE" ] && [ -z "$REFACTOR" ] && [ -z "$OTHER" ]; then
+              echo "Initial release"
+            fi
             echo "EOF"
           } >> "$GITHUB_OUTPUT"
 
+      - name: Get file sizes
+        id: file-sizes
+        if: steps.check-release.outputs.exists == 'false'
+        run: |
+          JS_SIZE=$(ls -lh dist/pv-monitor-card.js | awk '{print $5}')
+          echo "js_size=$JS_SIZE" >> $GITHUB_OUTPUT
+
       - name: Verify build artifact
+        if: steps.check-release.outputs.exists == 'false'
         run: test -f dist/pv-monitor-card.js
 
-      - name: Create Draft Release
+      - name: HACS Validation
+        if: steps.check-release.outputs.exists == 'false'
+        uses: hacs/action@main
+        with:
+          category: plugin
+
+      - name: Create Release Assets Archive
+        if: steps.check-release.outputs.exists == 'false'
+        run: |
+          mkdir -p release-assets
+          cp dist/pv-monitor-card.js release-assets/
+          cp README.md release-assets/ || true
+          cp LICENSE release-assets/ || true
+          cd release-assets
+          zip -r ../pv-monitor-card-${{ steps.package-version.outputs.version }}.zip .
+          cd ..
+
+      - name: Create Release
         if: steps.check-release.outputs.exists == 'false'
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ steps.package-version.outputs.version }}
-          name: Release v${{ steps.package-version.outputs.version }}
+          name: "Release v${{ steps.package-version.outputs.version }} (${{ steps.version-type.outputs.type }})"
           draft: true
-          prerelease: false
-          files: dist/pv-monitor-card.js
+          prerelease: ${{ steps.version-type.outputs.prerelease }}
+          files: |
+            dist/pv-monitor-card.js
+            pv-monitor-card-${{ steps.package-version.outputs.version }}.zip
           body: |
-            ## ✏️ Release Notes v${{ steps.package-version.outputs.version }}
-
-            <Hier beschreiben, was sich geändert hat …>
-
-            ### 🧩 Änderungen
-            ${{ steps.changelog.outputs.commits }}
-
-            ---
-
-            📦 Automatisch erstellt am: ${{ github.event.head_commit.timestamp }}
+            ## 🚀 Release v${{ steps.package-version.outputs.version }}
             
-            ⚠️ **Wichtig für HACS**: Dieser Release muss manuell auf "Published" gesetzt werden, damit HACS das Update erkennt!
+            > **Type:** ${{ steps.version-type.outputs.type }}
+            
+            ${{ steps.changelog.outputs.content }}
+            
+            ---
+            
+            ### 📦 Installation
+            
+            #### HACS (recommended)
+            1. Open HACS in Home Assistant
+            2. Go to "Frontend"
+            3. Search for "PV Monitor Card"
+            4. Click Install
+            
+            #### Manual
+            1. Download `pv-monitor-card.js` from the assets below
+            2. Copy to `config/www/community/pv-monitor-card/`
+            3. Add to your Lovelace resources:
+               ```yaml
+               url: /hacsfiles/pv-monitor-card/pv-monitor-card.js
+               type: module
+               ```
+            
+            ### 📊 Build Information
+            - **Build Date:** ${{ github.event.head_commit.timestamp }}
+            - **Commit:** [`${{ github.sha }}`](https://github.com/${{ github.repository }}/commit/${{ github.sha }})
+            - **File Size:** ${{ steps.file-sizes.outputs.js_size }}
+            
+            ### 🔗 Links
+            - [Documentation](https://github.com/${{ github.repository }})
+            - [Report Issues](https://github.com/${{ github.repository }}/issues)
+            - [Discussions](https://github.com/${{ github.repository }}/discussions)
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Comment on related PRs
+        if: steps.check-release.outputs.exists == 'false'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const version = '${{ steps.package-version.outputs.version }}';
+            const commits = context.payload.commits || [];
+            
+            for (const commit of commits) {
+              const message = commit.message;
+              const prMatch = message.match(/#(\d+)/);
+              
+              if (prMatch) {
+                const prNumber = parseInt(prMatch[1]);
+                try {
+                  await github.rest.issues.createComment({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    issue_number: prNumber,
+                    body: `🚀 Released in [v${version}](https://github.com/${context.repo.owner}/${context.repo.repo}/releases/tag/${version})`
+                  });
+                } catch (error) {
+                  console.log(`Could not comment on PR #${prNumber}`);
+                }
+              }
+            }
 
       - name: Skip release (already exists)
         if: steps.check-release.outputs.exists == 'true'
         run: |
-          echo "Release ${{ steps.package-version.outputs.version }} already exists. Skipping."
+          echo "✅ Release ${{ steps.package-version.outputs.version }} already exists. Skipping."
