@@ -35,8 +35,21 @@ jobs:
         id: package-version
         run: echo "version=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
 
+      - name: Check if release exists
+        id: check-release
+        run: |
+          VERSION="${{ steps.package-version.outputs.version }}"
+          if gh release view "$VERSION" >/dev/null 2>&1; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Generate commit changelog
         id: changelog
+        if: steps.check-release.outputs.exists == 'false'
         shell: bash
         run: |
           set -eo pipefail
@@ -47,7 +60,7 @@ jobs:
             RANGE="HEAD"
           fi
 
-          COMMITS=$(git log $RANGE --pretty=format:'- %s (%h)' --no-merges 2>/dev/null || echo "Keine neuen Commits seit letztem Tag.")
+          COMMITS=$(git log $RANGE --pretty=format:'- %s (%h)' --no-merges 2>/dev/null || echo "Initial release")
 
           {
             echo "commits<<EOF"
@@ -58,34 +71,17 @@ jobs:
       - name: Verify build artifact
         run: test -f dist/pv-monitor-card.js
 
-      - name: Create Git tag (if not exists)
-        run: |
-          VERSION="${{ steps.package-version.outputs.version }}"
-          if git rev-parse "$VERSION" >/dev/null 2>&1; then
-            echo "Tag $VERSION already exists, skipping."
-          else
-            git tag "$VERSION"
-            git push origin "$VERSION"
-          fi
-
-      - name: Delete existing tag and release if exists
-        run: |
-          VERSION="${{ steps.package-version.outputs.version }}"
-          gh release delete "$VERSION" -y || true
-          git tag -d "$VERSION" 2>/dev/null || true
-          git push origin :refs/tags/"$VERSION" 2>/dev/null || true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Create Release
-        uses: softprops/action-gh-release@v1
+      - name: Create Draft Release
+        if: steps.check-release.outputs.exists == 'false'
+        uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ steps.package-version.outputs.version }}
           name: Release v${{ steps.package-version.outputs.version }}
           draft: true
+          prerelease: false
           files: dist/pv-monitor-card.js
           body: |
-            ## ✏️ Release Notes ${{ steps.package-version.outputs.version }}
+            ## ✏️ Release Notes v${{ steps.package-version.outputs.version }}
 
             <Hier beschreiben, was sich geändert hat …>
 
@@ -95,5 +91,12 @@ jobs:
             ---
 
             📦 Automatisch erstellt am: ${{ github.event.head_commit.timestamp }}
+            
+            ⚠️ **Wichtig für HACS**: Dieser Release muss manuell auf "Published" gesetzt werden, damit HACS das Update erkennt!
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Skip release (already exists)
+        if: steps.check-release.outputs.exists == 'true'
+        run: |
+          echo "Release ${{ steps.package-version.outputs.version }} already exists. Skipping."
