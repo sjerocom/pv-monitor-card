@@ -3,18 +3,21 @@
   "extends": [
     "config:base"
   ],
+  "repositories": ["sjerocom/pv-monitor-card"],
   "packageRules": [
     {
       "matchPackagePatterns": ["*"],
       "rangeStrategy": "bump"
     }
   ],
-  "schedule": ["every day"],
   "timezone": "Europe/Vienna",
   "labels": ["dependencies"],
   "assignees": ["sjerocom"],
   "vulnerabilityAlerts": {
     "enabled": true,
     "labels": ["security"]
-  }
+  },
+  "dependencyDashboard": true,
+  "prConcurrentLimit": 5,
+  "prHourlyLimit": 0
 }
