@@ -1,0 +1,24 @@
+{
+  "id": "star_wars",
+  "name": "Star Wars",
+  "colors": {
+    "card_background_color": "#000000",
+    "card_border_color": "#FFE81F",
+    "card_text_color": "#FFFFFF",
+    "primary_color": "#FFE81F",
+    "secondary_color": "#FF3C00",
+    "title_color": "#FFE81F",
+    "subtitle_color": "#FF3C00",
+    "header_background_color": "#0A0A0A",
+    "header_border_color": "#FFE81F",
+    "infobar_background_color": "#0A0A0A",
+    "infobar_border_color": "#FFE81F",
+    "infobar_icon_color": "#FFE81F",
+    "infobar_label_color": "#FFB700",
+    "infobar_value_color": "#FFFFFF",
+    "consumer_background_color": "#0F0F0F",
+    "consumer_border_color": "#FFE81F",
+    "consumer_primary_color": "#FFE81F",
+    "consumer_secondary_color": "#FF3C00"
+  }
+}

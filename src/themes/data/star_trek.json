@@ -1,0 +1,24 @@
+{
+  "id": "star_trek",
+  "name": "Star Trek",
+  "colors": {
+    "card_background_color": "#02040A",
+    "card_border_color": "#FFD700",
+    "card_text_color": "#C0C0C0",
+    "primary_color": "#40C0FF",
+    "secondary_color": "#FFD700",
+    "title_color": "#40C0FF",
+    "subtitle_color": "#FFD700",
+    "header_background_color": "#0A0D1A",
+    "header_border_color": "#FFD700",
+    "infobar_background_color": "#0A0D1A",
+    "infobar_border_color": "#FFD700",
+    "infobar_icon_color": "#40C0FF",
+    "infobar_label_color": "#B0B0B0",
+    "infobar_value_color": "#FFFFFF",
+    "consumer_background_color": "#0C101C",
+    "consumer_border_color": "#FFD700",
+    "consumer_primary_color": "#40C0FF",
+    "consumer_secondary_color": "#FFD700"
+  }
+}

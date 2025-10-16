@@ -1,0 +1,24 @@
+{
+  "id": "blade_runner",
+  "name": "Blade Runner",
+  "colors": {
+    "card_background_color": "#0A0C0F",
+    "card_border_color": "#FF2400",
+    "card_text_color": "#CFCFCF",
+    "primary_color": "#FF2400",
+    "secondary_color": "#00E5FF",
+    "title_color": "#FF2400",
+    "subtitle_color": "#00E5FF",
+    "header_background_color": "#121418",
+    "header_border_color": "#FF2400",
+    "infobar_background_color": "#121418",
+    "infobar_border_color": "#FF2400",
+    "infobar_icon_color": "#FF2400",
+    "infobar_label_color": "#A0FFFF",
+    "infobar_value_color": "#CFCFCF",
+    "consumer_background_color": "#16181C",
+    "consumer_border_color": "#FF2400",
+    "consumer_primary_color": "#FF2400",
+    "consumer_secondary_color": "#00E5FF"
+  }
+}

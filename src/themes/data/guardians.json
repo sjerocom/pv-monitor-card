@@ -1,0 +1,24 @@
+{
+  "id": "guardians",
+  "name": "Guardians of the Galaxy",
+  "colors": {
+    "card_background_color": "#120024",
+    "card_border_color": "#FF00A6",
+    "card_text_color": "#E6E6FA",
+    "primary_color": "#FF00A6",
+    "secondary_color": "#00FFFF",
+    "title_color": "#FF00A6",
+    "subtitle_color": "#00FFFF",
+    "header_background_color": "#1A0030",
+    "header_border_color": "#FF00A6",
+    "infobar_background_color": "#1A0030",
+    "infobar_border_color": "#FF00A6",
+    "infobar_icon_color": "#FF00A6",
+    "infobar_label_color": "#A0FFFF",
+    "infobar_value_color": "#E6E6FA",
+    "consumer_background_color": "#1A0030",
+    "consumer_border_color": "#FF00A6",
+    "consumer_primary_color": "#FF00A6",
+    "consumer_secondary_color": "#00FFFF"
+  }
+}

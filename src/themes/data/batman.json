@@ -1,0 +1,24 @@
+{
+  "id": "batman",
+  "name": "Batman",
+  "colors": {
+    "card_background_color": "#0B0B0C",
+    "card_border_color": "#FACC15",
+    "card_text_color": "#E5E5E5",
+    "primary_color": "#FACC15",
+    "secondary_color": "#1E40AF",
+    "title_color": "#FACC15",
+    "subtitle_color": "#1E40AF",
+    "header_background_color": "#111112",
+    "header_border_color": "#FACC15",
+    "infobar_background_color": "#111112",
+    "infobar_border_color": "#FACC15",
+    "infobar_icon_color": "#FACC15",
+    "infobar_label_color": "#A3A3A3",
+    "infobar_value_color": "#E5E5E5",
+    "consumer_background_color": "#161617",
+    "consumer_border_color": "#FACC15",
+    "consumer_primary_color": "#FACC15",
+    "consumer_secondary_color": "#1E40AF"
+  }
+}

@@ -1,5 +1,5 @@
 import { Theme, ThemeId, ThemeListItem } from './themes';
-import { PVMonitorCardConfig } from '../pv-monitor-card-types';
+import { PVMonitorCardConfig } from '../types/';
 
 const themeCache = new Map<string, Theme>();
 const customThemes = new Map<string, Theme>();
@@ -26,33 +26,72 @@ export function registerTheme(theme: Theme): void {
 
 export function getAllThemes(): ThemeListItem[] {
     const builtInThemes: ThemeListItem[] = [
+        // Basis-Themes
         { id: 'dark', name: 'Dark' },
         { id: 'light', name: 'Light' },
+
+        // Farb- und Stil-Themes
         { id: 'blue', name: 'Blue' },
-        { id: 'green', name: 'Green' },
-        { id: 'monochrome', name: 'Monochrome' },
-        { id: 'solarized', name: 'Solarized' },
-        { id: 'nord', name: 'Nord' },
-        { id: 'dracula', name: 'Dracula' },
+        { id: 'brown', name: 'Brown' },
         { id: 'catppuccin', name: 'Catppuccin' },
+        { id: 'cyan', name: 'Cyan' },
+        { id: 'dracula', name: 'Dracula' },
+        { id: 'gold', name: 'Gold' },
+        { id: 'green', name: 'Green' },
+        { id: 'indigo', name: 'Indigo' },
+        { id: 'lime', name: 'Lime' },
+        { id: 'magenta', name: 'Magenta' },
         { id: 'material', name: 'Material' },
         { id: 'minimalist', name: 'Minimalist' },
-        { id: 'slate', name: 'Slate' },
-        { id: 'sunset', name: 'Sunset' },
+        { id: 'monochrome', name: 'Monochrome' },
+        { id: 'nord', name: 'Nord' },
         { id: 'ocean', name: 'Ocean' },
+        { id: 'orange', name: 'Orange' },
+        { id: 'pink', name: 'Pink' },
         { id: 'purple', name: 'Purple' },
+        { id: 'red', name: 'Red' },
+        { id: 'silver', name: 'Silver' },
+        { id: 'slate', name: 'Slate' },
+        { id: 'solarized', name: 'Solarized' },
+        { id: 'sunset', name: 'Sunset' },
+        { id: 'turkis', name: 'Turkis' },
+        { id: 'yellow', name: 'Yellow' },
+
+        // Film-Themes
+        { id: 'avatar', name: 'Avatar' },
+        { id: 'batman', name: 'Batman' },
+        { id: 'blade_runner', name: 'Blade Runner' },
+        { id: 'dune', name: 'Dune' },
+        { id: 'frozen', name: 'Frozen' },
+        { id: 'ghostbusters', name: 'Ghostbusters' },
+        { id: 'guardians', name: 'Guardians of the Galaxy' },
+        { id: 'inception', name: 'Inception' },
+        { id: 'jurassic_park', name: 'Jurassic Park' },
+        { id: 'lotr', name: 'Lord of the Rings' },
+        { id: 'mad_max', name: 'Mad Max' },
         { id: 'matrix', name: 'Matrix' },
-        { id: 'bobs_burgers', name: "Bob's Burgers" },
-        { id: 'simpsons', name: 'The Simpsons' },
-        { id: 'family_guy', name: 'Family Guy' },
-        { id: 'hal9000', name: 'HAL 9000' },
+        { id: 'pirates', name: 'Pirates of the Caribbean' },
+        { id: 'star_trek', name: 'Star Trek' },
+        { id: 'star_wars', name: 'Star Wars' },
+        { id: 'tron', name: 'Tron' },
         { id: 'terminator', name: 'Terminator' },
-        { id: 'dr_who', name: 'Doctor Who' },
-        { id: 'rick_morty', name: 'Rick & Morty' },
-        { id: 'frankenstein', name: 'Frankenstein' },
-        { id: 'mr_robot', name: 'Mr. Robot' },
+
+        // Serien-Themes
+        { id: 'bobs_burgers', name: "Bob's Burgers" },
         { id: 'breaking_bad', name: 'Breaking Bad' },
-        { id: 'squid_game', name: 'Squid Game' }
+        { id: 'dr_who', name: 'Doctor Who' },
+        { id: 'family_guy', name: 'Family Guy' },
+        { id: 'frankenstein', name: 'Frankenstein' },
+        { id: 'game_of_thrones', name: 'Game of Thrones' },
+        { id: 'hal9000', name: 'HAL 9000' },
+        { id: 'mr_robot', name: 'Mr. Robot' },
+        { id: 'rick_morty', name: 'Rick & Morty' },
+        { id: 'simpsons', name: 'The Simpsons' },
+        { id: 'spiderverse', name: 'Spider-Verse' },
+        { id: 'stranger_things', name: 'Stranger Things' },
+        { id: 'the_expanse', name: 'The Expanse' },
+        { id: 'the_office', name: 'The Office' },
+        { id: 'x_files', name: 'The X-Files' }
     ];
 
     const customThemesList = Array.from(customThemes.values()).map(theme => ({
