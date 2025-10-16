@@ -3,7 +3,7 @@ import { property } from "lit/decorators.js";
 import { pvMonitorCardStyles } from "./pv-monitor-card-styles";
 import { PVMonitorCardConfig, Hass, TapAction, CardStyle, InfoBarItem } from "./pv-monitor-card-types";
 import { getDefaultConfig } from "./pv-monitor-card-defaults";
-import { getTranslations, detectLanguage, SupportedLanguage } from "./pv-monitor-card-i18n";
+import { getTranslations, detectLanguage, SupportedLanguage } from "./i18n";
 import {
     // Formatters
     formatPower,

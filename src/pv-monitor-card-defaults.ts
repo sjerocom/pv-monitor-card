@@ -1,5 +1,5 @@
 import { PVMonitorCardConfig } from "./pv-monitor-card-types";
-import { getTranslations, detectLanguage } from "./pv-monitor-card-i18n";
+import { getTranslations, detectLanguage } from "./i18n";
 import { applyThemeToConfigSync } from "./pv-monitor-card-themes";
 
 export function getDefaultConfig(config: PVMonitorCardConfig): PVMonitorCardConfig {

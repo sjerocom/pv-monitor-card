@@ -35,7 +35,7 @@ export function renderActionSelector(
 
         ${action?.action === 'navigate' ? html`
             <div class="option">
-                <div class="option-label">Navigation Path</div>
+                <div class="option-label">${t?.editor?.action_navigation_path || 'Navigation Path'}</div>
                 <div class="option-control">
                     <ha-textfield
                         .value=${action.navigation_path || ''}
@@ -48,7 +48,7 @@ export function renderActionSelector(
 
         ${action?.action === 'url' ? html`
             <div class="option">
-                <div class="option-label">URL</div>
+                <div class="option-label">${t?.editor?.action_url_label || 'URL'}</div>
                 <div class="option-control">
                     <ha-textfield
                         .value=${action.url_path || ''}
@@ -61,7 +61,7 @@ export function renderActionSelector(
 
         ${action?.action === 'call-service' ? html`
             <div class="option">
-                <div class="option-label">Service</div>
+                <div class="option-label">${t?.editor?.action_service || 'Service'}</div>
                 <div class="option-control">
                     <ha-textfield
                         .value=${action.service || ''}

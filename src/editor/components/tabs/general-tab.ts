@@ -152,7 +152,7 @@ export function renderGeneralTab(
         ${renderCollapsibleSection(
             'header',
             'mdi:card-text',
-            'Titelbereich',
+            t.editor.header_section,
             html`
                 ${renderSwitch(
                     t.editor.show_title,

@@ -257,7 +257,20 @@
     "calc_type_autarky": "Autosuffisance",
     "calc_type_self_consumption": "Autoconsommation",
     "calc_type_runtime": "Autonomie",
-    "calc_type_chargetime": "Temps de Charge"
+    "calc_type_chargetime": "Temps de Charge",
+    "header_section": "Section En-tête",
+    "infobar_styling": "Style de la Barre d'Infos",
+    "card_styling_section": "Style des Cartes",
+    "theme_editor_cards": "Éditeur de Thème (Cartes)",
+    "theme_editor_cards_note": "Ne change que les couleurs des cartes, pas la section en-tête.",
+    "header_background_subsection": "Arrière-plan En-tête",
+    "icon_subsection": "Icône",
+    "primary_text_subsection": "Texte Primaire (Valeur Principale)",
+    "secondary_text_subsection": "Texte Secondaire (2ème Ligne)",
+    "tertiary_text_subsection": "Texte Tertiaire (3ème Ligne)",
+    "action_navigation_path": "Chemin de Navigation",
+    "action_url_label": "URL",
+    "action_service": "Service"
   },
   "status": {
     "feed_in": "Injection",

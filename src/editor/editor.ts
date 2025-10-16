@@ -1,7 +1,7 @@
 import { LitElement, html } from "lit";
 import { property, state } from "lit/decorators.js";
 import { PVMonitorCardConfig } from "../pv-monitor-card-types";
-import { getTranslations } from "../pv-monitor-card-i18n";
+import { getTranslations } from "../i18n";
 import { editorStyles } from "./styles/editor-styles";
 import { EventManager } from "./utils/event-handlers";
 import { updateConfigValue, updateTapAction } from "./utils/config-helpers";

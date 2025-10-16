@@ -238,7 +238,20 @@
     "calc_type_autarky": "Autarkie",
     "calc_type_self_consumption": "Eigenverbrauch",
     "calc_type_runtime": "Restlaufzeit",
-    "calc_type_chargetime": "Restladezeit"
+    "calc_type_chargetime": "Restladezeit",
+    "header_section": "Titelbereich",
+    "infobar_styling": "Info Bar Styling",
+    "card_styling_section": "Karten Styling",
+    "theme_editor_cards": "Theme Editor (Karten)",
+    "theme_editor_cards_note": "Ändert nur die Karten-Farben, nicht den Titelbereich.",
+    "header_background_subsection": "Header-Hintergrund",
+    "icon_subsection": "Icon",
+    "primary_text_subsection": "Primär-Text (Hauptwert)",
+    "secondary_text_subsection": "Sekundär-Text (2. Zeile)",
+    "tertiary_text_subsection": "Tertiär-Text (3. Zeile)",
+    "action_navigation_path": "Navigationspfad",
+    "action_url_label": "URL",
+    "action_service": "Service"
   },
   "status": {
     "feed_in": "Einspeisung",

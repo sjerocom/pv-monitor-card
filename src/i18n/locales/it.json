@@ -257,7 +257,20 @@
     "calc_type_autarky": "Autosufficienza",
     "calc_type_self_consumption": "Autoconsumo",
     "calc_type_runtime": "Autonomia",
-    "calc_type_chargetime": "Tempo di Ricarica"
+    "calc_type_chargetime": "Tempo di Ricarica",
+    "header_section": "Sezione Intestazione",
+    "infobar_styling": "Stile della Barra Info",
+    "card_styling_section": "Stile delle Schede",
+    "theme_editor_cards": "Editor Tema (Schede)",
+    "theme_editor_cards_note": "Modifica solo i colori delle schede, non la sezione intestazione.",
+    "header_background_subsection": "Sfondo Intestazione",
+    "icon_subsection": "Icona",
+    "primary_text_subsection": "Testo Primario (Valore Principale)",
+    "secondary_text_subsection": "Testo Secondario (2a Riga)",
+    "tertiary_text_subsection": "Testo Terziario (3a Riga)",
+    "action_navigation_path": "Percorso di Navigazione",
+    "action_url_label": "URL",
+    "action_service": "Servizio"
   },
   "status": {
     "feed_in": "Immissione",
