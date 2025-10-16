@@ -3,9 +3,6 @@
   "extends": [
     "config:recommended"
   ],
-  "repositories": [
-    "sjerocom/pv-monitor-card"
-  ],
   "packageRules": [
     {
       "rangeStrategy": "bump",
