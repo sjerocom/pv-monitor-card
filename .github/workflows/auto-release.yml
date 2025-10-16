@@ -83,17 +83,12 @@ jobs:
           body: |
             ## ✏️ Release Notes v${{ steps.package-version.outputs.version }}
 
-            <Hier beschreiben, was sich geändert hat …>
-
             ### 🧩 Änderungen
             ${{ steps.changelog.outputs.commits }}
 
             ---
 
-            📦 Automatisch erstellt am: ${{ github.event.head_commit.timestamp }}
-            
-            ⚠️ **Wichtig für HACS**: Dieser Release muss manuell auf "Published" gesetzt werden, damit HACS das Update erkennt!
-        env:
+            📦 Automatisch erstellt am: ${{ github.event.head_commit.timestamp }}        env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Skip release (already exists)
