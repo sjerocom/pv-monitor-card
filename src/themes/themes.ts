@@ -1,4 +1,73 @@
-export type ThemeId = 'dark' | 'light' | 'blue' | 'green' | 'monochrome' | 'solarized' | 'nord' | 'dracula' | 'catppuccin' | 'material' | 'minimalist' | 'slate' | 'sunset' | 'ocean' | 'purple' | 'matrix' | 'bobs_burgers' | 'simpsons' | 'family_guy' | 'hal9000' | 'terminator' | 'dr_who' | 'rick_morty' | 'frankenstein' | 'mr_robot' | 'breaking_bad' | 'squid_game' | string;
+export type ThemeId =
+// Basis-Themes
+    | 'dark'
+    | 'light'
+
+    // Farb- und Stil-Themes
+    | 'blue'
+    | 'brown'
+    | 'catppuccin'
+    | 'cyan'
+    | 'dracula'
+    | 'gold'
+    | 'green'
+    | 'indigo'
+    | 'lime'
+    | 'magenta'
+    | 'material'
+    | 'minimalist'
+    | 'monochrome'
+    | 'nord'
+    | 'ocean'
+    | 'orange'
+    | 'pink'
+    | 'purple'
+    | 'red'
+    | 'silver'
+    | 'slate'
+    | 'solarized'
+    | 'sunset'
+    | 'turkis'
+    | 'yellow'
+
+    // Film-Themes
+    | 'avatar'
+    | 'batman'
+    | 'blade_runner'
+    | 'dune'
+    | 'frozen'
+    | 'ghostbusters'
+    | 'guardians'
+    | 'inception'
+    | 'jurassic_park'
+    | 'lotr'
+    | 'mad_max'
+    | 'matrix'
+    | 'pirates'
+    | 'star_trek'
+    | 'star_wars'
+    | 'tron'
+    | 'terminator'
+
+    // Serien-Themes
+    | 'bobs_burgers'
+    | 'breaking_bad'
+    | 'dr_who'
+    | 'family_guy'
+    | 'frankenstein'
+    | 'game_of_thrones'
+    | 'hal9000'
+    | 'mr_robot'
+    | 'rick_morty'
+    | 'simpsons'
+    | 'spiderverse'
+    | 'stranger_things'
+    | 'the_expanse'
+    | 'the_office'
+    | 'x_files'
+
+    | string;
+
 
 export interface ThemeColors {
     card_background_color: string;

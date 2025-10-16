@@ -1,0 +1,24 @@
+{
+  "id": "avatar",
+  "name": "Avatar",
+  "colors": {
+    "card_background_color": "rgba(0, 25, 40, 1)",
+    "card_border_color": "rgba(0, 191, 255, 0.3)",
+    "card_text_color": "rgba(255, 255, 255, 1)",
+    "primary_color": "rgba(0, 191, 255, 1)",
+    "secondary_color": "rgba(127, 255, 212, 0.8)",
+    "title_color": "rgba(0, 191, 255, 1)",
+    "subtitle_color": "rgba(127, 255, 212, 0.7)",
+    "header_background_color": "rgba(10, 35, 50, 1)",
+    "header_border_color": "rgba(0, 191, 255, 0.3)",
+    "infobar_background_color": "rgba(10, 35, 50, 1)",
+    "infobar_border_color": "rgba(0, 191, 255, 0.3)",
+    "infobar_icon_color": "rgba(0, 191, 255, 1)",
+    "infobar_label_color": "rgba(127, 255, 212, 0.7)",
+    "infobar_value_color": "rgba(255, 255, 255, 1)",
+    "consumer_background_color": "rgba(0, 20, 35, 1)",
+    "consumer_border_color": "rgba(0, 191, 255, 0.3)",
+    "consumer_primary_color": "rgba(0, 191, 255, 1)",
+    "consumer_secondary_color": "rgba(127, 255, 212, 0.7)"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "id": "lotr",
+  "name": "Lord of the Rings",
+  "colors": {
+    "card_background_color": "#121A12",
+    "card_border_color": "#D4AF37",
+    "card_text_color": "#F9F6E6",
+    "primary_color": "#D4AF37",
+    "secondary_color": "#556B2F",
+    "title_color": "#D4AF37",
+    "subtitle_color": "#A0C080",
+    "header_background_color": "#1A241A",
+    "header_border_color": "#D4AF37",
+    "infobar_background_color": "#1A241A",
+    "infobar_border_color": "#D4AF37",
+    "infobar_icon_color": "#D4AF37",
+    "infobar_label_color": "#A0C080",
+    "infobar_value_color": "#F9F6E6",
+    "consumer_background_color": "#202C20",
+    "consumer_border_color": "#D4AF37",
+    "consumer_primary_color": "#D4AF37",
+    "consumer_secondary_color": "#556B2F"
+  }
+}

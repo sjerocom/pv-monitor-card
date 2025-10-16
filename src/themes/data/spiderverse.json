@@ -1,0 +1,24 @@
+{
+  "id": "spiderverse",
+  "name": "Spider-Verse",
+  "colors": {
+    "card_background_color": "#0A0015",
+    "card_border_color": "#FF004D",
+    "card_text_color": "#EAEAEA",
+    "primary_color": "#FF004D",
+    "secondary_color": "#00FFFF",
+    "title_color": "#FF004D",
+    "subtitle_color": "#00FFFF",
+    "header_background_color": "#15002A",
+    "header_border_color": "#FF004D",
+    "infobar_background_color": "#15002A",
+    "infobar_border_color": "#FF004D",
+    "infobar_icon_color": "#FF004D",
+    "infobar_label_color": "#A0FFFF",
+    "infobar_value_color": "#EAEAEA",
+    "consumer_background_color": "#15002A",
+    "consumer_border_color": "#FF004D",
+    "consumer_primary_color": "#FF004D",
+    "consumer_secondary_color": "#00FFFF"
+  }
+}

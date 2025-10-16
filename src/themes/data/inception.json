@@ -1,0 +1,24 @@
+{
+  "id": "inception",
+  "name": "Inception",
+  "colors": {
+    "card_background_color": "#0B1218",
+    "card_border_color": "#00838F",
+    "card_text_color": "#E0F7FA",
+    "primary_color": "#00BCD4",
+    "secondary_color": "#0097A7",
+    "title_color": "#00BCD4",
+    "subtitle_color": "#0097A7",
+    "header_background_color": "#0E1B22",
+    "header_border_color": "#00838F",
+    "infobar_background_color": "#0E1B22",
+    "infobar_border_color": "#00838F",
+    "infobar_icon_color": "#00BCD4",
+    "infobar_label_color": "#4DD0E1",
+    "infobar_value_color": "#E0F7FA",
+    "consumer_background_color": "#112029",
+    "consumer_border_color": "#00838F",
+    "consumer_primary_color": "#00BCD4",
+    "consumer_secondary_color": "#0097A7"
+  }
+}

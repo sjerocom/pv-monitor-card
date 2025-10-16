@@ -1,0 +1,24 @@
+{
+  "id": "pirates",
+  "name": "Pirates of the Caribbean",
+  "colors": {
+    "card_background_color": "#1A1208",
+    "card_border_color": "#C19A6B",
+    "card_text_color": "#F0E6D2",
+    "primary_color": "#C19A6B",
+    "secondary_color": "#FFD700",
+    "title_color": "#C19A6B",
+    "subtitle_color": "#FFD700",
+    "header_background_color": "#20150A",
+    "header_border_color": "#C19A6B",
+    "infobar_background_color": "#20150A",
+    "infobar_border_color": "#C19A6B",
+    "infobar_icon_color": "#FFD700",
+    "infobar_label_color": "#F0E6D2",
+    "infobar_value_color": "#F0E6D2",
+    "consumer_background_color": "#24180A",
+    "consumer_border_color": "#C19A6B",
+    "consumer_primary_color": "#C19A6B",
+    "consumer_secondary_color": "#FFD700"
+  }
+}
