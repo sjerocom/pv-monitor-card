@@ -1,0 +1,24 @@
+{
+  "id": "game_of_thrones",
+  "name": "Game Of Thrones",
+  "colors": {
+    "card_background_color": "rgba(25, 35, 50, 1)",
+    "card_border_color": "rgba(56, 189, 248, 0.3)",
+    "card_text_color": "rgba(255, 255, 255, 1)",
+    "primary_color": "rgba(56, 189, 248, 1)",
+    "secondary_color": "rgba(234, 179, 8, 0.8)",
+    "title_color": "rgba(56, 189, 248, 1)",
+    "subtitle_color": "rgba(234, 179, 8, 0.7)",
+    "header_background_color": "rgba(35, 45, 60, 1)",
+    "header_border_color": "rgba(56, 189, 248, 0.3)",
+    "infobar_background_color": "rgba(35, 45, 60, 1)",
+    "infobar_border_color": "rgba(56, 189, 248, 0.3)",
+    "infobar_icon_color": "rgba(56, 189, 248, 1)",
+    "infobar_label_color": "rgba(234, 179, 8, 0.7)",
+    "infobar_value_color": "rgba(255, 255, 255, 1)",
+    "consumer_background_color": "rgba(20, 30, 45, 1)",
+    "consumer_border_color": "rgba(56, 189, 248, 0.3)",
+    "consumer_primary_color": "rgba(56, 189, 248, 1)",
+    "consumer_secondary_color": "rgba(234, 179, 8, 0.7)"
+  }
+}

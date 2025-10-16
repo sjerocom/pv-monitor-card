@@ -1,0 +1,24 @@
+{
+  "id": "jurassic_park",
+  "name": "Jurassic Park",
+  "colors": {
+    "card_background_color": "#1A0A0A",
+    "card_border_color": "#B91C1C",
+    "card_text_color": "#FEE2E2",
+    "primary_color": "#DC2626",
+    "secondary_color": "#FACC15",
+    "title_color": "#DC2626",
+    "subtitle_color": "#FACC15",
+    "header_background_color": "#220C0C",
+    "header_border_color": "#B91C1C",
+    "infobar_background_color": "#220C0C",
+    "infobar_border_color": "#B91C1C",
+    "infobar_icon_color": "#DC2626",
+    "infobar_label_color": "#FBBF24",
+    "infobar_value_color": "#FEE2E2",
+    "consumer_background_color": "#250D0D",
+    "consumer_border_color": "#B91C1C",
+    "consumer_primary_color": "#DC2626",
+    "consumer_secondary_color": "#FACC15"
+  }
+}

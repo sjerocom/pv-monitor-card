@@ -120,7 +120,7 @@ if (!customElements.get(CARD_TAG)) {
 
 const buildInfo = typeof __BUILD_TIMESTAMP__ !== 'undefined'
     ? ` [DEV: ${__BUILD_TIMESTAMP__}]`
-    : ' Version: 0.0.107';
+    : ' Version: 0.0.1';
 
 console.info(
     '%c PV-MONITOR-CARD %c' + buildInfo,

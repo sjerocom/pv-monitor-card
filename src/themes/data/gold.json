@@ -1,0 +1,24 @@
+{
+  "id": "gold",
+  "name": "Gold",
+  "colors": {
+    "card_background_color": "rgba(35, 30, 15, 1)",
+    "card_border_color": "rgba(212, 175, 55, 0.3)",
+    "card_text_color": "rgba(255, 255, 255, 1)",
+    "primary_color": "rgba(212, 175, 55, 1)",
+    "secondary_color": "rgba(255, 236, 179, 0.8)",
+    "title_color": "rgba(212, 175, 55, 1)",
+    "subtitle_color": "rgba(255, 236, 179, 0.7)",
+    "header_background_color": "rgba(45, 40, 25, 1)",
+    "header_border_color": "rgba(212, 175, 55, 0.3)",
+    "infobar_background_color": "rgba(45, 40, 25, 1)",
+    "infobar_border_color": "rgba(212, 175, 55, 0.3)",
+    "infobar_icon_color": "rgba(212, 175, 55, 1)",
+    "infobar_label_color": "rgba(255, 236, 179, 0.7)",
+    "infobar_value_color": "rgba(255, 255, 255, 1)",
+    "consumer_background_color": "rgba(30, 25, 10, 1)",
+    "consumer_border_color": "rgba(212, 175, 55, 0.3)",
+    "consumer_primary_color": "rgba(212, 175, 55, 1)",
+    "consumer_secondary_color": "rgba(255, 236, 179, 0.7)"
+  }
+}

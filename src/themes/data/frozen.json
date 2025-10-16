@@ -1,0 +1,24 @@
+{
+  "id": "frozen",
+  "name": "Frozen",
+  "colors": {
+    "card_background_color": "#E0F7FA",
+    "card_border_color": "#81D4FA",
+    "card_text_color": "#01579B",
+    "primary_color": "#00B0FF",
+    "secondary_color": "#4FC3F7",
+    "title_color": "#0288D1",
+    "subtitle_color": "#81D4FA",
+    "header_background_color": "#B3E5FC",
+    "header_border_color": "#81D4FA",
+    "infobar_background_color": "#B3E5FC",
+    "infobar_border_color": "#81D4FA",
+    "infobar_icon_color": "#0288D1",
+    "infobar_label_color": "#0277BD",
+    "infobar_value_color": "#01579B",
+    "consumer_background_color": "#E1F5FE",
+    "consumer_border_color": "#81D4FA",
+    "consumer_primary_color": "#00B0FF",
+    "consumer_secondary_color": "#4FC3F7"
+  }
+}

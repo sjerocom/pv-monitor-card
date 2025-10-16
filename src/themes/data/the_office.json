@@ -1,0 +1,24 @@
+{
+  "id": "the_office",
+  "name": "The Office",
+  "colors": {
+    "card_background_color": "rgba(240, 242, 245, 1)",
+    "card_border_color": "rgba(59, 130, 246, 0.3)",
+    "card_text_color": "rgba(30, 30, 30, 1)",
+    "primary_color": "rgba(59, 130, 246, 1)",
+    "secondary_color": "rgba(96, 165, 250, 0.8)",
+    "title_color": "rgba(59, 130, 246, 1)",
+    "subtitle_color": "rgba(96, 165, 250, 0.7)",
+    "header_background_color": "rgba(250, 252, 255, 1)",
+    "header_border_color": "rgba(59, 130, 246, 0.3)",
+    "infobar_background_color": "rgba(250, 252, 255, 1)",
+    "infobar_border_color": "rgba(59, 130, 246, 0.3)",
+    "infobar_icon_color": "rgba(59, 130, 246, 1)",
+    "infobar_label_color": "rgba(96, 165, 250, 0.7)",
+    "infobar_value_color": "rgba(30, 30, 30, 1)",
+    "consumer_background_color": "rgba(235, 237, 240, 1)",
+    "consumer_border_color": "rgba(59, 130, 246, 0.3)",
+    "consumer_primary_color": "rgba(59, 130, 246, 1)",
+    "consumer_secondary_color": "rgba(96, 165, 250, 0.7)"
+  }
+}
