@@ -5,22 +5,26 @@ import { PVMonitorCardConfig, Hass, TapAction, CardStyle, InfoBarItem } from "./
 import { getDefaultConfig } from "./pv-monitor-card-defaults";
 import { getTranslations, detectLanguage, SupportedLanguage } from "./pv-monitor-card-i18n";
 import {
+    // Formatters
     formatPower,
+    // Icons
     getBatteryIcon,
-    getBatteryIconColor,
-    getNetzColor,
     getPVRotationSpeed,
-    getPVColor,
+    // Colors
+    getBatteryIconColor,
     getBatterieColor,
+    getNetzColor,
+    getPVColor,
     getHausColor,
-    getAnimationStyle,
+    getConsumerColor,
+    // Animations
     getAnimationStyleByType,
+    // Calculators
     calculateBatteryRuntime,
     calculateBatteryChargeTime,
     calculateAutarky,
-    calculateSelfConsumption,
-    getConsumerColor
-} from "./pv-monitor-card-utils";
+    calculateSelfConsumption
+} from "./utils";
 
 declare const __BUILD_TIMESTAMP__: string;
 declare const __CARD_NAME__: string;
