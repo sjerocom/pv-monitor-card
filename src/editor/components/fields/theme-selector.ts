@@ -1,5 +1,5 @@
 import { html } from "lit";
-import { getAllThemes, applyThemeToConfig } from "../../../pv-monitor-card-themes";
+import { getAllThemes, applyThemeToConfig } from "../../../themes/index";
 import { PVMonitorCardConfig } from "../../../pv-monitor-card-types";
 
 export function renderThemeSelector(
