@@ -1,5 +1,5 @@
 import { html } from "lit";
-import { SupportedLanguage, detectLanguage } from "../../../pv-monitor-card-i18n";
+import { SupportedLanguage, detectLanguage } from "../../../i18n";
 
 export function renderLanguageSelector(
     currentLang: SupportedLanguage | undefined,

@@ -30,8 +30,8 @@ export function renderStylingTab(
 
                 <div class="divider" style="margin: 16px 0;"></div>
 
-                <div style="font-weight: 500; margin-bottom: 8px;">Theme Editor (Karten)</div>
-                <div class="info-text" style="margin-bottom: 12px;">Ändert nur die Karten-Farben, nicht den Titelbereich.</div>
+                <div style="font-weight: 500; margin-bottom: 8px;">${t.editor.theme_editor_cards}</div>
+                <div class="info-text" style="margin-bottom: 12px;">${t.editor.theme_editor_cards_note}</div>
 
                 ${renderColorPicker(
                     t.editor.background_color,
@@ -73,67 +73,67 @@ export function renderStylingTab(
         ${renderCollapsibleSection(
             'styling_titelbereich',
             'mdi:format-title',
-            'Titelbereich',
+            t.editor.header_section,
             html`
                 ${renderTextfield(
-                    'Titel Größe',
+                    t.editor.title_size,
                     config.style?.title_size,
                     (value) => onChange(['style', 'title_size'], value),
                     { placeholder: '1.5em' }
                 )}
                 ${renderTextfield(
-                    'Titel Line-Height',
+                    t.editor.title_line_height,
                     config.style?.title_line_height,
                     (value) => onChange(['style', 'title_line_height'], value),
                     { placeholder: '1.2' }
                 )}
                 ${renderColorPicker(
-                    'Titel Farbe',
+                    t.editor.title_color,
                     config.style?.title_color,
                     (value) => onChange(['style', 'title_color'], value),
                     { placeholder: 'white' }
                 )}
                 ${renderTextfield(
-                    'Titel Font-Weight',
+                    t.editor.title_font_weight,
                     config.style?.title_font_weight,
                     (value) => onChange(['style', 'title_font_weight'], value),
                     { placeholder: 'bold' }
                 )}
                 ${renderTextfield(
-                    'Titel Ausrichtung',
+                    t.editor.title_alignment,
                     config.style?.title_align,
                     (value) => onChange(['style', 'title_align'], value),
-                    { placeholder: 'center', helper: 'left, center, right' }
+                    { placeholder: 'center', helper: t.editor.title_alignment_helper }
                 )}
 
                 <div class="divider" style="margin: 16px 0;"></div>
 
                 ${renderTextfield(
-                    'Untertitel Größe',
+                    t.editor.subtitle_size,
                     config.style?.subtitle_size,
                     (value) => onChange(['style', 'subtitle_size'], value),
                     { placeholder: '1em' }
                 )}
                 ${renderTextfield(
-                    'Untertitel Line-Height',
+                    t.editor.subtitle_line_height,
                     config.style?.subtitle_line_height,
                     (value) => onChange(['style', 'subtitle_line_height'], value),
                     { placeholder: '1.4' }
                 )}
                 ${renderColorPicker(
-                    'Untertitel Farbe',
+                    t.editor.subtitle_color,
                     config.style?.subtitle_color,
                     (value) => onChange(['style', 'subtitle_color'], value),
                     { placeholder: 'rgba(255,255,255,0.7)' }
                 )}
                 ${renderTextfield(
-                    'Untertitel Font-Weight',
+                    t.editor.subtitle_font_weight,
                     config.style?.subtitle_font_weight,
                     (value) => onChange(['style', 'subtitle_font_weight'], value),
                     { placeholder: 'normal' }
                 )}
                 ${renderTextfield(
-                    'Untertitel Ausrichtung',
+                    t.editor.subtitle_alignment,
                     config.style?.subtitle_align,
                     (value) => onChange(['style', 'subtitle_align'], value),
                     { placeholder: 'center' }
@@ -142,7 +142,7 @@ export function renderStylingTab(
                 <div class="divider" style="margin: 16px 0;"></div>
 
                 ${renderTextfield(
-                    'Titel-Untertitel Abstand',
+                    t.editor.title_subtitle_gap,
                     config.style?.title_subtitle_gap,
                     (value) => onChange(['style', 'title_subtitle_gap'], value),
                     { placeholder: '4px' }
@@ -151,19 +151,19 @@ export function renderStylingTab(
                 <div class="divider" style="margin: 16px 0;"></div>
 
                 ${renderTextfield(
-                    'Header Icon Größe',
+                    t.editor.header_icon_size,
                     config.style?.header_icon_size,
                     (value) => onChange(['style', 'header_icon_size'], value),
                     { placeholder: '1.5em' }
                 )}
                 ${renderColorPicker(
-                    'Header Icon Farbe',
+                    t.editor.header_icon_color,
                     config.style?.header_icon_color,
                     (value) => onChange(['style', 'header_icon_color'], value),
                     { placeholder: 'white' }
                 )}
                 ${renderTextfield(
-                    'Header Icon Margin',
+                    t.editor.header_icon_margin,
                     config.style?.header_icon_margin,
                     (value) => onChange(['style', 'header_icon_margin'], value),
                     { placeholder: '8px' }
@@ -172,22 +172,22 @@ export function renderStylingTab(
                 <div class="divider" style="margin: 16px 0;"></div>
 
                 <div class="subsection">
-                    <div style="font-weight: 500; margin-bottom: 12px;">Header-Hintergrund</div>
+                    <div style="font-weight: 500; margin-bottom: 12px;">${t.editor.header_background_subsection}</div>
                     ${renderSwitch(
-                        'Hintergrund aktivieren',
+                        t.editor.enable_header_background,
                         config.style?.header_background_enabled,
                         (value) => onChange(['style', 'header_background_enabled'], value)
                     )}
 
                     ${config.style?.header_background_enabled ? html`
                         <div class="option">
-                            <div class="option-label">Header Breite</div>
+                            <div class="option-label">${t.editor.header_width}</div>
                             <div class="option-control">
                                 <ha-combo-box
                                     .value=${config.style?.header_width || 'auto'}
                                     .items=${[
-                                        { value: 'auto', label: 'Auto (Inhaltsgröße)' },
-                                        { value: 'full', label: 'Full (100% Breite)' }
+                                        { value: 'auto', label: t.editor.header_width_auto },
+                                        { value: 'full', label: t.editor.header_width_full }
                                     ]}
                                     item-value-path="value"
                                     item-label-path="label"
@@ -200,31 +200,31 @@ export function renderStylingTab(
                         </div>
 
                         ${renderColorPicker(
-                            'Header Hintergrundfarbe',
+                            t.editor.header_background_color,
                             config.style?.header_background_color,
                             (value) => onChange(['style', 'header_background_color'], value),
                             { placeholder: 'rgba(21, 20, 27, 1)' }
                         )}
                         ${renderColorPicker(
-                            'Header Rahmenfarbe',
+                            t.editor.header_border_color,
                             config.style?.header_border_color,
                             (value) => onChange(['style', 'header_border_color'], value),
                             { placeholder: 'rgba(255, 255, 255, 0.1)' }
                         )}
                         ${renderTextfield(
-                            'Header Border Radius',
+                            t.editor.header_border_radius,
                             config.style?.header_border_radius,
                             (value) => onChange(['style', 'header_border_radius'], value),
                             { placeholder: '16px' }
                         )}
                         ${renderTextfield(
-                            'Header Padding',
+                            t.editor.header_padding,
                             config.style?.header_padding,
                             (value) => onChange(['style', 'header_padding'], value),
                             { placeholder: '12px' }
                         )}
                         ${renderTextfield(
-                            'Header Box Shadow',
+                            t.editor.header_box_shadow,
                             config.style?.header_box_shadow,
                             (value) => onChange(['style', 'header_box_shadow'], value),
                             { placeholder: '0 2px 8px 0 rgba(0, 0, 0, 0.15)' }
@@ -241,23 +241,23 @@ export function renderStylingTab(
         ${renderCollapsibleSection(
             'styling_karten',
             'mdi:card-multiple',
-            'Karten Styling',
+            t.editor.card_styling_section,
             html`
-                <div style="font-weight: 500; margin-bottom: 8px;">Icon</div>
+                <div style="font-weight: 500; margin-bottom: 8px;">${t.editor.icon_subsection}</div>
                 ${renderTextfield(
-                    'Icon Größe',
+                    t.editor.icon_size,
                     config.style?.icon_size,
                     (value) => onChange(['style', 'icon_size'], value),
                     { placeholder: '2em' }
                 )}
                 ${renderTextfield(
-                    'Icon Opacity',
+                    t.editor.icon_opacity,
                     config.style?.icon_opacity,
                     (value) => onChange(['style', 'icon_opacity'], value),
                     { placeholder: '1' }
                 )}
                 ${renderTextfield(
-                    'Icon Margin',
+                    t.editor.icon_margin,
                     config.style?.icon_margin,
                     (value) => onChange(['style', 'icon_margin'], value),
                     { placeholder: '6px' }
@@ -265,33 +265,33 @@ export function renderStylingTab(
 
                 <div class="divider" style="margin: 16px 0;"></div>
 
-                <div style="font-weight: 500; margin-bottom: 8px;">Primär-Text (Hauptwert)</div>
+                <div style="font-weight: 500; margin-bottom: 8px;">${t.editor.primary_text_subsection}</div>
                 ${renderTextfield(
-                    'Primär Größe',
+                    t.editor.primary_size,
                     config.style?.primary_size,
                     (value) => onChange(['style', 'primary_size'], value),
                     { placeholder: '1.2em' }
                 )}
                 ${renderTextfield(
-                    'Primär Line-Height',
+                    t.editor.primary_line_height,
                     config.style?.primary_line_height,
                     (value) => onChange(['style', 'primary_line_height'], value),
                     { placeholder: '1.2' }
                 )}
                 ${renderColorPicker(
-                    'Primär Farbe',
+                    t.editor.primary_color_label,
                     config.style?.primary_color,
                     (value) => onChange(['style', 'primary_color'], value),
                     { placeholder: 'white' }
                 )}
                 ${renderTextfield(
-                    'Primär Opacity',
+                    t.editor.primary_opacity,
                     config.style?.primary_font_opacity,
                     (value) => onChange(['style', 'primary_font_opacity'], value),
                     { placeholder: '1' }
                 )}
                 ${renderTextfield(
-                    'Primär Font-Weight',
+                    t.editor.primary_font_weight,
                     config.style?.primary_font_weight,
                     (value) => onChange(['style', 'primary_font_weight'], value),
                     { placeholder: 'normal' }
@@ -299,33 +299,33 @@ export function renderStylingTab(
 
                 <div class="divider" style="margin: 16px 0;"></div>
 
-                <div style="font-weight: 500; margin-bottom: 8px;">Sekundär-Text (2. Zeile)</div>
+                <div style="font-weight: 500; margin-bottom: 8px;">${t.editor.secondary_text_subsection}</div>
                 ${renderTextfield(
-                    'Sekundär Größe',
+                    t.editor.secondary_size,
                     config.style?.secondary_size,
                     (value) => onChange(['style', 'secondary_size'], value),
                     { placeholder: '0.9em' }
                 )}
                 ${renderTextfield(
-                    'Sekundär Line-Height',
+                    t.editor.secondary_line_height,
                     config.style?.secondary_line_height,
                     (value) => onChange(['style', 'secondary_line_height'], value),
                     { placeholder: '1.4' }
                 )}
                 ${renderColorPicker(
-                    'Sekundär Farbe',
+                    t.editor.secondary_color_label,
                     config.style?.secondary_color,
                     (value) => onChange(['style', 'secondary_color'], value),
                     { placeholder: 'white' }
                 )}
                 ${renderTextfield(
-                    'Sekundär Opacity',
+                    t.editor.secondary_opacity,
                     config.style?.secondary_font_opacity,
                     (value) => onChange(['style', 'secondary_font_opacity'], value),
                     { placeholder: '0.7' }
                 )}
                 ${renderTextfield(
-                    'Sekundär Font-Weight',
+                    t.editor.secondary_font_weight,
                     config.style?.secondary_font_weight,
                     (value) => onChange(['style', 'secondary_font_weight'], value),
                     { placeholder: 'normal' }
@@ -333,33 +333,33 @@ export function renderStylingTab(
 
                 <div class="divider" style="margin: 16px 0;"></div>
 
-                <div style="font-weight: 500; margin-bottom: 8px;">Tertiär-Text (3. Zeile)</div>
+                <div style="font-weight: 500; margin-bottom: 8px;">${t.editor.tertiary_text_subsection}</div>
                 ${renderTextfield(
-                    'Tertiär Größe',
+                    t.editor.tertiary_size,
                     config.style?.tertiary_size,
                     (value) => onChange(['style', 'tertiary_size'], value),
                     { placeholder: '0.9em' }
                 )}
                 ${renderTextfield(
-                    'Tertiär Line-Height',
+                    t.editor.tertiary_line_height,
                     config.style?.tertiary_line_height,
                     (value) => onChange(['style', 'tertiary_line_height'], value),
                     { placeholder: '1.4' }
                 )}
                 ${renderColorPicker(
-                    'Tertiär Farbe',
+                    t.editor.tertiary_color_label,
                     config.style?.tertiary_color,
                     (value) => onChange(['style', 'tertiary_color'], value),
                     { placeholder: 'white' }
                 )}
                 ${renderTextfield(
-                    'Tertiär Opacity',
+                    t.editor.tertiary_opacity,
                     config.style?.tertiary_font_opacity,
                     (value) => onChange(['style', 'tertiary_font_opacity'], value),
                     { placeholder: '0.7' }
                 )}
                 ${renderTextfield(
-                    'Tertiär Font-Weight',
+                    t.editor.tertiary_font_weight,
                     config.style?.tertiary_font_weight,
                     (value) => onChange(['style', 'tertiary_font_weight'], value),
                     { placeholder: 'normal' }

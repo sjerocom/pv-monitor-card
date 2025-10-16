@@ -257,7 +257,20 @@
     "calc_type_autarky": "Autarky",
     "calc_type_self_consumption": "Self-Consumption",
     "calc_type_runtime": "Runtime",
-    "calc_type_chargetime": "Charge Time"
+    "calc_type_chargetime": "Charge Time",
+    "header_section": "Header Section",
+    "infobar_styling": "Info Bar Styling",
+    "card_styling_section": "Card Styling",
+    "theme_editor_cards": "Theme Editor (Cards)",
+    "theme_editor_cards_note": "Only changes card colors, not the header section.",
+    "header_background_subsection": "Header Background",
+    "icon_subsection": "Icon",
+    "primary_text_subsection": "Primary Text (Main Value)",
+    "secondary_text_subsection": "Secondary Text (2nd Line)",
+    "tertiary_text_subsection": "Tertiary Text (3rd Line)",
+    "action_navigation_path": "Navigation Path",
+    "action_url_label": "URL",
+    "action_service": "Service"
   },
   "status": {
     "feed_in": "Feed-in",
