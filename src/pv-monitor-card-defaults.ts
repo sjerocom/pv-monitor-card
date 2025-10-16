@@ -1,4 +1,4 @@
-import { PVMonitorCardConfig } from "./pv-monitor-card-types";
+import { PVMonitorCardConfig } from "./types";
 import { getTranslations, detectLanguage } from "./i18n";
 import { applyThemeToConfigSync } from "./themes/index";
 

@@ -1,7 +1,7 @@
 import { LitElement, html } from "lit";
 import { property } from "lit/decorators.js";
 import { pvMonitorCardStyles } from "./styles/index";
-import { PVMonitorCardConfig, Hass, TapAction, CardStyle, InfoBarItem } from "./pv-monitor-card-types";
+import { PVMonitorCardConfig, Hass, TapAction, CardStyle, InfoBarItem } from "./types";
 import { getDefaultConfig } from "./pv-monitor-card-defaults";
 import { getTranslations, detectLanguage, SupportedLanguage } from "./i18n";
 import {
