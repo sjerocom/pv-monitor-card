@@ -1,21 +1,31 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:base"
+    "config:recommended"
   ],
-  "repositories": ["sjerocom/pv-monitor-card"],
+  "repositories": [
+    "sjerocom/pv-monitor-card"
+  ],
   "packageRules": [
     {
-      "matchPackagePatterns": ["*"],
-      "rangeStrategy": "bump"
+      "rangeStrategy": "bump",
+      "matchPackageNames": [
+        "*"
+      ]
     }
   ],
   "timezone": "Europe/Vienna",
-  "labels": ["dependencies"],
-  "assignees": ["sjerocom"],
+  "labels": [
+    "dependencies"
+  ],
+  "assignees": [
+    "sjerocom"
+  ],
   "vulnerabilityAlerts": {
     "enabled": true,
-    "labels": ["security"]
+    "labels": [
+      "security"
+    ]
   },
   "dependencyDashboard": true,
   "prConcurrentLimit": 5,
