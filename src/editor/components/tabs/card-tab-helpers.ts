@@ -1,5 +1,5 @@
 import { html } from "lit";
-import { PVMonitorCardConfig } from "../../../pv-monitor-card-types";
+import { PVMonitorCardConfig } from "../../../types";
 import { renderCollapsibleSection } from "../sections/collapsible-section";
 import { renderIconPicker } from "../fields/icon-picker";
 import { renderSwitch } from "../fields/switch";

@@ -1,6 +1,6 @@
 import { html } from "lit";
 import { getAllThemes, applyThemeToConfig } from "../../../themes/index";
-import { PVMonitorCardConfig } from "../../../pv-monitor-card-types";
+import { PVMonitorCardConfig } from "../../../types";
 
 export function renderThemeSelector(
     currentTheme: string | undefined,

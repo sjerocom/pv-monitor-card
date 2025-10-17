@@ -49,11 +49,19 @@ export function calculateTotalConsumerPower(
 }
 
 export function calculateGridColumns(config: any): string {
+    // Prüfe cards_visibility wenn vorhanden, sonst fallback auf show
+    const visibility = config.layout?.cards_visibility || {
+        pv: config.pv?.show !== false,
+        battery: config.batterie?.show !== false,
+        house: config.haus?.show !== false,
+        grid: config.netz?.show !== false
+    };
+
     let visibleCards = 0;
-    if (config.pv?.show !== false) visibleCards++;
-    if (config.batterie?.show !== false) visibleCards++;
-    if (config.haus?.show !== false) visibleCards++;
-    if (config.netz?.show !== false) visibleCards++;
+    if (visibility.pv) visibleCards++;
+    if (visibility.battery) visibleCards++;
+    if (visibility.house) visibleCards++;
+    if (visibility.grid) visibleCards++;
 
     if (visibleCards === 3) return 'repeat(3, 1fr)';
     if (visibleCards === 2) return 'repeat(2, 1fr)';

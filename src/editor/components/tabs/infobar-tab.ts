@@ -1,5 +1,5 @@
 import { html } from "lit";
-import { PVMonitorCardConfig } from "../../../pv-monitor-card-types";
+import { PVMonitorCardConfig } from "../../../types";
 import { renderCollapsibleSection } from "../sections/collapsible-section";
 import { renderSwitch } from "../fields/switch";
 import { renderEntityPicker, EntityPickerState } from "../fields/entity-picker";
@@ -62,27 +62,6 @@ export function renderInfoBarTab(
                     config.info_bar?.show,
                     (value) => onChange(['info_bar', 'show'], value)
                 )}
-
-                ${config.info_bar?.show ? html`
-                    <div class="option">
-                        <div class="option-label">${t.editor.infobar_position}</div>
-                        <div class="option-control">
-                            <ha-combo-box
-                                .value=${config.info_bar?.position || 'top'}
-                                .items=${[
-                                    { value: 'top', label: t.editor.position_top },
-                                    { value: 'bottom', label: t.editor.position_bottom }
-                                ]}
-                                item-value-path="value"
-                                item-label-path="label"
-                                @value-changed=${(ev: any) => {
-                                    const newValue = ev.detail?.value;
-                                    if (newValue) onChange(['info_bar', 'position'], newValue);
-                                }}
-                            ></ha-combo-box>
-                        </div>
-                    </div>
-                ` : ''}
             `,
             expandedSections.has('infobar_main'),
             () => onToggleSection('infobar_main')

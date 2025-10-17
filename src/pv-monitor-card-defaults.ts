@@ -25,6 +25,73 @@ export function getDefaultConfig(config: PVMonitorCardConfig): PVMonitorCardConf
         battery_capacity: themedConfig.battery_capacity ?? 10000,
         grid_threshold: themedConfig.grid_threshold ?? 10,
 
+        pv_bar: {
+            show: themedConfig.pv_bar?.show === true,
+            position: themedConfig.pv_bar?.position || 'above-cards',
+            align: themedConfig.pv_bar?.align || 'left',
+            entities: themedConfig.pv_bar?.entities || [],
+            style: {
+                background_color: themedConfig.pv_bar?.style?.background_color ?? 'rgba(21, 20, 27, 1)',
+                border_color: themedConfig.pv_bar?.style?.border_color ?? 'rgba(255, 255, 255, 0.1)',
+                border_radius: themedConfig.pv_bar?.style?.border_radius ?? '16px',
+                padding: themedConfig.pv_bar?.style?.padding ?? '12px',
+                gap: themedConfig.pv_bar?.style?.gap ?? '8px',
+                height: themedConfig.pv_bar?.style?.height ?? 'auto',
+                icon_size: themedConfig.pv_bar?.style?.icon_size ?? '1.5em',
+                icon_color: themedConfig.pv_bar?.style?.icon_color ?? 'white',
+                label_size: themedConfig.pv_bar?.style?.label_size ?? '0.8em',
+                label_color: themedConfig.pv_bar?.style?.label_color ?? 'rgba(255, 255, 255, 0.7)',
+                label_font_weight: themedConfig.pv_bar?.style?.label_font_weight ?? 'normal',
+                label_line_height: themedConfig.pv_bar?.style?.label_line_height ?? '1.2',
+                value_size: themedConfig.pv_bar?.style?.value_size ?? '1em',
+                value_color: themedConfig.pv_bar?.style?.value_color ?? 'white',
+                value_font_weight: themedConfig.pv_bar?.style?.value_font_weight ?? 'bold',
+                value_line_height: themedConfig.pv_bar?.style?.value_line_height ?? '1.4',
+                separator: themedConfig.pv_bar?.style?.separator ?? '|',
+                item_gap: themedConfig.pv_bar?.style?.item_gap ?? '0.5rem',
+                ...themedConfig.pv_bar?.style
+            }
+        },
+
+        battery_bar: {
+            show: themedConfig.battery_bar?.show === true,
+            position: themedConfig.battery_bar?.position || 'below-cards',
+            align: themedConfig.battery_bar?.align || 'left',
+            entities: themedConfig.battery_bar?.entities || [],
+            style: {
+                background_color: themedConfig.battery_bar?.style?.background_color ?? 'rgba(21, 20, 27, 1)',
+                border_color: themedConfig.battery_bar?.style?.border_color ?? 'rgba(255, 255, 255, 0.1)',
+                border_radius: themedConfig.battery_bar?.style?.border_radius ?? '16px',
+                padding: themedConfig.battery_bar?.style?.padding ?? '12px',
+                gap: themedConfig.battery_bar?.style?.gap ?? '8px',
+                height: themedConfig.battery_bar?.style?.height ?? 'auto',
+                icon_size: themedConfig.battery_bar?.style?.icon_size ?? '1.5em',
+                icon_color: themedConfig.battery_bar?.style?.icon_color ?? 'white',
+                label_size: themedConfig.battery_bar?.style?.label_size ?? '0.8em',
+                label_color: themedConfig.battery_bar?.style?.label_color ?? 'rgba(255, 255, 255, 0.7)',
+                label_font_weight: themedConfig.battery_bar?.style?.label_font_weight ?? 'normal',
+                label_line_height: themedConfig.battery_bar?.style?.label_line_height ?? '1.2',
+                value_size: themedConfig.battery_bar?.style?.value_size ?? '1em',
+                value_color: themedConfig.battery_bar?.style?.value_color ?? 'white',
+                value_font_weight: themedConfig.battery_bar?.style?.value_font_weight ?? 'bold',
+                value_line_height: themedConfig.battery_bar?.style?.value_line_height ?? '1.4',
+                separator: themedConfig.battery_bar?.style?.separator ?? '|',
+                item_gap: themedConfig.battery_bar?.style?.item_gap ?? '0.5rem',
+                ...themedConfig.battery_bar?.style
+            }
+        },
+
+        layout: {
+            order: themedConfig.layout?.order || ['header', 'pv_bar', 'cards', 'info_bar', 'battery_bar', 'consumers'],
+            cards_order: themedConfig.layout?.cards_order || ['pv', 'battery', 'house', 'grid'],
+            cards_visibility: themedConfig.layout?.cards_visibility || {
+                pv: themedConfig.pv?.show !== false,
+                battery: themedConfig.batterie?.show !== false,
+                house: themedConfig.haus?.show !== false,
+                grid: themedConfig.netz?.show !== false
+            }
+        },
+
         info_bar: {
             show: themedConfig.info_bar?.show === true,
             position: themedConfig.info_bar?.position || 'top',
@@ -79,6 +146,8 @@ export function getDefaultConfig(config: PVMonitorCardConfig): PVMonitorCardConf
             card_padding: themedConfig.style?.card_padding ?? '12px',
             header_margin_bottom: themedConfig.style?.header_margin_bottom ?? '12px',
             infobar_gap: themedConfig.style?.infobar_gap ?? '6px',
+            pv_bar_gap: themedConfig.style?.pv_bar_gap ?? '6px',
+            battery_bar_gap: themedConfig.style?.battery_bar_gap ?? '6px',
             header_background_enabled: themedConfig.style?.header_background_enabled ?? false,
             header_background_color: themedConfig.style?.header_background_color ?? 'rgba(21, 20, 27, 1)',
             header_border_color: themedConfig.style?.header_border_color ?? 'rgba(255, 255, 255, 0.1)',

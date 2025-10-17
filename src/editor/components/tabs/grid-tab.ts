@@ -1,10 +1,11 @@
 import { html } from "lit";
-import { PVMonitorCardConfig } from "../../../pv-monitor-card-types";
+import { PVMonitorCardConfig } from "../../../types";
 import { renderCollapsibleSection } from "../sections/collapsible-section";
+import { renderEntityPicker, EntityPickerState } from "../fields/entity-picker";
 import { renderIconPicker } from "../fields/icon-picker";
 import { renderSwitch } from "../fields/switch";
 import { renderTextfield } from "../fields/textfield";
-import { EntityPickerState } from "../fields/entity-picker";
+import { renderNumberfield } from "../fields/numberfield";
 import {
     renderAnimationSelector,
     renderCardTapActions,
@@ -29,6 +30,26 @@ export function renderGridTab(
             'mdi:transmission-tower',
             t.editor.grid,
             html`
+                ${renderEntityPicker(
+                    t.editor.entity,
+                    config.netz?.entity,
+                    hass,
+                    entityPickerStates.get('netz.entity') || { results: [], show: false },
+                    (value) => onChange(['netz', 'entity'], value),
+                    (state) => onEntityPickerStateChange('netz.entity', state),
+                    { helper: t.editor.grid_entity_helper, translations: { editor: t.editor } }
+                )}
+                ${renderNumberfield(
+                    t.editor.threshold,
+                    config.netz?.threshold ?? 10,
+                    (value) => onChange(['netz', 'threshold'], value),
+                    { 
+                        min: 0, 
+                        max: 100, 
+                        step: 1,
+                        helper: t.editor.grid_threshold_helper || 'Schwellwert für Neutral-Status (-threshold bis +threshold Watt)'
+                    }
+                )}
                 ${renderIconPicker(
                     t.editor.icon_label,
                     config.netz?.icon,

@@ -28,7 +28,9 @@ export interface Translations {
         tab_styling: string;
         tab_infobar: string;
         tab_pv: string;
+        tab_pv_bar: string;
         tab_battery: string;
+        tab_battery_bar: string;
         tab_house: string;
         tab_grid: string;
         card_header: string;

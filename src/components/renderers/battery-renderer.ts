@@ -1,6 +1,8 @@
 import { html, TemplateResult } from "lit";
 import { PVMonitorCardConfig, Hass } from "../../types";
-import { formatPower, getBatteryIcon, getBatteryIconColor, getBatterieColor } from "../../utils";
+import { formatPower, getBatteryIcon } from "../../utils";
+import { getBatterieColor } from "../../utils/colors/battery-colors";
+import { aggregateBatteryPower, aggregateBatterySOC, getTotalBatteryCapacity } from "../../utils/calculators";
 import { getTranslations } from "../../i18n";
 import { renderCard } from "./card-renderer";
 
@@ -12,49 +14,45 @@ export function renderBattery(
     getTextFromEntityOrConfig: (entity?: string, text?: string) => string,
     handleAction: (event: Event, actions: any, isHausCard?: boolean) => void
 ): TemplateResult {
-    const entityId = config.batterie?.entity || config.entities?.battery_soc;
-    if (!entityId || !hass) return html``;
+    if (!hass) return html``;
 
-    const entity = hass.states[entityId];
     const t = getTranslations(config.language);
 
-    if (!entity) return html`<div class="card">⚠️ ${entityId} ${t.general.missing_entity}</div>`;
+    // Verwende battery_bar.entities für die Werte
+    if (config.battery_bar?.entities && config.battery_bar.entities.length > 0) {
+        const soc = aggregateBatterySOC(config.battery_bar.entities, hass);
+        const { charge, discharge } = aggregateBatteryPower(config.battery_bar.entities, hass);
+        const totalCapacity = getTotalBatteryCapacity(config.battery_bar.entities);
 
-    const percentage = parseFloat(entity.state) || 0;
-    const icon = config.batterie.icon || getBatteryIcon(percentage);
-    const iconColor = getBatteryIconColor(percentage);
+        const icon = config.batterie?.icon || getBatteryIcon(soc);
 
-    const chargeEntityId = config.batterie.ladung_entity || config.entities?.battery_charge;
-    const dischargeEntityId = config.batterie.entladung_entity || config.entities?.battery_discharge;
+        // Automatische Berechnung der Lade-/Entladeleistung falls kein secondary_entity/text konfiguriert
+        let secondaryText = getTextFromEntityOrConfig(config.batterie?.secondary_entity, config.batterie?.secondary_text);
+        if (!secondaryText || secondaryText === '') {
+            const netPower = charge - discharge;
+            // Idle: -10W bis +10W → kein Text
+            if (netPower > 10) {
+                // Laden: +500 W oder +2.50 kW
+                secondaryText = `+${formatPower(netPower)}`;
+            } else if (netPower < -10) {
+                // Entladen: -800 W oder -3.20 kW
+                const formatted = formatPower(Math.abs(netPower));
+                secondaryText = `-${formatted}`;
+            }
+            // else: Idle (-10 bis +10) → secondaryText bleibt leer
+        }
 
-    const charge = chargeEntityId && hass.states[chargeEntityId]
-        ? parseFloat(hass.states[chargeEntityId]?.state) || 0
-        : 0;
-    const discharge = dischargeEntityId && hass.states[dischargeEntityId]
-        ? parseFloat(hass.states[dischargeEntityId]?.state) || 0
-        : 0;
-
-    const batteryCapacity = config.batterie.battery_capacity || config.battery_capacity || 10000;
-
-    let statusText = '';
-    if (charge > 1) {
-        statusText = formatPower(charge);
-    } else if (discharge > 1) {
-        statusText = '-' + formatPower(discharge);
-    } else {
-        statusText = t.general.inactive;
+        return renderCard({
+            cardConfig: config.batterie,
+            icon: icon,
+            primaryValue: `${soc.toFixed(0)}%`,
+            secondaryText: secondaryText,
+            tertiaryText: getTextFromEntityOrConfig(config.batterie?.tertiary_entity, config.batterie?.tertiary_text),
+            animStyle: config.batterie?.animation ? getBatterieColor(charge, discharge, totalCapacity) : { color: '', duration: 0, show: false },
+            customIconStyle: ''
+        }, style, getCardStyle, handleAction);
     }
 
-    const secondaryText = getTextFromEntityOrConfig(config.batterie.secondary_entity, config.batterie.secondary_text) || statusText;
-    const tertiaryText = getTextFromEntityOrConfig(config.batterie.tertiary_entity, config.batterie.tertiary_text);
-
-    return renderCard({
-        cardConfig: config.batterie,
-        icon,
-        primaryValue: `${Math.round(percentage)}%`,
-        secondaryText,
-        tertiaryText,
-        animStyle: config.batterie.animation ? getBatterieColor(charge, discharge, batteryCapacity) : { color: '', duration: 0, show: false },
-        iconColor: config.batterie.style?.icon_color || iconColor
-    }, style, getCardStyle, handleAction);
+    // Alte Logik wird ignoriert - Warnung wird durch Validator angezeigt
+    return html`<div class="card">⚠️ ${t.general.missing_entity}</div>`;
 }

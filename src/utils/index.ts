@@ -12,3 +12,6 @@ export * from './icons';
 
 // Animations
 export * from './animations';
+
+// Multi-Sensor
+export * from './multi-sensor';

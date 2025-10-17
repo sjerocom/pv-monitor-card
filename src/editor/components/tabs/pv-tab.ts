@@ -1,9 +1,10 @@
 import { html } from "lit";
-import { PVMonitorCardConfig } from "../../../pv-monitor-card-types";
+import { PVMonitorCardConfig } from "../../../types";
 import { renderCollapsibleSection } from "../sections/collapsible-section";
 import { renderIconPicker } from "../fields/icon-picker";
 import { renderSwitch } from "../fields/switch";
-import { EntityPickerState } from "../fields/entity-picker";
+import { renderEntityPicker, EntityPickerState } from "../fields/entity-picker";
+import { renderTextfield } from "../fields/textfield";
 import {
     renderAnimationSelector,
     renderCardTapActions,
@@ -22,10 +23,103 @@ export function renderPVTab(
     onTapActionChange: (path: string[], key: string, value: any) => void,
     t: any
 ) {
+    const pvEntities = config.pv_bar?.entities || [];
+
     return html`
         ${renderCollapsibleSection(
+            'pv_entities',
+            'mdi:solar-panel-large',
+            'PV-Anlagen',
+            html`
+                ${pvEntities.length < 5 ? html`
+                    <button
+                        class="add-button"
+                        @click=${() => {
+                            const newEntities = [...pvEntities, { entity: '', name: '' }];
+                            onChange(['pv_bar', 'entities'], newEntities);
+                        }}
+                    >
+                        <ha-icon icon="mdi:plus"></ha-icon>
+                        ${t.editor.add_pv_entity}
+                    </button>
+                ` : html`
+                    <div class="warning">${t.editor.pv_max_5}</div>
+                `}
+
+                ${pvEntities.map((entity: any, index: number) => html`
+                    <div class="entity-item">
+                        <div class="entity-item-header">
+                            <span>PV ${index + 1}</span>
+                            <button
+                                class="remove-button"
+                                @click=${() => {
+                                    const newEntities = pvEntities.filter((_: any, i: number) => i !== index);
+                                    onChange(['pv_bar', 'entities'], newEntities);
+                                }}
+                            >
+                                <ha-icon icon="mdi:delete"></ha-icon>
+                                ${t.editor.remove_entity}
+                            </button>
+                        </div>
+
+                        ${renderEntityPicker(
+                            t.editor.entity,
+                            entity.entity || '',
+                            hass,
+                            entityPickerStates.get(`pv_entity_${index}`) || { results: [], show: false },
+                            (value) => {
+                                const newEntities = [...pvEntities];
+                                newEntities[index] = { ...newEntities[index], entity: value };
+                                onChange(['pv_bar', 'entities'], newEntities);
+                            },
+                            (state) => onEntityPickerStateChange(`pv_entity_${index}`, state)
+                        )}
+
+                        ${renderTextfield(
+                            t.editor.entity_name,
+                            entity.name,
+                            (value) => {
+                                const newEntities = [...pvEntities];
+                                newEntities[index] = { ...newEntities[index], name: value };
+                                onChange(['pv_bar', 'entities'], newEntities);
+                            },
+                            { helper: t.editor.entity_name_helper }
+                        )}
+
+                        ${renderTextfield(
+                            t.editor.max_power,
+                            entity.max_power,
+                            (value) => {
+                                const newEntities = [...pvEntities];
+                                newEntities[index] = { ...newEntities[index], max_power: parseInt(value) || undefined };
+                                onChange(['pv_bar', 'entities'], newEntities);
+                            },
+                            { placeholder: '10000', helper: t.editor.max_power_helper }
+                        )}
+
+                        ${renderIconPicker(
+                            t.editor.icon_label,
+                            entity.icon,
+                            hass,
+                            (value) => {
+                                const newEntities = [...pvEntities];
+                                newEntities[index] = { ...newEntities[index], icon: value };
+                                onChange(['pv_bar', 'entities'], newEntities);
+                            },
+                            { translations: { editor: t.editor } }
+                        )}
+                    </div>
+                `)}
+            `,
+            expandedSections.has('pv_entities'),
+            () => onToggleSection('pv_entities')
+        )}
+
+        <div class="divider"></div>
+
+        ${renderCollapsibleSection(
             'pv_main',
-            'mdi:solar-panel',
+            'mdi:cog',
             t.editor.pv_system,
             html`
                 ${renderIconPicker(

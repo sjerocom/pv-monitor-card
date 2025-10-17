@@ -1,5 +1,5 @@
 import { html } from "lit";
-import { TapAction } from "../../../pv-monitor-card-types";
+import { TapAction } from "../../../types";
 
 export function renderActionSelector(
     label: string,

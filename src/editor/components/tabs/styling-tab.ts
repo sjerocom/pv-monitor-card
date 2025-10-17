@@ -1,5 +1,5 @@
 import { html } from "lit";
-import { PVMonitorCardConfig } from "../../../pv-monitor-card-types";
+import { PVMonitorCardConfig } from "../../../types";
 import { renderCollapsibleSection } from "../sections/collapsible-section";
 import { renderThemeSelector } from "../fields/theme-selector";
 import { renderColorPicker } from "../fields/color-picker";
@@ -393,6 +393,18 @@ export function renderStylingTab(
                     config.style?.infobar_gap,
                     (value) => onChange(['style', 'infobar_gap'], value),
                     { placeholder: '6px', helper: t.editor.infobar_gap_helper }
+                )}
+                ${renderTextfield(
+                    t.editor.pv_bar_gap,
+                    config.style?.pv_bar_gap,
+                    (value) => onChange(['style', 'pv_bar_gap'], value),
+                    { placeholder: '6px', helper: t.editor.pv_bar_gap_helper }
+                )}
+                ${renderTextfield(
+                    t.editor.battery_bar_gap,
+                    config.style?.battery_bar_gap,
+                    (value) => onChange(['style', 'battery_bar_gap'], value),
+                    { placeholder: '6px', helper: t.editor.battery_bar_gap_helper }
                 )}
                 ${renderTextfield(
                     t.editor.cursor,

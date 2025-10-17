@@ -1,6 +1,6 @@
 import { LitElement, html } from "lit";
 import { property, state } from "lit/decorators.js";
-import { PVMonitorCardConfig } from "../pv-monitor-card-types";
+import { PVMonitorCardConfig } from "../types";
 import { getTranslations } from "../i18n";
 import { editorStyles } from "./styles/editor-styles";
 import { EventManager } from "./utils/event-handlers";
@@ -11,7 +11,9 @@ import { renderStylingTab } from "./components/tabs/styling-tab";
 import { renderInfoBarTab } from "./components/tabs/infobar-tab";
 import { renderConsumersTab } from "./components/tabs/consumers-tab";
 import { renderPVTab } from "./components/tabs/pv-tab";
+import { renderPVBarTab } from "./components/tabs/pv-bar-tab";
 import { renderBatteryTab } from "./components/tabs/battery-tab";
+import { renderBatteryBarTab } from "./components/tabs/battery-bar-tab";
 import { renderHouseTab } from "./components/tabs/house-tab";
 import { renderGridTab } from "./components/tabs/grid-tab";
 
@@ -191,7 +193,9 @@ export class PVMonitorCardEditor extends LitElement {
                     ${this._renderTab('infobar', t.editor.tab_infobar, 'mdi:information')}
                     ${this._renderTab('consumers', t.editor.tab_consumers, 'mdi:flash')}
                     ${this._renderTab('pv', t.editor.tab_pv, 'mdi:solar-panel')}
+                    ${this._renderTab('pv_bar', t.editor.tab_pv_bar || 'PV Bar', 'mdi:chart-bar')}
                     ${this._renderTab('battery', t.editor.tab_battery, 'mdi:battery')}
+                    ${this._renderTab('battery_bar', t.editor.tab_battery_bar || 'Battery Bar', 'mdi:battery-charging')}
                     ${this._renderTab('house', t.editor.tab_house, 'mdi:home')}
                     ${this._renderTab('grid', t.editor.tab_grid, 'mdi:transmission-tower')}
                 </div>
@@ -272,6 +276,19 @@ export class PVMonitorCardEditor extends LitElement {
                     )}
                 </div>
 
+                <div class="tab-content ${this._activeTab === 'pv_bar' ? 'active' : ''}">
+                    ${renderPVBarTab(
+                        this._config,
+                        this.hass,
+                        this._expandedSections,
+                        this._entityPickerStates,
+                        (id) => this._toggleSection(id),
+                        (key, state) => this._onEntityPickerStateChange(key, state),
+                        (path, value) => this._onChange(path, value),
+                        t
+                    )}
+                </div>
+
                 <div class="tab-content ${this._activeTab === 'battery' ? 'active' : ''}">
                     ${renderBatteryTab(
                         this._config,
@@ -282,6 +299,19 @@ export class PVMonitorCardEditor extends LitElement {
                         (key, state) => this._onEntityPickerStateChange(key, state),
                         (path, value) => this._onChange(path, value),
                         (path, key, value) => this._onTapActionChange(path, key, value),
+                        t
+                    )}
+                </div>
+
+                <div class="tab-content ${this._activeTab === 'battery_bar' ? 'active' : ''}">
+                    ${renderBatteryBarTab(
+                        this._config,
+                        this.hass,
+                        this._expandedSections,
+                        this._entityPickerStates,
+                        (id) => this._toggleSection(id),
+                        (key, state) => this._onEntityPickerStateChange(key, state),
+                        (path, value) => this._onChange(path, value),
                         t
                     )}
                 </div>
