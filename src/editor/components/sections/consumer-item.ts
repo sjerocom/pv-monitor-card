@@ -193,7 +193,7 @@ export function renderConsumerItem(
                             }
                         ) : ''}
                         ${item.tap_action_target === 'custom_action' ? renderActionSelector(
-                            'Tap Action',
+                            t.editor.tap_action,
                             item.tap_action,
                             (key, value) => onTapActionChange([...basePath, 'tap_action'], key, value),
                             { translations: t }
@@ -219,7 +219,7 @@ export function renderConsumerItem(
                             }
                         ) : ''}
                         ${item.double_tap_action_target === 'custom_action' ? renderActionSelector(
-                            'Double Tap',
+                            t.editor.double_tap,
                             item.double_tap_action,
                             (key, value) => onTapActionChange([...basePath, 'double_tap_action'], key, value),
                             { translations: t }
@@ -245,7 +245,7 @@ export function renderConsumerItem(
                             }
                         ) : ''}
                         ${item.hold_action_target === 'custom_action' ? renderActionSelector(
-                            'Hold Action',
+                            t.editor.hold_action,
                             item.hold_action,
                             (key, value) => onTapActionChange([...basePath, 'hold_action'], key, value),
                             { translations: t }

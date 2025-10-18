@@ -1,7 +1,7 @@
 /**
  * Unterstützte Sprachen
  */
-export type SupportedLanguage = 'de' | 'en' | 'fr' | 'it' | 'es';
+export type SupportedLanguage = 'de' | 'en' | 'fr' | 'it' | 'es' | 'nl' | 'pt' | 'sv' | 'fi' | 'cs' | 'sl' | 'sk' | 'bs' | 'sr';
 
 /**
  * Sprach-Namen für UI-Anzeige
@@ -12,10 +12,19 @@ export const languageNames: Record<SupportedLanguage, string> = {
     fr: 'Français',
     it: 'Italiano',
     es: 'Español',
+    nl: 'Nederlands',
+    pt: 'Português',
+    sv: 'Svenska',
+    fi: 'Suomi',
+    cs: 'Čeština',
+    sl: 'Slovenščina',
+    sk: 'Slovenčina',
+    bs: 'Bosanski',
+    sr: 'Српски',
 };
 
 /**
- * Übersetzungs-Interface
+ * Übersetzungs-Interface basierend auf de.json
  */
 export interface Translations {
     general: {
@@ -28,11 +37,12 @@ export interface Translations {
         tab_styling: string;
         tab_infobar: string;
         tab_pv: string;
-        tab_pv_bar: string;
         tab_battery: string;
-        tab_battery_bar: string;
         tab_house: string;
         tab_grid: string;
+        tab_consumers: string;
+        tab_pv_bar: string;
+        tab_battery_bar: string;
         card_header: string;
         title: string;
         title_placeholder: string;
@@ -42,12 +52,12 @@ export interface Translations {
         subtitle_helper: string;
         title_subtitle_gap: string;
         title_subtitle_gap_helper: string;
-        icon: string;
-        icon_helper: string;
         header_icon_size: string;
         header_icon_size_helper: string;
         header_icon_color: string;
         header_icon_margin: string;
+        icon: string;
+        icon_helper: string;
         layout: string;
         grid_gap: string;
         grid_gap_placeholder: string;
@@ -81,6 +91,12 @@ export interface Translations {
         grid_threshold_label: string;
         grid_threshold_helper: string;
         card_visibility: string;
+        cards_order: string;
+        cards_order_helper: string;
+        card_pv: string;
+        card_battery: string;
+        card_house: string;
+        card_grid: string;
         show_pv_card: string;
         show_battery_card: string;
         show_house_card: string;
@@ -213,7 +229,6 @@ export interface Translations {
         theme: string;
         theme_helper: string;
         select_theme: string;
-        tab_consumers: string;
         consumers_settings: string;
         enable_consumers: string;
         consumers_position: string;
@@ -243,6 +258,15 @@ export interface Translations {
         consumer_switch_entity: string;
         consumer_switch_entity_helper: string;
         consumer_tap_actions: string;
+        tap_action_target: string;
+        double_tap_action_target: string;
+        hold_action_target: string;
+        action_target_none: string;
+        action_target_entity: string;
+        action_target_custom_entity: string;
+        action_target_custom_action: string;
+        custom_entity_toggle: string;
+        custom_entity_toggle_helper: string;
         show_consumer_total_in_house: string;
         show_consumer_total_helper: string;
         show_title: string;
@@ -264,6 +288,55 @@ export interface Translations {
         header_section: string;
         infobar_styling: string;
         card_styling_section: string;
+        theme_editor_cards: string;
+        theme_editor_cards_note: string;
+        header_background_subsection: string;
+        icon_subsection: string;
+        primary_text_subsection: string;
+        secondary_text_subsection: string;
+        tertiary_text_subsection: string;
+        action_navigation_path: string;
+        action_url_label: string;
+        action_service: string;
+        layout_order: string;
+        layout_order_helper: string;
+        pv_bar_settings: string;
+        battery_bar_settings: string;
+        enable_pv_bar: string;
+        enable_battery_bar: string;
+        bar_position: string;
+        bar_align: string;
+        align_left: string;
+        align_center: string;
+        align_right: string;
+        bar_entities: string;
+        add_pv_entity: string;
+        add_battery_entity: string;
+        remove_entity: string;
+        entity_name: string;
+        entity_name_helper: string;
+        pv_max_5: string;
+        battery_max_5: string;
+        bar_styling: string;
+        bar_separator: string;
+        bar_separator_helper: string;
+        bar_item_gap: string;
+        bar_item_gap_helper: string;
+        position_above_cards: string;
+        position_below_cards: string;
+        position_above_consumers: string;
+        position_below_consumers: string;
+        pv_bar_gap: string;
+        pv_bar_gap_helper: string;
+        battery_bar_gap: string;
+        battery_bar_gap_helper: string;
+        move_up: string;
+        move_down: string;
+        duplicate: string;
+        delete: string;
+        tap_action: string;
+        double_tap: string;
+        hold_action: string;
     };
 
     status: {

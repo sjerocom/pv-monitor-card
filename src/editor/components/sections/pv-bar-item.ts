@@ -42,26 +42,26 @@ export function renderPVBarItem(
                         <ha-icon-button
                             .path=${'M7.41,15.41L12,10.83L16.59,15.41L18,14L12,8L6,14L7.41,15.41Z'}
                             @click=${onMoveUp}
-                            title="Nach oben"
+                            title="${t.editor.move_up}"
                         ></ha-icon-button>
                     ` : ''}
                     ${!isLast ? html`
                         <ha-icon-button
                             .path=${'M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z'}
                             @click=${onMoveDown}
-                            title="Nach unten"
+                            title="${t.editor.move_down}"
                         ></ha-icon-button>
                     ` : ''}
                     <ha-icon-button
                         .path=${'M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z'}
                         @click=${onDuplicate}
-                        title="Duplizieren"
+                        title="${t.editor.duplicate}"
                         style="color: rgba(33, 150, 243, 1);"
                     ></ha-icon-button>
                     <ha-icon-button
                         .path=${'M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z'}
                         @click=${onRemove}
-                        title="Löschen"
+                        title="${t.editor.delete}"
                         style="color: rgba(244,67,54,1);"
                     ></ha-icon-button>
                 </div>
