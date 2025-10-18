@@ -1,9 +1,9 @@
 import { html } from "lit";
-import { PVMonitorCardConfig } from "../../../pv-monitor-card-types";
+import { PVMonitorCardConfig } from "../../../types";
 import { renderCollapsibleSection } from "../sections/collapsible-section";
+import { renderEntityPicker, EntityPickerState } from "../fields/entity-picker";
 import { renderIconPicker } from "../fields/icon-picker";
 import { renderSwitch } from "../fields/switch";
-import { EntityPickerState } from "../fields/entity-picker";
 import {
     renderAnimationSelector,
     renderCardTapActions,
@@ -28,6 +28,15 @@ export function renderHouseTab(
             'mdi:home',
             t.editor.house_consumption,
             html`
+                ${renderEntityPicker(
+                    t.editor.entity,
+                    config.haus?.entity,
+                    hass,
+                    entityPickerStates.get('haus.entity') || { results: [], show: false },
+                    (value) => onChange(['haus', 'entity'], value),
+                    (state) => onEntityPickerStateChange('haus.entity', state),
+                    { helper: t.editor.house_entity_helper, translations: { editor: t.editor } }
+                )}
                 ${renderIconPicker(
                     t.editor.icon_label,
                     config.haus?.icon,

@@ -25,7 +25,16 @@ export function renderLanguageSelector(
                         { value: 'en', label: 'English' },
                         { value: 'fr', label: 'Français' },
                         { value: 'it', label: 'Italiano' },
-                        { value: 'es', label: 'Español' }
+                        { value: 'es', label: 'Español' },
+                        { value: 'nl', label: 'Nederlands' },
+                        { value: 'pt', label: 'Português' },
+                        { value: 'sv', label: 'Svenska' },
+                        { value: 'fi', label: 'Suomi' },
+                        { value: 'cs', label: 'Čeština' },
+                        { value: 'sl', label: 'Slovenščina' },
+                        { value: 'sk', label: 'Slovenčina' },
+                        { value: 'bs', label: 'Bosanski' },
+                        { value: 'sr', label: 'Српски' }
                     ]}
                     item-value-path="value"
                     item-label-path="label"

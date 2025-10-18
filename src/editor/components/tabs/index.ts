@@ -1,4 +1,5 @@
 export * from './battery-tab';
+export * from './battery-bar-tab';
 export * from './card-tab-helpers';
 export * from './consumers-tab';
 export * from './general-tab';
@@ -6,4 +7,5 @@ export * from './grid-tab';
 export * from './house-tab';
 export * from './infobar-tab';
 export * from './pv-tab';
+export * from './pv-bar-tab';
 export * from './styling-tab';

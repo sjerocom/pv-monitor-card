@@ -1,4 +1,4 @@
-import { PVMonitorCardConfig } from "../../pv-monitor-card-types";
+import { PVMonitorCardConfig } from "../../types";
 
 export function updateConfigValue(
     config: PVMonitorCardConfig,

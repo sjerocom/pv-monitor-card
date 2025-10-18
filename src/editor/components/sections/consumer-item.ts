@@ -5,6 +5,7 @@ import { renderTextfield } from "../fields/textfield";
 import { renderNumberfield } from "../fields/numberfield";
 import { renderSwitch } from "../fields/switch";
 import { renderActionSelector } from "../fields/action-selector";
+import { renderActionTargetSelector } from "../fields/action-target-selector";
 import { renderColorPicker } from "../fields/color-picker";
 
 export function renderConsumerItem(
@@ -48,26 +49,26 @@ export function renderConsumerItem(
                         <ha-icon-button
                             .path=${'M7.41,15.41L12,10.83L16.59,15.41L18,14L12,8L6,14L7.41,15.41Z'}
                             @click=${onMoveUp}
-                            title="Nach oben"
+                            title="${t.editor.move_up}"
                         ></ha-icon-button>
                     ` : ''}
                     ${!isLast ? html`
                         <ha-icon-button
                             .path=${'M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z'}
                             @click=${onMoveDown}
-                            title="Nach unten"
+                            title="${t.editor.move_down}"
                         ></ha-icon-button>
                     ` : ''}
                     <ha-icon-button
                         .path=${'M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z'}
                         @click=${onDuplicate}
-                        title="Duplizieren"
+                        title="${t.editor.duplicate}"
                         style="color: rgba(33, 150, 243, 1);"
                     ></ha-icon-button>
                     <ha-icon-button
                         .path=${'M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z'}
                         @click=${onRemove}
-                        title="Löschen"
+                        title="${t.editor.delete}"
                         style="color: rgba(244,67,54,1);"
                     ></ha-icon-button>
                 </div>
@@ -172,33 +173,83 @@ export function renderConsumerItem(
                         ></ha-icon>
                     </div>
                     <div class="consumer-subsection-content ${expandedSubsections.has('actions') ? '' : 'collapsed'}">
-                        ${renderEntityPicker(
-                            t.editor.consumer_switch_entity,
-                            item.switch_entity,
-                            hass,
-                            entityPickerStates.get(`${basePath.join('.')}.switch_entity`) || { results: [], show: false },
-                            (value) => onChange([...basePath, 'switch_entity'], value),
-                            (state) => onEntityPickerStateChange(`${basePath.join('.')}.switch_entity`, state),
-                            { helper: t.editor.consumer_switch_entity_helper, translations: { editor: t.editor } }
+                        ${renderActionTargetSelector(
+                            t.editor.tap_action_target,
+                            item.tap_action_target,
+                            (value) => onChange([...basePath, 'tap_action_target'], value),
+                            { helper: t.editor.consumer_tap_actions, translations: t }
                         )}
-                        ${renderActionSelector(
-                            'Tap Action',
+                        ${item.tap_action_target === 'custom_entity' ? renderEntityPicker(
+                            t.editor.custom_entity_toggle,
+                            item.tap_action_custom_entity,
+                            hass,
+                            entityPickerStates.get(`${basePath.join('.')}.tap_action_custom_entity`) || { results: [], show: false },
+                            (value) => onChange([...basePath, 'tap_action_custom_entity'], value),
+                            (state) => onEntityPickerStateChange(`${basePath.join('.')}.tap_action_custom_entity`, state),
+                            { 
+                                helper: t.editor.custom_entity_toggle_helper,
+                                translations: { editor: t.editor },
+                                include_domains: ['switch', 'input_boolean', 'light', 'fan', 'cover']
+                            }
+                        ) : ''}
+                        ${item.tap_action_target === 'custom_action' ? renderActionSelector(
+                            t.editor.tap_action,
                             item.tap_action,
                             (key, value) => onTapActionChange([...basePath, 'tap_action'], key, value),
                             { translations: t }
+                        ) : ''}
+                        
+                        ${renderActionTargetSelector(
+                            t.editor.double_tap_action_target,
+                            item.double_tap_action_target,
+                            (value) => onChange([...basePath, 'double_tap_action_target'], value),
+                            { translations: t }
                         )}
-                        ${renderActionSelector(
-                            'Double Tap',
+                        ${item.double_tap_action_target === 'custom_entity' ? renderEntityPicker(
+                            t.editor.custom_entity_toggle,
+                            item.double_tap_action_custom_entity,
+                            hass,
+                            entityPickerStates.get(`${basePath.join('.')}.double_tap_action_custom_entity`) || { results: [], show: false },
+                            (value) => onChange([...basePath, 'double_tap_action_custom_entity'], value),
+                            (state) => onEntityPickerStateChange(`${basePath.join('.')}.double_tap_action_custom_entity`, state),
+                            { 
+                                helper: t.editor.custom_entity_toggle_helper,
+                                translations: { editor: t.editor },
+                                include_domains: ['switch', 'input_boolean', 'light', 'fan', 'cover']
+                            }
+                        ) : ''}
+                        ${item.double_tap_action_target === 'custom_action' ? renderActionSelector(
+                            t.editor.double_tap,
                             item.double_tap_action,
                             (key, value) => onTapActionChange([...basePath, 'double_tap_action'], key, value),
                             { translations: t }
+                        ) : ''}
+                        
+                        ${renderActionTargetSelector(
+                            t.editor.hold_action_target,
+                            item.hold_action_target,
+                            (value) => onChange([...basePath, 'hold_action_target'], value),
+                            { translations: t }
                         )}
-                        ${renderActionSelector(
-                            'Hold Action',
+                        ${item.hold_action_target === 'custom_entity' ? renderEntityPicker(
+                            t.editor.custom_entity_toggle,
+                            item.hold_action_custom_entity,
+                            hass,
+                            entityPickerStates.get(`${basePath.join('.')}.hold_action_custom_entity`) || { results: [], show: false },
+                            (value) => onChange([...basePath, 'hold_action_custom_entity'], value),
+                            (state) => onEntityPickerStateChange(`${basePath.join('.')}.hold_action_custom_entity`, state),
+                            { 
+                                helper: t.editor.custom_entity_toggle_helper,
+                                translations: { editor: t.editor },
+                                include_domains: ['switch', 'input_boolean', 'light', 'fan', 'cover']
+                            }
+                        ) : ''}
+                        ${item.hold_action_target === 'custom_action' ? renderActionSelector(
+                            t.editor.hold_action,
                             item.hold_action,
                             (key, value) => onTapActionChange([...basePath, 'hold_action'], key, value),
                             { translations: t }
-                        )}
+                        ) : ''}
                     </div>
                 </div>
 

@@ -3,3 +3,4 @@ export * from './grid-colors';
 export * from './pv-colors';
 export * from './house-colors';
 export * from './consumer-colors';
+export * from './bar-colors';

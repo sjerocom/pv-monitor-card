@@ -1,6 +1,7 @@
 import { html, TemplateResult } from "lit";
 import { PVMonitorCardConfig, Hass } from "../../types";
 import { formatPower, getPVColor, getPVRotationSpeed } from "../../utils";
+import { aggregatePVPower, getTotalPVMaxPower } from "../../utils/calculators";
 import { getTranslations } from "../../i18n";
 import { renderCard } from "./card-renderer";
 
@@ -12,32 +13,34 @@ export function renderPV(
     getTextFromEntityOrConfig: (entity?: string, text?: string) => string,
     handleAction: (event: Event, actions: any, isHausCard?: boolean) => void
 ): TemplateResult {
-    const entityId = config.pv?.entity || config.entities?.pv_production;
-    if (!entityId || !hass) return html``;
+    if (!hass) return html``;
 
-    const entity = hass.states[entityId];
     const t = getTranslations(config.language);
 
-    if (!entity) return html`<div class="card">⚠️ ${entityId} ${t.general.missing_entity}</div>`;
+    // Verwende pv_bar.entities für die Werte
+    if (config.pv_bar?.entities && config.pv_bar.entities.length > 0) {
+        const value = aggregatePVPower(config.pv_bar.entities, hass);
+        const maxPower = getTotalPVMaxPower(config.pv_bar.entities);
 
-    const value = parseFloat(entity.state) || 0;
-    const maxPower = config.pv?.max_power || config.pv_max_power || 10000;
+        const shouldRotate = config.pv.icon_rotation === true;
+        let customIconStyle = '';
 
-    const shouldRotate = config.pv.icon_rotation === true;
-    let customIconStyle = '';
+        if (shouldRotate && maxPower > 0) {
+            const rotationSpeed = getPVRotationSpeed(value, maxPower);
+            customIconStyle = `animation: continuousRotation ${rotationSpeed}s linear infinite;`;
+        }
 
-    if (shouldRotate) {
-        const rotationSpeed = getPVRotationSpeed(value, maxPower);
-        customIconStyle = `animation: continuousRotation ${rotationSpeed}s linear infinite;`;
+        return renderCard({
+            cardConfig: config.pv,
+            icon: config.pv.icon || 'mdi:white-balance-sunny',
+            primaryValue: formatPower(value),
+            secondaryText: getTextFromEntityOrConfig(config.pv.secondary_entity, config.pv.secondary_text),
+            tertiaryText: getTextFromEntityOrConfig(config.pv.tertiary_entity, config.pv.tertiary_text),
+            animStyle: config.pv.animation ? getPVColor(value, maxPower) : { color: '', duration: 0, show: false },
+            customIconStyle: customIconStyle
+        }, style, getCardStyle, handleAction);
     }
 
-    return renderCard({
-        cardConfig: config.pv,
-        icon: config.pv.icon || 'mdi:white-balance-sunny',
-        primaryValue: formatPower(value),
-        secondaryText: getTextFromEntityOrConfig(config.pv.secondary_entity, config.pv.secondary_text),
-        tertiaryText: getTextFromEntityOrConfig(config.pv.tertiary_entity, config.pv.tertiary_text),
-        animStyle: config.pv.animation ? getPVColor(value, maxPower) : { color: '', duration: 0, show: false },
-        customIconStyle: customIconStyle
-    }, style, getCardStyle, handleAction);
+    // Alte Logik wird ignoriert - Warnung wird durch Validator angezeigt
+    return html`<div class="card">⚠️ ${t.general.missing_entity}</div>`;
 }

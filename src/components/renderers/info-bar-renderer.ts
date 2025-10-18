@@ -1,6 +1,15 @@
 import { html, TemplateResult } from "lit";
 import { PVMonitorCardConfig, Hass, InfoBarItem } from "../../types";
-import { calculateAutarky, calculateSelfConsumption, calculateBatteryRuntime, calculateBatteryChargeTime } from "../../utils";
+import { 
+    calculateAutarky, 
+    calculateSelfConsumption, 
+    calculateBatteryRuntime, 
+    calculateBatteryChargeTime,
+    aggregatePVPower,
+    aggregateBatterySOC,
+    aggregateBatteryPower,
+    getTotalBatteryCapacity
+} from "../../utils";
 
 export function renderInfoBar(
     config: PVMonitorCardConfig,
@@ -61,36 +70,74 @@ function renderInfoBarItem(
     let unit = '';
 
     const getCentralEntityValue = (entityKey: string): number => {
+        // Fallback auf zentrale entities wenn vorhanden
         const entityId = config.entities?.[entityKey as keyof typeof config.entities];
-        if (!entityId) return 0;
-        return parseFloat(hass.states[entityId]?.state) || 0;
+        if (entityId && hass.states[entityId]) {
+            return parseFloat(hass.states[entityId].state) || 0;
+        }
+        return 0;
+    };
+
+    // Aggregierte Werte holen
+    const getAggregatedPVPower = (): number => {
+        if (config.pv_bar?.entities && config.pv_bar.entities.length > 0) {
+            return aggregatePVPower(config.pv_bar.entities, hass);
+        }
+        // Fallback auf alte single entity
+        if (config.pv?.entity) {
+            return parseFloat(hass.states[config.pv.entity]?.state) || 0;
+        }
+        return getCentralEntityValue('pv_production');
+    };
+
+    const getAggregatedBatteryValues = (): { soc: number; charge: number; discharge: number; capacity: number } => {
+        if (config.battery_bar?.entities && config.battery_bar.entities.length > 0) {
+            const soc = aggregateBatterySOC(config.battery_bar.entities, hass);
+            const power = aggregateBatteryPower(config.battery_bar.entities, hass);
+            const capacity = getTotalBatteryCapacity(config.battery_bar.entities);
+            return { soc, charge: power.charge, discharge: power.discharge, capacity };
+        }
+        // Fallback auf alte single entities
+        const soc = config.batterie?.entity ? parseFloat(hass.states[config.batterie.entity]?.state) || 0 : getCentralEntityValue('battery_soc');
+        const charge = config.batterie?.ladung_entity ? parseFloat(hass.states[config.batterie.ladung_entity]?.state) || 0 : getCentralEntityValue('battery_charge');
+        const discharge = config.batterie?.entladung_entity ? parseFloat(hass.states[config.batterie.entladung_entity]?.state) || 0 : getCentralEntityValue('battery_discharge');
+        const capacity = config.battery_capacity || config.batterie?.battery_capacity || 10000;
+        return { soc, charge, discharge, capacity };
+    };
+
+    const getGridPower = (): number => {
+        if (config.netz?.entity) {
+            return parseFloat(hass.states[config.netz.entity]?.state) || 0;
+        }
+        return getCentralEntityValue('grid_power');
+    };
+
+    const getHouseConsumption = (): number => {
+        if (config.haus?.entity) {
+            return parseFloat(hass.states[config.haus.entity]?.state) || 0;
+        }
+        return getCentralEntityValue('house_consumption');
     };
 
     if (itemCalcType === 'autarky') {
-        const pvProd = getCentralEntityValue('pv_production');
-        const batteryDischarge = getCentralEntityValue('battery_discharge');
-        const gridPower = getCentralEntityValue('grid_power');
-        const houseConsumption = getCentralEntityValue('house_consumption');
-        value = calculateAutarky(pvProd, batteryDischarge, gridPower, houseConsumption);
+        const pvProd = getAggregatedPVPower();
+        const battery = getAggregatedBatteryValues();
+        const gridPower = getGridPower();
+        const houseConsumption = getHouseConsumption();
+        value = calculateAutarky(pvProd, battery.discharge, gridPower, houseConsumption);
         unit = '';
     } else if (itemCalcType === 'self_consumption') {
-        const pvProd = getCentralEntityValue('pv_production');
-        const gridPower = getCentralEntityValue('grid_power');
+        const pvProd = getAggregatedPVPower();
+        const gridPower = getGridPower();
         value = calculateSelfConsumption(pvProd, gridPower);
         unit = '';
     } else if (itemCalcType === 'runtime') {
-        const batteryCapacity = config.battery_capacity || 10000;
-        const socPercent = getCentralEntityValue('battery_soc');
-        const charge = getCentralEntityValue('battery_charge');
-        const discharge = getCentralEntityValue('battery_discharge');
-        value = calculateBatteryRuntime(batteryCapacity, socPercent, charge, discharge);
+        const battery = getAggregatedBatteryValues();
+        value = calculateBatteryRuntime(battery.capacity, battery.soc, battery.charge, battery.discharge);
         unit = '';
     } else if (itemCalcType === 'chargetime') {
-        const batteryCapacity = config.battery_capacity || 10000;
-        const socPercent = getCentralEntityValue('battery_soc');
-        const charge = getCentralEntityValue('battery_charge');
-        const discharge = getCentralEntityValue('battery_discharge');
-        value = calculateBatteryChargeTime(batteryCapacity, socPercent, charge, discharge);
+        const battery = getAggregatedBatteryValues();
+        value = calculateBatteryChargeTime(battery.capacity, battery.soc, battery.charge, battery.discharge);
         unit = '';
     } else if (item.entity) {
         const entity = hass.states[item.entity];

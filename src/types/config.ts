@@ -2,6 +2,7 @@ import { AnimationStyle, CardStyle } from './base';
 import { TapAction } from './actions';
 import { InfoBarConfig } from './info-bar';
 import { ConsumersConfig } from './consumers';
+import { PVBarConfig, BatteryBarConfig, PVBarEntity, BatteryBarEntity } from './bars';
 
 export interface PVMonitorCardConfig {
     type: string;
@@ -29,6 +30,19 @@ export interface PVMonitorCardConfig {
     grid_threshold?: number;
 
     info_bar?: InfoBarConfig;
+    pv_bar?: PVBarConfig;
+    battery_bar?: BatteryBarConfig;
+
+    layout?: {
+        order?: ('header' | 'pv_bar' | 'cards' | 'info_bar' | 'battery_bar' | 'consumers')[];
+        cards_order?: ('pv' | 'battery' | 'house' | 'grid')[];
+        cards_visibility?: {
+            pv?: boolean;
+            battery?: boolean;
+            house?: boolean;
+            grid?: boolean;
+        };
+    };
 
     style?: {
         card_background_color?: string;
@@ -104,6 +118,7 @@ export interface PVMonitorCardConfig {
     pv?: {
         show?: boolean;
         entity?: string;
+        entities?: PVBarEntity[];
         animation?: boolean;
         animation_style?: AnimationStyle;
         icon?: string;
@@ -122,6 +137,7 @@ export interface PVMonitorCardConfig {
     batterie?: {
         show?: boolean;
         entity?: string;
+        entities?: BatteryBarEntity[];
         animation?: boolean;
         animation_style?: AnimationStyle;
         icon?: string;

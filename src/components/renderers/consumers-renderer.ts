@@ -1,27 +1,58 @@
 import { html, TemplateResult } from "lit";
-import { PVMonitorCardConfig, Hass } from "../../types";
+import { PVMonitorCardConfig, Hass, ConsumerItem } from "../../types";
 import { formatPower, getConsumerColor } from "../../utils";
 
 export function renderConsumers(
     config: PVMonitorCardConfig,
     hass: Hass | undefined,
     consumersVisible: boolean,
-    handleConsumerAction: (event: Event, action?: any) => void
+    handleConsumerAction: (event: Event, consumer: ConsumerItem) => void
 ): TemplateResult {
-    if (!config.consumers?.show || !hass || !consumersVisible) return html``;
+    console.log('renderConsumers called:', {
+        show: config.consumers?.show,
+        hasHass: !!hass,
+        consumersVisible,
+        itemsLength: config.consumers?.items?.length || 0
+    });
+
+    if (!config.consumers?.show || !hass || !consumersVisible) {
+        console.log('renderConsumers: Early return');
+        return html``;
+    }
 
     const items = config.consumers.items || [];
-    if (items.length === 0) return html``;
+    if (items.length === 0) {
+        console.log('renderConsumers: No items');
+        return html``;
+    }
 
     const globalThreshold = config.consumers.threshold ?? 0;
     const globalStyle = config.consumers.style!;
 
+    console.log('renderConsumers: Processing items', { itemsCount: items.length, globalThreshold });
+
     const consumerData = items.map(item => {
         const entity = hass.states[item.entity];
-        if (!entity) return null;
+        console.log('Processing consumer item:', {
+            entity: item.entity,
+            entityExists: !!entity,
+            state: entity?.state
+        });
+
+        if (!entity) {
+            console.warn('Consumer entity not found:', item.entity);
+            return null;
+        }
 
         const value = parseFloat(entity.state) || 0;
         const threshold = item.threshold !== undefined ? item.threshold : globalThreshold;
+
+        console.log('Consumer value check:', {
+            entity: item.entity,
+            value,
+            threshold,
+            passes: value > threshold
+        });
 
         if (value <= threshold) return null;
 
@@ -33,7 +64,12 @@ export function renderConsumers(
         };
     }).filter(d => d !== null);
 
-    if (consumerData.length === 0) return html``;
+    console.log('renderConsumers: Filtered consumer data', { count: consumerData.length });
+
+    if (consumerData.length === 0) {
+        console.log('renderConsumers: No consumers pass threshold');
+        return html``;
+    }
 
     const sortMode = config.consumers.sort_mode || 'highest_first';
     if (sortMode === 'highest_first') {
@@ -46,6 +82,8 @@ export function renderConsumers(
         consumerData.sort((a, b) => b!.label.localeCompare(a!.label));
     }
 
+    console.log('renderConsumers: Rendering consumers', { count: consumerData.length });
+
     return html`
         <div class="consumers-bar" style="gap: ${globalStyle.gap};">
             ${consumerData.map(data => renderConsumerItem(data!, config, hass, handleConsumerAction))}
@@ -54,10 +92,10 @@ export function renderConsumers(
 }
 
 function renderConsumerItem(
-    data: { item: any; entity: any; value: number; label: string },
+    data: { item: ConsumerItem; entity: any; value: number; label: string },
     config: PVMonitorCardConfig,
     hass: Hass,
-    handleConsumerAction: (event: Event, action?: any) => void
+    handleConsumerAction: (event: Event, consumer: ConsumerItem) => void
 ): TemplateResult {
     const { item, value, label } = data;
     const globalStyle = config.consumers!.style!;
@@ -156,20 +194,19 @@ function renderConsumerItem(
         }
     }
 
-    const hasSwitchEntity = !!item.switch_entity;
-    const tapAction = item.tap_action || (hasSwitchEntity ? { action: 'call-service', service: 'switch.toggle', target: { entity_id: item.switch_entity } } : { action: 'none' });
-    const doubleTapAction = item.double_tap_action || { action: 'none' };
-    const holdAction = item.hold_action || { action: 'none' };
+    console.log('Rendering consumer item:', {
+        entity: item.entity,
+        value,
+        primaryText,
+        secondaryText
+    });
 
     return html`
         <div class="consumer-item"
              style="${containerStyle}"
-             @click=${(e: Event) => handleConsumerAction(e, tapAction)}
-             @dblclick=${(e: Event) => handleConsumerAction(e, doubleTapAction)}
-             @contextmenu=${(e: Event) => {
-                 e.preventDefault();
-                 handleConsumerAction(e, holdAction);
-             }}>
+             @click=${(e: Event) => handleConsumerAction(e, item)}
+             @dblclick=${(e: Event) => handleConsumerAction(e, item)}
+             @contextmenu=${(e: Event) => handleConsumerAction(e, item)}>
             <div class="icon" style="${iconStyle}">
                 <ha-icon .icon=${icon} style="--mdc-icon-size: ${iconSize}; width: ${iconSize}; height: ${iconSize};"></ha-icon>
             </div>

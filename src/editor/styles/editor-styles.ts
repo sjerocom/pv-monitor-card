@@ -171,16 +171,16 @@ export const editorStyles = css`
     }
 
     .autocomplete-dropdown {
-        position: fixed;
-        top: auto;
-        left: auto;
-        min-width: 400px;
+        position: absolute;
+        top: calc(100% + 4px);
+        left: 0;
+        right: 0;
+        min-width: 100%;
         max-height: 200px;
         overflow-y: auto;
         background: #1c1c1c;
         border: 1px solid rgba(255, 255, 255, 0.12);
         border-radius: 4px;
-        margin-top: 4px;
         z-index: 99999;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
     }

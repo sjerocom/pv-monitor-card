@@ -155,6 +155,28 @@ function applyThemeColors(config: PVMonitorCardConfig, theme: Theme): PVMonitorC
                 value_color: theme.colors.infobar_value_color,
             }
         },
+        pv_bar: {
+            ...config.pv_bar,
+            style: {
+                ...config.pv_bar?.style,
+                background_color: theme.colors.infobar_background_color,
+                border_color: theme.colors.infobar_border_color,
+                icon_color: theme.colors.infobar_icon_color,
+                label_color: theme.colors.infobar_label_color,
+                value_color: theme.colors.infobar_value_color,
+            }
+        },
+        battery_bar: {
+            ...config.battery_bar,
+            style: {
+                ...config.battery_bar?.style,
+                background_color: theme.colors.infobar_background_color,
+                border_color: theme.colors.infobar_border_color,
+                icon_color: theme.colors.infobar_icon_color,
+                label_color: theme.colors.infobar_label_color,
+                value_color: theme.colors.infobar_value_color,
+            }
+        },
         consumers: {
             ...config.consumers,
             style: {
