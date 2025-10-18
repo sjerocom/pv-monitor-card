@@ -63,7 +63,7 @@ export class PVMonitorCard extends LitElement {
         const migratedConfig = migrateConfig(config);
         
         this.config = getDefaultConfig(migratedConfig);
-        this._actionHandler = new ActionHandler(this.hass, this.dispatchEvent.bind(this));
+        this._actionHandler = new ActionHandler(() => this.hass, this.dispatchEvent.bind(this));
         
         console.log('PV Monitor Card - Config updated:', {
             migrated: config.entities ? 'yes' : 'no',
@@ -75,7 +75,7 @@ export class PVMonitorCard extends LitElement {
     connectedCallback() {
         super.connectedCallback();
         if (!this._actionHandler) {
-            this._actionHandler = new ActionHandler(this.hass, this.dispatchEvent.bind(this));
+            this._actionHandler = new ActionHandler(() => this.hass, this.dispatchEvent.bind(this));
         }
     }
 
@@ -129,7 +129,7 @@ export class PVMonitorCard extends LitElement {
         const handleActionBound = (event: Event, actions: any, isHausCard?: boolean) =>
             this._actionHandler!.handleAction(event, actions, isHausCard || false, this._toggleConsumers);
         const handleTapBound = (action?: any) => this._actionHandler!.handleTap(action);
-        const handleConsumerActionBound = (event: Event, action?: any) => this._actionHandler!.handleTap(action);
+        const handleConsumerActionBound = (event: Event, consumer: any) => this._actionHandler!.handleConsumerAction(event, consumer);
 
         // Layout Order bestimmen
         const order = this.config.layout?.order || ['header', 'pv_bar', 'cards', 'info_bar', 'battery_bar', 'consumers'];

@@ -16,11 +16,20 @@ export function renderEntityPicker(
         helper?: string;
         required?: boolean;
         translations?: any;
+        include_domains?: string[];
     } = {}
 ) {
     if (!hass) return html``;
 
-    const entities = Object.keys(hass.states).sort();
+    let entities = Object.keys(hass.states).sort();
+    
+    // Filter by domains if specified
+    if (options.include_domains && options.include_domains.length > 0) {
+        entities = entities.filter(entityId => {
+            const domain = entityId.split('.')[0];
+            return options.include_domains!.includes(domain);
+        });
+    }
     const showDropdown = state.show;
 
     return html`
@@ -38,9 +47,11 @@ export function renderEntityPicker(
                             const target = ev.target as any;
                             const inputValue = target.value;
 
-                            const filtered = inputValue
-                                ? entities.filter(e => e.toLowerCase().includes(inputValue.toLowerCase())).slice(0, 50)
-                                : [];
+                            let filtered = inputValue
+                                ? entities.filter(e => e.toLowerCase().includes(inputValue.toLowerCase()))
+                                : entities;
+                            
+                            filtered = filtered.slice(0, 50);
 
                             onStateChange({
                                 results: filtered,
@@ -57,17 +68,6 @@ export function renderEntityPicker(
                                     show: true
                                 });
                             }
-
-                            setTimeout(() => {
-                                const target = ev.target as HTMLElement;
-                                const dropdown = target.parentElement?.querySelector('.autocomplete-dropdown') as HTMLElement;
-                                if (dropdown) {
-                                    const rect = target.getBoundingClientRect();
-                                    dropdown.style.top = `${rect.bottom + 4}px`;
-                                    dropdown.style.left = `${rect.left}px`;
-                                    dropdown.style.width = `${Math.max(rect.width, 400)}px`;
-                                }
-                            }, 10);
                         }}
                         @blur=${() => {
                             setTimeout(() => {

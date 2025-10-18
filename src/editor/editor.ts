@@ -27,6 +27,8 @@ export class PVMonitorCardEditor extends LitElement {
     @state() private _expandedSections: Set<string> = new Set(['entities']);
     @state() private _expandedConsumerIndex: number | null = null;
     @state() private _expandedConsumerSubsections: Map<string, Set<string>> = new Map();
+    @state() private _expandedPVBarIndex: number | null = null;
+    @state() private _expandedBatteryBarIndex: number | null = null;
     @state() private _entityPickerStates: Map<string, EntityPickerState> = new Map();
 
     private _eventManager?: EventManager;
@@ -168,6 +170,156 @@ export class PVMonitorCardEditor extends LitElement {
         this.requestUpdate();
     }
 
+    // PV Bar Item Handlers
+    private _togglePVBarItem(index: number): void {
+        this._expandedPVBarIndex = this._expandedPVBarIndex === index ? null : index;
+        this.requestUpdate();
+    }
+
+    private _addPVBarItem(): void {
+        if (!this._config || !this._eventManager) return;
+        const newConfig = JSON.parse(JSON.stringify(this._config));
+        if (!newConfig.pv_bar) newConfig.pv_bar = { show: false, entities: [] };
+        if (!newConfig.pv_bar.entities) newConfig.pv_bar.entities = [];
+        if (newConfig.pv_bar.entities.length >= 5) return;
+        newConfig.pv_bar.entities.push({ entity: '', name: '', max_power: 0 });
+        this._config = newConfig;
+        this._expandedPVBarIndex = newConfig.pv_bar.entities.length - 1;
+        this._eventManager.fireEvent(this._config);
+        this.requestUpdate();
+    }
+
+    private _duplicatePVBarItem(index: number): void {
+        if (!this._config?.pv_bar?.entities || !this._eventManager) return;
+        if (this._config.pv_bar.entities.length >= 5) return;
+        const newConfig = JSON.parse(JSON.stringify(this._config));
+        const itemToDuplicate = JSON.parse(JSON.stringify(newConfig.pv_bar.entities[index]));
+        newConfig.pv_bar.entities.splice(index + 1, 0, itemToDuplicate);
+        this._config = newConfig;
+        this._expandedPVBarIndex = index + 1;
+        this._eventManager.fireEvent(this._config);
+        this.requestUpdate();
+    }
+
+    private _movePVBarItemUp(index: number): void {
+        if (!this._config?.pv_bar?.entities || index === 0 || !this._eventManager) return;
+        const newConfig = JSON.parse(JSON.stringify(this._config));
+        const items = newConfig.pv_bar.entities;
+        [items[index - 1], items[index]] = [items[index], items[index - 1]];
+        this._config = newConfig;
+        if (this._expandedPVBarIndex === index) {
+            this._expandedPVBarIndex = index - 1;
+        } else if (this._expandedPVBarIndex === index - 1) {
+            this._expandedPVBarIndex = index;
+        }
+        this._eventManager.fireEvent(this._config);
+        this.requestUpdate();
+    }
+
+    private _movePVBarItemDown(index: number): void {
+        if (!this._config?.pv_bar?.entities || index === this._config.pv_bar.entities.length - 1 || !this._eventManager) return;
+        const newConfig = JSON.parse(JSON.stringify(this._config));
+        const items = newConfig.pv_bar.entities;
+        [items[index], items[index + 1]] = [items[index + 1], items[index]];
+        this._config = newConfig;
+        if (this._expandedPVBarIndex === index) {
+            this._expandedPVBarIndex = index + 1;
+        } else if (this._expandedPVBarIndex === index + 1) {
+            this._expandedPVBarIndex = index;
+        }
+        this._eventManager.fireEvent(this._config);
+        this.requestUpdate();
+    }
+
+    private _removePVBarItem(index: number): void {
+        if (!this._config?.pv_bar?.entities || !this._eventManager) return;
+        const newConfig = JSON.parse(JSON.stringify(this._config));
+        newConfig.pv_bar.entities.splice(index, 1);
+        this._config = newConfig;
+        if (this._expandedPVBarIndex === index) {
+            this._expandedPVBarIndex = null;
+        } else if (this._expandedPVBarIndex !== null && this._expandedPVBarIndex > index) {
+            this._expandedPVBarIndex--;
+        }
+        this._eventManager.fireEvent(this._config);
+        this.requestUpdate();
+    }
+
+    // Battery Bar Item Handlers
+    private _toggleBatteryBarItem(index: number): void {
+        this._expandedBatteryBarIndex = this._expandedBatteryBarIndex === index ? null : index;
+        this.requestUpdate();
+    }
+
+    private _addBatteryBarItem(): void {
+        if (!this._config || !this._eventManager) return;
+        const newConfig = JSON.parse(JSON.stringify(this._config));
+        if (!newConfig.battery_bar) newConfig.battery_bar = { show: false, entities: [] };
+        if (!newConfig.battery_bar.entities) newConfig.battery_bar.entities = [];
+        if (newConfig.battery_bar.entities.length >= 5) return;
+        newConfig.battery_bar.entities.push({ entity: '', name: '', capacity: 0 });
+        this._config = newConfig;
+        this._expandedBatteryBarIndex = newConfig.battery_bar.entities.length - 1;
+        this._eventManager.fireEvent(this._config);
+        this.requestUpdate();
+    }
+
+    private _duplicateBatteryBarItem(index: number): void {
+        if (!this._config?.battery_bar?.entities || !this._eventManager) return;
+        if (this._config.battery_bar.entities.length >= 5) return;
+        const newConfig = JSON.parse(JSON.stringify(this._config));
+        const itemToDuplicate = JSON.parse(JSON.stringify(newConfig.battery_bar.entities[index]));
+        newConfig.battery_bar.entities.splice(index + 1, 0, itemToDuplicate);
+        this._config = newConfig;
+        this._expandedBatteryBarIndex = index + 1;
+        this._eventManager.fireEvent(this._config);
+        this.requestUpdate();
+    }
+
+    private _moveBatteryBarItemUp(index: number): void {
+        if (!this._config?.battery_bar?.entities || index === 0 || !this._eventManager) return;
+        const newConfig = JSON.parse(JSON.stringify(this._config));
+        const items = newConfig.battery_bar.entities;
+        [items[index - 1], items[index]] = [items[index], items[index - 1]];
+        this._config = newConfig;
+        if (this._expandedBatteryBarIndex === index) {
+            this._expandedBatteryBarIndex = index - 1;
+        } else if (this._expandedBatteryBarIndex === index - 1) {
+            this._expandedBatteryBarIndex = index;
+        }
+        this._eventManager.fireEvent(this._config);
+        this.requestUpdate();
+    }
+
+    private _moveBatteryBarItemDown(index: number): void {
+        if (!this._config?.battery_bar?.entities || index === this._config.battery_bar.entities.length - 1 || !this._eventManager) return;
+        const newConfig = JSON.parse(JSON.stringify(this._config));
+        const items = newConfig.battery_bar.entities;
+        [items[index], items[index + 1]] = [items[index + 1], items[index]];
+        this._config = newConfig;
+        if (this._expandedBatteryBarIndex === index) {
+            this._expandedBatteryBarIndex = index + 1;
+        } else if (this._expandedBatteryBarIndex === index + 1) {
+            this._expandedBatteryBarIndex = index;
+        }
+        this._eventManager.fireEvent(this._config);
+        this.requestUpdate();
+    }
+
+    private _removeBatteryBarItem(index: number): void {
+        if (!this._config?.battery_bar?.entities || !this._eventManager) return;
+        const newConfig = JSON.parse(JSON.stringify(this._config));
+        newConfig.battery_bar.entities.splice(index, 1);
+        this._config = newConfig;
+        if (this._expandedBatteryBarIndex === index) {
+            this._expandedBatteryBarIndex = null;
+        } else if (this._expandedBatteryBarIndex !== null && this._expandedBatteryBarIndex > index) {
+            this._expandedBatteryBarIndex--;
+        }
+        this._eventManager.fireEvent(this._config);
+        this.requestUpdate();
+    }
+
     private _renderTab(id: string, label: string, icon: string) {
         return html`
             <button
@@ -267,11 +419,18 @@ export class PVMonitorCardEditor extends LitElement {
                         this._config,
                         this.hass,
                         this._expandedSections,
+                        this._expandedPVBarIndex,
                         this._entityPickerStates,
                         (id) => this._toggleSection(id),
+                        (index) => this._togglePVBarItem(index),
                         (key, state) => this._onEntityPickerStateChange(key, state),
                         (path, value) => this._onChange(path, value),
                         (path, key, value) => this._onTapActionChange(path, key, value),
+                        () => this._addPVBarItem(),
+                        (index) => this._duplicatePVBarItem(index),
+                        (index) => this._movePVBarItemUp(index),
+                        (index) => this._movePVBarItemDown(index),
+                        (index) => this._removePVBarItem(index),
                         t
                     )}
                 </div>
@@ -281,10 +440,17 @@ export class PVMonitorCardEditor extends LitElement {
                         this._config,
                         this.hass,
                         this._expandedSections,
+                        this._expandedPVBarIndex,
                         this._entityPickerStates,
                         (id) => this._toggleSection(id),
+                        (index) => this._togglePVBarItem(index),
                         (key, state) => this._onEntityPickerStateChange(key, state),
                         (path, value) => this._onChange(path, value),
+                        () => this._addPVBarItem(),
+                        (index) => this._duplicatePVBarItem(index),
+                        (index) => this._movePVBarItemUp(index),
+                        (index) => this._movePVBarItemDown(index),
+                        (index) => this._removePVBarItem(index),
                         t
                     )}
                 </div>
@@ -294,11 +460,18 @@ export class PVMonitorCardEditor extends LitElement {
                         this._config,
                         this.hass,
                         this._expandedSections,
+                        this._expandedBatteryBarIndex,
                         this._entityPickerStates,
                         (id) => this._toggleSection(id),
+                        (index) => this._toggleBatteryBarItem(index),
                         (key, state) => this._onEntityPickerStateChange(key, state),
                         (path, value) => this._onChange(path, value),
                         (path, key, value) => this._onTapActionChange(path, key, value),
+                        () => this._addBatteryBarItem(),
+                        (index) => this._duplicateBatteryBarItem(index),
+                        (index) => this._moveBatteryBarItemUp(index),
+                        (index) => this._moveBatteryBarItemDown(index),
+                        (index) => this._removeBatteryBarItem(index),
                         t
                     )}
                 </div>
@@ -308,10 +481,17 @@ export class PVMonitorCardEditor extends LitElement {
                         this._config,
                         this.hass,
                         this._expandedSections,
+                        this._expandedBatteryBarIndex,
                         this._entityPickerStates,
                         (id) => this._toggleSection(id),
+                        (index) => this._toggleBatteryBarItem(index),
                         (key, state) => this._onEntityPickerStateChange(key, state),
                         (path, value) => this._onChange(path, value),
+                        () => this._addBatteryBarItem(),
+                        (index) => this._duplicateBatteryBarItem(index),
+                        (index) => this._moveBatteryBarItemUp(index),
+                        (index) => this._moveBatteryBarItemDown(index),
+                        (index) => this._removeBatteryBarItem(index),
                         t
                     )}
                 </div>

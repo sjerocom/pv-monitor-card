@@ -1,6 +1,7 @@
 import { html } from "lit";
 import { PVMonitorCardConfig } from "../../../types";
 import { renderCollapsibleSection } from "../sections/collapsible-section";
+import { renderPVBarItem } from "../sections/pv-bar-item";
 import { renderIconPicker } from "../fields/icon-picker";
 import { renderSwitch } from "../fields/switch";
 import { renderEntityPicker, EntityPickerState } from "../fields/entity-picker";
@@ -16,100 +17,60 @@ export function renderPVTab(
     config: PVMonitorCardConfig,
     hass: any,
     expandedSections: Set<string>,
+    expandedPVBarIndex: number | null,
     entityPickerStates: Map<string, EntityPickerState>,
     onToggleSection: (id: string) => void,
+    onTogglePVBarItem: (index: number) => void,
     onEntityPickerStateChange: (key: string, state: EntityPickerState) => void,
     onChange: (path: string[], value: any) => void,
     onTapActionChange: (path: string[], key: string, value: any) => void,
+    onAddPVBarItem: () => void,
+    onDuplicatePVBarItem: (index: number) => void,
+    onMovePVBarItemUp: (index: number) => void,
+    onMovePVBarItemDown: (index: number) => void,
+    onRemovePVBarItem: (index: number) => void,
     t: any
 ) {
-    const pvEntities = config.pv_bar?.entities || [];
+    const pvBar = config.pv_bar || { show: false, entities: [] };
+    const canAddMore = (pvBar.entities?.length || 0) < 5;
 
     return html`
         ${renderCollapsibleSection(
             'pv_entities',
             'mdi:solar-panel-large',
-            'PV-Anlagen',
+            t.editor.bar_entities,
             html`
-                ${pvEntities.length < 5 ? html`
-                    <button
-                        class="add-button"
-                        @click=${() => {
-                            const newEntities = [...pvEntities, { entity: '', name: '' }];
-                            onChange(['pv_bar', 'entities'], newEntities);
-                        }}
-                    >
+                ${(pvBar.entities || []).map((item, index) => {
+                    const isExpanded = expandedPVBarIndex === index;
+                    return renderPVBarItem(
+                        item,
+                        index,
+                        isExpanded,
+                        hass,
+                        entityPickerStates,
+                        () => onTogglePVBarItem(index),
+                        onEntityPickerStateChange,
+                        onChange,
+                        () => onMovePVBarItemUp(index),
+                        () => onMovePVBarItemDown(index),
+                        () => onDuplicatePVBarItem(index),
+                        () => onRemovePVBarItem(index),
+                        index === 0,
+                        index === (pvBar.entities?.length || 0) - 1,
+                        t
+                    );
+                })}
+
+                ${canAddMore ? html`
+                    <ha-button @click=${onAddPVBarItem}>
                         <ha-icon icon="mdi:plus"></ha-icon>
                         ${t.editor.add_pv_entity}
-                    </button>
+                    </ha-button>
                 ` : html`
-                    <div class="warning">${t.editor.pv_max_5}</div>
-                `}
-
-                ${pvEntities.map((entity: any, index: number) => html`
-                    <div class="entity-item">
-                        <div class="entity-item-header">
-                            <span>PV ${index + 1}</span>
-                            <button
-                                class="remove-button"
-                                @click=${() => {
-                                    const newEntities = pvEntities.filter((_: any, i: number) => i !== index);
-                                    onChange(['pv_bar', 'entities'], newEntities);
-                                }}
-                            >
-                                <ha-icon icon="mdi:delete"></ha-icon>
-                                ${t.editor.remove_entity}
-                            </button>
-                        </div>
-
-                        ${renderEntityPicker(
-                            t.editor.entity,
-                            entity.entity || '',
-                            hass,
-                            entityPickerStates.get(`pv_entity_${index}`) || { results: [], show: false },
-                            (value) => {
-                                const newEntities = [...pvEntities];
-                                newEntities[index] = { ...newEntities[index], entity: value };
-                                onChange(['pv_bar', 'entities'], newEntities);
-                            },
-                            (state) => onEntityPickerStateChange(`pv_entity_${index}`, state)
-                        )}
-
-                        ${renderTextfield(
-                            t.editor.entity_name,
-                            entity.name,
-                            (value) => {
-                                const newEntities = [...pvEntities];
-                                newEntities[index] = { ...newEntities[index], name: value };
-                                onChange(['pv_bar', 'entities'], newEntities);
-                            },
-                            { helper: t.editor.entity_name_helper }
-                        )}
-
-                        ${renderTextfield(
-                            t.editor.max_power,
-                            entity.max_power,
-                            (value) => {
-                                const newEntities = [...pvEntities];
-                                newEntities[index] = { ...newEntities[index], max_power: parseInt(value) || undefined };
-                                onChange(['pv_bar', 'entities'], newEntities);
-                            },
-                            { placeholder: '10000', helper: t.editor.max_power_helper }
-                        )}
-
-                        ${renderIconPicker(
-                            t.editor.icon_label,
-                            entity.icon,
-                            hass,
-                            (value) => {
-                                const newEntities = [...pvEntities];
-                                newEntities[index] = { ...newEntities[index], icon: value };
-                                onChange(['pv_bar', 'entities'], newEntities);
-                            },
-                            { translations: { editor: t.editor } }
-                        )}
+                    <div class="info-text" style="padding: 8px; opacity: 0.7;">
+                        ${t.editor.pv_max_5}
                     </div>
-                `)}
+                `}
             `,
             expandedSections.has('pv_entities'),
             () => onToggleSection('pv_entities')

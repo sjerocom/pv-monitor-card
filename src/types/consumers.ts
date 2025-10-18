@@ -20,6 +20,8 @@ export interface ConsumerItemStyle {
     box_shadow?: string;
 }
 
+export type ConsumerTapActionTarget = 'none' | 'entity' | 'custom_entity' | 'custom_action';
+
 export interface ConsumerItem {
     entity: string;
     icon?: string;
@@ -32,10 +34,22 @@ export interface ConsumerItem {
     secondary_entity?: string;
     secondary_text?: string;
     show_secondary?: boolean;
-    switch_entity?: string;
+    
+    // Neue Struktur: Welche Action triggert die Entity
+    tap_action_target?: ConsumerTapActionTarget;
+    double_tap_action_target?: ConsumerTapActionTarget;
+    hold_action_target?: ConsumerTapActionTarget;
+    
+    // Custom Entity Toggle (nur wenn target = 'custom_entity')
+    tap_action_custom_entity?: string;
+    double_tap_action_custom_entity?: string;
+    hold_action_custom_entity?: string;
+    
+    // Custom Actions (nur wenn target = 'custom_action')
     tap_action?: TapAction;
     double_tap_action?: TapAction;
     hold_action?: TapAction;
+    
     style?: ConsumerItemStyle;
 }
 
