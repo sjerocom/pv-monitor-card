@@ -5,6 +5,7 @@
   },
   "editor": {
     "tab_general": "General",
+    "tab_theme": "Theme",
     "tab_styling": "Styling",
     "tab_infobar": "Info bar",
     "tab_pv": "PV system",

@@ -5,6 +5,7 @@
   },
   "editor": {
     "tab_general": "Yleinen",
+    "tab_theme": "Teema",
     "tab_styling": "Tyyli",
     "tab_infobar": "Tietopalkki",
     "tab_pv": "Aurinkosähköjärjestelmä",

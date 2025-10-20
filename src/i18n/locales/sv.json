@@ -5,6 +5,7 @@
   },
   "editor": {
     "tab_general": "Allmänt",
+    "tab_theme": "Tema",
     "tab_styling": "Stil",
     "tab_infobar": "Informationsfält",
     "tab_pv": "Solcellssystem",

@@ -106,6 +106,7 @@ function createEmptyTranslations(): Translations {
         },
         editor: {
             tab_general: 'General',
+            tab_theme: 'Theme',
             tab_styling: 'Styling',
             tab_infobar: 'Info Bar',
             tab_pv: 'PV System',
