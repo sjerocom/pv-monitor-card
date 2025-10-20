@@ -7,8 +7,8 @@ import { EventManager } from "./utils/event-handlers";
 import { updateConfigValue, updateTapAction } from "./utils/config-helpers";
 import { EntityPickerState } from "./components/fields/entity-picker";
 import { renderGeneralTab } from "./components/tabs/general-tab";
+import { renderHeaderTab } from "./components/tabs/header-tab";
 import { renderThemeTab } from "./components/tabs/theme-tab";
-import { renderStylingTab } from "./components/tabs/styling-tab";
 import { renderInfoBarTab } from "./components/tabs/infobar-tab";
 import { renderConsumersTab } from "./components/tabs/consumers-tab";
 import { renderPVTab } from "./components/tabs/pv-tab";
@@ -342,8 +342,8 @@ export class PVMonitorCardEditor extends LitElement {
             <div class="card-config">
                 <div class="tabs">
                     ${this._renderTab('general', t.editor.tab_general, 'mdi:cog')}
+                    ${this._renderTab('header', t.editor.tab_header || 'Header', 'mdi:page-layout-header')}
                     ${this._renderTab('theme', t.editor.tab_theme || 'Theme', 'mdi:palette-outline')}
-                    ${this._renderTab('styling', t.editor.tab_styling, 'mdi:palette')}
                     ${this._renderTab('infobar', t.editor.tab_infobar, 'mdi:information')}
                     ${this._renderTab('consumers', t.editor.tab_consumers, 'mdi:flash')}
                     ${this._renderTab('pv', t.editor.tab_pv, 'mdi:solar-panel')}
@@ -367,20 +367,19 @@ export class PVMonitorCardEditor extends LitElement {
                     )}
                 </div>
 
-                <div class="tab-content ${this._activeTab === 'theme' ? 'active' : ''}">
-                    ${renderThemeTab(
+                <div class="tab-content ${this._activeTab === 'header' ? 'active' : ''}">
+                    ${renderHeaderTab(
                         this._config,
                         this.hass,
                         this._expandedSections,
                         (id) => this._toggleSection(id),
                         (path, value) => this._onChange(path, value),
-                        (config) => this._onConfigChange(config),
                         t
                     )}
                 </div>
 
-                <div class="tab-content ${this._activeTab === 'styling' ? 'active' : ''}">
-                    ${renderStylingTab(
+                <div class="tab-content ${this._activeTab === 'theme' ? 'active' : ''}">
+                    ${renderThemeTab(
                         this._config,
                         this.hass,
                         this._expandedSections,

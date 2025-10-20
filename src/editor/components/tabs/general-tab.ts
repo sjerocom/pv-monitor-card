@@ -22,52 +22,6 @@ export function renderGeneralTab(
     return html`
 
         ${renderCollapsibleSection(
-            'header',
-            'mdi:card-text',
-            t.editor.header_section,
-            html`
-                ${renderSwitch(
-                    t.editor.show_title,
-                    config.show_title !== false,
-                    (value) => onChange(['show_title'], value)
-                )}
-                ${renderTextfield(
-                    t.editor.title,
-                    config.title,
-                    (value) => onChange(['title'], value),
-                    { placeholder: t.editor.title_placeholder, helper: t.editor.title_helper }
-                )}
-                ${renderSwitch(
-                    t.editor.show_subtitle,
-                    config.show_subtitle !== false,
-                    (value) => onChange(['show_subtitle'], value)
-                )}
-                ${renderTextfield(
-                    t.editor.subtitle,
-                    config.subtitle,
-                    (value) => onChange(['subtitle'], value),
-                    { placeholder: t.editor.subtitle_placeholder, helper: t.editor.subtitle_helper }
-                )}
-                ${renderSwitch(
-                    t.editor.show_icon,
-                    config.show_icon !== false,
-                    (value) => onChange(['show_icon'], value)
-                )}
-                ${renderIconPicker(
-                    t.editor.icon,
-                    config.icon,
-                    hass,
-                    (value) => onChange(['icon'], value),
-                    { helper: t.editor.icon_helper, translations: { editor: t.editor } }
-                )}
-            `,
-            expandedSections.has('header'),
-            () => onToggleSection('header')
-        )}
-
-        <div class="divider"></div>
-
-        ${renderCollapsibleSection(
             'layout_order',
             'mdi:order-bool-ascending',
             t.editor.layout_order,
@@ -104,6 +58,54 @@ export function renderGeneralTab(
             `,
             expandedSections.has('cards_order'),
             () => onToggleSection('cards_order')
+        )}
+
+        <div class="divider"></div>
+
+        ${renderCollapsibleSection(
+            'layout',
+            'mdi:grid',
+            t.editor.layout,
+            html`
+                ${renderTextfield(
+                    t.editor.grid_gap,
+                    config.grid_gap,
+                    (value) => onChange(['grid_gap'], value),
+                    { placeholder: t.editor.grid_gap_placeholder, helper: t.editor.grid_gap_helper }
+                )}
+                ${renderTextfield(
+                    t.editor.header_margin_bottom,
+                    config.style?.header_margin_bottom,
+                    (value) => onChange(['style', 'header_margin_bottom'], value),
+                    { placeholder: '12px', helper: t.editor.header_margin_bottom_helper }
+                )}
+                ${renderTextfield(
+                    t.editor.infobar_gap,
+                    config.style?.infobar_gap,
+                    (value) => onChange(['style', 'infobar_gap'], value),
+                    { placeholder: '6px', helper: t.editor.infobar_gap_helper }
+                )}
+                ${renderTextfield(
+                    t.editor.pv_bar_gap,
+                    config.style?.pv_bar_gap,
+                    (value) => onChange(['style', 'pv_bar_gap'], value),
+                    { placeholder: '6px', helper: t.editor.pv_bar_gap_helper }
+                )}
+                ${renderTextfield(
+                    t.editor.battery_bar_gap,
+                    config.style?.battery_bar_gap,
+                    (value) => onChange(['style', 'battery_bar_gap'], value),
+                    { placeholder: '6px', helper: t.editor.battery_bar_gap_helper }
+                )}
+                ${renderTextfield(
+                    t.editor.cursor,
+                    config.style?.card_cursor,
+                    (value) => onChange(['style', 'card_cursor'], value),
+                    { placeholder: 'pointer' }
+                )}
+            `,
+            expandedSections.has('layout'),
+            () => onToggleSection('layout')
         )}
 
         <div class="divider"></div>
