@@ -1,26 +1,18 @@
 import { html } from "lit";
 import { PVMonitorCardConfig } from "../../../types";
 import { renderCollapsibleSection } from "../sections/collapsible-section";
-import { EntityPickerState } from "../fields/entity-picker";
-import { renderSwitch } from "../fields/switch";
 import { renderTextfield } from "../fields/textfield";
-import { renderIconPicker } from "../fields/icon-picker";
-import { renderLanguageSelector } from "../fields/language-selector";
 import { renderLayoutOrderSelector } from "../fields/layout-order-selector";
 import { renderCardOrderSelector } from "../fields/card-order-selector";
 
-export function renderGeneralTab(
+export function renderLayoutSubTab(
     config: PVMonitorCardConfig,
-    hass: any,
     expandedSections: Set<string>,
-    entityPickerStates: Map<string, EntityPickerState>,
     onToggleSection: (id: string) => void,
-    onEntityPickerStateChange: (key: string, state: EntityPickerState) => void,
     onChange: (path: string[], value: any) => void,
     t: any
 ) {
     return html`
-
         ${renderCollapsibleSection(
             'layout_order',
             'mdi:order-bool-ascending',
@@ -106,23 +98,6 @@ export function renderGeneralTab(
             `,
             expandedSections.has('layout'),
             () => onToggleSection('layout')
-        )}
-
-        <div class="divider"></div>
-
-        ${renderCollapsibleSection(
-            'language',
-            'mdi:translate',
-            t.editor.language,
-            html`
-                ${renderLanguageSelector(
-                    config.language,
-                    (value) => onChange(['language'], value),
-                    { translations: t }
-                )}
-            `,
-            expandedSections.has('language'),
-            () => onToggleSection('language')
         )}
     `;
 }

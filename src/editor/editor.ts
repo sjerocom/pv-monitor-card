@@ -6,11 +6,9 @@ import { editorStyles } from "./styles/editor-styles";
 import { EventManager } from "./utils/event-handlers";
 import { updateConfigValue, updateTapAction } from "./utils/config-helpers";
 import { EntityPickerState } from "./components/fields/entity-picker";
-import { renderGeneralTab } from "./components/tabs/general-tab";
-import { renderHeaderTab } from "./components/tabs/header-tab";
-import { renderThemeTab } from "./components/tabs/theme-tab";
-import { renderInfoBarTab } from "./components/tabs/infobar-tab";
-import { renderConsumersTab } from "./components/tabs/consumers-tab";
+import { renderGeneralMainTab } from "./components/tabs/general-main-tab";
+import { renderElementsMainTab } from "./components/tabs/elements-main-tab";
+import { renderCardsMainTab } from "./components/tabs/cards-main-tab";
 import { renderPVTab } from "./components/tabs/pv-tab";
 import { renderPVBarTab } from "./components/tabs/pv-bar-tab";
 import { renderBatteryTab } from "./components/tabs/battery-tab";
@@ -25,6 +23,15 @@ export class PVMonitorCardEditor extends LitElement {
     @property({ attribute: false }) public hass?: any;
     @state() private _config?: PVMonitorCardConfig;
     @state() private _activeTab: string = 'general';
+    @state() private _activeSubTab: Map<string, string> = new Map([
+        ['general', 'layout'],
+        ['elements', 'header'],
+        ['cards', 'pv']
+    ]);
+    @state() private _activeContextTab: Map<string, string> = new Map([
+        ['pv', 'card'],
+        ['battery', 'card']
+    ]);
     @state() private _expandedSections: Set<string> = new Set(['entities']);
     @state() private _expandedConsumerIndex: number | null = null;
     @state() private _expandedConsumerSubsections: Map<string, Set<string>> = new Map();
@@ -68,6 +75,16 @@ export class PVMonitorCardEditor extends LitElement {
         if (!this._config || !this._eventManager) return;
         this._config = updateTapAction(this._config, path, key, value);
         this._eventManager.fireEvent(this._config);
+        this.requestUpdate();
+    }
+
+    private _onSubTabChange(mainTab: string, subTab: string): void {
+        this._activeSubTab.set(mainTab, subTab);
+        this.requestUpdate();
+    }
+
+    private _onContextTabChange(subTab: string, contextTab: string): void {
+        this._activeContextTab.set(subTab, contextTab);
         this.requestUpdate();
     }
 
@@ -180,22 +197,23 @@ export class PVMonitorCardEditor extends LitElement {
     private _addPVBarItem(): void {
         if (!this._config || !this._eventManager) return;
         const newConfig = JSON.parse(JSON.stringify(this._config));
-        if (!newConfig.pv_bar) newConfig.pv_bar = { show: false, entities: [] };
-        if (!newConfig.pv_bar.entities) newConfig.pv_bar.entities = [];
-        if (newConfig.pv_bar.entities.length >= 5) return;
-        newConfig.pv_bar.entities.push({ entity: '', name: '', max_power: 0 });
+        if (!newConfig.pv) newConfig.pv = {};
+        if (!(newConfig.pv as any).entities) (newConfig.pv as any).entities = [];
+        if ((newConfig.pv as any).entities.length >= 5) return;
+        (newConfig.pv as any).entities.push({ entity: '', name: '', max_power: 0 });
         this._config = newConfig;
-        this._expandedPVBarIndex = newConfig.pv_bar.entities.length - 1;
+        this._expandedPVBarIndex = (newConfig.pv as any).entities.length - 1;
         this._eventManager.fireEvent(this._config);
         this.requestUpdate();
     }
 
     private _duplicatePVBarItem(index: number): void {
-        if (!this._config?.pv_bar?.entities || !this._eventManager) return;
-        if (this._config.pv_bar.entities.length >= 5) return;
+        const pvEntities = (this._config?.pv as any)?.entities;
+        if (!pvEntities || !this._eventManager) return;
+        if (pvEntities.length >= 5) return;
         const newConfig = JSON.parse(JSON.stringify(this._config));
-        const itemToDuplicate = JSON.parse(JSON.stringify(newConfig.pv_bar.entities[index]));
-        newConfig.pv_bar.entities.splice(index + 1, 0, itemToDuplicate);
+        const itemToDuplicate = JSON.parse(JSON.stringify((newConfig.pv as any).entities[index]));
+        (newConfig.pv as any).entities.splice(index + 1, 0, itemToDuplicate);
         this._config = newConfig;
         this._expandedPVBarIndex = index + 1;
         this._eventManager.fireEvent(this._config);
@@ -203,9 +221,10 @@ export class PVMonitorCardEditor extends LitElement {
     }
 
     private _movePVBarItemUp(index: number): void {
-        if (!this._config?.pv_bar?.entities || index === 0 || !this._eventManager) return;
+        const pvEntities = (this._config?.pv as any)?.entities;
+        if (!pvEntities || index === 0 || !this._eventManager) return;
         const newConfig = JSON.parse(JSON.stringify(this._config));
-        const items = newConfig.pv_bar.entities;
+        const items = (newConfig.pv as any).entities;
         [items[index - 1], items[index]] = [items[index], items[index - 1]];
         this._config = newConfig;
         if (this._expandedPVBarIndex === index) {
@@ -218,9 +237,10 @@ export class PVMonitorCardEditor extends LitElement {
     }
 
     private _movePVBarItemDown(index: number): void {
-        if (!this._config?.pv_bar?.entities || index === this._config.pv_bar.entities.length - 1 || !this._eventManager) return;
+        const pvEntities = (this._config?.pv as any)?.entities;
+        if (!pvEntities || index === pvEntities.length - 1 || !this._eventManager) return;
         const newConfig = JSON.parse(JSON.stringify(this._config));
-        const items = newConfig.pv_bar.entities;
+        const items = (newConfig.pv as any).entities;
         [items[index], items[index + 1]] = [items[index + 1], items[index]];
         this._config = newConfig;
         if (this._expandedPVBarIndex === index) {
@@ -233,9 +253,10 @@ export class PVMonitorCardEditor extends LitElement {
     }
 
     private _removePVBarItem(index: number): void {
-        if (!this._config?.pv_bar?.entities || !this._eventManager) return;
+        const pvEntities = (this._config?.pv as any)?.entities;
+        if (!pvEntities || !this._eventManager) return;
         const newConfig = JSON.parse(JSON.stringify(this._config));
-        newConfig.pv_bar.entities.splice(index, 1);
+        (newConfig.pv as any).entities.splice(index, 1);
         this._config = newConfig;
         if (this._expandedPVBarIndex === index) {
             this._expandedPVBarIndex = null;
@@ -255,22 +276,23 @@ export class PVMonitorCardEditor extends LitElement {
     private _addBatteryBarItem(): void {
         if (!this._config || !this._eventManager) return;
         const newConfig = JSON.parse(JSON.stringify(this._config));
-        if (!newConfig.battery_bar) newConfig.battery_bar = { show: false, entities: [] };
-        if (!newConfig.battery_bar.entities) newConfig.battery_bar.entities = [];
-        if (newConfig.battery_bar.entities.length >= 5) return;
-        newConfig.battery_bar.entities.push({ entity: '', name: '', capacity: 0 });
+        if (!newConfig.batterie) newConfig.batterie = {};
+        if (!(newConfig.batterie as any).entities) (newConfig.batterie as any).entities = [];
+        if ((newConfig.batterie as any).entities.length >= 5) return;
+        (newConfig.batterie as any).entities.push({ entity: '', name: '', capacity: 0 });
         this._config = newConfig;
-        this._expandedBatteryBarIndex = newConfig.battery_bar.entities.length - 1;
+        this._expandedBatteryBarIndex = (newConfig.batterie as any).entities.length - 1;
         this._eventManager.fireEvent(this._config);
         this.requestUpdate();
     }
 
     private _duplicateBatteryBarItem(index: number): void {
-        if (!this._config?.battery_bar?.entities || !this._eventManager) return;
-        if (this._config.battery_bar.entities.length >= 5) return;
+        const batteryEntities = (this._config?.batterie as any)?.entities;
+        if (!batteryEntities || !this._eventManager) return;
+        if (batteryEntities.length >= 5) return;
         const newConfig = JSON.parse(JSON.stringify(this._config));
-        const itemToDuplicate = JSON.parse(JSON.stringify(newConfig.battery_bar.entities[index]));
-        newConfig.battery_bar.entities.splice(index + 1, 0, itemToDuplicate);
+        const itemToDuplicate = JSON.parse(JSON.stringify((newConfig.batterie as any).entities[index]));
+        (newConfig.batterie as any).entities.splice(index + 1, 0, itemToDuplicate);
         this._config = newConfig;
         this._expandedBatteryBarIndex = index + 1;
         this._eventManager.fireEvent(this._config);
@@ -278,9 +300,10 @@ export class PVMonitorCardEditor extends LitElement {
     }
 
     private _moveBatteryBarItemUp(index: number): void {
-        if (!this._config?.battery_bar?.entities || index === 0 || !this._eventManager) return;
+        const batteryEntities = (this._config?.batterie as any)?.entities;
+        if (!batteryEntities || index === 0 || !this._eventManager) return;
         const newConfig = JSON.parse(JSON.stringify(this._config));
-        const items = newConfig.battery_bar.entities;
+        const items = (newConfig.batterie as any).entities;
         [items[index - 1], items[index]] = [items[index], items[index - 1]];
         this._config = newConfig;
         if (this._expandedBatteryBarIndex === index) {
@@ -293,9 +316,10 @@ export class PVMonitorCardEditor extends LitElement {
     }
 
     private _moveBatteryBarItemDown(index: number): void {
-        if (!this._config?.battery_bar?.entities || index === this._config.battery_bar.entities.length - 1 || !this._eventManager) return;
+        const batteryEntities = (this._config?.batterie as any)?.entities;
+        if (!batteryEntities || index === batteryEntities.length - 1 || !this._eventManager) return;
         const newConfig = JSON.parse(JSON.stringify(this._config));
-        const items = newConfig.battery_bar.entities;
+        const items = (newConfig.batterie as any).entities;
         [items[index], items[index + 1]] = [items[index + 1], items[index]];
         this._config = newConfig;
         if (this._expandedBatteryBarIndex === index) {
@@ -308,9 +332,10 @@ export class PVMonitorCardEditor extends LitElement {
     }
 
     private _removeBatteryBarItem(index: number): void {
-        if (!this._config?.battery_bar?.entities || !this._eventManager) return;
+        const batteryEntities = (this._config?.batterie as any)?.entities;
+        if (!batteryEntities || !this._eventManager) return;
         const newConfig = JSON.parse(JSON.stringify(this._config));
-        newConfig.battery_bar.entities.splice(index, 1);
+        (newConfig.batterie as any).entities.splice(index, 1);
         this._config = newConfig;
         if (this._expandedBatteryBarIndex === index) {
             this._expandedBatteryBarIndex = null;
@@ -342,77 +367,37 @@ export class PVMonitorCardEditor extends LitElement {
             <div class="card-config">
                 <div class="tabs">
                     ${this._renderTab('general', t.editor.tab_general, 'mdi:cog')}
-                    ${this._renderTab('header', t.editor.tab_header || 'Header', 'mdi:page-layout-header')}
-                    ${this._renderTab('theme', t.editor.tab_theme || 'Theme', 'mdi:palette-outline')}
-                    ${this._renderTab('infobar', t.editor.tab_infobar, 'mdi:information')}
-                    ${this._renderTab('consumers', t.editor.tab_consumers, 'mdi:flash')}
-                    ${this._renderTab('pv', t.editor.tab_pv, 'mdi:solar-panel')}
-                    ${this._renderTab('pv_bar', t.editor.tab_pv_bar || 'PV Bar', 'mdi:chart-bar')}
-                    ${this._renderTab('battery', t.editor.tab_battery, 'mdi:battery')}
-                    ${this._renderTab('battery_bar', t.editor.tab_battery_bar || 'Battery Bar', 'mdi:battery-charging')}
-                    ${this._renderTab('house', t.editor.tab_house, 'mdi:home')}
-                    ${this._renderTab('grid', t.editor.tab_grid, 'mdi:transmission-tower')}
+                    ${this._renderTab('elements', t.editor.tab_elements || 'Elements', 'mdi:view-dashboard')}
+                    ${this._renderTab('cards', t.editor.tab_cards || 'Cards', 'mdi:card-multiple')}
                 </div>
 
                 <div class="tab-content ${this._activeTab === 'general' ? 'active' : ''}">
-                    ${renderGeneralTab(
+                    ${renderGeneralMainTab(
                         this._config,
                         this.hass,
                         this._expandedSections,
+                        this._activeSubTab.get('general') || 'layout',
                         this._entityPickerStates,
                         (id) => this._toggleSection(id),
+                        (subTab) => this._onSubTabChange('general', subTab),
                         (key, state) => this._onEntityPickerStateChange(key, state),
-                        (path, value) => this._onChange(path, value),
-                        t
-                    )}
-                </div>
-
-                <div class="tab-content ${this._activeTab === 'header' ? 'active' : ''}">
-                    ${renderHeaderTab(
-                        this._config,
-                        this.hass,
-                        this._expandedSections,
-                        (id) => this._toggleSection(id),
-                        (path, value) => this._onChange(path, value),
-                        t
-                    )}
-                </div>
-
-                <div class="tab-content ${this._activeTab === 'theme' ? 'active' : ''}">
-                    ${renderThemeTab(
-                        this._config,
-                        this.hass,
-                        this._expandedSections,
-                        (id) => this._toggleSection(id),
                         (path, value) => this._onChange(path, value),
                         (config) => this._onConfigChange(config),
                         t
                     )}
                 </div>
 
-                <div class="tab-content ${this._activeTab === 'infobar' ? 'active' : ''}">
-                    ${renderInfoBarTab(
+                <div class="tab-content ${this._activeTab === 'elements' ? 'active' : ''}">
+                    ${renderElementsMainTab(
                         this._config,
                         this.hass,
                         this._expandedSections,
-                        this._entityPickerStates,
-                        (id) => this._toggleSection(id),
-                        (key, state) => this._onEntityPickerStateChange(key, state),
-                        (path, value) => this._onChange(path, value),
-                        (path, key, value) => this._onTapActionChange(path, key, value),
-                        t
-                    )}
-                </div>
-
-                <div class="tab-content ${this._activeTab === 'consumers' ? 'active' : ''}">
-                    ${renderConsumersTab(
-                        this._config,
-                        this.hass,
-                        this._expandedSections,
+                        this._activeSubTab.get('elements') || 'header',
                         this._expandedConsumerIndex,
                         this._expandedConsumerSubsections,
                         this._entityPickerStates,
                         (id) => this._toggleSection(id),
+                        (subTab) => this._onSubTabChange('elements', subTab),
                         (index) => this._toggleConsumer(index),
                         (index, subsectionId) => this._toggleConsumerSubsection(index, subsectionId),
                         (key, state) => this._onEntityPickerStateChange(key, state),
@@ -427,15 +412,21 @@ export class PVMonitorCardEditor extends LitElement {
                     )}
                 </div>
 
-                <div class="tab-content ${this._activeTab === 'pv' ? 'active' : ''}">
-                    ${renderPVTab(
+                <div class="tab-content ${this._activeTab === 'cards' ? 'active' : ''}">
+                    ${renderCardsMainTab(
                         this._config,
                         this.hass,
                         this._expandedSections,
+                        this._activeSubTab.get('cards') || 'pv',
+                        this._activeContextTab.get(this._activeSubTab.get('cards') || 'pv') || 'card',
                         this._expandedPVBarIndex,
+                        this._expandedBatteryBarIndex,
                         this._entityPickerStates,
                         (id) => this._toggleSection(id),
+                        (subTab) => this._onSubTabChange('cards', subTab),
+                        (contextTab) => this._onContextTabChange(this._activeSubTab.get('cards') || 'pv', contextTab),
                         (index) => this._togglePVBarItem(index),
+                        (index) => this._toggleBatteryBarItem(index),
                         (key, state) => this._onEntityPickerStateChange(key, state),
                         (path, value) => this._onChange(path, value),
                         (path, key, value) => this._onTapActionChange(path, key, value),
@@ -444,95 +435,17 @@ export class PVMonitorCardEditor extends LitElement {
                         (index) => this._movePVBarItemUp(index),
                         (index) => this._movePVBarItemDown(index),
                         (index) => this._removePVBarItem(index),
-                        t
-                    )}
-                </div>
-
-                <div class="tab-content ${this._activeTab === 'pv_bar' ? 'active' : ''}">
-                    ${renderPVBarTab(
-                        this._config,
-                        this.hass,
-                        this._expandedSections,
-                        this._expandedPVBarIndex,
-                        this._entityPickerStates,
-                        (id) => this._toggleSection(id),
-                        (index) => this._togglePVBarItem(index),
-                        (key, state) => this._onEntityPickerStateChange(key, state),
-                        (path, value) => this._onChange(path, value),
-                        () => this._addPVBarItem(),
-                        (index) => this._duplicatePVBarItem(index),
-                        (index) => this._movePVBarItemUp(index),
-                        (index) => this._movePVBarItemDown(index),
-                        (index) => this._removePVBarItem(index),
-                        t
-                    )}
-                </div>
-
-                <div class="tab-content ${this._activeTab === 'battery' ? 'active' : ''}">
-                    ${renderBatteryTab(
-                        this._config,
-                        this.hass,
-                        this._expandedSections,
-                        this._expandedBatteryBarIndex,
-                        this._entityPickerStates,
-                        (id) => this._toggleSection(id),
-                        (index) => this._toggleBatteryBarItem(index),
-                        (key, state) => this._onEntityPickerStateChange(key, state),
-                        (path, value) => this._onChange(path, value),
-                        (path, key, value) => this._onTapActionChange(path, key, value),
                         () => this._addBatteryBarItem(),
                         (index) => this._duplicateBatteryBarItem(index),
                         (index) => this._moveBatteryBarItemUp(index),
                         (index) => this._moveBatteryBarItemDown(index),
                         (index) => this._removeBatteryBarItem(index),
-                        t
-                    )}
-                </div>
-
-                <div class="tab-content ${this._activeTab === 'battery_bar' ? 'active' : ''}">
-                    ${renderBatteryBarTab(
-                        this._config,
-                        this.hass,
-                        this._expandedSections,
-                        this._expandedBatteryBarIndex,
-                        this._entityPickerStates,
-                        (id) => this._toggleSection(id),
-                        (index) => this._toggleBatteryBarItem(index),
-                        (key, state) => this._onEntityPickerStateChange(key, state),
-                        (path, value) => this._onChange(path, value),
-                        () => this._addBatteryBarItem(),
-                        (index) => this._duplicateBatteryBarItem(index),
-                        (index) => this._moveBatteryBarItemUp(index),
-                        (index) => this._moveBatteryBarItemDown(index),
-                        (index) => this._removeBatteryBarItem(index),
-                        t
-                    )}
-                </div>
-
-                <div class="tab-content ${this._activeTab === 'house' ? 'active' : ''}">
-                    ${renderHouseTab(
-                        this._config,
-                        this.hass,
-                        this._expandedSections,
-                        this._entityPickerStates,
-                        (id) => this._toggleSection(id),
-                        (key, state) => this._onEntityPickerStateChange(key, state),
-                        (path, value) => this._onChange(path, value),
-                        (path, key, value) => this._onTapActionChange(path, key, value),
-                        t
-                    )}
-                </div>
-
-                <div class="tab-content ${this._activeTab === 'grid' ? 'active' : ''}">
-                    ${renderGridTab(
-                        this._config,
-                        this.hass,
-                        this._expandedSections,
-                        this._entityPickerStates,
-                        (id) => this._toggleSection(id),
-                        (key, state) => this._onEntityPickerStateChange(key, state),
-                        (path, value) => this._onChange(path, value),
-                        (path, key, value) => this._onTapActionChange(path, key, value),
+                        renderPVTab,
+                        renderPVBarTab,
+                        renderBatteryTab,
+                        renderBatteryBarTab,
+                        renderHouseTab,
+                        renderGridTab,
                         t
                     )}
                 </div>

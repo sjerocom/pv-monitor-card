@@ -106,6 +106,10 @@ function createEmptyTranslations(): Translations {
         },
         editor: {
             tab_general: 'General',
+            tab_elements: 'Elements',
+            tab_cards: 'Cards',
+            tab_layout: 'Layout',
+            tab_language: 'Language',
             tab_header: 'Header',
             tab_theme: 'Theme',
             tab_infobar: 'Info Bar',

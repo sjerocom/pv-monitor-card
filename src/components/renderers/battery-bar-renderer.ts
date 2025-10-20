@@ -8,8 +8,9 @@ export function renderBatteryBar(
     hass: any
 ): TemplateResult {
     const batteryBar = config.battery_bar;
+    const batteryEntities = (config.batterie as any)?.entities;
 
-    if (!batteryBar?.show || !batteryBar?.entities || batteryBar.entities.length === 0) {
+    if (!batteryBar?.show || !batteryEntities || batteryEntities.length === 0) {
         return html``;
     }
 
@@ -18,7 +19,7 @@ export function renderBatteryBar(
 
     const entityData: Array<{entity: BatteryBarEntity, soc: number, charge: number, discharge: number, state: any}> = [];
 
-    batteryBar.entities.forEach((entity) => {
+    batteryEntities.forEach((entity: BatteryBarEntity) => {
         if (entity.entity && hass?.states[entity.entity]) {
             const state = hass.states[entity.entity];
             const soc = parseFloat(state.state) || 0;

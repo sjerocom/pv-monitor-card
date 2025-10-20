@@ -34,6 +34,10 @@ export interface Translations {
 
     editor: {
         tab_general: string;
+        tab_elements: string;
+        tab_cards: string;
+        tab_layout: string;
+        tab_language: string;
         tab_header: string;
         tab_theme: string;
         tab_infobar: string;

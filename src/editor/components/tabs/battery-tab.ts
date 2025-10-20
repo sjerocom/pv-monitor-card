@@ -31,8 +31,8 @@ export function renderBatteryTab(
     onRemoveBatteryBarItem: (index: number) => void,
     t: any
 ) {
-    const batteryBar = config.battery_bar || { show: false, entities: [] };
-    const canAddMore = (batteryBar.entities?.length || 0) < 5;
+    const batteryEntities = (config.batterie as any)?.entities || [];
+    const canAddMore = batteryEntities.length < 5;
 
     return html`
         ${renderCollapsibleSection(
@@ -40,7 +40,7 @@ export function renderBatteryTab(
             'mdi:battery-high',
             t.editor.bar_entities,
             html`
-                ${(batteryBar.entities || []).map((item, index) => {
+                ${batteryEntities.map((item: any, index: number) => {
                     const isExpanded = expandedBatteryBarIndex === index;
                     return renderBatteryBarItem(
                         item,
@@ -56,7 +56,7 @@ export function renderBatteryTab(
                         () => onDuplicateBatteryBarItem(index),
                         () => onRemoveBatteryBarItem(index),
                         index === 0,
-                        index === (batteryBar.entities?.length || 0) - 1,
+                        index === batteryEntities.length - 1,
                         t
                     );
                 })}
