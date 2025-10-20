@@ -1,6 +1,6 @@
 {
   "name": "pv-monitor-card",
-  "version": "0.0.126",
+  "version": "0.0.127",
   "description": "PV Monitor Card für Home Assistant",
   "main": "dist/pv-monitor-card.js",
   "scripts": {
