@@ -1,6 +1,7 @@
 import { html, TemplateResult } from "lit";
 import { PVMonitorCardConfig, BatteryBarEntity } from "../../types";
 import { formatPower, getBatteryIcon } from "../../utils";
+import { getBatteryIconColor } from "../../utils/colors/battery-colors";
 
 export function renderBatteryBar(
     config: PVMonitorCardConfig,
@@ -55,11 +56,16 @@ export function renderBatteryBar(
 
     return html`
         <div class="battery-bar" style="${barStyle}">
-            ${entityData.map((data, index) => html`
+            ${entityData.map((data, index) => {
+                const useDynamicIcon = data.entity.use_dynamic_icon !== false && !data.entity.icon;
+                const icon = useDynamicIcon ? getBatteryIcon(data.soc) : data.entity.icon;
+                const iconColor = useDynamicIcon ? getBatteryIconColor(data.soc) : (style.icon_color || '#7f7f7f');
+
+                return html`
                 <div class="battery-bar-item" style="display: flex; align-items: center; gap: ${itemGap};">
-                    ${data.entity.icon ? html`
-                        <ha-icon 
-                            .icon="${data.entity.icon || getBatteryIcon(data.soc)}" 
+                    ${icon ? html`
+                        <ha-icon
+                            .icon="${icon}"
                             style="
                                 display: flex;
                                 align-items: center;
@@ -67,7 +73,7 @@ export function renderBatteryBar(
                                 width: ${iconSize};
                                 height: ${iconSize};
                                 --mdc-icon-size: ${iconSize};
-                                color: ${style.icon_color || '#7f7f7f'};
+                                color: ${iconColor};
                             "
                         ></ha-icon>
                     ` : ''}
@@ -91,7 +97,8 @@ export function renderBatteryBar(
                     </span>
                 </div>
                 ${index < entityData.length - 1 ? html`<span style="color: rgba(127, 127, 127, 0.3);">${separator}</span>` : ''}
-            `)}
+                `;
+            })}
         </div>
     `;
 }
