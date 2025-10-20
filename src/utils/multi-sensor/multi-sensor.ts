@@ -1,4 +1,4 @@
-import { PVBarEntity, BatteryBarEntity, Hass } from '../types';
+import { PVBarEntity, BatteryBarEntity, Hass } from '../../types';
 
 /**
  * Summiert alle PV-Entities aus der PV-Bar
