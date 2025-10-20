@@ -25,7 +25,7 @@ export const editorStyles = css`
         display: flex;
         gap: 8px;
         border-bottom: 2px solid rgba(127, 127, 127, 0.3);
-        margin-bottom: 16px;
+        margin-bottom: 4px;
         flex-wrap: wrap;
     }
 
@@ -324,5 +324,85 @@ export const editorStyles = css`
 
     .expand-icon.expanded {
         transform: rotate(180deg);
+    }
+
+    /* Nested Tabs Styles */
+    .sub-tabs {
+        display: flex;
+        gap: 4px;
+        border-bottom: 2px solid rgba(127, 127, 127, 0.2);
+        margin: 0 0 12px 0;
+        flex-wrap: wrap;
+        position: relative;
+        z-index: 1;
+    }
+
+    .sub-tab {
+        padding: 8px 16px;
+        cursor: pointer;
+        border: none;
+        background: rgba(127, 127, 127, 0.08);
+        color: rgba(255, 255, 255, 0.7);
+        border-bottom: 2px solid transparent;
+        margin-bottom: -2px;
+        font-size: 14px;
+        transition: all 0.2s;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        border-radius: 6px 6px 0 0;
+    }
+
+    .sub-tab:hover {
+        background: rgba(127, 127, 127, 0.18);
+        color: rgba(255, 255, 255, 0.9);
+    }
+
+    .sub-tab.active {
+        border-bottom-color: #3b82f6;
+        background: rgba(59, 130, 246, 0.15);
+        color: #60a5fa;
+        font-weight: 500;
+    }
+
+    .sub-tab ha-icon {
+        --mdc-icon-size: 18px;
+    }
+
+    .context-tabs {
+        display: flex;
+        gap: 4px;
+        border-bottom: 1px solid rgba(127, 127, 127, 0.15);
+        margin: -4px 0 12px 0;
+        flex-wrap: wrap;
+        padding-left: 16px;
+    }
+
+    .context-tab {
+        padding: 4px 10px;
+        cursor: pointer;
+        border: none;
+        background: none;
+        color: rgba(255, 255, 255, 0.5);
+        border-bottom: 2px solid transparent;
+        margin-bottom: -1px;
+        font-size: 12px;
+        transition: all 0.2s;
+        border-radius: 2px 2px 0 0;
+    }
+
+    .context-tab:hover {
+        background: rgba(127, 127, 127, 0.1);
+        color: rgba(255, 255, 255, 0.8);
+    }
+
+    .context-tab.active {
+        border-bottom-color: #10b981;
+        color: #34d399;
+        font-weight: 500;
+    }
+
+    .sub-tab-content {
+        margin-top: 4px;
     }
 `;

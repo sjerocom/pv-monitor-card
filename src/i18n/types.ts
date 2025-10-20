@@ -34,7 +34,12 @@ export interface Translations {
 
     editor: {
         tab_general: string;
-        tab_styling: string;
+        tab_elements: string;
+        tab_cards: string;
+        tab_layout: string;
+        tab_language: string;
+        tab_header: string;
+        tab_theme: string;
         tab_infobar: string;
         tab_pv: string;
         tab_battery: string;
@@ -269,6 +274,11 @@ export interface Translations {
         custom_entity_toggle_helper: string;
         show_consumer_total_in_house: string;
         show_consumer_total_helper: string;
+        header_visibility: string;
+        header_content: string;
+        header_title_styling: string;
+        header_subtitle_styling: string;
+        header_icon_styling: string;
         show_title: string;
         show_subtitle: string;
         show_icon: string;

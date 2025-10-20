@@ -7,8 +7,9 @@ export function renderPVBar(
     hass: any
 ): TemplateResult {
     const pvBar = config.pv_bar;
+    const pvEntities = (config.pv as any)?.entities;
 
-    if (!pvBar?.show || !pvBar?.entities || pvBar.entities.length === 0) {
+    if (!pvBar?.show || !pvEntities || pvEntities.length === 0) {
         return html``;
     }
 
@@ -17,7 +18,7 @@ export function renderPVBar(
 
     const entityData: Array<{entity: PVBarEntity, value: number, state: any}> = [];
 
-    pvBar.entities.forEach((entity) => {
+    pvEntities.forEach((entity: PVBarEntity) => {
         if (entity.entity && hass?.states[entity.entity]) {
             const state = hass.states[entity.entity];
             const value = parseFloat(state.state) || 0;

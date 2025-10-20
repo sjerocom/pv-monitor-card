@@ -17,30 +17,30 @@ export function renderPV(
 
     const t = getTranslations(config.language);
 
-    // Verwende pv_bar.entities für die Werte
-    if (config.pv_bar?.entities && config.pv_bar.entities.length > 0) {
-        const value = aggregatePVPower(config.pv_bar.entities, hass);
-        const maxPower = getTotalPVMaxPower(config.pv_bar.entities);
-
-        const shouldRotate = config.pv.icon_rotation === true;
-        let customIconStyle = '';
-
-        if (shouldRotate && maxPower > 0) {
-            const rotationSpeed = getPVRotationSpeed(value, maxPower);
-            customIconStyle = `animation: continuousRotation ${rotationSpeed}s linear infinite;`;
-        }
-
-        return renderCard({
-            cardConfig: config.pv,
-            icon: config.pv.icon || 'mdi:white-balance-sunny',
-            primaryValue: formatPower(value),
-            secondaryText: getTextFromEntityOrConfig(config.pv.secondary_entity, config.pv.secondary_text),
-            tertiaryText: getTextFromEntityOrConfig(config.pv.tertiary_entity, config.pv.tertiary_text),
-            animStyle: config.pv.animation ? getPVColor(value, maxPower) : { color: '', duration: 0, show: false },
-            customIconStyle: customIconStyle
-        }, style, getCardStyle, handleAction);
+    // Multi-PV Support: Verwende pv.entities Array
+    const entities = (config.pv as any)?.entities;
+    if (!entities || entities.length === 0) {
+        return html`<div class="card">⚠️ ${t.general.missing_entity}</div>`;
     }
 
-    // Alte Logik wird ignoriert - Warnung wird durch Validator angezeigt
-    return html`<div class="card">⚠️ ${t.general.missing_entity}</div>`;
+    const value = aggregatePVPower(entities, hass);
+    const maxPower = getTotalPVMaxPower(entities);
+
+    const shouldRotate = config.pv?.icon_rotation === true;
+    let customIconStyle = '';
+
+    if (shouldRotate && maxPower > 0) {
+        const rotationSpeed = getPVRotationSpeed(value, maxPower);
+        customIconStyle = `animation: continuousRotation ${rotationSpeed}s linear infinite;`;
+    }
+
+    return renderCard({
+        cardConfig: config.pv,
+        icon: config.pv?.icon || 'mdi:white-balance-sunny',
+        primaryValue: formatPower(value),
+        secondaryText: getTextFromEntityOrConfig(config.pv?.secondary_entity, config.pv?.secondary_text),
+        tertiaryText: getTextFromEntityOrConfig(config.pv?.tertiary_entity, config.pv?.tertiary_text),
+        animStyle: config.pv?.animation ? getPVColor(value, maxPower) : { color: '', duration: 0, show: false },
+        customIconStyle: customIconStyle
+    }, style, getCardStyle, handleAction);
 }

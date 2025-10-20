@@ -8,8 +8,9 @@ export function renderBatteryBar(
     hass: any
 ): TemplateResult {
     const batteryBar = config.battery_bar;
+    const batteryEntities = (config.batterie as any)?.entities;
 
-    if (!batteryBar?.show || !batteryBar?.entities || batteryBar.entities.length === 0) {
+    if (!batteryBar?.show || !batteryEntities || batteryEntities.length === 0) {
         return html``;
     }
 
@@ -18,7 +19,7 @@ export function renderBatteryBar(
 
     const entityData: Array<{entity: BatteryBarEntity, soc: number, charge: number, discharge: number, state: any}> = [];
 
-    batteryBar.entities.forEach((entity) => {
+    batteryEntities.forEach((entity: BatteryBarEntity) => {
         if (entity.entity && hass?.states[entity.entity]) {
             const state = hass.states[entity.entity];
             const soc = parseFloat(state.state) || 0;
@@ -57,9 +58,15 @@ export function renderBatteryBar(
     return html`
         <div class="battery-bar" style="${barStyle}">
             ${entityData.map((data, index) => {
+                // Wenn kein Custom-Icon gesetzt ist UND use_dynamic_icon nicht explizit false → dynamisches Icon
                 const useDynamicIcon = data.entity.use_dynamic_icon !== false && !data.entity.icon;
                 const icon = useDynamicIcon ? getBatteryIcon(data.soc) : data.entity.icon;
-                const iconColor = useDynamicIcon ? getBatteryIconColor(data.soc) : (style.icon_color || '#7f7f7f');
+
+                // Icon-Farbe: Nutze dynamische Farbe wenn kein style.icon_color überschrieben ist
+                // Oder wenn explizit dynamisches Icon verwendet wird
+                const iconColor = (useDynamicIcon || !style.icon_color)
+                    ? getBatteryIconColor(data.soc)
+                    : style.icon_color;
 
                 return html`
                 <div class="battery-bar-item" style="display: flex; align-items: center; gap: ${itemGap};">

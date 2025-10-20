@@ -69,40 +69,24 @@ function renderInfoBarItem(
     let value = '';
     let unit = '';
 
-    const getCentralEntityValue = (entityKey: string): number => {
-        // Fallback auf zentrale entities wenn vorhanden
-        const entityId = config.entities?.[entityKey as keyof typeof config.entities];
-        if (entityId && hass.states[entityId]) {
-            return parseFloat(hass.states[entityId].state) || 0;
+    // Aggregierte Werte holen
+    const getAggregatedPVPower = (): number => {
+        const pvEntities = (config.pv as any)?.entities;
+        if (pvEntities && pvEntities.length > 0) {
+            return aggregatePVPower(pvEntities, hass);
         }
         return 0;
     };
 
-    // Aggregierte Werte holen
-    const getAggregatedPVPower = (): number => {
-        if (config.pv_bar?.entities && config.pv_bar.entities.length > 0) {
-            return aggregatePVPower(config.pv_bar.entities, hass);
-        }
-        // Fallback auf alte single entity
-        if (config.pv?.entity) {
-            return parseFloat(hass.states[config.pv.entity]?.state) || 0;
-        }
-        return getCentralEntityValue('pv_production');
-    };
-
     const getAggregatedBatteryValues = (): { soc: number; charge: number; discharge: number; capacity: number } => {
-        if (config.battery_bar?.entities && config.battery_bar.entities.length > 0) {
-            const soc = aggregateBatterySOC(config.battery_bar.entities, hass);
-            const power = aggregateBatteryPower(config.battery_bar.entities, hass);
-            const capacity = getTotalBatteryCapacity(config.battery_bar.entities);
+        const batteryEntities = (config.batterie as any)?.entities;
+        if (batteryEntities && batteryEntities.length > 0) {
+            const soc = aggregateBatterySOC(batteryEntities, hass);
+            const power = aggregateBatteryPower(batteryEntities, hass);
+            const capacity = getTotalBatteryCapacity(batteryEntities);
             return { soc, charge: power.charge, discharge: power.discharge, capacity };
         }
-        // Fallback auf alte single entities
-        const soc = config.batterie?.entity ? parseFloat(hass.states[config.batterie.entity]?.state) || 0 : getCentralEntityValue('battery_soc');
-        const charge = config.batterie?.ladung_entity ? parseFloat(hass.states[config.batterie.ladung_entity]?.state) || 0 : getCentralEntityValue('battery_charge');
-        const discharge = config.batterie?.entladung_entity ? parseFloat(hass.states[config.batterie.entladung_entity]?.state) || 0 : getCentralEntityValue('battery_discharge');
-        const capacity = config.battery_capacity || config.batterie?.battery_capacity || 10000;
-        return { soc, charge, discharge, capacity };
+        return { soc: 0, charge: 0, discharge: 0, capacity: 0 };
     };
 
     const getGridPower = (): number => {

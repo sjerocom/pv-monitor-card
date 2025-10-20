@@ -22,7 +22,7 @@ export function renderPVBarItem(
     t: any
 ) {
     const entityLabel = item.name || item.entity || `PV ${index + 1}`;
-    const basePath = ['pv_bar', 'entities', index.toString()];
+    const basePath = ['pv', 'entities', index.toString()];
 
     return html`
         <div class="consumer-section">

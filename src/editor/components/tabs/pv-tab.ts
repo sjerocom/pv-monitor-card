@@ -31,8 +31,8 @@ export function renderPVTab(
     onRemovePVBarItem: (index: number) => void,
     t: any
 ) {
-    const pvBar = config.pv_bar || { show: false, entities: [] };
-    const canAddMore = (pvBar.entities?.length || 0) < 5;
+    const pvEntities = (config.pv as any)?.entities || [];
+    const canAddMore = pvEntities.length < 5;
 
     return html`
         ${renderCollapsibleSection(
@@ -40,7 +40,7 @@ export function renderPVTab(
             'mdi:solar-panel-large',
             t.editor.bar_entities,
             html`
-                ${(pvBar.entities || []).map((item, index) => {
+                ${pvEntities.map((item: any, index: number) => {
                     const isExpanded = expandedPVBarIndex === index;
                     return renderPVBarItem(
                         item,
@@ -56,7 +56,7 @@ export function renderPVTab(
                         () => onDuplicatePVBarItem(index),
                         () => onRemovePVBarItem(index),
                         index === 0,
-                        index === (pvBar.entities?.length || 0) - 1,
+                        index === pvEntities.length - 1,
                         t
                     );
                 })}
