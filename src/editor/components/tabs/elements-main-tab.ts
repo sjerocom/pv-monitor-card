@@ -64,6 +64,7 @@ export function renderElementsMainTab(
                 onToggleSection,
                 onEntityPickerStateChange,
                 onChange,
+                onTapActionChange,
                 t
             ) : ''}
 

@@ -25,7 +25,7 @@ export const editorStyles = css`
         display: flex;
         gap: 8px;
         border-bottom: 2px solid rgba(127, 127, 127, 0.3);
-        margin-bottom: 16px;
+        margin-bottom: 4px;
         flex-wrap: wrap;
     }
 
@@ -331,8 +331,10 @@ export const editorStyles = css`
         display: flex;
         gap: 4px;
         border-bottom: 2px solid rgba(127, 127, 127, 0.2);
-        margin: -4px 0 12px 0;
+        margin: 0 0 12px 0;
         flex-wrap: wrap;
+        position: relative;
+        z-index: 1;
     }
 
     .sub-tab {
