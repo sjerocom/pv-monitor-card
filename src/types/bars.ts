@@ -12,6 +12,7 @@ export interface BatteryBarEntity {
     charge_entity?: string;
     discharge_entity?: string;
     icon?: string;
+    use_dynamic_icon?: boolean;
 }
 
 export interface BarStyle {

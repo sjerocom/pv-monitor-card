@@ -26,7 +26,27 @@ export function renderBattery(
         const { charge, discharge } = aggregateBatteryPower(entities, hass);
         const totalCapacity = getTotalBatteryCapacity(entities);
 
-        const icon = config.batterie?.icon || getBatteryIcon(soc);
+        // Icon-Logik: Prüfe ob mindestens eine Entity use_dynamic_icon nutzt oder kein Custom-Icon hat
+        let icon = config.batterie?.icon;
+        let iconColor = '#7f7f7f';
+
+        if (!icon) {
+            // Kein globales Icon definiert → prüfe erste Entity oder nutze dynamisches Icon
+            const firstEntity = entities[0];
+            const useDynamicIcon = firstEntity && (firstEntity.use_dynamic_icon !== false && !firstEntity.icon);
+
+            if (useDynamicIcon) {
+                icon = getBatteryIcon(soc);
+                iconColor = getBatteryIconColor(soc);
+            } else if (firstEntity?.icon) {
+                icon = firstEntity.icon;
+            } else {
+                icon = getBatteryIcon(soc);
+                iconColor = getBatteryIconColor(soc);
+            }
+        } else {
+            iconColor = getBatteryIconColor(soc);
+        }
 
         // Automatische Berechnung der Lade-/Entladeleistung falls kein secondary_entity/text konfiguriert
         let secondaryText = getTextFromEntityOrConfig(config.batterie?.secondary_entity, config.batterie?.secondary_text);
@@ -51,7 +71,7 @@ export function renderBattery(
             secondaryText: secondaryText,
             tertiaryText: getTextFromEntityOrConfig(config.batterie?.tertiary_entity, config.batterie?.tertiary_text),
             animStyle: config.batterie?.animation ? getBatterieColor(charge, discharge, totalCapacity) : { color: '', duration: 0, show: false },
-            iconColor: getBatteryIconColor(soc),
+            iconColor: iconColor,
             customIconStyle: ''
         }, style, getCardStyle, handleAction);
     }
