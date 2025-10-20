@@ -57,9 +57,15 @@ export function renderBatteryBar(
     return html`
         <div class="battery-bar" style="${barStyle}">
             ${entityData.map((data, index) => {
+                // Wenn kein Custom-Icon gesetzt ist UND use_dynamic_icon nicht explizit false → dynamisches Icon
                 const useDynamicIcon = data.entity.use_dynamic_icon !== false && !data.entity.icon;
                 const icon = useDynamicIcon ? getBatteryIcon(data.soc) : data.entity.icon;
-                const iconColor = useDynamicIcon ? getBatteryIconColor(data.soc) : (style.icon_color || '#7f7f7f');
+
+                // Icon-Farbe: Nutze dynamische Farbe wenn kein style.icon_color überschrieben ist
+                // Oder wenn explizit dynamisches Icon verwendet wird
+                const iconColor = (useDynamicIcon || !style.icon_color)
+                    ? getBatteryIconColor(data.soc)
+                    : style.icon_color;
 
                 return html`
                 <div class="battery-bar-item" style="display: flex; align-items: center; gap: ${itemGap};">

@@ -28,24 +28,19 @@ export function renderBattery(
 
         // Icon-Logik: Prüfe ob mindestens eine Entity use_dynamic_icon nutzt oder kein Custom-Icon hat
         let icon = config.batterie?.icon;
-        let iconColor = '#7f7f7f';
+        let iconColor = getBatteryIconColor(soc); // Standard: dynamische Farbe
 
         if (!icon) {
             // Kein globales Icon definiert → prüfe erste Entity oder nutze dynamisches Icon
             const firstEntity = entities[0];
-            const useDynamicIcon = firstEntity && (firstEntity.use_dynamic_icon !== false && !firstEntity.icon);
 
-            if (useDynamicIcon) {
-                icon = getBatteryIcon(soc);
-                iconColor = getBatteryIconColor(soc);
-            } else if (firstEntity?.icon) {
+            if (firstEntity?.icon) {
+                // Custom-Icon auf Entity → nutze dieses mit dynamischer Farbe
                 icon = firstEntity.icon;
             } else {
+                // Kein Custom-Icon → nutze dynamisches Icon mit Farbe
                 icon = getBatteryIcon(soc);
-                iconColor = getBatteryIconColor(soc);
             }
-        } else {
-            iconColor = getBatteryIconColor(soc);
         }
 
         // Automatische Berechnung der Lade-/Entladeleistung falls kein secondary_entity/text konfiguriert
