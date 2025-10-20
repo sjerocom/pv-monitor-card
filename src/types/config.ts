@@ -3,10 +3,11 @@ import { TapAction } from './actions';
 import { InfoBarConfig } from './info-bar';
 import { ConsumersConfig } from './consumers';
 import { PVBarConfig, BatteryBarConfig, PVBarEntity, BatteryBarEntity } from './bars';
+import { SupportedLanguage } from '../i18n/types';
 
 export interface PVMonitorCardConfig {
     type: string;
-    language?: 'de' | 'en' | 'fr' | 'it' | 'es';
+    language?: SupportedLanguage;
     theme?: string;
     title?: string;
     show_title?: boolean;
@@ -54,6 +55,8 @@ export interface PVMonitorCardConfig {
         card_padding?: string;
         header_margin_bottom?: string;
         infobar_gap?: string;
+        pv_bar_gap?: string;
+        battery_bar_gap?: string;
         header_background_enabled?: boolean;
         header_background_color?: string;
         header_border_color?: string;
