@@ -18,7 +18,7 @@ export default defineConfig(({ mode }) => {
                 },
             },
             target: 'es2020',
-            minify: isDev ? false : 'terser',
+            minify: 'terser',
             sourcemap: false,
         },
         define: isDev
