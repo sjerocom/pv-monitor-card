@@ -32,7 +32,7 @@ const CARD_TAG = typeof __CARD_NAME__ !== 'undefined' ? __CARD_NAME__ : 'pv-moni
 
 export class PVMonitorCard extends LitElement {
     @property({ attribute: false }) public hass?: Hass;
-    @property({ attribute: false }) private config!: PVMonitorCardConfig;
+    private config!: PVMonitorCardConfig;
     @property() private _consumersVisible: boolean = true;
 
     private _actionHandler?: ActionHandler;
