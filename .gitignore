@@ -29,3 +29,7 @@ coverage/
 # Temporary files
 *.tmp
 *.bak
+
+# Claude Code
+.claude/
+CLAUDE.md
